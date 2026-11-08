@@ -1,0 +1,236 @@
+[
+  {
+    "number": 1,
+    "id": "PY02-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "位置引数を使って関数を呼び出す",
+    "task": "関数 `transform()` に `x`、`scale`、`bias` をこの順番で位置引数として渡し、戻り値を `result` に代入してください。",
+    "starter": "def transform(x, scale, bias):\n    return x * scale + bias\n\nx = 4\nscale = 3\nbias = 2\n\n# 以下に答えを記入\nresult =",
+    "hint": "位置引数は、関数定義の引数の順番に合わせて `関数名(値1, 値2, ...)` の形で渡します。",
+    "solution": "result = transform(x, scale, bias)",
+    "expected": 14
+  },
+  {
+    "number": 2,
+    "id": "PY02-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "キーワード引数を使って関数を呼び出す",
+    "task": "関数 `clip()` をキーワード引数で呼び出し、`x` を `lower` 以上 `upper` 以下の範囲に収めた値を `result` に代入してください。",
+    "starter": "def clip(x, lower, upper):\n    return min(max(x, lower), upper)\n\nx = 12\nlower = 0\nupper = 10\n\n# 以下に答えを記入\nresult =",
+    "hint": "キーワード引数は `関数名(引数名=値)` の形で指定します。位置引数と異なり、引数の指定順序を変えられます。",
+    "solution": "result = clip(x=x, lower=lower, upper=upper)",
+    "expected": 10
+  },
+  {
+    "number": 3,
+    "id": "PY02-09",
+    "version": 1,
+    "stage": "partial",
+    "title": "位置引数とキーワード引数を組み合わせる",
+    "task": "関数 `predict()` に `x` と `weight` を位置引数、`bias` をキーワード引数として渡し、計算結果を `result` に代入してください。",
+    "starter": "def predict(x, weight, bias=0):\n    return x * weight + bias\n\nx = 2\nweight = 4\nbias = 3\n\n# 以下に答えを記入\nresult =",
+    "hint": "位置引数を先に記述し、その後に `bias=値` のようなキーワード引数を記述します。",
+    "solution": "result = predict(x, weight, bias=bias)",
+    "expected": 11
+  },
+  {
+    "number": 4,
+    "id": "PY02-01",
+    "version": 4,
+    "stage": "guided",
+    "title": "デフォルト引数を利用する",
+    "task": "関数 `scale_values()` を呼び出し、デフォルトの `factor=2` を使ってリスト `values` の各要素を2倍にしてください。",
+    "starter": "def scale_values(values, factor=2):\n    return [v * factor for v in values]\n\nvalues = [1, 3, -2]\n\n# 以下に答えを記入\nresult =",
+    "hint": "デフォルト値が設定された引数は、関数呼び出し時に省略できます。",
+    "solution": "result = scale_values(values)",
+    "expected": [
+      2,
+      6,
+      -4
+    ]
+  },
+  {
+    "number": 5,
+    "id": "PY02-10",
+    "version": 1,
+    "stage": "partial",
+    "title": "デフォルト引数を上書きする",
+    "task": "関数 `scale_values()` の `factor` に3を指定し、リスト `values` の各要素を3倍にしてください。",
+    "starter": "def scale_values(values, factor=2):\n    return [v * factor for v in values]\n\nvalues = [2, 5, -1]\n\n# 以下に答えを記入\nresult =",
+    "hint": "デフォルト値が設定されていても、呼び出し時に `factor=3` のように指定すると値を変更できます。",
+    "solution": "result = scale_values(values, factor=3)",
+    "expected": [
+      6,
+      15,
+      -3
+    ]
+  },
+  {
+    "number": 6,
+    "id": "PY02-05",
+    "version": 3,
+    "stage": "independent",
+    "title": "一部のデフォルト引数だけを変更する",
+    "task": "関数 `normalize_score()` を呼び出し、`divisor` はデフォルト値のまま、`offset` だけを0.1に変更してください。",
+    "starter": "def normalize_score(score, divisor=100, offset=0):\n    return score / divisor + offset\n\nscore = 80\n\n# 以下に答えを記入\nresult =",
+    "hint": "途中の引数を省略して後ろの引数だけ変更したい場合は、キーワード引数を使用します。",
+    "solution": "result = normalize_score(score, offset=0.1)",
+    "expected": 0.9
+  },
+  {
+    "number": 7,
+    "id": "PY02-02",
+    "version": 4,
+    "stage": "guided",
+    "title": "複数のLossを合計する",
+    "task": "`*losses` で受け取ったすべてのLossを合計して返すように、関数 `total_loss()` を完成させてください。",
+    "starter": "def total_loss(*losses):\n    return\n\nresult = total_loss(0.4, 0.3, 0.2)",
+    "hint": "`*losses` は渡された位置引数をタプルにまとめます。合計は `sum()` で計算できます。",
+    "solution": "def total_loss(*losses):\n    return sum(losses)",
+    "expected": 0.9
+  },
+  {
+    "number": 8,
+    "id": "PY02-11",
+    "version": 1,
+    "stage": "independent",
+    "title": "任意個のLossの平均を求める",
+    "task": "任意個のLossを位置引数で受け取り、その平均を返す関数 `average_loss()` を定義してください。Lossは1つ以上渡されるものとします。",
+    "starter": "# 以下に関数を定義\n\nresult = average_loss(0.2, 0.4, 0.6)",
+    "hint": "`def average_loss(*losses):` とすると、複数のLossをタプルで受け取れます。平均は合計を要素数で割って求めます。",
+    "solution": "def average_loss(*losses):\n    return sum(losses) / len(losses)",
+    "expected": 0.4
+  },
+  {
+    "number": 9,
+    "id": "PY02-12",
+    "version": 1,
+    "stage": "partial",
+    "title": "閾値以上のスコアを数える",
+    "task": "関数 `count_above()` で、`threshold` 以上のスコアの個数を返す処理を記述してください。",
+    "starter": "def count_above(threshold, *scores):\n    return\n\nresult = count_above(0.5, 0.3, 0.8, 0.5, 0.9)",
+    "hint": "`threshold` は最初の位置引数として受け取り、それ以降の値は `scores` にまとまります。条件を満たす要素の数は `sum(1 for ... if ...)` で数えられます。",
+    "solution": "def count_above(threshold, *scores):\n    return sum(1 for score in scores if score >= threshold)",
+    "expected": 3
+  },
+  {
+    "number": 10,
+    "id": "PY02-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "キーワード引数から学習率を取得する",
+    "task": "関数 `get_lr()` で、キーワード引数 `lr` の値を返してください。`lr` が指定されていない場合は `0.001` を返してください。",
+    "starter": "def get_lr(**params):\n    return\n\nresult = get_lr(lr=0.01, batch_size=16)",
+    "hint": "`**params` はキーワード引数を辞書として受け取ります。`params.get(\"lr\", 0.001)` のように記述すると、キーが存在しない場合のデフォルト値も指定できます。",
+    "solution": "def get_lr(**params):\n    return params.get(\"lr\", 0.001)",
+    "expected": 0.01
+  },
+  {
+    "number": 11,
+    "id": "PY02-13",
+    "version": 1,
+    "stage": "independent",
+    "title": "Trueに設定されたオプションを数える",
+    "task": "任意個のキーワード引数を受け取り、値が `True` のオプションの個数を返す関数 `count_enabled()` を定義してください。渡される値はすべて `True` または `False` とします。",
+    "starter": "# 以下に関数を定義\n\nresult = count_enabled(\n    augmentation=True,\n    shuffle=False,\n    amp=True\n)",
+    "hint": "`def count_enabled(**flags):` とすると、渡された設定を辞書として受け取れます。`flags.values()` で値を取り出せます。",
+    "solution": "def count_enabled(**flags):\n    return sum(flags.values())",
+    "expected": 2
+  },
+  {
+    "number": 12,
+    "id": "PY02-14",
+    "version": 1,
+    "stage": "partial",
+    "title": "必要な学習パラメータだけを抽出する",
+    "task": "関数 `pick_training_params()` で、受け取ったキーワード引数から `lr` と `batch_size` の項目だけを取り出した辞書を返してください。",
+    "starter": "def pick_training_params(**params):\n    return\n\nresult = pick_training_params(\n    lr=0.01,\n    batch_size=32,\n    note=\"baseline\"\n)",
+    "hint": "`params.items()` でキーと値を取り出せます。辞書内包表記に `if` を加えると、必要なキーだけを残せます。",
+    "solution": "def pick_training_params(**params):\n    return {\n        k: v\n        for k, v in params.items()\n        if k in (\"lr\", \"batch_size\")\n    }",
+    "expected": {
+      "lr": 0.01,
+      "batch_size": 32
+    }
+  },
+  {
+    "number": 13,
+    "id": "PY02-15",
+    "version": 1,
+    "stage": "guided",
+    "title": "リストを位置引数として展開する",
+    "task": "リスト `features` の各要素を、関数 `weighted_sum()` の3つの位置引数として渡し、計算結果を `result` に代入してください。",
+    "starter": "def weighted_sum(a, b, c):\n    return a * 0.2 + b * 0.3 + c * 0.5\n\nfeatures = [10, 20, 30]\n\n# 以下に答えを記入\nresult =",
+    "hint": "関数呼び出し時に `*リスト` と記述すると、リストの各要素を個別の位置引数として渡せます。",
+    "solution": "result = weighted_sum(*features)",
+    "expected": 23.0
+  },
+  {
+    "number": 14,
+    "id": "PY02-16",
+    "version": 1,
+    "stage": "guided",
+    "title": "通常の引数とタプル展開を組み合わせる",
+    "task": "`x` をそのまま位置引数として渡し、タプル `model_params` の要素を残りの位置引数として展開して、関数 `predict_linear()` を呼び出してください。",
+    "starter": "def predict_linear(x, weight, bias=0):\n    return x * weight + bias\n\nx = 5\nmodel_params = (2, 3)\n\n# 以下に答えを記入\nresult =",
+    "hint": "通常の位置引数と `*タプル` は組み合わせられます。例えば `func(x, *params)` と記述します。",
+    "solution": "result = predict_linear(x, *model_params)",
+    "expected": 13
+  },
+  {
+    "number": 15,
+    "id": "PY02-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "複数のリストをまとめて展開する",
+    "task": "リスト `first` と `second` の要素を、この順番ですべて位置引数に展開し、関数 `mean_of_four()` を呼び出してください。",
+    "starter": "def mean_of_four(a, b, c, d):\n    return (a + b + c + d) / 4\n\nfirst = [3, 5]\nsecond = [7, 9]\n\n# 以下に答えを記入\nresult =",
+    "hint": "1回の関数呼び出しで、`*first` と `*second` のように複数のリストを展開できます。",
+    "solution": "result = mean_of_four(*first, *second)",
+    "expected": 6.0
+  },
+  {
+    "number": 16,
+    "id": "PY02-06",
+    "version": 4,
+    "stage": "independent",
+    "title": "辞書をキーワード引数として展開する",
+    "task": "辞書 `config` のキーと値をキーワード引数として展開し、関数 `training_summary()` を呼び出してください。",
+    "starter": "def training_summary(lr, batch_size):\n    return (lr, batch_size)\n\nconfig = {\n    \"lr\": 0.001,\n    \"batch_size\": 32\n}\n\n# 以下に答えを記入\nresult =",
+    "hint": "関数呼び出し時に `**辞書` と記述すると、辞書のキーが引数名、値が引数の値として渡されます。",
+    "solution": "result = training_summary(**config)",
+    "expected": [
+      0.001,
+      32
+    ]
+  },
+  {
+    "number": 17,
+    "id": "PY02-04",
+    "version": 3,
+    "stage": "partial",
+    "title": "位置引数と辞書展開を組み合わせる",
+    "task": "関数 `run_training()` に `data` を位置引数として渡し、辞書 `options` の内容をキーワード引数として展開してください。",
+    "starter": "def run_training(data, lr=0.01, epochs=5):\n    return (len(data), lr, epochs)\n\ndata = [10, 20, 30]\n\noptions = {\n    \"lr\": 0.001,\n    \"epochs\": 10\n}\n\n# 以下に答えを記入\nresult =",
+    "hint": "通常の位置引数と辞書展開は、`func(data, **options)` のように組み合わせて指定できます。",
+    "solution": "result = run_training(data, **options)",
+    "expected": [
+      3,
+      0.001,
+      10
+    ]
+  },
+  {
+    "number": 18,
+    "id": "PY02-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "*argsと**kwargsを別の関数へ渡す",
+    "task": "関数 `call_metric()` で、受け取った `*args` と `**kwargs` をそのまま関数 `fn` に渡し、`fn` の戻り値を返してください。",
+    "starter": "def compute_error(pred, target, absolute=False):\n    error = pred - target\n    return abs(error) if absolute else error\n\ndef call_metric(fn, *args, **kwargs):\n    return\n\nresult = call_metric(\n    compute_error, 7, 3, absolute=True\n)",
+    "hint": "`*args` は位置引数、`**kwargs` はキーワード引数として展開できます。両方を使って別の関数を呼び出せます。",
+    "solution": "def call_metric(fn, *args, **kwargs):\n    return fn(*args, **kwargs)",
+    "expected": 4
+  }
+]

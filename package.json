@@ -1,0 +1,31 @@
+{
+  "name": "ml-code-trainer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w apps/web",
+    "build": "npm run build -w apps/web",
+    "typecheck": "npm run typecheck -w apps/web",
+    "test": "npm run test -w apps/web",
+    "lint": "npm run lint -w apps/web",
+    "test:e2e": "playwright test",
+    "test:e2e:phase1": "playwright test -c playwright.phase1.config.ts",
+    "test:e2e:concrete": "playwright test -c playwright.concrete.config.ts",
+    "api:types": "openapi-typescript apps/api/openapi.json -o apps/web/src/types/api.d.ts && prettier --write apps/web/src/types/api.d.ts",
+    "test:browser-content": "node scripts/run-browser-content.mjs",
+    "format": "prettier --write apps/web/src apps/web/vite.config.ts tests playwright.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "openapi-typescript": "7.13.0",
+    "prettier": "3.9.10"
+  },
+  "overrides": {
+    "dompurify": "3.4.17",
+    "minimatch": "11.0.4"
+  }
+}

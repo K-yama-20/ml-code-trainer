@@ -1,0 +1,512 @@
+{
+  "problems": [
+    {
+      "id": "PY02-01",
+      "family_id": "PY02-01",
+      "version_id": "PY02-01@3",
+      "content_version": 3,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "デフォルト引数でスケール",
+      "description": "xの各値をscale倍したリストを返してください。scaleを省略すると2倍になります。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "xの各値をscale倍したリストを返してください。scaleを省略すると2倍になります。",
+      "starter_code": "def scale_values(x, scale=2):\n    return ___\n",
+      "example": "train(**config)",
+      "editable_regions": [],
+      "hints": [
+        "引数の受け渡しと辞書展開を理解します。",
+        "関数の中ではscaleを使います。呼び出し側がscaleを省略すると、引数の既定値2が入ります。",
+        "空欄には [v * scale for v in x] と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "def scale_values(x, scale=2):\n    return [v * scale for v in x]\n",
+      "explanation": "scale_values([1, 2])ではscaleが省略されるため、[2, 4]を返します。scale_values([1, 2], 3)なら[3, 6]です。",
+      "common_mistakes": [
+        "有効な0やFalseを未設定と同じ扱いにする。",
+        "辞書展開の順序を逆にして上書き優先度を変える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8913\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[1,2]",
+          "expected": [
+            2,
+            4
+          ]
+        },
+        {
+          "setup": "seed = 8913\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[1,2],3",
+          "expected": [
+            3,
+            6
+          ]
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8913\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[2],0",
+          "expected": [
+            0
+          ]
+        },
+        {
+          "setup": "seed = 8913\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[seed],-2",
+          "expected": [
+            -17826
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "function",
+        "entrypoint": "scale_values"
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "function",
+        "provided_code": "x = [1, 2]",
+        "task": "xの各値をscale倍したリストを返してください。scaleを省略すると2倍になります。",
+        "authored": false,
+        "structure": "function",
+        "invocation": "result = scale_values(x)",
+        "classification_reason": "引数・既定値・展開の理解が目的のため関数を維持"
+      }
+    },
+    {
+      "id": "PY02-02",
+      "family_id": "PY02-02",
+      "version_id": "PY02-02@3",
+      "content_version": 3,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "可変長引数を読む",
+      "description": "totalを呼び出したとき、observedに入る値を答えてください。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "totalを呼び出したとき、observedに入る値を答えてください。",
+      "starter_code": "def solve(*values):\n    return ___\n",
+      "example": "observed = sum(values)",
+      "editable_regions": [],
+      "hints": [
+        "引数の受け渡しと辞書展開を理解します。",
+        "位置引数はすべてタプルvaluesに入り、sumがその合計を返します。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(*values):\n    return sum(values)\n",
+      "explanation": "argsは受け取った位置引数のタプルです。",
+      "common_mistakes": [
+        "有効な0やFalseを未設定と同じ扱いにする。",
+        "辞書展開の順序を逆にして上書き優先度を変える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1132\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "1,2,3",
+          "expected": 6
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "def total(*values):\n    return sum(values)\n\nobserved = total(1,2,3)",
+        "task": "totalを呼び出したとき、observedに入る値を答えてください。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "PY02-03",
+      "family_id": "PY02-03",
+      "version_id": "PY02-03@2",
+      "content_version": 2,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "kwargsから設定を取得",
+      "description": "configからlrを取得し返す。なければ0.01。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "configからlrを取得し返す。なければ0.01。",
+      "starter_code": "def read_learning_rate(**config):\n    return ___\n",
+      "example": "train(**config)",
+      "editable_regions": [],
+      "hints": [
+        "引数の受け渡しと辞書展開を理解します。",
+        "0を未設定として扱わないようにします。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def read_learning_rate(**config):\n    return config.get('lr', 0.01)\n",
+      "explanation": "0を未設定として扱わないようにします。",
+      "common_mistakes": [
+        "有効な0やFalseを未設定と同じ扱いにする。",
+        "辞書展開の順序を逆にして上書き優先度を変える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4188\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "lr=0.1",
+          "expected": 0.1
+        },
+        {
+          "setup": "seed = 4188\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "epochs=4",
+          "expected": 0.01
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4188\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "lr=0",
+          "expected": 0
+        },
+        {
+          "setup": "seed = 4188\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "lr=seed/100",
+          "expected": 41.88
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "function",
+        "entrypoint": "read_learning_rate"
+      },
+      "presentation": {
+        "edit_instruction": "read_learning_rateの処理を完成させてください。下に使用例があります。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "function",
+        "provided_code": "config = {'lr': 0.1}",
+        "task": "configからlrを取得し返す。なければ0.01。 関数read_learning_rateを完成させてください。",
+        "authored": false,
+        "structure": "function",
+        "invocation": "result = read_learning_rate(**config)",
+        "classification_reason": "引数・既定値・展開の理解が目的のため関数を維持"
+      }
+    },
+    {
+      "id": "PY02-04",
+      "family_id": "PY02-04",
+      "version_id": "PY02-04@2",
+      "content_version": 2,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "partial",
+      "type": "prediction",
+      "difficulty": 2,
+      "title": "設定辞書の上書き",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\n元の辞書を変更せず、overridesを優先して統合した辞書を返す。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "元の辞書を変更せず、overridesを優先して統合した辞書を返す。",
+      "starter_code": "def solve(defaults, overrides):\n    # 設定辞書の上書き\n    return ___\n",
+      "example": "observed = {**defaults, **overrides}",
+      "editable_regions": [],
+      "hints": [
+        "引数の受け渡しと辞書展開を理解します。",
+        "後に展開した辞書が優先されます。入力の変更は避けます。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(defaults, overrides):\n    return {**defaults, **overrides}\n",
+      "explanation": "後に展開した辞書が優先されます。入力の変更は避けます。",
+      "common_mistakes": [
+        "有効な0やFalseを未設定と同じ扱いにする。",
+        "辞書展開の順序を逆にして上書き優先度を変える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8951\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "{'a':1},{'a':2,'b':3}",
+          "expected": {
+            "a": 2,
+            "b": 3
+          }
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": true,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "defaults = {'a': 1}\noverrides = {'a': 2, 'b': 3}\n\nobserved = {**defaults, **overrides}",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "PY02-05",
+      "family_id": "PY02-05",
+      "version_id": "PY02-05@2",
+      "content_version": 2,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "キーワード専用引数",
+      "description": "valuesの総和にoffsetを加えて返す。offsetはキーワード専用。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "valuesの総和にoffsetを加えて返す。offsetはキーワード専用。",
+      "starter_code": "def total_with_offset(values, *, offset=0):\n    pass\n",
+      "example": "train(**config)",
+      "editable_regions": [],
+      "hints": [
+        "引数の受け渡しと辞書展開を理解します。",
+        "*以降は位置引数では指定できません。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def total_with_offset(values, *, offset=0):\n    return sum(values) + offset\n",
+      "explanation": "*以降は位置引数では指定できません。",
+      "common_mistakes": [
+        "有効な0やFalseを未設定と同じ扱いにする。",
+        "辞書展開の順序を逆にして上書き優先度を変える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1568\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[1,2],offset=3",
+          "expected": 6
+        },
+        {
+          "setup": "seed = 1568\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[],offset=0",
+          "expected": 0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1568\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[-2],offset=2",
+          "expected": 0
+        },
+        {
+          "setup": "seed = 1568\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[seed],offset=4",
+          "expected": 1572
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "function",
+        "entrypoint": "total_with_offset"
+      },
+      "presentation": {
+        "edit_instruction": "total_with_offsetの処理を完成させてください。下に使用例があります。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "function",
+        "provided_code": "values = [1, 2]\noffset = 3",
+        "task": "valuesの総和にoffsetを加えて返す。offsetはキーワード専用。 関数total_with_offsetを完成させてください。",
+        "authored": false,
+        "structure": "function",
+        "invocation": "result = total_with_offset(values, offset=offset)",
+        "classification_reason": "引数・既定値・展開の理解が目的のため関数を維持"
+      }
+    },
+    {
+      "id": "PY02-06",
+      "family_id": "PY02-06",
+      "version_id": "PY02-06@3",
+      "content_version": 3,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "辞書を関数の引数として渡す",
+      "description": "apply_configの中にapply(values, factor=1)を定義してください。applyは各値をfactor倍したリストを返します。最後にapply(**config)を呼び、その結果を返してください。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各値をfactor倍したリスト。空リストなら空リストを返します。",
+      "starter_code": "def apply_config(config):\n    pass\n",
+      "example": "train(**config)",
+      "editable_regions": [],
+      "hints": [
+        "まず倍率を受け取る関数を作りましょう。倍率が渡されない場合に備え、factorの既定値を1にします。",
+        "apply(values=[1, 2], factor=3)と呼ぶと[3, 6]を返すように、リスト内包表記で各値を掛けます。",
+        "**configは辞書のキーを引数名として渡します。内部関数を定義した後でreturn apply(**config)と呼び出します。"
+      ],
+      "solution": "def apply_config(config):\n\n    def apply(values, factor=1):\n        return [v * factor for v in values]\n    return apply(**config)\n",
+      "explanation": "apply(**config)は、辞書のキーvaluesとfactorを同名の引数へ渡します。factorがない場合は定義時の1が使われます。倍率0は有効なので、0を『未指定』として1へ置き換えないようにします。",
+      "common_mistakes": [
+        "apply(config)では辞書全体がvaluesに渡り、値のリストと倍率に分かれません。",
+        "factorに既定値がないと、{'values': [1, 2]}で引数不足になります。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4202\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "{'values':[1,2],'factor':3}",
+          "expected": [
+            3,
+            6
+          ]
+        },
+        {
+          "setup": "seed = 4202\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "{'values':[]}",
+          "expected": []
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4202\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "{'values':[4]}",
+          "expected": [
+            4
+          ]
+        },
+        {
+          "setup": "seed = 4202\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "{'values':[seed],'factor':-1}",
+          "expected": [
+            -4202
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "apply_configの処理を完成させてください。下に使用例があります。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "倍率を省略した場合と倍率0の場合も確かめてください。辞書のキー名とapplyの引数名を揃えます。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "function",
+        "entrypoint": "apply_config"
+      },
+      "workspace": {
+        "mode": "function",
+        "provided_code": "config = {'values': [1, 2], 'factor': 3}",
+        "task": "apply_configの中にapply(values, factor=1)を定義してください。applyは各値をfactor倍したリストを返します。最後にapply(**config)を呼び、その結果を返してください。",
+        "authored": true,
+        "structure": "function",
+        "invocation": "result = apply_config(config)",
+        "classification_reason": "引数・既定値・展開の理解が目的のため関数を維持"
+      }
+    }
+  ]
+}

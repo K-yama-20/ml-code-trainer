@@ -1,0 +1,249 @@
+[
+  {
+    "number": 1,
+    "id": "PY03-01",
+    "version": 3,
+    "stage": "guided",
+    "title": "ファイルの拡張子を取得する",
+    "task": "`pathlib.Path` を用いて、文字列 `path` が表すファイルの拡張子を、ドット付きで取得してください。",
+    "starter": "from pathlib import Path\n\npath = \"data/train.csv\"\n\n# 以下に答えを記入\nresult =",
+    "hint": "`Path(path)` で文字列をPathオブジェクトに変換できます。`.suffix` 属性で最後の拡張子を取得できます。",
+    "solution": "result = Path(path).suffix",
+    "expected": ".csv"
+  },
+  {
+    "number": 2,
+    "id": "PY03-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "ファイル名を取得する",
+    "task": "`pathlib.Path` を用いて、文字列 `path` からディレクトリ部分を除いたファイル名を取得してください。",
+    "starter": "from pathlib import Path\n\npath = \"models/checkpoints/best_model.pt\"\n\n# 以下に答えを記入\nresult =",
+    "hint": "Pathオブジェクトの `.name` 属性を使うと、最後のファイル名を拡張子付きで取得できます。",
+    "solution": "result = Path(path).name",
+    "expected": "best_model.pt"
+  },
+  {
+    "number": 3,
+    "id": "PY03-02",
+    "version": 3,
+    "stage": "guided",
+    "title": "拡張子を除いたファイル名を取得する",
+    "task": "`pathlib.Path` を用いて、文字列 `path` からディレクトリ部分と最後の拡張子を除いたファイル名を取得してください。",
+    "starter": "from pathlib import Path\n\npath = \"models/model.v2.pt\"\n\n# 以下に答えを記入\nresult =",
+    "hint": "Pathオブジェクトの `.stem` 属性を使うと、最後の拡張子を除いたファイル名を取得できます。",
+    "solution": "result = Path(path).stem",
+    "expected": "model.v2"
+  },
+  {
+    "number": 4,
+    "id": "PY03-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "データセットのパスを組み立てる",
+    "task": "`pathlib.Path` を用いて、`root`、`split`、`filename` をこの順番で結合したファイルパスを作成してください。",
+    "starter": "from pathlib import Path\n\nroot = Path(\"dataset\")\nsplit = \"train\"\nfilename = \"images.csv\"\n\n# 以下に答えを記入\nresult =",
+    "hint": "Pathオブジェクトでは `/` 演算子を使って、ディレクトリ名やファイル名を結合できます。",
+    "solution": "result = root / split / filename",
+    "expected": {
+      "kind": "path",
+      "value": "dataset/train/images.csv"
+    }
+  },
+  {
+    "number": 5,
+    "id": "PY03-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "ファイルの拡張子を変更する",
+    "task": "Pathオブジェクト `path` の拡張子を `.csv` から `.json` に変更した、新しいPathオブジェクトを作成してください。",
+    "starter": "from pathlib import Path\n\npath = Path(\"outputs/predictions.csv\")\n\n# 以下に答えを記入\nresult =",
+    "hint": "Pathオブジェクトの `.with_suffix()` を使うと、最後の拡張子を変更した新しいパスを取得できます。",
+    "solution": "result = path.with_suffix(\".json\")",
+    "expected": {
+      "kind": "path",
+      "value": "outputs/predictions.json"
+    }
+  },
+  {
+    "number": 6,
+    "id": "PY03-10",
+    "version": 1,
+    "stage": "partial",
+    "title": "バックアップファイルのパスを作る",
+    "task": "Pathオブジェクト `path` と同じディレクトリ内に、ファイル名の末尾へ `_backup` を追加したパスを作成してください。拡張子は変更しないでください。",
+    "starter": "from pathlib import Path\n\npath = Path(\"experiments/run01/metrics.json\")\n\n# 以下に答えを記入\nresult =",
+    "hint": "`.parent` で親ディレクトリ、`.stem` で拡張子を除いた名前、`.suffix` で拡張子を取得できます。これらを組み合わせます。",
+    "solution": "result = path.parent / f\"{path.stem}_backup{path.suffix}\"",
+    "expected": {
+      "kind": "path",
+      "value": "experiments/run01/metrics_backup.json"
+    }
+  },
+  {
+    "number": 7,
+    "id": "PY03-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "JSON文字列を辞書に変換する",
+    "task": "`json.loads()` を用いて、JSON文字列 `text` をPythonの辞書に変換してください。",
+    "starter": "import json\n\ntext = '{\"epochs\": 10, \"lr\": 0.001}'\n\n# 以下に答えを記入\nresult =",
+    "hint": "`json.loads()` はJSON形式の文字列をPythonのオブジェクトに変換します。",
+    "solution": "result = json.loads(text)",
+    "expected": {
+      "epochs": 10,
+      "lr": 0.001
+    }
+  },
+  {
+    "number": 8,
+    "id": "PY03-11",
+    "version": 1,
+    "stage": "partial",
+    "title": "入れ子になったJSONから値を取得する",
+    "task": "`json.loads()` を用いてJSON文字列 `text` を読み込み、モデルの `channels` に設定されたリストを取得してください。",
+    "starter": "import json\n\ntext = '''\n{\n    \"model\": {\n        \"name\": \"unet\",\n        \"channels\": [16, 32, 64]\n    }\n}\n'''\n\n# 以下に答えを記入\nresult =",
+    "hint": "JSONを辞書に変換した後は、`data[\"model\"][\"channels\"]` のようにキーを順番に指定して、入れ子の値を取得できます。",
+    "solution": "result = json.loads(text)[\"model\"][\"channels\"]",
+    "expected": [
+      16,
+      32,
+      64
+    ]
+  },
+  {
+    "number": 9,
+    "id": "PY03-12",
+    "version": 1,
+    "stage": "independent",
+    "title": "JSON形式の学習履歴からLossを取り出す",
+    "task": "`json.loads()` とリスト内包表記を用いて、JSON文字列 `text` に含まれる各epochの `loss` を、元の順番でリストにしてください。",
+    "starter": "import json\n\ntext = '''\n[\n    {\"epoch\": 1, \"loss\": 0.8},\n    {\"epoch\": 2, \"loss\": 0.5},\n    {\"epoch\": 3, \"loss\": 0.3}\n]\n'''\n\n# 以下に答えを記入\nresult =",
+    "hint": "`json.loads(text)` で辞書のリストを取得できます。リスト内包表記を使い、各辞書の `\"loss\"` に対応する値を取り出します。",
+    "solution": "result = [item[\"loss\"] for item in json.loads(text)]",
+    "expected": [
+      0.8,
+      0.5,
+      0.3
+    ]
+  },
+  {
+    "number": 10,
+    "id": "PY03-13",
+    "version": 1,
+    "stage": "partial",
+    "title": "辞書をJSON文字列に変換する",
+    "task": "`json.dumps()` を用いて、辞書 `config` をJSON形式の文字列に変換してください。",
+    "starter": "import json\n\nconfig = {\n    \"lr\": 0.001,\n    \"batch_size\": 32\n}\n\n# 以下に答えを記入\nresult =",
+    "hint": "`json.dumps()` を使うと、Pythonの辞書やリストをJSON形式の文字列に変換できます。",
+    "solution": "result = json.dumps(config)",
+    "expected": "{\"lr\": 0.001, \"batch_size\": 32}"
+  },
+  {
+    "number": 11,
+    "id": "PY03-14",
+    "version": 1,
+    "stage": "partial",
+    "title": "日本語を含むJSON文字列を作る",
+    "task": "`json.dumps()` を用いて、辞書 `config` を日本語の文字がそのまま表示されるJSON文字列に変換してください。",
+    "starter": "import json\n\nconfig = {\n    \"experiment\": \"画像分類\",\n    \"epochs\": 10\n}\n\n# 以下に答えを記入\nresult =",
+    "hint": "`json.dumps()` に `ensure_ascii=False` を指定すると、日本語をUnicodeエスケープに変換せずに出力できます。",
+    "solution": "result = json.dumps(config, ensure_ascii=False)",
+    "expected": "{\"experiment\": \"画像分類\", \"epochs\": 10}"
+  },
+  {
+    "number": 12,
+    "id": "PY03-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "読みやすい形式でJSONを出力する",
+    "task": "`json.dumps()` を用いて、辞書 `config` をキーの昇順に並べ、インデント幅2のJSON文字列に変換してください。",
+    "starter": "import json\n\nconfig = {\n    \"epochs\": 5,\n    \"batch_size\": 32,\n    \"lr\": 0.001\n}\n\n# 以下に答えを記入\nresult =",
+    "hint": "`indent=2` でインデント幅を指定でき、`sort_keys=True` で辞書のキーを昇順に並べられます。",
+    "solution": "result = json.dumps(config, indent=2, sort_keys=True)",
+    "expected": "{\n  \"batch_size\": 32,\n  \"epochs\": 5,\n  \"lr\": 0.001\n}"
+  },
+  {
+    "number": 13,
+    "id": "PY03-16",
+    "version": 1,
+    "stage": "guided",
+    "title": "テキストファイルの内容を読み込む",
+    "task": "Pathオブジェクト `path` が指すテキストファイルの内容を、UTF-8の文字列として読み込んでください。",
+    "starter": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nworkspace = TemporaryDirectory()\npath = Path(workspace.name) / \"train.log\"\npath.write_text(\"epoch=1\\nloss=0.25\\n\", encoding=\"utf-8\")\n\n# 以下に答えを記入\nresult =",
+    "hint": "Pathオブジェクトの `.read_text()` を使うとファイル全体を文字列として読み込めます。文字コードは `encoding=\"utf-8\"` で指定します。",
+    "solution": "result = path.read_text(encoding=\"utf-8\")",
+    "expected": "epoch=1\nloss=0.25\n"
+  },
+  {
+    "number": 14,
+    "id": "PY03-05",
+    "version": 3,
+    "stage": "independent",
+    "title": "テキストファイルを行ごとのリストに変換する",
+    "task": "テキストファイル `path` の各行を読み込み、改行文字を除いた文字列のリストを作成してください。",
+    "starter": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nworkspace = TemporaryDirectory()\npath = Path(workspace.name) / \"labels.txt\"\npath.write_text(\"cat\\ndog\\nbird\\n\", encoding=\"utf-8\")\n\n# 以下に答えを記入\nresult =",
+    "hint": "`.read_text()` でファイルを読み込み、文字列の `.splitlines()` で行ごとに分割できます。",
+    "solution": "result = path.read_text(encoding=\"utf-8\").splitlines()",
+    "expected": [
+      "cat",
+      "dog",
+      "bird"
+    ]
+  },
+  {
+    "number": 15,
+    "id": "PY03-04",
+    "version": 4,
+    "stage": "partial",
+    "title": "JSONファイルから学習設定を読み込む",
+    "task": "`path` が指すJSONファイルを読み込み、内容をPythonの辞書に変換してください。",
+    "starter": "import json\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nworkspace = TemporaryDirectory()\npath = Path(workspace.name) / \"config.json\"\npath.write_text(\n    '{\"lr\": 0.001, \"epochs\": 20}',\n    encoding=\"utf-8\"\n)\n\n# 以下に答えを記入\nresult =",
+    "hint": "`.read_text()` でファイルの内容を文字列として取得し、`json.loads()` で辞書に変換します。",
+    "solution": "result = json.loads(path.read_text(encoding=\"utf-8\"))",
+    "expected": {
+      "lr": 0.001,
+      "epochs": 20
+    }
+  },
+  {
+    "number": 16,
+    "id": "PY03-06",
+    "version": 3,
+    "stage": "independent",
+    "title": "テキストファイルに文字列を書き込む",
+    "task": "Pathオブジェクト `path` が指すファイルに、文字列 `text` をUTF-8で書き込んでください。",
+    "starter": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nworkspace = TemporaryDirectory()\npath = Path(workspace.name) / \"metrics.txt\"\ntext = \"accuracy=0.91\\n\"\n\n# 以下に答えを記入\n\nresult = path.read_text(encoding=\"utf-8\")",
+    "hint": "Pathオブジェクトの `.write_text()` を使うと、指定した文字列をファイルへ書き込めます。",
+    "solution": "path.write_text(text, encoding=\"utf-8\")",
+    "expected": "accuracy=0.91\n"
+  },
+  {
+    "number": 17,
+    "id": "PY03-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "学習ログに新しい行を追記する",
+    "task": "ファイル `path` の既存の内容を消さずに、文字列 `new_line` を末尾へ追記してください。",
+    "starter": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nworkspace = TemporaryDirectory()\npath = Path(workspace.name) / \"training.csv\"\npath.write_text(\n    \"epoch,loss\\n1,0.5\\n\",\n    encoding=\"utf-8\"\n)\n\nnew_line = \"2,0.3\\n\"\n\n# 以下に答えを記入\n\nresult = path.read_text(encoding=\"utf-8\")",
+    "hint": "`path.open(\"a\", encoding=\"utf-8\")` でファイルを追記モードで開けます。`with` 文の中で `.write()` を使用します。",
+    "solution": "with path.open(\"a\", encoding=\"utf-8\") as f:\n    f.write(new_line)",
+    "expected": "epoch,loss\n1,0.5\n2,0.3\n"
+  },
+  {
+    "number": 18,
+    "id": "PY03-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "学習設定をJSONファイルに保存する",
+    "task": "`json.dump()` を用いて、辞書 `config` を `path` が指すJSONファイルにUTF-8で保存してください。",
+    "starter": "import json\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nworkspace = TemporaryDirectory()\npath = Path(workspace.name) / \"config.json\"\n\nconfig = {\n    \"lr\": 0.001,\n    \"batch_size\": 32,\n    \"epochs\": 20\n}\n\n# 以下に答えを記入\n\nresult = json.loads(path.read_text(encoding=\"utf-8\"))",
+    "hint": "`path.open(\"w\", encoding=\"utf-8\")` でファイルを書き込みモードで開き、`json.dump(config, f)` を使うと辞書をJSON形式で保存できます。",
+    "solution": "with path.open(\"w\", encoding=\"utf-8\") as f:\n    json.dump(config, f)",
+    "expected": {
+      "lr": 0.001,
+      "batch_size": 32,
+      "epochs": 20
+    }
+  }
+]

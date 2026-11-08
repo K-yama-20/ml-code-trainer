@@ -1,0 +1,587 @@
+{
+  "problems": [
+    {
+      "id": "PY03-01",
+      "family_id": "PY03-01",
+      "version_id": "PY03-01@2",
+      "content_version": 2,
+      "concept_id": "PY03",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "拡張子を取り出す",
+      "description": "pathをPathに変換し、最後の拡張子（ドット付き）を返す。",
+      "learning_goal": "リソースを閉じ、安全にデータを読み書きします。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "pathをPathに変換し、最後の拡張子（ドット付き）を返す。",
+      "starter_code": "result = ___\n",
+      "example": "with Path(path).open() as f:\n    data = json.load(f)",
+      "editable_regions": [],
+      "hints": [
+        "リソースを閉じ、安全にデータを読み書きします。",
+        "suffixは最後の拡張子です。",
+        "空欄には Path(path).suffix と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = Path(path).suffix\n",
+      "explanation": "suffixは最後の拡張子です。",
+      "common_mistakes": [
+        "ファイルを閉じず、例外時にもリソースが残る。",
+        "JSONのnullやtrueをPythonの構文と混同する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9724\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'data/train.csv'",
+          "expected": ".csv"
+        },
+        {
+          "setup": "seed = 9724\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'README'",
+          "expected": ""
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9724\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'archive.tar.gz'",
+          "expected": ".gz"
+        },
+        {
+          "setup": "seed = 9724\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'a.json'",
+          "expected": ".json"
+        }
+      ],
+      "required_ast": "call:Path",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "path"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from pathlib import Path\n\npath = 'data/train.csv'",
+        "task": "pathをPathに変換し、最後の拡張子（ドット付き）を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PY03-02",
+      "family_id": "PY03-02",
+      "version_id": "PY03-02@2",
+      "content_version": 2,
+      "concept_id": "PY03",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "ファイル名の予測",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\nPath(path).stemの結果を予測して返す。",
+      "learning_goal": "リソースを閉じ、安全にデータを読み書きします。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "Path(path).stemの結果を予測して返す。",
+      "starter_code": "def solve(path):\n    return ___\n",
+      "example": "observed = Path(path).stem",
+      "editable_regions": [],
+      "hints": [
+        "リソースを閉じ、安全にデータを読み書きします。",
+        "stemはディレクトリと最後の拡張子を除きます。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(path):\n    return Path(path).stem\n",
+      "explanation": "stemはディレクトリと最後の拡張子を除きます。",
+      "common_mistakes": [
+        "ファイルを閉じず、例外時にもリソースが残る。",
+        "JSONのnullやtrueをPythonの構文と混同する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8182\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'data/train.csv'",
+          "expected": "train"
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "from pathlib import Path\n\npath = 'data/train.csv'\n\nobserved = Path(path).stem",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "PY03-03",
+      "family_id": "PY03-03",
+      "version_id": "PY03-03@2",
+      "content_version": 2,
+      "concept_id": "PY03",
+      "module_id": "python",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "JSONを辞書へ",
+      "description": "JSON文字列textをPythonのオブジェクトとして返す。",
+      "learning_goal": "リソースを閉じ、安全にデータを読み書きします。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "JSON文字列textをPythonのオブジェクトとして返す。",
+      "starter_code": "result =\n",
+      "example": "with Path(path).open() as f:\n    data = json.load(f)",
+      "editable_regions": [],
+      "hints": [
+        "リソースを閉じ、安全にデータを読み書きします。",
+        "JSONのtrueとnullはPythonではTrueとNoneになります。",
+        "解答部分は次の形で書けます。\nresult = json.loads(text)\n"
+      ],
+      "solution": "result = json.loads(text)\n",
+      "explanation": "JSONのtrueとnullはPythonではTrueとNoneになります。",
+      "common_mistakes": [
+        "ファイルを閉じず、例外時にもリソースが残る。",
+        "JSONのnullやtrueをPythonの構文と混同する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2178\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'{\"n\":2}'",
+          "expected": {
+            "n": 2
+          }
+        },
+        {
+          "setup": "seed = 2178\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'[]'",
+          "expected": []
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2178\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'{\"ok\":true}'",
+          "expected": {
+            "ok": true
+          }
+        },
+        {
+          "setup": "seed = 2178\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'[1,null]'",
+          "expected": [
+            1,
+            null
+          ]
+        }
+      ],
+      "required_ast": "call:loads",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "text"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import json\n\ntext = '{\"n\":2}'",
+        "task": "JSON文字列textをPythonのオブジェクトとして返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PY03-04",
+      "family_id": "PY03-04",
+      "version_id": "PY03-04@3",
+      "content_version": 3,
+      "concept_id": "PY03",
+      "module_id": "python",
+      "stage": "partial",
+      "type": "prediction",
+      "difficulty": 2,
+      "title": "JSONを読み直した値を答える",
+      "description": "dataをJSONファイルに保存し、読み直すコードです。observedに入るPythonの辞書を答えてください。",
+      "learning_goal": "リソースを閉じ、安全にデータを読み書きします。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "読み直したPythonの値を、辞書またはリストの記法で入力してください。",
+      "starter_code": "def solve(data):\n    # JSONファイルを往復\n    return ___\n",
+      "example": "data = {'日本語': [1, 2]}\nwith tempfile.TemporaryDirectory() as d:\n    p = Path(d) / 'data.json'\n    with p.open('w', encoding='utf-8') as f:\n        json.dump(data, f)\n    with p.open(encoding='utf-8') as f:\n        observed = json.load(f)",
+      "editable_regions": [],
+      "hints": [
+        "何が変わり、何が変わらないかを考えましょう。ファイルへ保存しても、辞書の中のキーや整数は保たれます。",
+        "json.dumpはPythonの値をJSONへ書き、json.loadはJSONからPythonの値を作ります。日本語のキーも読み直せます。",
+        "今回は辞書の構造もリストの中身も変わりません。入力のdataと同じ値をPythonの辞書として答えます。"
+      ],
+      "solution": "def solve(data):\n    with tempfile.TemporaryDirectory() as d:\n        p = Path(d) / 'data.json'\n        with p.open('w', encoding='utf-8') as f:\n            json.dump(data, f)\n        with p.open(encoding='utf-8') as f:\n            return json.load(f)\n",
+      "explanation": "この入力はJSONで表せる辞書・リスト・整数だけなので、読み直しても{'日本語': [1, 2]}です。ファイルはwithを抜けると閉じます。文字列としてのJSONと、読み込まれたPythonの辞書は区別しましょう。",
+      "common_mistakes": [
+        "文字列\"{'日本語': [1, 2]}\"を返すと、辞書ではなく文字列になってしまいます。",
+        "キーだけのリスト['日本語']では、対応する値[1, 2]が失われます。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4041\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "{'日本語':[1,2]}",
+          "expected": {
+            "日本語": [
+              1,
+              2
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "文字列で囲んでいないか、辞書のキーと値の両方を残しているか確認してください。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        },
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import json, tempfile\nfrom pathlib import Path\n\ndata = {'日本語': [1, 2]}\n\nwith tempfile.TemporaryDirectory() as d:\n    p = Path(d) / 'data.json'\n    with p.open('w', encoding='utf-8') as f:\n        json.dump(data, f)\n    with p.open(encoding='utf-8') as f:\n        observed = json.load(f)",
+        "task": "dataをJSONファイルに保存し、読み直すコードです。observedに入るPythonの辞書を答えてください。",
+        "authored": true,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "PY03-05",
+      "family_id": "PY03-05",
+      "version_id": "PY03-05@2",
+      "content_version": 2,
+      "concept_id": "PY03",
+      "module_id": "python",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "空行を除くファイル読込",
+      "description": "textを一時ファイルへ書き、withで読み、前後の空白を除いた非空行のリストを返す。",
+      "learning_goal": "リソースを閉じ、安全にデータを読み書きします。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "textを一時ファイルへ書き、withで読み、前後の空白を除いた非空行のリストを返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "with Path(path).open() as f:\n    data = json.load(f)",
+      "editable_regions": [],
+      "hints": [
+        "リソースを閉じ、安全にデータを読み書きします。",
+        "改行文字もstripで除去されます。",
+        "解答部分は次の形で書けます。\nwith tempfile.TemporaryDirectory() as d:\n    p = Path(d) / 'rows.txt'\n    p.write_text(text, encoding='utf-8')\n    with p.open(encoding='utf-8') as f:\n        result = [line.strip() for line in f if line.strip()]\n"
+      ],
+      "solution": "with tempfile.TemporaryDirectory() as d:\n    p = Path(d) / 'rows.txt'\n    p.write_text(text, encoding='utf-8')\n    with p.open(encoding='utf-8') as f:\n        result = [line.strip() for line in f if line.strip()]\n",
+      "explanation": "改行文字もstripで除去されます。",
+      "common_mistakes": [
+        "ファイルを閉じず、例外時にもリソースが残る。",
+        "JSONのnullやtrueをPythonの構文と混同する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7654\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "' a\\n\\nb \\n'",
+          "expected": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "setup": "seed = 7654\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "''",
+          "expected": []
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7654\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'\\n\\n'",
+          "expected": []
+        },
+        {
+          "setup": "seed = 7654\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'日本語\\n code'",
+          "expected": [
+            "日本語",
+            "code"
+          ]
+        }
+      ],
+      "required_ast": "With",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "text"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import tempfile\nfrom pathlib import Path\n\ntext = ' a\\n\\nb \\n'",
+        "task": "textを一時ファイルへ書き、withで読み、前後の空白を除いた非空行のリストを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PY03-06",
+      "family_id": "PY03-06",
+      "version_id": "PY03-06@2",
+      "content_version": 2,
+      "concept_id": "PY03",
+      "module_id": "python",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "子ディレクトリの作成",
+      "description": "一時ディレクトリ内にnameのディレクトリをparents=True,exist_ok=Trueで作り、is_dir()の結果を返す。",
+      "learning_goal": "リソースを閉じ、安全にデータを読み書きします。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "一時ディレクトリ内にnameのディレクトリをparents=True,exist_ok=Trueで作り、is_dir()の結果を返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "with Path(path).open() as f:\n    data = json.load(f)",
+      "editable_regions": [],
+      "hints": [
+        "リソースを閉じ、安全にデータを読み書きします。",
+        "親ディレクトリがなくても作成できます。",
+        "解答部分は次の形で書けます。\nwith tempfile.TemporaryDirectory() as d:\n    p = Path(d) / name\n    p.mkdir(parents=True, exist_ok=True)\n    result = p.is_dir()\n"
+      ],
+      "solution": "with tempfile.TemporaryDirectory() as d:\n    p = Path(d) / name\n    p.mkdir(parents=True, exist_ok=True)\n    result = p.is_dir()\n",
+      "explanation": "親ディレクトリがなくても作成できます。",
+      "common_mistakes": [
+        "ファイルを閉じず、例外時にもリソースが残る。",
+        "JSONのnullやtrueをPythonの構文と混同する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 639\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'output'",
+          "expected": true
+        },
+        {
+          "setup": "seed = 639\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'a/b'",
+          "expected": true
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 639\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'cache/run'",
+          "expected": true
+        },
+        {
+          "setup": "seed = 639\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "'results'",
+          "expected": true
+        }
+      ],
+      "required_ast": "call:mkdir",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "name"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import tempfile\nfrom pathlib import Path\n\nname = 'output'",
+        "task": "一時ディレクトリ内にnameのディレクトリをparents=True,exist_ok=Trueで作り、is_dir()の結果を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

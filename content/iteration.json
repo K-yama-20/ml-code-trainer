@@ -1,0 +1,328 @@
+[
+  {
+    "number": 1,
+    "title": "リストの各要素を2倍にする",
+    "task": "リスト内包表記を用いて、リスト `numbers` の各要素を2倍にした新しいリストを作成してください。",
+    "starter": "numbers = [2, -1, 4]\n\n# 以下に答えを記入\nresult =",
+    "hint": "リスト内包表記は `[式 for 変数 in リスト]` で記述します。",
+    "solution": "result = [n * 2 for n in numbers]",
+    "expected": [
+      4,
+      -2,
+      8
+    ],
+    "stage": "guided",
+    "version": 4,
+    "requirement": "list",
+    "result_type": "list"
+  },
+  {
+    "number": 7,
+    "title": "画素値を正規化する",
+    "task": "リスト内包表記を用いて、リスト `pixels` の各要素を255で割った新しいリストを作成してください。",
+    "starter": "pixels = [0, 64, 128, 255]\n\n# 以下に答えを記入\nresult =",
+    "hint": "リスト内包表記は `[式 for 変数 in リスト]` の形で記述します。取り出した値を255で割る式を使います。",
+    "solution": "result = [pixel / 255 for pixel in pixels]",
+    "expected": [
+      0.0,
+      0.25098039215686274,
+      0.5019607843137255,
+      1.0
+    ],
+    "stage": "guided",
+    "version": 1,
+    "requirement": "list",
+    "result_type": "list"
+  },
+  {
+    "number": 8,
+    "title": "各要素を二乗する",
+    "task": "リスト内包表記を用いて、リスト `values` の各要素を二乗した新しいリストを作成してください。",
+    "starter": "values = [-3, 0, 2, 5]\n\n# 以下に答えを記入\nresult =",
+    "hint": "Pythonでは `x ** 2` で二乗を計算できます。リスト内包表記の先頭の式に使用します。",
+    "solution": "result = [x ** 2 for x in values]",
+    "expected": [
+      9,
+      0,
+      4,
+      25
+    ],
+    "stage": "guided",
+    "version": 1,
+    "requirement": "list",
+    "result_type": "list"
+  },
+  {
+    "number": 2,
+    "title": "正の数だけを取り出す",
+    "task": "リスト内包表記を用いて、リスト `numbers` から0より大きい数だけを取り出した新しいリストを作成してください。",
+    "starter": "numbers = [-3, 2, 0, 7, -1, 5]\n\n# 以下に答えを記入\nresult =",
+    "hint": "リスト内包表記の末尾に `if 条件` を追加すると、条件を満たす要素だけを取り出せます。\n\n基本形：`[式 for 変数 in リスト if 条件]`",
+    "solution": "result = [n for n in numbers if n > 0]",
+    "expected": [
+      2,
+      7,
+      5
+    ],
+    "stage": "guided",
+    "version": 3,
+    "requirement": "filter",
+    "result_type": "list"
+  },
+  {
+    "number": 9,
+    "title": "偶数だけを取り出す",
+    "task": "リスト内包表記を用いて、リスト `numbers` から偶数だけを取り出した新しいリストを作成してください。",
+    "starter": "numbers = [3, 8, 5, 0, 12, -4]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`x % 2 == 0` で偶数かどうかを判定できます。内包表記の末尾に `if 条件` を追加します。",
+    "solution": "result = [n for n in numbers if n % 2 == 0]",
+    "expected": [
+      8,
+      0,
+      12,
+      -4
+    ],
+    "stage": "guided",
+    "version": 1,
+    "requirement": "filter",
+    "result_type": "list"
+  },
+  {
+    "number": 10,
+    "title": "信頼度が高い値を取り出す",
+    "task": "リスト内包表記を用いて、リスト `confidences` から0.7以上の値だけを取り出した新しいリストを作成してください。",
+    "starter": "confidences = [0.2, 0.85, 0.7, 0.45, 0.91]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`[式 for 変数 in リスト if 条件]` の形を使います。「以上」は `>=` で表します。",
+    "solution": "result = [c for c in confidences if c >= 0.7]",
+    "expected": [
+      0.85,
+      0.7,
+      0.91
+    ],
+    "stage": "guided",
+    "version": 1,
+    "requirement": "filter",
+    "result_type": "list"
+  },
+  {
+    "number": 3,
+    "title": "条件を満たす要素のインデックスを取得する",
+    "task": "`enumerate()` とリスト内包表記を用いて、リスト `scores` の値が0.5以上である要素のインデックスを取得してください。",
+    "starter": "scores = [0.3, 0.8, 0.1, 0.9, 0.5]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`enumerate(scores)` を使うと、各要素のインデックスと値を同時に取り出せます。例えば `for i, score in enumerate(scores)` と記述します。",
+    "solution": "result = [i for i, score in enumerate(scores) if score >= 0.5]",
+    "expected": [
+      1,
+      3,
+      4
+    ],
+    "stage": "partial",
+    "version": 4,
+    "requirement": "enumerate",
+    "result_type": "list"
+  },
+  {
+    "number": 11,
+    "title": "インデックスを掛け合わせる",
+    "task": "`enumerate()` とリスト内包表記を用いて、リスト `values` の各要素に、その要素のインデックス（0始まり）を掛けた新しいリストを作成してください。",
+    "starter": "values = [5, 8, 3]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`for i, value in enumerate(values)` と記述すると、インデックス `i` と要素 `value` を同時に取り出せます。",
+    "solution": "result = [i * value for i, value in enumerate(values)]",
+    "expected": [
+      0,
+      8,
+      6
+    ],
+    "stage": "partial",
+    "version": 1,
+    "requirement": "enumerate",
+    "result_type": "list"
+  },
+  {
+    "number": 12,
+    "title": "1から始まる番号を加える",
+    "task": "`enumerate()` とリスト内包表記を用いて、リスト `scores` の各要素に、1から始まる要素番号を加えた新しいリストを作成してください。",
+    "starter": "scores = [10, 20, 30]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`enumerate(scores, start=1)` とすると、1から始まる番号を取り出せます。",
+    "solution": "result = [i + score for i, score in enumerate(scores, start=1)]",
+    "expected": [
+      11,
+      22,
+      33
+    ],
+    "stage": "partial",
+    "version": 1,
+    "requirement": "enumerate",
+    "result_type": "list"
+  },
+  {
+    "number": 4,
+    "title": "2つのリストの要素を掛け合わせる",
+    "task": "`zip()` とリスト内包表記を用いて、リスト `features` と `weights` の同じ位置にある要素同士を掛け合わせた新しいリストを作成してください。",
+    "starter": "features = [2, 4, 6]\nweights = [0.5, 1.5, -1.0]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`zip(features, weights)` を使うと、同じ位置にある要素をペアで取り出せます。`for feature, weight in zip(...)` のように記述できます。",
+    "solution": "result = [feature * weight for feature, weight in zip(features, weights)]",
+    "expected": [
+      1.0,
+      6.0,
+      -6.0
+    ],
+    "stage": "partial",
+    "version": 3,
+    "requirement": "zip",
+    "result_type": "list"
+  },
+  {
+    "number": 13,
+    "title": "対応する要素を足し合わせる",
+    "task": "`zip()` とリスト内包表記を用いて、リスト `a` と `b` の同じ位置にある要素同士を足し合わせた新しいリストを作成してください。",
+    "starter": "a = [2, 5, -1]\nb = [4, -2, 3]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`zip(a, b)` を使うと、同じ位置の要素をペアで取り出せます。`for x, y in zip(a, b)` のように記述します。",
+    "solution": "result = [x + y for x, y in zip(a, b)]",
+    "expected": [
+      6,
+      3,
+      2
+    ],
+    "stage": "partial",
+    "version": 1,
+    "requirement": "zip",
+    "result_type": "list"
+  },
+  {
+    "number": 14,
+    "title": "予測値の絶対誤差を求める",
+    "task": "`zip()` とリスト内包表記を用いて、リスト `predictions` と `targets` の同じ位置にある要素同士の差の絶対値を計算し、新しいリストを作成してください。",
+    "starter": "predictions = [5, 8, 2]\ntargets = [3, 5, 6]\n\n# 以下に答えを記入\nresult =",
+    "hint": "`zip()` で予測値と正解値をペアで取り出します。差の絶対値は `abs()` で計算できます。",
+    "solution": "result = [abs(p - t) for p, t in zip(predictions, targets)]",
+    "expected": [
+      2,
+      3,
+      4
+    ],
+    "stage": "partial",
+    "version": 1,
+    "requirement": "zip",
+    "result_type": "list"
+  },
+  {
+    "number": 5,
+    "title": "クラス名と数値ラベルの辞書を作る",
+    "task": "辞書内包表記を用いて、リスト `class_names` の各要素をキー、0から始まるインデックスを値とする辞書を作成してください。",
+    "starter": "class_names = [\"cat\", \"dog\", \"bird\"]\n\n# 以下に答えを記入\nresult =",
+    "hint": "辞書内包表記は `{キー: 値 for 変数 in リスト}` の形で記述します。`enumerate()` を使うと、インデックスと要素を同時に取り出せます。",
+    "solution": "result = {name: i for i, name in enumerate(class_names)}",
+    "expected": {
+      "cat": 0,
+      "dog": 1,
+      "bird": 2
+    },
+    "stage": "independent",
+    "version": 3,
+    "requirement": "dict",
+    "result_type": "dict"
+  },
+  {
+    "number": 15,
+    "title": "名前とスコアの辞書を作る",
+    "task": "辞書内包表記と `zip()` を用いて、リスト `names` の各要素をキー、`scores` の対応する要素を値とする辞書を作成してください。",
+    "starter": "names = [\"train\", \"val\", \"test\"]\nscores = [0.91, 0.83, 0.79]\n\n# 以下に答えを記入\nresult =",
+    "hint": "辞書内包表記は `{キー: 値 for ...}` の形で記述します。`zip()` を使うと2つのリストからキーと値を同時に取り出せます。",
+    "solution": "result = {name: score for name, score in zip(names, scores)}",
+    "expected": {
+      "train": 0.91,
+      "val": 0.83,
+      "test": 0.79
+    },
+    "stage": "independent",
+    "version": 1,
+    "requirement": "dict-zip",
+    "result_type": "dict"
+  },
+  {
+    "number": 16,
+    "title": "値が0より大きい項目だけを残す",
+    "task": "辞書内包表記を用いて、辞書 `counts` から値が0より大きい項目だけを取り出した新しい辞書を作成してください。",
+    "starter": "counts = {\"cat\": 4, \"dog\": 0, \"bird\": 2, \"fish\": 0}\n\n# 以下に答えを記入\nresult =",
+    "hint": "`counts.items()` を使うと、キーと値を同時に取り出せます。辞書内包表記にも `if 条件` を追加できます。",
+    "solution": "result = {name: count for name, count in counts.items() if count > 0}",
+    "expected": {
+      "cat": 4,
+      "bird": 2
+    },
+    "stage": "independent",
+    "version": 1,
+    "requirement": "dict",
+    "result_type": "dict"
+  },
+  {
+    "number": 6,
+    "title": "入れ子のリストを1つにまとめる",
+    "task": "リスト内包表記を用いて、`batches` に含まれるすべての数値を、元の順番を保って1つのリストにまとめてください。",
+    "starter": "batches = [[2, 4], [1, 3], [5, 6]]\n\n# 以下に答えを記入\nresult =",
+    "hint": "リスト内包表記では `for` を2つ続けて書くことができます。まず内側のリストを取り出し、次にそのリストの要素を順番に取り出します。",
+    "solution": "result = [x for batch in batches for x in batch]",
+    "expected": [
+      2,
+      4,
+      1,
+      3,
+      5,
+      6
+    ],
+    "stage": "independent",
+    "version": 3,
+    "requirement": "nested",
+    "result_type": "list"
+  },
+  {
+    "number": 17,
+    "title": "入れ子のリストを展開して各要素を2倍にする",
+    "task": "リスト内包表記を用いて、`batches` に含まれるすべての数値を2倍にし、元の順番を保った1次元のリストを作成してください。",
+    "starter": "batches = [[1, 3], [2], [], [4, 5]]\n\n# 以下に答えを記入\nresult =",
+    "hint": "2つの `for` を続けて書くと、入れ子のリストから要素を順番に取り出せます。外側のリスト、内側のリストの順にループを記述します。",
+    "solution": "result = [x * 2 for batch in batches for x in batch]",
+    "expected": [
+      2,
+      6,
+      4,
+      8,
+      10
+    ],
+    "stage": "independent",
+    "version": 1,
+    "requirement": "nested",
+    "result_type": "list"
+  },
+  {
+    "number": 18,
+    "title": "ハイパーパラメータの組み合わせを作る",
+    "task": "リスト内包表記を用いて、`learning_rates` と `batch_sizes` のすべての組み合わせを、`(学習率, バッチサイズ)` のタプルとして格納したリストを作成してください。学習率ごとに、各バッチサイズとの組み合わせを順番に並べてください。",
+    "starter": "learning_rates = [0.1, 0.01]\nbatch_sizes = [16, 32]\n\n# 以下に答えを記入\nresult =",
+    "hint": "2つの `for` を続けて書くと、すべての組み合わせを作れます。先に学習率のループ、次にバッチサイズのループを書きます。",
+    "solution": "result = [(lr, bs) for lr in learning_rates for bs in batch_sizes]",
+    "expected": [
+      [
+        0.1,
+        16
+      ],
+      [
+        0.1,
+        32
+      ],
+      [
+        0.01,
+        16
+      ],
+      [
+        0.01,
+        32
+      ]
+    ],
+    "stage": "independent",
+    "version": 1,
+    "requirement": "nested",
+    "result_type": "list_of_pairs"
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "name": "@ml-trainer/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "4.7.0",
+    "@supabase/supabase-js": "2.118.0",
+    "@tanstack/react-query": "5.90.21",
+    "dompurify": "3.4.17",
+    "idb": "8.0.3",
+    "lucide-react": "0.468.0",
+    "monaco-editor": "0.57.0",
+    "pyodide": "0.29.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-router-dom": "7.18.5",
+    "zustand": "5.0.11"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@tailwindcss/vite": "4.1.18",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.4",
+    "eslint": "10.14.0",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "globals": "16.5.0",
+    "jsdom": "28.0.0",
+    "tailwindcss": "4.1.18",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.1",
+    "vite": "7.3.7",
+    "vitest": "4.1.12"
+  }
+}

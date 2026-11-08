@@ -1,0 +1,776 @@
+{
+  "problems": [
+    {
+      "id": "NP01-01",
+      "family_id": "NP01-01",
+      "version_id": "NP01-01@2",
+      "content_version": 2,
+      "concept_id": "NP01",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "float32配列を作る",
+      "description": "valuesをfloat32のNumPy配列にして返す。",
+      "learning_goal": "配列を作り、軸の数とデータ型を把握します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "valuesをfloat32のNumPy配列にして返す。",
+      "starter_code": "result = np.array(values, dtype=___)\n",
+      "example": "np.zeros((3, 4), dtype=np.float32)",
+      "editable_regions": [],
+      "hints": [
+        "配列を作り、軸の数とデータ型を把握します。",
+        "dtypeを省略すると整数入力は整数配列になります。",
+        "空欄には np.float32 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = np.array(values, dtype=np.float32)\n",
+      "explanation": "dtypeを省略すると整数入力は整数配列になります。",
+      "common_mistakes": [
+        "shapeと全要素数sizeを混同する。",
+        "整数入力から自動的にfloatが作られると思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5047\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "[1,2]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float32",
+            "data": [
+              1.0,
+              2.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5047\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "[]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float32",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5047\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "[[1,2],[3,4]]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float32",
+            "data": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                3.0,
+                4.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5047\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "[seed,-1]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float32",
+            "data": [
+              5047.0,
+              -1.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": true,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "values"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nvalues = [1, 2]",
+        "task": "valuesをfloat32のNumPy配列にして返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP01-02",
+      "family_id": "NP01-02",
+      "version_id": "NP01-02@2",
+      "content_version": 2,
+      "concept_id": "NP01",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "zerosのshapeを読む",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\nnp.zeros((rows, cols))のshapeをタプルで予測して返す。",
+      "learning_goal": "配列を作り、軸の数とデータ型を把握します。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "np.zeros((rows, cols))のshapeをタプルで予測して返す。",
+      "starter_code": "def solve(rows, cols):\n    return ___\n",
+      "example": "observed = np.zeros((rows, cols)).shape",
+      "editable_regions": [],
+      "hints": [
+        "配列を作り、軸の数とデータ型を把握します。",
+        "0要素の軸でも次元数は変わりません。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(rows, cols):\n    return (rows, cols)\n",
+      "explanation": "0要素の軸でも次元数は変わりません。",
+      "common_mistakes": [
+        "shapeと全要素数sizeを混同する。",
+        "整数入力から自動的にfloatが作られると思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4644\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "2,3",
+          "expected": [
+            2,
+            3
+          ]
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import numpy as np\n\nrows = 2\ncols = 3\n\nobserved = np.zeros((rows, cols)).shape",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP01-03",
+      "family_id": "NP01-03",
+      "version_id": "NP01-03@2",
+      "content_version": 2,
+      "concept_id": "NP01",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "等間隔インデックス",
+      "description": "0以上stop未満をstep刻みで並べた整数配列を返す。stepは正。",
+      "learning_goal": "配列を作り、軸の数とデータ型を把握します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "0以上stop未満をstep刻みで並べた整数配列を返す。stepは正。",
+      "starter_code": "result =\n",
+      "example": "np.zeros((3, 4), dtype=np.float32)",
+      "editable_regions": [],
+      "hints": [
+        "配列を作り、軸の数とデータ型を把握します。",
+        "終点stopは含みません。",
+        "解答部分は次の形で書けます。\nresult = np.arange(0, stop, step)\n"
+      ],
+      "solution": "result = np.arange(0, stop, step)\n",
+      "explanation": "終点stopは含みません。",
+      "common_mistakes": [
+        "shapeと全要素数sizeを混同する。",
+        "整数入力から自動的にfloatが作られると思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 75\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "8,2",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              2,
+              4,
+              6
+            ]
+          }
+        },
+        {
+          "setup": "seed = 75\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "0,1",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 75\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "5,3",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              3
+            ]
+          }
+        },
+        {
+          "setup": "seed = 75\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "seed+3,2",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              39
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              2,
+              4,
+              6,
+              8,
+              10,
+              12,
+              14,
+              16,
+              18,
+              20,
+              22,
+              24,
+              26,
+              28,
+              30,
+              32,
+              34,
+              36,
+              38,
+              40,
+              42,
+              44,
+              46,
+              48,
+              50,
+              52,
+              54,
+              56,
+              58,
+              60,
+              62,
+              64,
+              66,
+              68,
+              70,
+              72,
+              74,
+              76
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "stop",
+          "step"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nstop = 8\nstep = 2",
+        "task": "0以上stop未満をstep刻みで並べた整数配列を返す。stepは正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP01-04",
+      "family_id": "NP01-04",
+      "version_id": "NP01-04@2",
+      "content_version": 2,
+      "concept_id": "NP01",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "prediction",
+      "difficulty": 2,
+      "title": "ゼロ特徴行列",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\nshape(n,d)、dtype float64のゼロ配列を返す。",
+      "learning_goal": "配列を作り、軸の数とデータ型を把握します。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "shape(n,d)、dtype float64のゼロ配列を返す。",
+      "starter_code": "def solve(n, d):\n    # ゼロ特徴行列\n    return ___\n",
+      "example": "observed = np.zeros((n,d), dtype=np.float64)",
+      "editable_regions": [],
+      "hints": [
+        "配列を作り、軸の数とデータ型を把握します。",
+        "二つのサイズはタプルとして渡します。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(n, d):\n    return np.zeros((n,d), dtype=np.float64)\n",
+      "explanation": "二つのサイズはタプルとして渡します。",
+      "common_mistakes": [
+        "shapeと全要素数sizeを混同する。",
+        "整数入力から自動的にfloatが作られると思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2119\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "3,2",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": true,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": true
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import numpy as np\n\nn = 3\nd = 2\n\nobserved = np.zeros((n, d), dtype=np.float64)",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP01-05",
+      "family_id": "NP01-05",
+      "version_id": "NP01-05@2",
+      "content_version": 2,
+      "concept_id": "NP01",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "次元数と要素数",
+      "description": "配列xの(ndim, size)をタプルで返す。",
+      "learning_goal": "配列を作り、軸の数とデータ型を把握します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "配列xの(ndim, size)をタプルで返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "np.zeros((3, 4), dtype=np.float32)",
+      "editable_regions": [],
+      "hints": [
+        "配列を作り、軸の数とデータ型を把握します。",
+        "sizeは全軸のサイズの積です。",
+        "解答部分は次の形で書けます。\nresult = (x.ndim, x.size)\n"
+      ],
+      "solution": "result = (x.ndim, x.size)\n",
+      "explanation": "sizeは全軸のサイズの積です。",
+      "common_mistakes": [
+        "shapeと全要素数sizeを混同する。",
+        "整数入力から自動的にfloatが作られると思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7259\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": [
+            2,
+            12
+          ]
+        },
+        {
+          "setup": "seed = 7259\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array(3)",
+          "expected": [
+            0,
+            1
+          ]
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7259\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,4))",
+          "expected": [
+            2,
+            0
+          ]
+        },
+        {
+          "setup": "seed = 7259\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((2,3,4))",
+          "expected": [
+            3,
+            24
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[-0.40316286133293616, 0.8128836424129977, -0.1283635356755648, -2.322623545872554], [0.35691158732439776, -1.1112570206728627, 0.9106215339165485, 1.4682806730509812], [0.18636654165951236, -0.8260058132967436, 0.6857478501504064, -1.3571403501547934]], dtype=np.float64).reshape((3, 4))",
+        "task": "配列xの(ndim, size)をタプルで返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP01-06",
+      "family_id": "NP01-06",
+      "version_id": "NP01-06@2",
+      "content_version": 2,
+      "concept_id": "NP01",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "整数を浮動小数へ",
+      "description": "入力を変更せず、xをfloat64に変換して返す。",
+      "learning_goal": "配列を作り、軸の数とデータ型を把握します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "入力を変更せず、xをfloat64に変換して返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "np.zeros((3, 4), dtype=np.float32)",
+      "editable_regions": [],
+      "hints": [
+        "配列を作り、軸の数とデータ型を把握します。",
+        "astypeの戻り値を使います。",
+        "解答部分は次の形で書けます。\nresult = x.astype(np.float64)\n"
+      ],
+      "solution": "result = x.astype(np.float64)\n",
+      "explanation": "astypeの戻り値を使います。",
+      "common_mistakes": [
+        "shapeと全要素数sizeを混同する。",
+        "整数入力から自動的にfloatが作られると思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 61\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([1,2])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              1.0,
+              2.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 61\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([],dtype=int)",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 61\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 61\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([seed,-seed])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              61.0,
+              -61.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": true,
+      "protect_inputs": true,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": false
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([1, 2])",
+        "task": "入力を変更せず、xをfloat64に変換して返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

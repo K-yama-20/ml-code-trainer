@@ -1,0 +1,200 @@
+[
+  {
+    "number": 1,
+    "id": "NP05-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "全要素の合計を求める",
+    "task": "`np.sum()` を用いて、配列 `x` の全要素の合計を求めてください。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "`axis` を指定しないと、すべての軸をまとめて1つの合計を求めます。",
+    "solution": "result = np.sum(x)"
+  },
+  {
+    "number": 2,
+    "id": "NP05-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "全要素の平均を求める",
+    "task": "`np.mean()` を用いて、配列 `x` の全要素の平均を求めてください。",
+    "input": "x = np.array([\n    [1.0, 3.0, 5.0],\n    [7.0, 9.0, 11.0],\n])",
+    "hint": "`mean()` は平均を求めます。`axis` を省略すると、配列全体が計算の対象になります。",
+    "solution": "result = np.mean(x)"
+  },
+  {
+    "number": 3,
+    "id": "NP05-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "各行の合計を求める",
+    "task": "2次元配列 `x` の各行の合計を求め、行の順番に並ぶ1次元配列にしてください。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "`axis=1` は列の軸をまとめます。各行について、横に並ぶ値の合計が1つずつ残ります。",
+    "solution": "result = np.sum(x, axis=1)"
+  },
+  {
+    "number": 4,
+    "id": "NP05-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "各列の合計を求める",
+    "task": "2次元配列 `x` の各列の合計を求め、列の順番に並ぶ1次元配列にしてください。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "`axis=0` は行の軸をまとめます。各列について、縦に並ぶ値の合計が1つずつ残ります。",
+    "solution": "result = np.sum(x, axis=0)"
+  },
+  {
+    "number": 5,
+    "id": "NP05-01",
+    "version": 4,
+    "stage": "guided",
+    "title": "各行の平均を求める",
+    "task": "2次元配列 `x` の各行の平均を求め、行の順番に並ぶ1次元配列にしてください。",
+    "input": "x = np.array([\n    [1.0, 4.0, 7.0],\n    [2.0, 6.0, 10.0],\n])",
+    "hint": "各行の中にある列の値をまとめるので、`mean()` の `axis` に1を指定します。",
+    "solution": "result = np.mean(x, axis=1)"
+  },
+  {
+    "number": 6,
+    "id": "NP05-10",
+    "version": 1,
+    "stage": "guided",
+    "title": "各列の平均を求める",
+    "task": "2次元配列 `x` の各列の平均を求め、列の順番に並ぶ1次元配列にしてください。",
+    "input": "x = np.array([\n    [1.0, 2.0, 3.0],\n    [5.0, 6.0, 7.0],\n])",
+    "hint": "各列の中にある行の値をまとめるので、`mean()` の `axis` に0を指定します。",
+    "solution": "result = np.mean(x, axis=0)"
+  },
+  {
+    "number": 7,
+    "id": "NP05-11",
+    "version": 1,
+    "stage": "partial",
+    "title": "各行の最大値を求める",
+    "task": "2次元配列 `x` の各行の最大値を求め、行の順番に並ぶ1次元配列にしてください。",
+    "input": "x = np.array([\n    [3, 8, 2],\n    [7, 1, 5],\n])",
+    "hint": "`np.max()` で最大値を求められます。列の軸をまとめると、各行の最大値が残ります。",
+    "solution": "result = np.max(x, axis=1)"
+  },
+  {
+    "number": 8,
+    "id": "NP05-12",
+    "version": 1,
+    "stage": "partial",
+    "title": "各列の最小値を求める",
+    "task": "2次元配列 `x` の各列の最小値を求め、列の順番に並ぶ1次元配列にしてください。",
+    "input": "x = np.array([\n    [3, 8, 2],\n    [7, 1, 5],\n])",
+    "hint": "`np.min()` で最小値を求められます。行の軸をまとめると、各列の最小値が残ります。",
+    "solution": "result = np.min(x, axis=0)"
+  },
+  {
+    "number": 9,
+    "id": "NP05-13",
+    "version": 1,
+    "stage": "partial",
+    "title": "各行の最大値がある列番号を求める",
+    "task": "`np.argmax()` を用いて、2次元配列 `x` の各行について、最大値がある列番号を求めてください。列番号は先頭を0として数え、最大値が複数ある場合は最も左の列番号を採用してください。結果は1次元配列にしてください。",
+    "input": "x = np.array([\n    [2, 9, 4],\n    [8, 3, 8],\n])",
+    "hint": "`argmax()` は最大値そのものではなく、その位置を返します。`axis=1` で各行の中の位置を求められます。",
+    "solution": "result = np.argmax(x, axis=1)"
+  },
+  {
+    "number": 10,
+    "id": "NP05-14",
+    "version": 1,
+    "stage": "partial",
+    "title": "各列の標準偏差を求める",
+    "task": "`np.std()` を用いて、2次元配列 `x` の各列の標準偏差を求め、1次元配列にしてください。分散の計算ではデータ数で割るものとし、`ddof=0` を指定してください。",
+    "input": "x = np.array([\n    [1.0, 2.0, 3.0],\n    [3.0, 6.0, 9.0],\n])",
+    "hint": "各列の値をまとめるので `axis=0` を指定します。`ddof=0` は、偏差の二乗和をデータ数で割ってから平方根を取る設定です。",
+    "solution": "result = np.std(x, axis=0, ddof=0)"
+  },
+  {
+    "number": 11,
+    "id": "NP05-02",
+    "version": 3,
+    "stage": "guided",
+    "title": "各列の合計を1行の配列として求める",
+    "task": "`np.sum()` と `keepdims=True` を用いて、2次元配列 `x` の各列の合計を求めてください。結果はshapeが `(1, 列数)` の2次元配列にしてください。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "`axis=0` で行の軸をまとめます。`keepdims=True` を指定すると、まとめた行の軸が長さ1で残ります。",
+    "solution": "result = np.sum(x, axis=0, keepdims=True)"
+  },
+  {
+    "number": 12,
+    "id": "NP05-04",
+    "version": 3,
+    "stage": "partial",
+    "title": "各行の最大値を1列の配列として求める",
+    "task": "`np.max()` と `keepdims=True` を用いて、2次元配列 `x` の各行の最大値を求めてください。結果はshapeが `(行数, 1)` の2次元配列にしてください。",
+    "input": "x = np.array([\n    [3, 8, 2],\n    [7, 1, 5],\n])",
+    "hint": "`axis=1` で列の軸をまとめます。`keepdims=True` を指定すると、まとめた列の軸が長さ1で残ります。",
+    "solution": "result = np.max(x, axis=1, keepdims=True)"
+  },
+  {
+    "number": 13,
+    "id": "NP05-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "全体の平均を2次元配列として求める",
+    "task": "`np.mean()` と `keepdims=True` を用いて、2次元配列 `x` の全要素の平均を求めてください。結果はshapeが `(1, 1)` の2次元配列にしてください。",
+    "input": "x = np.array([\n    [1.0, 3.0, 5.0],\n    [7.0, 9.0, 11.0],\n])",
+    "hint": "`axis` を省略するとすべての軸が集約されます。`keepdims=True` を指定すると、それぞれの軸が長さ1で残ります。",
+    "solution": "result = np.mean(x, keepdims=True)"
+  },
+  {
+    "number": 14,
+    "id": "NP05-16",
+    "version": 1,
+    "stage": "independent",
+    "title": "画像ごとの平均画素値を求める",
+    "task": "配列 `x` のshapeは `(バッチ数, 高さ, 幅)` です。高さと幅の両方の軸について平均し、各画像の平均画素値を並べた1次元配列を作成してください。",
+    "input": "x = np.array([\n    [\n        [1.0, 2.0, 3.0],\n        [4.0, 5.0, 6.0],\n    ],\n    [\n        [7.0, 8.0, 9.0],\n        [10.0, 11.0, 12.0],\n    ],\n])",
+    "hint": "複数の軸をまとめるときは、`axis` に軸番号のタプルを渡せます。高さは軸1、幅は軸2です。",
+    "solution": "result = np.mean(x, axis=(1, 2))"
+  },
+  {
+    "number": 15,
+    "id": "NP05-05",
+    "version": 4,
+    "stage": "independent",
+    "title": "画像ごと・チャネルごとの平均を求める",
+    "task": "配列 `x` のshapeは `(バッチ数, チャネル数, 高さ, 幅)` です。高さと幅の両方の軸について平均し、shapeが `(バッチ数, チャネル数)` の配列を作成してください。",
+    "input": "x = np.arange(24, dtype=np.float64).reshape(2, 3, 2, 2)",
+    "hint": "残したいのはバッチ軸とチャネル軸です。平均する高さと幅は、それぞれ軸2と軸3です。",
+    "solution": "result = np.mean(x, axis=(2, 3))"
+  },
+  {
+    "number": 16,
+    "id": "NP05-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "高さと幅の軸を残して平均する",
+    "task": "配列 `x` のshapeは `(バッチ数, チャネル数, 高さ, 幅)` です。高さと幅について平均し、`keepdims=True` を用いて、shapeが `(バッチ数, チャネル数, 1, 1)` の配列を作成してください。",
+    "input": "x = np.arange(24, dtype=np.float64).reshape(2, 3, 2, 2)",
+    "hint": "`axis` に高さと幅の軸を指定し、`keepdims=True` を付けます。集約した2つの軸が、それぞれ長さ1で残ります。",
+    "solution": "result = np.mean(x, axis=(2, 3), keepdims=True)"
+  },
+  {
+    "number": 17,
+    "id": "NP05-06",
+    "version": 3,
+    "stage": "independent",
+    "title": "各要素から全体の平均を引く",
+    "task": "配列 `x` の各要素から、全要素の平均を引いた配列を作成してください。元の `x` は変更しないでください。",
+    "input": "x = np.array([\n    [1.0, 3.0, 5.0],\n    [7.0, 9.0, 11.0],\n])",
+    "hint": "`axis` を指定せずに平均を求めると、配列全体の平均が1つ得られます。その値を `x` から引きます。",
+    "solution": "result = x - np.mean(x)"
+  },
+  {
+    "number": 18,
+    "id": "NP05-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "行がない配列の列ごとの合計を求める",
+    "task": "2次元配列 `x` は、行数が0の空配列です。`np.sum()` を用いて各列の合計を求め、列数と同じ長さの1次元配列にしてください。",
+    "input": "x = np.zeros((0, 3), dtype=np.float64)",
+    "hint": "要素がない場合、合計は0になります。`axis=0` で行の軸をまとめると、各列に対応する0が残ります。",
+    "solution": "result = np.sum(x, axis=0)"
+  }
+]

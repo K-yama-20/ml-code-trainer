@@ -1,0 +1,200 @@
+[
+  {
+    "number": 1,
+    "id": "NP02-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "指定した位置の要素を取り出す",
+    "task": "1次元配列 `x` から、`index` で指定した位置の要素を取り出してください。位置は先頭を0として数えます。",
+    "input": "x = np.array([10, 20, 30, 40, 50])\nindex = 2",
+    "hint": "`x[位置]` の形で1つの要素を取得できます。",
+    "solution": "result = x[index]"
+  },
+  {
+    "number": 2,
+    "id": "NP02-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "最後の要素を取り出す",
+    "task": "負のインデックスを用いて、1次元配列 `x` の最後の要素を取り出してください。",
+    "input": "x = np.array([3, 6, 9, 12])",
+    "hint": "負のインデックスは末尾から数えます。最後の要素は `-1` で指定できます。",
+    "solution": "result = x[-1]"
+  },
+  {
+    "number": 3,
+    "id": "NP02-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "指定した範囲の要素を取り出す",
+    "task": "スライスを用いて、1次元配列 `x` の `start` 番目から `stop` 番目の直前までを取り出してください。位置は先頭を0として数えます。",
+    "input": "x = np.array([10, 20, 30, 40, 50, 60])\nstart = 1\nstop = 4",
+    "hint": "`x[開始位置:終了位置]` と書きます。終了位置の要素は含みません。",
+    "solution": "result = x[start:stop]"
+  },
+  {
+    "number": 4,
+    "id": "NP02-10",
+    "version": 1,
+    "stage": "guided",
+    "title": "要素を逆順に並べる",
+    "task": "スライスを用いて、1次元配列 `x` の要素を逆順にした配列を取得してください。",
+    "input": "x = np.array([2, 4, 6, 8, 10])",
+    "hint": "スライスの3番目には刻み幅を指定できます。開始位置と終了位置を省略し、刻み幅を `-1` にすると逆順になります。",
+    "solution": "result = x[::-1]"
+  },
+  {
+    "number": 5,
+    "id": "NP02-11",
+    "version": 1,
+    "stage": "partial",
+    "title": "行と列を指定して要素を取り出す",
+    "task": "2次元配列 `x` から、`row` 行目、`col` 列目の要素を取り出してください。行と列は、それぞれ先頭を0として数えます。",
+    "input": "x = np.array([\n    [10, 20, 30],\n    [40, 50, 60],\n    [70, 80, 90],\n])\nrow = 1\ncol = 2",
+    "hint": "`x[行の位置, 列の位置]` の順に指定します。",
+    "solution": "result = x[row, col]"
+  },
+  {
+    "number": 6,
+    "id": "NP02-12",
+    "version": 1,
+    "stage": "partial",
+    "title": "指定した行を1次元配列として取り出す",
+    "task": "2次元配列 `x` の `row` 行目を、すべての列を含む1次元配列として取り出してください。行は先頭を0として数えます。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9],\n])\nrow = 1",
+    "hint": "行を整数で指定し、列を `:` で指定します。整数で指定した行の軸は結果からなくなります。",
+    "solution": "result = x[row, :]"
+  },
+  {
+    "number": 7,
+    "id": "NP02-01",
+    "version": 3,
+    "stage": "guided",
+    "title": "指定した列を1次元配列として取り出す",
+    "task": "2次元配列 `x` の `col` 列目を、すべての行を含む1次元配列として取り出してください。列は先頭を0として数えます。",
+    "input": "x = np.array([\n    [10, 11, 12],\n    [20, 21, 22],\n    [30, 31, 32],\n])\ncol = 1",
+    "hint": "行を `:`、列を整数で指定します。整数で指定した列の軸は結果からなくなります。",
+    "solution": "result = x[:, col]"
+  },
+  {
+    "number": 8,
+    "id": "NP02-13",
+    "version": 1,
+    "stage": "partial",
+    "title": "指定した列を2次元配列として取り出す",
+    "task": "2次元配列 `x` の `col` 列目を取り出してください。結果は、行数を保った1列の2次元配列にしてください。`col` は0以上の有効な列番号です。",
+    "input": "x = np.array([\n    [10, 11, 12],\n    [20, 21, 22],\n    [30, 31, 32],\n])\ncol = 1",
+    "hint": "列を整数ではなく `col:col + 1` というスライスで指定すると、長さ1の列の軸が残ります。",
+    "solution": "result = x[:, col:col + 1]"
+  },
+  {
+    "number": 9,
+    "id": "NP02-02",
+    "version": 3,
+    "stage": "guided",
+    "title": "行と列の範囲を指定して取り出す",
+    "task": "2次元配列 `x` から、行は `row_start` 以上 `row_stop` 未満、列は `col_start` 以上 `col_stop` 未満の範囲を取り出してください。行と列は、それぞれ先頭を0として数えます。",
+    "input": "x = np.array([\n    [1, 2, 3, 4],\n    [5, 6, 7, 8],\n    [9, 10, 11, 12],\n])\nrow_start = 1\nrow_stop = 3\ncol_start = 1\ncol_stop = 3",
+    "hint": "行と列のそれぞれに、`開始位置:終了位置` のスライスを指定します。",
+    "solution": "result = x[row_start:row_stop, col_start:col_stop]"
+  },
+  {
+    "number": 10,
+    "id": "NP02-04",
+    "version": 3,
+    "stage": "partial",
+    "title": "1行おきに取り出す",
+    "task": "2次元配列 `x` の0、2、4…行目を取り出し、すべての列を残した2次元配列を作成してください。",
+    "input": "x = np.array([\n    [10, 11, 12],\n    [20, 21, 22],\n    [30, 31, 32],\n    [40, 41, 42],\n    [50, 51, 52],\n])",
+    "hint": "行のスライスの刻み幅を2にします。開始位置を省略すると、0行目から取り出します。",
+    "solution": "result = x[::2, :]"
+  },
+  {
+    "number": 11,
+    "id": "NP02-05",
+    "version": 3,
+    "stage": "independent",
+    "title": "指定した順番で列を取り出す",
+    "task": "2次元配列 `x` から、リスト `columns` に並ぶ列番号の順番で列を取り出してください。同じ列番号が複数回ある場合も、その回数だけ含めてください。",
+    "input": "x = np.array([\n    [10, 11, 12, 13],\n    [20, 21, 22, 23],\n])\ncolumns = [2, 0, 2]",
+    "hint": "列の指定に整数のリストを渡すと、その順番で列を選べます。順番の変更や重複も反映されます。",
+    "solution": "result = x[:, columns]"
+  },
+  {
+    "number": 12,
+    "id": "NP02-14",
+    "version": 1,
+    "stage": "partial",
+    "title": "条件を満たす位置を真偽値で表す",
+    "task": "1次元配列 `x` の各要素が `threshold` 以上かどうかを表す、真偽値のNumPy配列を作成してください。条件を満たす位置を `True`、それ以外を `False` にしてください。",
+    "input": "x = np.array([4, 10, 7, 15, 10])\nthreshold = 10",
+    "hint": "NumPy配列と数値を比較すると、各要素の比較結果を並べた真偽値の配列になります。",
+    "solution": "result = x >= threshold"
+  },
+  {
+    "number": 13,
+    "id": "NP02-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "しきい値以上の要素を取り出す",
+    "task": "1次元配列 `x` から、`threshold` 以上の要素だけを、元の順番で取り出してください。",
+    "input": "x = np.array([3, 8, 5, 10, 1, 5])\nthreshold = 5",
+    "hint": "`x[条件]` の形で、条件が `True` になる位置の要素だけを取り出せます。",
+    "solution": "result = x[x >= threshold]"
+  },
+  {
+    "number": 14,
+    "id": "NP02-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "指定した範囲内の要素を取り出す",
+    "task": "1次元配列 `x` から、`lower` 以上、かつ `upper` 未満の要素だけを、元の順番で取り出してください。",
+    "input": "x = np.array([5, 10, 15, 20, 25])\nlower = 10\nupper = 20",
+    "hint": "配列の条件を「かつ」で組み合わせるには `&` を使います。それぞれの比較式を丸括弧で囲みます。",
+    "solution": "result = x[(x >= lower) & (x < upper)]"
+  },
+  {
+    "number": 15,
+    "id": "NP02-16",
+    "version": 1,
+    "stage": "independent",
+    "title": "指定した範囲外の要素を取り出す",
+    "task": "1次元配列 `x` から、`lower` 未満、または `upper` より大きい要素だけを、元の順番で取り出してください。`lower` と `upper` に等しい要素は含めないでください。",
+    "input": "x = np.array([-5, 0, 5, 10, 15])\nlower = 0\nupper = 10",
+    "hint": "配列の条件を「または」で組み合わせるには `|` を使います。それぞれの比較式を丸括弧で囲みます。",
+    "solution": "result = x[(x < lower) | (x > upper)]"
+  },
+  {
+    "number": 16,
+    "id": "NP02-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "ラベルが一致する行を取り出す",
+    "task": "`labels` は、2次元配列 `x` の各行に対応するラベルです。ラベルが `target` と一致する行だけを、元の順番で取り出してください。結果はすべての列を残した2次元配列にしてください。",
+    "input": "x = np.array([\n    [1.0, 1.5],\n    [2.0, 2.5],\n    [3.0, 3.5],\n    [4.0, 4.5],\n])\nlabels = np.array([0, 1, 0, 1])\ntarget = 1",
+    "hint": "`labels == target` で、残す行を表す真偽値の配列を作れます。それを `x` の行の選択に使います。",
+    "solution": "result = x[labels == target, :]"
+  },
+  {
+    "number": 17,
+    "id": "NP02-06",
+    "version": 3,
+    "stage": "independent",
+    "title": "NaN以外の要素を取り出す",
+    "task": "1次元配列 `x` から、欠損値を表す `NaN` を除いた要素を、元の順番で取り出してください。",
+    "input": "x = np.array([1.0, np.nan, 2.5, np.nan, -1.0])",
+    "hint": "`np.isnan(x)` はNaNの位置を `True` にします。`~` で真偽値を反転すると、NaN以外の位置を選べます。",
+    "solution": "result = x[~np.isnan(x)]"
+  },
+  {
+    "number": 18,
+    "id": "NP02-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "2次元配列から条件に合う要素を取り出す",
+    "task": "2次元配列 `x` から、`threshold` 以上の要素だけを1次元配列として取り出してください。要素の順番は、上の行から順に、各行では左から右へ読み取る順番にしてください。",
+    "input": "x = np.array([\n    [1, 8, 3],\n    [9, 2, 7],\n])\nthreshold = 7",
+    "hint": "`x` と同じshapeの真偽値配列で要素を選ぶと、条件を満たす値が1次元配列にまとまります。",
+    "solution": "result = x[x >= threshold]"
+  }
+]

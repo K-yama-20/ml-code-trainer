@@ -1,0 +1,613 @@
+{
+  "problems": [
+    {
+      "id": "PY01-01",
+      "family_id": "PY01-01",
+      "version_id": "PY01-01@3",
+      "content_version": 3,
+      "concept_id": "PY01",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "正の数を選んで二乗する",
+      "description": "valuesから正の数だけを選び、二乗したリストをresultに代入してください。0と負の数は含めず、元の順序を保ちます。",
+      "learning_goal": "列を変換し、番号や複数列を同時に扱います。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "正の数を二乗したリスト。0と負の数は含めません。",
+      "starter_code": "result = [v * v for v in values if v > ___]\n",
+      "example": "[value ** 2 for value in values]",
+      "editable_regions": [],
+      "hints": [
+        "最初に、二乗する数と除く数を分けましょう。0は正の数に入りません。",
+        "valuesが[-2, 0, 3]なら、条件を満たすのは3だけです。ifの右側は二乗する前のvを判定します。",
+        "空欄には 0 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = [v * v for v in values if v > 0]\n",
+      "explanation": "条件で元の値を選び、その後でv * vを計算します。[-2, 0, 3]では3だけが残り、[9]になります。負の数を先に二乗すると正の数になるため、元の値で判定することが大切です。",
+      "common_mistakes": [
+        "v >= 0だと、入力[0, 3]で[0, 9]になり、不要な0が残ります。",
+        "v * v > 0で選ぶと、入力[-2, 3]で[4, 9]になり、負の数まで残ります。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1011\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[-2,0,3]",
+          "expected": [
+            9
+          ]
+        },
+        {
+          "setup": "seed = 1011\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[]",
+          "expected": []
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1011\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[0,-1]",
+          "expected": []
+        },
+        {
+          "setup": "seed = 1011\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[seed, -seed, 2]",
+          "expected": [
+            1022121,
+            4
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "0と負の数を除けているか確かめてください。条件は二乗する前のvに対して判定します。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "values"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "values = [-2, 0, 3]",
+        "task": "valuesから正の数だけを選び、二乗したリストをresultに代入してください。0と負の数は含めず、元の順序を保ちます。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PY01-02",
+      "family_id": "PY01-02",
+      "version_id": "PY01-02@2",
+      "content_version": 2,
+      "concept_id": "PY01",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "enumerateの出力を読む",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\nenumerate(names, start=1)をリストにした結果を予測して返す。",
+      "learning_goal": "列を変換し、番号や複数列を同時に扱います。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "enumerate(names, start=1)をリストにした結果を予測して返す。",
+      "starter_code": "def solve(names):\n    return list(enumerate(names, start=___))\n",
+      "example": "observed = list(enumerate(names, start=1))",
+      "editable_regions": [],
+      "hints": [
+        "列を変換し、番号や複数列を同時に扱います。",
+        "startは要素の番号だけを変えます。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(names):\n    return list(enumerate(names, start=1))\n",
+      "explanation": "startは要素の番号だけを変えます。",
+      "common_mistakes": [
+        "enumerateの番号と要素の値を取り違える。",
+        "zipが最長の入力まで続くと思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5293\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "['a','b']",
+          "expected": [
+            [
+              1,
+              "a"
+            ],
+            [
+              2,
+              "b"
+            ]
+          ]
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "names = ['a', 'b']\n\nobserved = list(enumerate(names, start=1))",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "PY01-03",
+      "family_id": "PY01-03",
+      "version_id": "PY01-03@3",
+      "content_version": 3,
+      "concept_id": "PY01",
+      "module_id": "python",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "zipで辞書を作る",
+      "description": "配列keysをキーに、valuesを値にした辞書をresultに代入してください。長さが異なるときは、短い側に合わせます。",
+      "learning_goal": "列を変換し、番号や複数列を同時に扱います。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "zipでキーと値を組み合わせた辞書を返す。短い側の長さで止める。",
+      "starter_code": "result =\n",
+      "example": "[value ** 2 for value in values]",
+      "editable_regions": [],
+      "hints": [
+        "列を変換し、番号や複数列を同時に扱います。",
+        "zip(keys, values)で組を作り、dict()で辞書に変換できます。",
+        "解答部分は次の形で書けます。\nresult = dict(zip(keys, values))\n"
+      ],
+      "solution": "result = dict(zip(keys, values))\n",
+      "explanation": "zipは最短の入力で終了します。",
+      "common_mistakes": [
+        "enumerateの番号と要素の値を取り違える。",
+        "zipが最長の入力まで続くと思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3158\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "['a','b'],[2,3]",
+          "expected": {
+            "a": 2,
+            "b": 3
+          }
+        },
+        {
+          "setup": "seed = 3158\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[], []",
+          "expected": {}
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3158\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "['a','b'], [1]",
+          "expected": {
+            "a": 1
+          }
+        },
+        {
+          "setup": "seed = 3158\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "['x'], [seed,9]",
+          "expected": {
+            "x": 3158
+          }
+        }
+      ],
+      "required_ast": "call:zip",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "keys",
+          "values"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "keys = ['a', 'b']\nvalues = [2, 3]",
+        "task": "配列keysをキーに、valuesを値にした辞書をresultに代入してください。長さが異なるときは、短い側に合わせます。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PY01-04",
+      "family_id": "PY01-04",
+      "version_id": "PY01-04@2",
+      "content_version": 2,
+      "concept_id": "PY01",
+      "module_id": "python",
+      "stage": "partial",
+      "type": "prediction",
+      "difficulty": 2,
+      "title": "アンパックと合計",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\n各行が(label, a, b)のrowsから、(label, a+b)のリストを返す。",
+      "learning_goal": "列を変換し、番号や複数列を同時に扱います。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "各行が(label, a, b)のrowsから、(label, a+b)のリストを返す。",
+      "starter_code": "def solve(rows):\n    # アンパックと合計\n    return ___\n",
+      "example": "observed = [(label, a+b) for label, a, b in rows]",
+      "editable_regions": [],
+      "hints": [
+        "列を変換し、番号や複数列を同時に扱います。",
+        "行の要素数と受け取る変数の数を一致させます。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(rows):\n    return [(label, a+b) for label, a, b in rows]\n",
+      "explanation": "行の要素数と受け取る変数の数を一致させます。",
+      "common_mistakes": [
+        "enumerateの番号と要素の値を取り違える。",
+        "zipが最長の入力まで続くと思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5866\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[('a',1,2)]",
+          "expected": [
+            [
+              "a",
+              3
+            ]
+          ]
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "rows = [('a', 1, 2)]\n\nobserved = [(label, a + b) for label, a, b in rows]",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "PY01-05",
+      "family_id": "PY01-05",
+      "version_id": "PY01-05@2",
+      "content_version": 2,
+      "concept_id": "PY01",
+      "module_id": "python",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "番号付きラベル抽出",
+      "description": "0以外のラベルの位置を、0始まりの整数リストとして返す。",
+      "learning_goal": "列を変換し、番号や複数列を同時に扱います。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "0以外のラベルの位置を、0始まりの整数リストとして返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "[value ** 2 for value in values]",
+      "editable_regions": [],
+      "hints": [
+        "列を変換し、番号や複数列を同時に扱います。",
+        "値そのものとインデックスを区別します。",
+        "解答部分は次の形で書けます。\nresult = [i for i, label in enumerate(labels) if label != 0]\n"
+      ],
+      "solution": "result = [i for i, label in enumerate(labels) if label != 0]\n",
+      "explanation": "値そのものとインデックスを区別します。",
+      "common_mistakes": [
+        "enumerateの番号と要素の値を取り違える。",
+        "zipが最長の入力まで続くと思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7944\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[0,1,0,2]",
+          "expected": [
+            1,
+            3
+          ]
+        },
+        {
+          "setup": "seed = 7944\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[]",
+          "expected": []
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7944\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[0,0]",
+          "expected": []
+        },
+        {
+          "setup": "seed = 7944\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[seed,0,3]",
+          "expected": [
+            0,
+            2
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "labels"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "labels = [0, 1, 0, 2]",
+        "task": "0以外のラベルの位置を、0始まりの整数リストとして返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PY01-06",
+      "family_id": "PY01-06",
+      "version_id": "PY01-06@2",
+      "content_version": 2,
+      "concept_id": "PY01",
+      "module_id": "python",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "列を行に組み直す",
+      "description": "同じ長さのa,bを組み合わせ、各要素が2要素リストの行列を返す。",
+      "learning_goal": "列を変換し、番号や複数列を同時に扱います。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "同じ長さのa,bを組み合わせ、各要素が2要素リストの行列を返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "[value ** 2 for value in values]",
+      "editable_regions": [],
+      "hints": [
+        "列を変換し、番号や複数列を同時に扱います。",
+        "zipの各タプルをリストへ変換します。",
+        "解答部分は次の形で書けます。\nresult = [[x, y] for x, y in zip(a, b)]\n"
+      ],
+      "solution": "result = [[x, y] for x, y in zip(a, b)]\n",
+      "explanation": "zipの各タプルをリストへ変換します。",
+      "common_mistakes": [
+        "enumerateの番号と要素の値を取り違える。",
+        "zipが最長の入力まで続くと思い込む。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1663\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[1,2],[3,4]",
+          "expected": [
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              4
+            ]
+          ]
+        },
+        {
+          "setup": "seed = 1663\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[],[]",
+          "expected": []
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1663\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[0],[1]",
+          "expected": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "setup": "seed = 1663\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[seed,2],[5,7]",
+          "expected": [
+            [
+              1663,
+              5
+            ],
+            [
+              2,
+              7
+            ]
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "a = [1, 2]\nb = [3, 4]",
+        "task": "同じ長さのa,bを組み合わせ、各要素が2要素リストの行列を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

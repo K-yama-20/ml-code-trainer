@@ -1,0 +1,1390 @@
+{
+  "problems": [
+    {
+      "id": "PY02-01",
+      "family_id": "PY02-01",
+      "version_id": "PY02-01@2",
+      "content_version": 2,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "デフォルト引数でスケール",
+      "description": "xの各値をscale倍したリストを返す。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "xの各値をscale倍したリストを返す。",
+      "starter_code": "def scale_values(x, scale=2):\n    return ___\n",
+      "example": "train(**config)",
+      "editable_regions": [],
+      "hints": [
+        "引数の受け渡しと辞書展開を理解します。",
+        "省略時だけデフォルト値が使われます。",
+        "空欄には [v * scale for v in x] と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "def scale_values(x, scale=2):\n    return [v * scale for v in x]\n",
+      "explanation": "省略時だけデフォルト値が使われます。",
+      "common_mistakes": [
+        "有効な0やFalseを未設定と同じ扱いにする。",
+        "辞書展開の順序を逆にして上書き優先度を変える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4395\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[1,2]",
+          "expected": [
+            2,
+            4
+          ]
+        },
+        {
+          "setup": "seed = 4395\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[],3",
+          "expected": []
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4395\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[2],0",
+          "expected": [
+            0
+          ]
+        },
+        {
+          "setup": "seed = 4395\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "[seed],-2",
+          "expected": [
+            -8790
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "function",
+        "entrypoint": "scale_values"
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "function",
+        "provided_code": "x = [1, 2]\nscale = 2",
+        "task": "xの各値をscale倍したリストを返す。 関数scale_valuesを完成させてください。",
+        "authored": false,
+        "structure": "function",
+        "invocation": "result = scale_values(x, scale)",
+        "classification_reason": "引数・既定値・展開の理解が目的のため関数を維持"
+      }
+    },
+    {
+      "id": "PY02-02",
+      "family_id": "PY02-02",
+      "version_id": "PY02-02@2",
+      "content_version": 2,
+      "concept_id": "PY02",
+      "module_id": "python",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "可変長引数を読む",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\nsum(values)の戻り値を予測し返す。引数なしなら0。",
+      "learning_goal": "引数の受け渡しと辞書展開を理解します。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "sum(values)の戻り値を予測し返す。引数なしなら0。",
+      "starter_code": "def solve(*values):\n    return ___\n",
+      "example": "observed = sum(values)",
+      "editable_regions": [],
+      "hints": [
+        "引数の受け渡しと辞書展開を理解します。",
+        "argsは受け取った位置引数のタプルです。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(*values):\n    return sum(values)\n",
+      "explanation": "argsは受け取った位置引数のタプルです。",
+      "common_mistakes": [
+        "有効な0やFalseを未設定と同じ扱いにする。",
+        "辞書展開の順序を逆にして上書き優先度を変える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5829\nimport json, math, tempfile\nfrom pathlib import Path\n",
+          "args": "1,2,3",
+          "expected": 6
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "PY01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "values = (1, 2, 3)\n\nobserved = sum(values)",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP03-02",
+      "family_id": "NP03-02",
+      "version_id": "NP03-02@2",
+      "content_version": 2,
+      "concept_id": "NP03",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "unsqueeze後のshape",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\nnp.expand_dims(x, axis=0).shapeを予測して返す。",
+      "learning_goal": "要素順を保ちながらshapeを変えます。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "np.expand_dims(x, axis=0).shapeを予測して返す。",
+      "starter_code": "def solve(x):\n    return (___, *x.shape)\n",
+      "example": "observed = np.expand_dims(x, axis=0).shape",
+      "editable_regions": [],
+      "hints": [
+        "要素順を保ちながらshapeを変えます。",
+        "先頭にサイズ1の軸が追加されます。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(x):\n    return (1, *x.shape)\n",
+      "explanation": "先頭にサイズ1の軸が追加されます。",
+      "common_mistakes": [
+        "reshapeの前後で要素数が変わってしまう。",
+        "無引数squeezeで必要なバッチ軸も消す。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6444\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": [
+            1,
+            3,
+            4
+          ]
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.020063646442264316, 0.07334118749718421, 1.234773626204999, -0.4256773706796307], [0.7062870218671443, 0.7779073860301533, -1.2501056824333994, 1.1758582534161022], [-1.152068121007598, 1.6802386581715898, 0.9568729013206899, 1.7361209298521978]], dtype=np.float64).reshape((3, 4))\n\nobserved = np.expand_dims(x, axis=0).shape",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP08-02",
+      "family_id": "NP08-02",
+      "version_id": "NP08-02@2",
+      "content_version": 2,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "clip結果を予測",
+      "description": "np.clip(x,0,1)の結果を配列として予測して返す。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "np.clip(x,0,1)の結果を配列として予測して返す。",
+      "starter_code": "result = np.clip(x, 0, ___)\n",
+      "example": "np.where(x > 0, x, 0)",
+      "editable_regions": [],
+      "hints": [
+        "配列全体に条件付き演算を適用します。",
+        "境界は含まれます。",
+        "空欄には 1 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = np.clip(x, 0, 1)\n",
+      "explanation": "境界は含まれます。",
+      "common_mistakes": [
+        "配列の条件にPythonのandやifを使う。",
+        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([-1.,0.,.5,2.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              0.0,
+              0.5,
+              1.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.6746238230958339,
+                0.61157064669062,
+                0.8335282929029549,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.08499787433313832,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.05681325916833294,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([0.,1.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([-1.0, 0.0, 0.5, 2.0])",
+        "task": "np.clip(x,0,1)の結果を配列として予測して返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP09-02",
+      "family_id": "NP09-02",
+      "version_id": "NP09-02@2",
+      "content_version": 2,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "安定softmaxのshape",
+      "description": "exp(x-x.max(axis=1,keepdims=True))を行ごとに正規化するsoftmaxの出力shapeを予測。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "exp(x-x.max(axis=1,keepdims=True))を行ごとに正規化するsoftmaxの出力shapeを予測。",
+      "starter_code": "result = ___\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "定数列や大きな数でも壊れない前処理を作ります。",
+        "softmaxは入力と同じshapeです。",
+        "空欄には x.shape と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = x.shape\n",
+      "explanation": "softmaxは入力と同じshapeです。",
+      "common_mistakes": [
+        "定数列やゼロノルムで0除算する。",
+        "テスト集合の統計で前処理を再学習する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6481\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": [
+            3,
+            4
+          ]
+        },
+        {
+          "setup": "seed = 6481\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1000.,1001.]])",
+          "expected": [
+            1,
+            2
+          ]
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6481\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,1))",
+          "expected": [
+            1,
+            1
+          ]
+        },
+        {
+          "setup": "seed = 6481\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((2,3))",
+          "expected": [
+            2,
+            3
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[-1.0201129842747791, -0.33057629675663414, 0.9172043915210735, 0.5000289291387192], [0.35515378112343876, -1.8071798527653677, 1.1268643376380678, -0.518028354536146], [0.37657411064562085, -0.8055983305184723, 1.6932645435511766, -0.08475299676156735]], dtype=np.float64).reshape((3, 4))",
+        "task": "exp(x-x.max(axis=1,keepdims=True))を行ごとに正規化するsoftmaxの出力shapeを予測。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP09-06",
+      "family_id": "NP09-06",
+      "version_id": "NP09-06@2",
+      "content_version": 2,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "Min-Max変換",
+      "description": "列ごとに最小0最大1へ変換。範囲が0の列は0とする。行数は正。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "列ごとに最小0最大1へ変換。範囲が0の列は0とする。行数は正。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "定数列や大きな数でも壊れない前処理を作ります。",
+        "定数列の分母も保護します。",
+        "解答部分は次の形で書けます。\nlo = x.min(axis=0)\nresult = (x - lo) / np.maximum(x.max(axis=0) - lo, 1e-08)\n"
+      ],
+      "solution": "lo = x.min(axis=0)\nresult = (x - lo) / np.maximum(x.max(axis=0) - lo, 1e-08)\n",
+      "explanation": "定数列の分母も保護します。",
+      "common_mistakes": [
+        "定数列やゼロノルムで0除算する。",
+        "テスト集合の統計で前処理を再学習する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5241\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                1.0,
+                0.41728119628134697,
+                1.0
+              ],
+              [
+                1.0,
+                0.45323573871966,
+                0.0,
+                0.0
+              ],
+              [
+                0.8121904053317266,
+                0.0,
+                1.0,
+                0.49691368369502664
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5241\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((3,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5241\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1.,5.],[3.,5.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5241\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[2.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.011085313805330864, 1.5747704270759249, -1.1252464177457253, 0.5326035902054992], [1.323262038343557, 0.5908758285569344, -1.2691597957886664, 0.2040483819278243], [1.07682265957489, -0.2247155089928237, -0.9242763471083928, 0.36731196077027045]], dtype=np.float64).reshape((3, 4))",
+        "task": "列ごとに最小0最大1へ変換。範囲が0の列は0とする。行数は正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD03-02",
+      "family_id": "PD03-02",
+      "version_id": "PD03-02@2",
+      "content_version": 2,
+      "concept_id": "PD03",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "行数と有効数",
+      "description": "groupごとの全行数をSeriesで返す。valueが欠損でも数える。",
+      "learning_goal": "グループ単位でデータを要約します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "groupごとの全行数をSeriesで返す。valueが欠損でも数える。",
+      "starter_code": "result = ___\n",
+      "example": "df.groupby('group')['value'].mean()",
+      "editable_regions": [],
+      "hints": [
+        "グループ単位でデータを要約します。",
+        "countは欠損を除き、sizeは行数を数えます。",
+        "空欄には df.groupby('group').size() と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = df.groupby('group').size()\n",
+      "explanation": "countは欠損を除き、sizeは行数を数えます。",
+      "common_mistakes": [
+        "countとsizeの欠損の扱いを混同する。",
+        "aggの集約結果を元の全行と同じ長さだと思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              2,
+              2
+            ]
+          }
+        },
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "series",
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(value=np.nan)",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              2,
+              2
+            ]
+          }
+        },
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a"
+            ],
+            "data": [
+              4
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01",
+        "PD02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "groupごとの全行数をSeriesで返す。valueが欠損でも数える。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "SK02-02",
+      "family_id": "SK02-02",
+      "version_id": "SK02-02@2",
+      "content_version": 2,
+      "concept_id": "SK02",
+      "module_id": "sklearn",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "テストの再fitを修正",
+      "description": "バグ:テストにfit_transformしている。trainだけでfitし、testをtransformして返す。",
+      "learning_goal": "fitは学習集合だけに適用し、同じ変換を再利用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "バグ:テストにfit_transformしている。trainだけでfitし、testをtransformして返す。",
+      "starter_code": "s = StandardScaler().fit(train)\nresult = ___\n",
+      "example": "scaler.fit(X_train)\nscaler.transform(X_test)",
+      "editable_regions": [],
+      "hints": [
+        "fitは学習集合だけに適用し、同じ変換を再利用します。",
+        "テストの統計を使用すると評価が楽観的になります。",
+        "空欄には s.transform(test) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "s = StandardScaler().fit(train)\nresult = s.transform(test)\n",
+      "explanation": "テストの統計を使用すると評価が楽観的になります。",
+      "common_mistakes": [
+        "テストにfit_transformを呼び、評価情報を学習する。",
+        "Scalerの戻り値を使わず、未変換の特徴で予測する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6081\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "x,x+100",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                260.50299019361626,
+                261.8427449953524,
+                110.41625423369592,
+                118.99344988567869
+              ],
+              [
+                258.2030040531742,
+                259.4189147533066,
+                110.83834202632389,
+                117.7388455119731
+              ],
+              [
+                260.08275586115093,
+                260.3245861506255,
+                112.71688694637686,
+                116.54420480753949
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6081\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "np.ones((3,2)),np.zeros((1,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -1.0,
+                -1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6081\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "X[:5],X[5:7]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                2.1213203435596424,
+                2.1213203435596424,
+                2.1213203435596424,
+                2.1213203435596424
+              ],
+              [
+                2.82842712474619,
+                2.82842712474619,
+                2.82842712474619,
+                2.82842712474619
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6081\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "np.array([[1.],[3.]]),np.array([[10.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                8.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK01",
+        "NP09"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "train",
+          "test"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\ntrain = np.array([[0.03559158523344934, 0.5570607878852127, -0.7092782915980618, 1.6099644426849353], [-0.8503943025146485, -0.3732896071336946, -0.3301251478246027, 0.5445629458600156], [-0.12628838506929657, -0.025661407915509825, 1.3573347233153659, -0.46991781105962294]], dtype=np.float64).reshape((3, 4))\ntest = np.array([[100.03559158523345, 100.5570607878852, 99.29072170840193, 101.60996444268494], [99.14960569748536, 99.6267103928663, 99.6698748521754, 100.54456294586002], [99.8737116149307, 99.9743385920845, 101.35733472331536, 99.53008218894038]], dtype=np.float64).reshape((3, 4))",
+        "task": "バグ:テストにfit_transformしている。trainだけでfitし、testをtransformして返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "SK03-02",
+      "family_id": "SK03-02",
+      "version_id": "SK03-02@2",
+      "content_version": 2,
+      "concept_id": "SK03",
+      "module_id": "sklearn",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "学習前predictの修正",
+      "description": "未学習のLogisticRegressionでpredictするバグを直す。max_iter=200,random_state=0で学習しXのラベルを返す。",
+      "learning_goal": "モデルを学習し、ラベルと確率の意味を区別します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "未学習のLogisticRegressionでpredictするバグを直す。max_iter=200,random_state=0で学習しXのラベルを返す。",
+      "starter_code": "m = LogisticRegression(max_iter=200, random_state=0)\nm.fit(X, y)\nresult = ___\n",
+      "example": "model.fit(X_train, y_train)\nmodel.predict_proba(X_test)",
+      "editable_regions": [],
+      "hints": [
+        "モデルを学習し、ラベルと確率の意味を区別します。",
+        "学習済み属性はfit後に作られます。",
+        "空欄には m.predict(X) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "m = LogisticRegression(max_iter=200, random_state=0)\nm.fit(X, y)\nresult = m.predict(X)\n",
+      "explanation": "学習済み属性はfit後に作られます。",
+      "common_mistakes": [
+        "fit前にpredictして学習済み属性へアクセスする。",
+        "predict_probaの列順をclasses_で確認しない。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 373\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "X,y",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              20
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "setup": "seed = 373\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "X[:4],y[:4]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 373\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "X[:8],y[:8]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              8
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "setup": "seed = 373\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "X[:12],y[:12]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              12
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK01",
+        "SK02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "X",
+          "y"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\nfrom sklearn.linear_model import LogisticRegression\n\nX = np.arange(373.0, 453.0, dtype=np.float64).reshape((20, 4))\ny = np.array([0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1], dtype=np.int64).reshape((20,))",
+        "task": "未学習のLogisticRegressionでpredictするバグを直す。max_iter=200,random_state=0で学習しXのラベルを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT05-03",
+      "family_id": "PT05-03",
+      "version_id": "PT05-03@2",
+      "content_version": 2,
+      "concept_id": "PT05",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "forwardで入力を2倍にする",
+      "description": "Twiceは入力を2倍するモデルです。forwardのpassを置き換え、受け取ったxを2倍したTensorを返してください。下の呼び出しでresultを確認します。",
+      "learning_goal": "forwardと登録されたパラメータの関係を読み解きます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "入力xと同じshapeで、すべての値が2倍のTensor。",
+      "starter_code": "class Twice(nn.Module):\n    def forward(self, x):\n        # 入力を2倍したTensorを返す\n        pass\n\nresult = Twice()(x)\n",
+      "example": "class Model(nn.Module):\n    def forward(self, x):\n        return self.linear(x)",
+      "editable_regions": [],
+      "hints": [
+        "Twice()(x)でモデルを呼ぶと、forwardのxに入力Tensorが渡ります。今回は重みや学習は不要です。",
+        "Tensorに2を掛けると、各要素が2倍になります。shapeは変わりません。",
+        "forward内にreturn x * 2と書きます。最後のresult = Twice()(x)がその戻り値を受け取ります。"
+      ],
+      "solution": "class Twice(nn.Module):\n\n    def forward(self, x):\n        return x * 2\nresult = Twice()(x)\n",
+      "explanation": "nn.Moduleのインスタンスを関数のように呼ぶとforwardが実行されます。x*2は各要素を2倍にし、そのTensorをreturnで返します。クラスとメソッドはこの問題の学習対象なので残しています。",
+      "common_mistakes": [
+        "x*2を計算してもreturnがないと、結果がNoneになります。",
+        "Twice.forward(x)ではインスタンスを通さず、selfとxの引数が対応しません。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                2.0,
+                2.0,
+                2.0
+              ],
+              [
+                2.0,
+                2.0,
+                2.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor(-2.)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": -4.0
+          }
+        },
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(4.)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.0,
+              2.0,
+              4.0,
+              6.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "ClassDef",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "forwardメソッドのpassを、処理とreturnに置き換えてください。入力と末尾の呼び出しは用意されています。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "forwardがTensorを返せているか確認してください。print(x*2)だけでは、戻り値はNoneになります。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nx = torch.ones(2, 3)",
+        "task": "Twiceは入力を2倍するモデルです。forwardのpassを置き換え、受け取ったxを2倍したTensorを返してください。下の呼び出しでresultを確認します。",
+        "authored": true,
+        "structure": "class",
+        "classification_reason": "クラスとforwardを維持し、採点用だけの外側のsolveを除去"
+      }
+    }
+  ]
+}

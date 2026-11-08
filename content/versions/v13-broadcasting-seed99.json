@@ -1,0 +1,890 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "NP06-01",
+      "family_id": "NP06-01",
+      "version_id": "NP06-01@2",
+      "content_version": 2,
+      "concept_id": "NP06",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "列ごとのバイアス",
+      "description": "(N,D)のxに(D,)のbiasを足して返す。",
+      "learning_goal": "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "(N,D)のxに(D,)のbiasを足して返す。",
+      "starter_code": "result = ___\n",
+      "example": "x - x.mean(axis=0, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+        "末尾のDが一致します。",
+        "空欄には x + bias と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = x + bias\n",
+      "explanation": "末尾のDが一致します。",
+      "common_mistakes": [
+        "末尾ではなく先頭からshapeを比較する。",
+        "(N,)を行の重みとしてそのまま(N,D)へ掛ける。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4120\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,np.arange(4)",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.6283755073385033,
+                0.8639945919256626,
+                3.942790492789899,
+                4.655825206297972
+              ],
+              [
+                -1.413278220696904,
+                1.4318880668472538,
+                1.8485031911098946,
+                2.032459458306077
+              ],
+              [
+                -1.2225581873365186,
+                2.154574761320662,
+                2.3455103634355017,
+                3.6624295017525483
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 4120\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,1)),np.array([2])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                3.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4120\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,2)),np.array([1,2])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 4120\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,np.zeros(4)",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.6283755073385033,
+                -0.1360054080743373,
+                1.9427904927898993,
+                1.655825206297972
+              ],
+              [
+                -1.413278220696904,
+                0.43188806684725367,
+                -0.15149680889010536,
+                -0.9675405416939231
+              ],
+              [
+                -1.2225581873365186,
+                1.1545747613206618,
+                0.34551036343550157,
+                0.6624295017525483
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03",
+        "NP05"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "bias"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[1.6283755073385033, -0.1360054080743373, 1.9427904927898993, 1.655825206297972], [-1.413278220696904, 0.43188806684725367, -0.15149680889010536, -0.9675405416939231], [-1.2225581873365186, 1.1545747613206618, 0.34551036343550157, 0.6624295017525483]], dtype=np.float64).reshape((3, 4))\nbias = np.arange(4)",
+        "task": "(N,D)のxに(D,)のbiasを足して返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP06-02",
+      "family_id": "NP06-02",
+      "version_id": "NP06-02@2",
+      "content_version": 2,
+      "concept_id": "NP06",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "外積のshape予測",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\na[:,None] * b[None,:]のshapeを予測して返す。a,bは1次元。",
+      "learning_goal": "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "a[:,None] * b[None,:]のshapeを予測して返す。a,bは1次元。",
+      "starter_code": "def solve(a, b):\n    return ___\n",
+      "example": "observed = (a[:, None] * b[None, :]).shape",
+      "editable_regions": [],
+      "hints": [
+        "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+        "(N,1)と(1,M)から(N,M)を作れます。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(a, b):\n    return (len(a),len(b))\n",
+      "explanation": "(N,1)と(1,M)から(N,M)を作れます。",
+      "common_mistakes": [
+        "末尾ではなく先頭からshapeを比較する。",
+        "(N,)を行の重みとしてそのまま(N,D)へ掛ける。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2091\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.arange(3),np.arange(4)",
+          "expected": [
+            3,
+            4
+          ]
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03",
+        "NP05"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import numpy as np\n\na = np.arange(3)\nb = np.arange(4)\n\nobserved = (a[:, None] * b[None, :]).shape",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP06-03",
+      "family_id": "NP06-03",
+      "version_id": "NP06-03@2",
+      "content_version": 2,
+      "concept_id": "NP06",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "行ごとの重み付け",
+      "description": "(N,D)のxの各行を(N,)のweightsで乗算して返す。",
+      "learning_goal": "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "(N,D)のxの各行を(N,)のweightsで乗算して返す。",
+      "starter_code": "result =\n",
+      "example": "x - x.mean(axis=0, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+        "weights[:,None]で列軸を追加します。",
+        "解答部分は次の形で書けます。\nresult = x * weights[:, None]\n"
+      ],
+      "solution": "result = x * weights[:, None]\n",
+      "explanation": "weights[:,None]で列軸を追加します。",
+      "common_mistakes": [
+        "末尾ではなく先頭からshapeを比較する。",
+        "(N,)を行の重みとしてそのまま(N,D)へ掛ける。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7987\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,np.array([1,2,3])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.6208003136420621,
+                -0.8151682213118371,
+                -0.7349463819901365,
+                -0.927892976721095
+              ],
+              [
+                1.3031779727324944,
+                2.809798779494678,
+                -2.6173112920894774,
+                0.3028751870419179
+              ],
+              [
+                3.231394338851935,
+                1.8624611646777929,
+                0.15564235918552974,
+                5.110228327746892
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7987\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,2)),np.array([])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7987\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,3)),np.array([0])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              3
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7987\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,np.array([-1,0,1])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -0.6208003136420621,
+                0.8151682213118371,
+                0.7349463819901365,
+                0.927892976721095
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0771314462839783,
+                0.620820388225931,
+                0.05188078639517658,
+                1.7034094425822972
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03",
+        "NP05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "weights"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.6208003136420621, -0.8151682213118371, -0.7349463819901365, -0.927892976721095], [0.6515889863662472, 1.404899389747339, -1.3086556460447387, 0.15143759352095895], [1.0771314462839783, 0.620820388225931, 0.05188078639517658, 1.7034094425822972]], dtype=np.float64).reshape((3, 4))\nweights = np.array([1, 2, 3])",
+        "task": "(N,D)のxの各行を(N,)のweightsで乗算して返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP06-04",
+      "family_id": "NP06-04",
+      "version_id": "NP06-04@3",
+      "content_version": 3,
+      "concept_id": "NP06",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "prediction",
+      "difficulty": 2,
+      "title": "2つの配列の全組合せの積を予測する",
+      "description": "aの各値とbの各値を掛け合わせるコードです。observedに入る2次元の値を[[...], [...]]の形で答えてください。",
+      "learning_goal": "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "2行3列の値を、[[...], [...]]の形で入力します。np.arrayや関数の定義は不要です。",
+      "starter_code": "def solve(a, b):\n    # 外積を作る\n    return ___\n",
+      "example": "a = np.array([1, 2])\nb = np.array([3, 4, 5])\nobserved = a[:, None] * b[None, :]",
+      "editable_regions": [],
+      "hints": [
+        "a[:, None]でaは縦に並ぶ2行1列、b[None, :]でbは横に並ぶ1行3列になります。",
+        "サイズ1の軸を広げて掛けます。1行目は1×[3,4,5]、2行目は2×[3,4,5]です。",
+        "1行目は[3,4,5]、2行目は[6,8,10]です。2つの行を外側のリストで囲みます。"
+      ],
+      "solution": "def solve(a, b):\n    return a[:,None]*b[None,:]\n",
+      "explanation": "(2,1)と(1,3)の配列を掛けると、サイズ1の軸が広がって(2,3)になります。各行でaの値を固定し、bの3つの値を掛けるため、[[3,4,5],[6,8,10]]です。この全組合せの積をここでは外積と呼びます。",
+      "common_mistakes": [
+        "a*bでは長さ2と3の1次元配列をそのまま合わせられません。",
+        "[3,8]のような対応する位置だけの積では、全6通りの組合せが表せません。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4269\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([1,2]),np.array([3,4,5])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                3,
+                4,
+                5
+              ],
+              [
+                6,
+                8,
+                10
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03",
+        "NP05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "外側のリストが2行、その中が各3要素になっているか確認してください。aの同じ値を1行で使います。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        },
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": true
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import numpy as np\n\na = np.array([1, 2])\nb = np.array([3, 4, 5])\n\nobserved = a[:, None] * b[None, :]",
+        "task": "aの各値とbの各値を掛け合わせるコードです。observedに入る2次元の値を[[...], [...]]の形で答えてください。",
+        "authored": true,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP06-05",
+      "family_id": "NP06-05",
+      "version_id": "NP06-05@2",
+      "content_version": 2,
+      "concept_id": "NP06",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "平均との差を行ごとに",
+      "description": "各行の平均をその行から引いて返す。列数は正。",
+      "learning_goal": "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各行の平均をその行から引いて返す。列数は正。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "x - x.mean(axis=0, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+        "(N,)は(N,D)の行平均減算に使えません。",
+        "解答部分は次の形で書けます。\nresult = x - x.mean(axis=1, keepdims=True)\n"
+      ],
+      "solution": "result = x - x.mean(axis=1, keepdims=True)\n",
+      "explanation": "(N,)は(N,D)の行平均減算に使えません。",
+      "common_mistakes": [
+        "末尾ではなく先頭からshapeを比較する。",
+        "(N,)を行の重みとしてそのまま(N,D)へ掛ける。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.41828497658895447,
+                -0.12142132902971661,
+                -1.2637090448868205,
+                0.9668453973275827
+              ],
+              [
+                0.12964591023634778,
+                -0.45778024923635685,
+                0.5648209530818398,
+                -0.2366866140818307
+              ],
+              [
+                0.9310055598758749,
+                -1.955252348016615,
+                0.025136102328820797,
+                0.9991106858119192
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,1))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1.,3.],[2.,8.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -1.0,
+                1.0
+              ],
+              [
+                -3.0,
+                3.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03",
+        "NP05"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.3826778866523825, -0.15702841896628855, -1.2993161348233924, 0.9312383073910108], [0.23518692061331095, -0.3522392388593937, 0.670361963458803, -0.13114560370486752], [1.794139112195294, -1.0921187956971958, 0.88826965464824, 1.8622442381313384]], dtype=np.float64).reshape((3, 4))",
+        "task": "各行の平均をその行から引いて返す。列数は正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP06-06",
+      "family_id": "NP06-06",
+      "version_id": "NP06-06@2",
+      "content_version": 2,
+      "concept_id": "NP06",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "全ペアの差",
+      "description": "a[i]-b[j]を要素とする2次元配列を返す。",
+      "learning_goal": "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "a[i]-b[j]を要素とする2次元配列を返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "x - x.mean(axis=0, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "末尾から軸を合わせ、サイズ1の軸を拡張します。",
+        "差の向きで符号が変わります。",
+        "解答部分は次の形で書けます。\nresult = a[:, None] - b[None, :]\n"
+      ],
+      "solution": "result = a[:, None] - b[None, :]\n",
+      "explanation": "差の向きで符号が変わります。",
+      "common_mistakes": [
+        "末尾ではなく先頭からshapeを比較する。",
+        "(N,)を行の重みとしてそのまま(N,D)へ掛ける。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "v,v[:2]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                -2.0
+              ],
+              [
+                2.0,
+                0.0
+              ],
+              [
+                -2.0,
+                -4.0
+              ],
+              [
+                4.0,
+                2.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([]),v",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0,
+              4
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([1]),np.array([2])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                -1
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9602\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.arange(2),np.arange(3)",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                -1,
+                -2
+              ],
+              [
+                1,
+                0,
+                -1
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03",
+        "NP05"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([9602.0, 9604.0, 9600.0, 9606.0], dtype=np.float64).reshape((4,))\nb = np.array([9602.0, 9604.0], dtype=np.float64).reshape((2,))",
+        "task": "a[i]-b[j]を要素とする2次元配列を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

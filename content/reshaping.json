@@ -1,0 +1,200 @@
+[
+  {
+    "number": 1,
+    "id": "NP03-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "1次元配列を指定した行数・列数に変形する",
+    "task": "`reshape()` を用いて、1次元配列 `x` を `rows` 行 `cols` 列の2次元配列に変形してください。要素の順番は変えないでください。",
+    "input": "x = np.array([1, 2, 3, 4, 5, 6])\nrows = 2\ncols = 3",
+    "hint": "`x.reshape(行数, 列数)` と書きます。変形前後で全要素数が同じになる必要があります。",
+    "solution": "result = x.reshape(rows, cols)"
+  },
+  {
+    "number": 2,
+    "id": "NP03-01",
+    "version": 3,
+    "stage": "guided",
+    "title": "列数を指定して行数を自動で決める",
+    "task": "`reshape()` と `-1` を用いて、1次元配列 `x` を列数が `width` の2次元配列に変形してください。要素数は `width` で割り切れます。",
+    "input": "x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])\nwidth = 4",
+    "hint": "shapeの1か所を `-1` にすると、全要素数と残りの軸の長さから、その軸の長さが自動で決まります。",
+    "solution": "result = x.reshape(-1, width)"
+  },
+  {
+    "number": 3,
+    "id": "NP03-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "行数を指定して列数を自動で決める",
+    "task": "`reshape()` と `-1` を用いて、1次元配列 `x` を行数が `rows` の2次元配列に変形してください。要素数は `rows` で割り切れます。",
+    "input": "x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])\nrows = 3",
+    "hint": "行数を先に指定し、列数の位置を `-1` にします。`-1` を指定できるのは1か所だけです。",
+    "solution": "result = x.reshape(rows, -1)"
+  },
+  {
+    "number": 4,
+    "id": "NP03-06",
+    "version": 3,
+    "stage": "independent",
+    "title": "全要素を1次元にまとめる",
+    "task": "`reshape()` を用いて、2次元配列 `x` を1次元配列に変形してください。要素は、上の行から順に、各行では左から右へ並べてください。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "`reshape(-1)` とすると、全要素を1本の軸にまとめられます。標準の順序では、各行の要素が左から右へ並びます。",
+    "solution": "result = x.reshape(-1)"
+  },
+  {
+    "number": 5,
+    "id": "NP03-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "1次元配列を1行の配列にする",
+    "task": "`reshape()` を用いて、1次元配列 `x` を、1行ですべての要素が横に並ぶ2次元配列に変形してください。",
+    "input": "x = np.array([10, 20, 30])",
+    "hint": "行数を1に固定し、列数を自動で決めます。shape `(3,)` と `(1, 3)` は異なります。",
+    "solution": "result = x.reshape(1, -1)"
+  },
+  {
+    "number": 6,
+    "id": "NP03-10",
+    "version": 1,
+    "stage": "guided",
+    "title": "1次元配列を1列の配列にする",
+    "task": "`reshape()` を用いて、1次元配列 `x` を、1列ですべての要素が縦に並ぶ2次元配列に変形してください。",
+    "input": "x = np.array([10, 20, 30])",
+    "hint": "列数を1に固定し、行数を自動で決めます。shape `(3,)` と `(3, 1)` は異なります。",
+    "solution": "result = x.reshape(-1, 1)"
+  },
+  {
+    "number": 7,
+    "id": "NP03-11",
+    "version": 1,
+    "stage": "partial",
+    "title": "0次元配列を1次元配列にする",
+    "task": "`reshape()` を用いて、0次元配列 `x` を、要素を1つ持つshape `(1,)` の1次元配列に変形してください。",
+    "input": "x = np.array(7)",
+    "hint": "0次元配列にも値は1つあります。長さ1の軸を持つ形に変形できます。",
+    "solution": "result = x.reshape(1)"
+  },
+  {
+    "number": 8,
+    "id": "NP03-02",
+    "version": 4,
+    "stage": "guided",
+    "title": "先頭に長さ1の軸を追加する",
+    "task": "`np.expand_dims()` を用いて、2次元配列 `x` の先頭に長さ1の軸を追加してください。表示例では、shapeを `(2, 3)` から `(1, 2, 3)` にします。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "`axis` は新しい軸を挿入する位置です。`axis=0` で先頭に追加できます。",
+    "solution": "result = np.expand_dims(x, axis=0)"
+  },
+  {
+    "number": 9,
+    "id": "NP03-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "末尾に長さ1の軸を追加する",
+    "task": "`np.expand_dims()` を用いて、2次元配列 `x` の末尾に長さ1の軸を追加してください。表示例では、shapeを `(2, 3)` から `(2, 3, 1)` にします。",
+    "input": "x = np.array([\n    [10, 20, 30],\n    [40, 50, 60],\n])",
+    "hint": "`axis=-1` を指定すると、新しい軸を末尾に追加できます。",
+    "solution": "result = np.expand_dims(x, axis=-1)"
+  },
+  {
+    "number": 10,
+    "id": "NP03-12",
+    "version": 1,
+    "stage": "partial",
+    "title": "行の軸と列の軸の間に軸を追加する",
+    "task": "`np.expand_dims()` を用いて、2次元配列 `x` の行の軸と列の軸の間に、長さ1の軸を追加してください。表示例では、shapeを `(2, 3)` から `(2, 1, 3)` にします。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "新しい軸を追加した後、その軸が何番目になるかを考えます。軸の番号は先頭を0として数えます。",
+    "solution": "result = np.expand_dims(x, axis=1)"
+  },
+  {
+    "number": 11,
+    "id": "NP03-13",
+    "version": 1,
+    "stage": "partial",
+    "title": "np.newaxisで前後に軸を追加する",
+    "task": "`np.newaxis` を用いて、1次元配列 `x` の先頭と末尾に、それぞれ長さ1の軸を追加してください。表示例では、shapeを `(3,)` から `(1, 3, 1)` にします。",
+    "input": "x = np.array([10, 20, 30])",
+    "hint": "角括弧の中で `np.newaxis` を指定すると、その位置に長さ1の軸が追加されます。元の軸は `:` で残します。",
+    "solution": "result = x[np.newaxis, :, np.newaxis]"
+  },
+  {
+    "number": 12,
+    "id": "NP03-14",
+    "version": 1,
+    "stage": "partial",
+    "title": "長さ1の軸をすべて削除する",
+    "task": "`np.squeeze()` を用いて、配列 `x` から長さ1の軸をすべて削除してください。",
+    "input": "x = np.array([\n    [\n        [1, 2, 3],\n    ],\n])",
+    "hint": "`np.squeeze(x)` は、長さ1の軸をすべて削除します。この入力のshapeは `(1, 1, 3)` です。",
+    "solution": "result = np.squeeze(x)"
+  },
+  {
+    "number": 13,
+    "id": "NP03-04",
+    "version": 3,
+    "stage": "partial",
+    "title": "先頭の軸だけを削除する",
+    "task": "`np.squeeze()` を用いて、配列 `x` の先頭にある長さ1の軸だけを削除してください。末尾の長さ1の軸は残してください。",
+    "input": "x = np.array([\n    [\n        [1],\n        [2],\n        [3],\n    ],\n])",
+    "hint": "`axis` を指定すると、その軸だけを削除できます。この入力のshapeは `(1, 3, 1)` です。",
+    "solution": "result = np.squeeze(x, axis=0)"
+  },
+  {
+    "number": 14,
+    "id": "NP03-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "バッチ軸を残して末尾の軸だけを削除する",
+    "task": "配列 `x` のshapeは `(バッチ数, 要素数, 1)` です。`np.squeeze()` を用いて末尾の軸だけを削除し、バッチ数が1でも先頭の軸を残してください。",
+    "input": "x = np.array([\n    [\n        [0.2],\n        [0.5],\n        [0.8],\n    ],\n])",
+    "hint": "`axis` を省略すると、バッチ数が1の場合は先頭の軸も削除されます。末尾の軸を明示してください。",
+    "solution": "result = np.squeeze(x, axis=-1)"
+  },
+  {
+    "number": 15,
+    "id": "NP03-05",
+    "version": 3,
+    "stage": "independent",
+    "title": "画像ごとに要素を1行に並べる",
+    "task": "配列 `x` は、shapeが `(バッチ数, 高さ, 幅)` の画像データです。各画像の画素を1本の行に並べ、shapeが `(バッチ数, 高さ×幅)` の2次元配列に変形してください。バッチ数は1以上です。",
+    "input": "x = np.array([\n    [\n        [1, 2, 3],\n        [4, 5, 6],\n    ],\n    [\n        [7, 8, 9],\n        [10, 11, 12],\n    ],\n])",
+    "hint": "先頭のバッチ軸の長さは `x.shape[0]` で取得できます。それを残し、後ろの軸を `-1` でまとめます。",
+    "solution": "result = x.reshape(x.shape[0], -1)"
+  },
+  {
+    "number": 16,
+    "id": "NP03-16",
+    "version": 1,
+    "stage": "independent",
+    "title": "平坦化された画像を高さ・幅の形に戻す",
+    "task": "2次元配列 `x` の各行には、1枚の画像の画素が上の行から順に、各行では左から右へ並んでいます。`height` と `width` を使い、shapeが `(バッチ数, height, width)` の配列に変形してください。各行の要素数は `height * width` と一致します。",
+    "input": "x = np.array([\n    [1, 2, 3, 4, 5, 6],\n    [7, 8, 9, 10, 11, 12],\n])\nheight = 2\nwidth = 3",
+    "hint": "バッチ数はそのまま残し、各行の軸を高さと幅の2つの軸に分けます。",
+    "solution": "result = x.reshape(x.shape[0], height, width)"
+  },
+  {
+    "number": 17,
+    "id": "NP03-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "高さと幅の軸をまとめてチャネル軸を残す",
+    "task": "配列 `x` のshapeは `(バッチ数, 高さ, 幅, チャネル数)` です。高さと幅の軸をまとめ、shapeが `(バッチ数, 高さ×幅, チャネル数)` の配列に変形してください。バッチ数とチャネル数は1以上です。",
+    "input": "x = np.arange(24).reshape(2, 2, 2, 3)",
+    "hint": "先頭のバッチ軸と末尾のチャネル軸を残し、その間を `-1` でまとめます。",
+    "solution": "result = x.reshape(x.shape[0], -1, x.shape[-1])"
+  },
+  {
+    "number": 18,
+    "id": "NP03-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "空の画像データを平坦化する",
+    "task": "配列 `x` のshapeは `(バッチ数, 高さ, 幅)` で、バッチ数が0です。先頭の軸を残して後ろの2軸をまとめ、shapeが `(バッチ数, 高さ×幅)` の2次元配列に変形してください。`-1` は使わず、各軸の長さを `x.shape` から取得してください。",
+    "input": "x = np.zeros((0, 2, 3), dtype=np.float32)",
+    "hint": "この入力では `reshape(0, -1)` とすると、残りの軸の長さを決められません。高さと幅を掛けて、長さを明示します。",
+    "solution": "result = x.reshape(x.shape[0], x.shape[1] * x.shape[2])"
+  }
+]

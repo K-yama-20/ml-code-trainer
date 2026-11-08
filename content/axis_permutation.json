@@ -1,0 +1,200 @@
+[
+  {
+    "number": 1,
+    "id": "NP04-01",
+    "version": 3,
+    "stage": "guided",
+    "title": "行列の行と列を入れ替える",
+    "task": "`.T` を用いて、2次元配列 `x` の行と列を入れ替えてください。表示例では、shapeを `(2, 3)` から `(3, 2)` にします。",
+    "input": "x = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])",
+    "hint": "2次元配列の `.T` は行列の転置を表します。元の各行が、結果の各列になります。",
+    "solution": "result = x.T"
+  },
+  {
+    "number": 2,
+    "id": "NP04-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "3次元配列の軸の順番を逆にする",
+    "task": "`.T` を用いて、3次元配列 `x` のすべての軸の順番を逆にしてください。表示例では、shapeを `(2, 3, 4)` から `(4, 3, 2)` にします。",
+    "input": "x = np.arange(24).reshape(2, 3, 4)",
+    "hint": "3次元配列の `.T` は、軸の順番を `(0, 1, 2)` から `(2, 1, 0)` に変えます。",
+    "solution": "result = x.T"
+  },
+  {
+    "number": 3,
+    "id": "NP04-02",
+    "version": 3,
+    "stage": "guided",
+    "title": "軸の順番を指定して並べ替える",
+    "task": "`transpose()` を用いて、3次元配列 `x` の軸を、元の軸2、軸0、軸1の順番に並べ替えてください。",
+    "input": "x = np.arange(24).reshape(2, 3, 4)",
+    "hint": "`transpose()` には、結果の先頭から順に、元のどの軸を置くかを指定します。",
+    "solution": "result = x.transpose(2, 0, 1)"
+  },
+  {
+    "number": 4,
+    "id": "NP04-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "タプルで指定された順番に軸を並べ替える",
+    "task": "`transpose()` を用いて、配列 `x` の軸を、タプル `axes` が指定する順番に並べ替えてください。",
+    "input": "x = np.arange(24).reshape(2, 3, 4)\naxes = (1, 2, 0)",
+    "hint": "軸の順番を表すタプルは、そのまま `transpose()` の引数に渡せます。",
+    "solution": "result = x.transpose(axes)"
+  },
+  {
+    "number": 5,
+    "id": "NP04-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "先頭の2つの軸を交換する",
+    "task": "`np.swapaxes()` を用いて、3次元配列 `x` の軸0と軸1を交換してください。軸2は末尾に残してください。",
+    "input": "x = np.arange(24).reshape(2, 3, 4)",
+    "hint": "`np.swapaxes(配列, 軸番号1, 軸番号2)` は、指定した2つの軸を交換します。",
+    "solution": "result = np.swapaxes(x, 0, 1)"
+  },
+  {
+    "number": 6,
+    "id": "NP04-05",
+    "version": 3,
+    "stage": "independent",
+    "title": "最後の2つの軸を交換する",
+    "task": "`np.swapaxes()` と負の軸番号を用いて、4次元配列 `x` の最後の2つの軸だけを交換してください。先頭の2つの軸はそのまま残してください。",
+    "input": "x = np.arange(48).reshape(2, 2, 3, 4)",
+    "hint": "最後の軸は `-1`、その1つ前の軸は `-2` で指定できます。",
+    "solution": "result = np.swapaxes(x, -1, -2)"
+  },
+  {
+    "number": 7,
+    "id": "NP04-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "画像のチャネル軸を先頭に移す",
+    "task": "配列 `x` のshapeは `(高さ, 幅, チャネル数)` です。`np.moveaxis()` を用いてチャネル軸を先頭に移し、`(チャネル数, 高さ, 幅)` の配列にしてください。",
+    "input": "x = np.arange(24).reshape(2, 4, 3)",
+    "hint": "`np.moveaxis(配列, 移動する軸, 移動先)` を使います。末尾の軸は `-1`、先頭の位置は0です。",
+    "solution": "result = np.moveaxis(x, -1, 0)"
+  },
+  {
+    "number": 8,
+    "id": "NP04-06",
+    "version": 3,
+    "stage": "independent",
+    "title": "画像のチャネル軸を末尾に移す",
+    "task": "配列 `x` のshapeは `(チャネル数, 高さ, 幅)` です。`np.moveaxis()` を用いてチャネル軸を末尾に移し、`(高さ, 幅, チャネル数)` の配列にしてください。",
+    "input": "x = np.arange(24).reshape(3, 2, 4)",
+    "hint": "先頭の軸を移動対象にし、移動先を `-1` に指定します。他の軸の相対的な順番は保たれます。",
+    "solution": "result = np.moveaxis(x, 0, -1)"
+  },
+  {
+    "number": 9,
+    "id": "NP04-04",
+    "version": 3,
+    "stage": "partial",
+    "title": "バッチ画像をチャネルが前の形式にする",
+    "task": "配列 `x` のshapeは `(バッチ数, 高さ, 幅, チャネル数)` です。`transpose()` を用いて、`(バッチ数, チャネル数, 高さ, 幅)` の順番に並べ替えてください。",
+    "input": "x = np.arange(48).reshape(2, 2, 4, 3)",
+    "hint": "元の軸0を先頭に残し、次に軸3、その後に軸1と軸2を置きます。",
+    "solution": "result = x.transpose(0, 3, 1, 2)"
+  },
+  {
+    "number": 10,
+    "id": "NP04-10",
+    "version": 1,
+    "stage": "partial",
+    "title": "バッチ画像をチャネルが後ろの形式に戻す",
+    "task": "配列 `x` のshapeは `(バッチ数, チャネル数, 高さ, 幅)` です。`transpose()` を用いて、`(バッチ数, 高さ, 幅, チャネル数)` の順番に並べ替えてください。",
+    "input": "x = np.arange(48).reshape(2, 3, 2, 4)",
+    "hint": "バッチ軸を先頭に残し、高さ、幅、チャネルの順番に元の軸番号を指定します。",
+    "solution": "result = x.transpose(0, 2, 3, 1)"
+  },
+  {
+    "number": 11,
+    "id": "NP04-11",
+    "version": 1,
+    "stage": "partial",
+    "title": "バッチ画像の高さと幅の軸を交換する",
+    "task": "配列 `x` のshapeは `(バッチ数, 高さ, 幅, チャネル数)` です。`np.swapaxes()` を用いて、高さと幅の軸だけを交換してください。バッチ軸とチャネル軸の位置は保ってください。",
+    "input": "x = np.arange(24).reshape(1, 2, 4, 3)",
+    "hint": "高さは軸1、幅は軸2です。この2つだけを交換します。",
+    "solution": "result = np.swapaxes(x, 1, 2)"
+  },
+  {
+    "number": 12,
+    "id": "NP04-12",
+    "version": 1,
+    "stage": "guided",
+    "title": "時系列データのバッチ軸を先頭にする",
+    "task": "配列 `x` のshapeは `(時刻数, バッチ数, 特徴数)` です。`np.swapaxes()` を用いて、`(バッチ数, 時刻数, 特徴数)` の順番に並べ替えてください。",
+    "input": "x = np.arange(24).reshape(3, 2, 4)",
+    "hint": "時刻の軸とバッチの軸を交換します。特徴の軸は末尾に残ります。",
+    "solution": "result = np.swapaxes(x, 0, 1)"
+  },
+  {
+    "number": 13,
+    "id": "NP04-13",
+    "version": 1,
+    "stage": "partial",
+    "title": "時系列データの時刻軸を末尾にする",
+    "task": "配列 `x` のshapeは `(時刻数, バッチ数, 特徴数)` です。`transpose()` を用いて、`(バッチ数, 特徴数, 時刻数)` の順番に並べ替えてください。",
+    "input": "x = np.arange(24).reshape(3, 2, 4)",
+    "hint": "元の軸1がバッチ、軸2が特徴、軸0が時刻です。結果に置きたい順番で指定します。",
+    "solution": "result = x.transpose(1, 2, 0)"
+  },
+  {
+    "number": 14,
+    "id": "NP04-14",
+    "version": 1,
+    "stage": "independent",
+    "title": "動画データのチャネル軸を前に移す",
+    "task": "配列 `x` のshapeは `(バッチ数, 時刻数, 高さ, 幅, チャネル数)` です。`transpose()` を用いて、`(バッチ数, チャネル数, 時刻数, 高さ, 幅)` の順番に並べ替えてください。",
+    "input": "x = np.arange(48).reshape(1, 2, 2, 4, 3)",
+    "hint": "バッチの軸0を先頭に残し、その次にチャネルの軸4を置きます。時刻、高さ、幅の順番は保ちます。",
+    "solution": "result = x.transpose(0, 4, 1, 2, 3)"
+  },
+  {
+    "number": 15,
+    "id": "NP04-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "複数の軸を同時に移動する",
+    "task": "配列 `x` のshapeは `(バッチ数, 時刻数, 高さ, 幅, チャネル数)` です。`np.moveaxis()` を1回用いて、バッチ軸を位置1、チャネル軸を位置2に移し、`(時刻数, バッチ数, チャネル数, 高さ, 幅)` の配列にしてください。",
+    "input": "x = np.arange(48).reshape(1, 2, 2, 4, 3)",
+    "hint": "移動する軸と移動先は、対応する順番のタプルで指定できます。移動しない軸同士の順番は保たれます。",
+    "solution": "result = np.moveaxis(x, (0, 4), (1, 2))"
+  },
+  {
+    "number": 16,
+    "id": "NP04-16",
+    "version": 1,
+    "stage": "partial",
+    "title": "並べ替えた軸を元の順番に戻す",
+    "task": "配列 `y` は、元の3次元配列に `transpose(2, 0, 1)` を適用したものです。`transpose()` を用いて、元の軸の順番に戻してください。",
+    "input": "y = np.arange(24).reshape(2, 3, 4).transpose(2, 0, 1)",
+    "hint": "現在の軸0は元の軸2、現在の軸1は元の軸0、現在の軸2は元の軸1です。元の軸0、軸1、軸2に対応する現在の軸を順に指定します。",
+    "solution": "result = y.transpose(1, 2, 0)"
+  },
+  {
+    "number": 17,
+    "id": "NP04-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "画素ごとのチャネル値を1行に並べる",
+    "task": "配列 `x` のshapeは `(チャネル数, 高さ, 幅)` です。軸を並べ替えてからreshapeし、shapeが `(高さ×幅, チャネル数)` の2次元配列を作成してください。各行には1画素の全チャネルの値を並べ、画素は上の行から順に、各行では左から右へ並べてください。",
+    "input": "x = np.arange(12).reshape(3, 2, 2)",
+    "hint": "先に `(高さ, 幅, チャネル数)` の順番にすると、各画素のチャネル値が隣り合います。その後、高さと幅の軸をまとめます。",
+    "solution": "result = x.transpose(1, 2, 0).reshape(-1, x.shape[0])"
+  },
+  {
+    "number": 18,
+    "id": "NP04-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "空のバッチでも軸を並べ替える",
+    "task": "配列 `x` のshapeは `(バッチ数, 高さ, 幅, チャネル数)` で、バッチ数が0です。`transpose()` を用いて、`(バッチ数, チャネル数, 高さ, 幅)` の順番に並べ替えてください。",
+    "input": "x = np.zeros((0, 2, 4, 3), dtype=np.float32)",
+    "hint": "要素がなくても軸は存在します。通常のバッチ画像と同じ軸の並べ替えを適用でき、結果のshapeは `(0, 3, 2, 4)` になります。",
+    "solution": "result = x.transpose(0, 3, 1, 2)"
+  }
+]

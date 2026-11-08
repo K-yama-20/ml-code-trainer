@@ -1,0 +1,799 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "NP05-01",
+      "family_id": "NP05-01",
+      "version_id": "NP05-01@3",
+      "content_version": 3,
+      "concept_id": "NP05",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "各行の平均を計算する",
+      "description": "配列xの各行の平均を計算し、1次元のNumPy配列resultに代入してください。",
+      "learning_goal": "どの軸を集約し、何次元を残すかを考えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "行ごとに1つの平均を持つ1次元のNumPy配列。表示例では約[3.333333, 2.666667]です。",
+      "starter_code": "result = x.mean(axis=___)\n",
+      "example": "x.mean(axis=1, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "xは2行3列です。各行を1つの平均にまとめるので、結果は2つの数値になります。",
+        "meanで平均を計算できます。axis=0は各列をまとめ、axis=1は各行の中の値をまとめます。",
+        "空欄には1を入力します。x.mean(axis=1)で各行の平均になります。"
+      ],
+      "solution": "result = x.mean(axis=1)\n",
+      "explanation": "1行目は(1+4+5)/3、2行目は(2+10-4)/3です。axis=1は各行の列をまとめる指定なので、結果は2つの平均を持つ1次元配列になります。",
+      "common_mistakes": [
+        "axis=0では3列それぞれの平均[1.5, 7, 0.5]になり、行ごとの平均とは異なります。",
+        "keepdims=Trueではshapeが(2,1)になり、求める(2,)と異なります。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3216\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1.,4.,5.],[2.,10.,-4.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              3.3333333333333335,
+              2.6666666666666665
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3216\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[2.,4.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              3.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3216\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((0,3))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 3216\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[0.],[-1.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              -1.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP01",
+        "NP03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "axis=0では各列を平均します。今回は各行を1つの数値にまとめたいので、axisと結果の要素数を確認しましょう。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([\n    [1.0, 4.0, 5.0],\n    [2.0, 10.0, -4.0]\n])",
+        "task": "配列xの各行の平均を計算し、1次元のNumPy配列resultに代入してください。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP05-02",
+      "family_id": "NP05-02",
+      "version_id": "NP05-02@2",
+      "content_version": 2,
+      "concept_id": "NP05",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "prediction",
+      "difficulty": 1,
+      "title": "keepdimsのshape",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\nx.sum(axis=0, keepdims=True).shapeを予測して返す。",
+      "learning_goal": "どの軸を集約し、何次元を残すかを考えます。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "x.sum(axis=0, keepdims=True).shapeを予測して返す。",
+      "starter_code": "def solve(x):\n    return (1,x.shape[___])\n",
+      "example": "observed = x.sum(axis=0, keepdims=True).shape",
+      "editable_regions": [],
+      "hints": [
+        "どの軸を集約し、何次元を残すかを考えます。",
+        "集約軸をサイズ1として残します。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(x):\n    return (1,x.shape[1])\n",
+      "explanation": "集約軸をサイズ1として残します。",
+      "common_mistakes": [
+        "axisを残す軸だと思い、集約の向きを逆にする。",
+        "keepdimsなしの結果を2次元入力へ減算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 672\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": [
+            1,
+            4
+          ]
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP01",
+        "NP03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": false
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.9632993242501986, 0.040388900332521176, -1.145420041494048, -0.5119870213909987], [-0.6273475599286231, -1.5698276185391302, 0.8833467556546817, 1.2649120916910963], [2.064756877558641, 0.6723255063268078, -0.06581191547379431, 1.2905317221059769]], dtype=np.float64).reshape((3, 4))\n\nobserved = x.sum(axis=0, keepdims=True).shape",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP05-03",
+      "family_id": "NP05-03",
+      "version_id": "NP05-03@2",
+      "content_version": 2,
+      "concept_id": "NP05",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "各列の合計を計算する",
+      "description": "配列xの各列の合計を計算し、1次元のNumPy配列resultに代入してください。",
+      "learning_goal": "どの軸を集約し、何次元を残すかを考えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "列ごとに1つの合計を持つ1次元のNumPy配列。表示例では[9, 12]です。",
+      "starter_code": "result =\n",
+      "example": "x.mean(axis=1, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "1列目は1+3+5、2列目は2+4+6です。結果には列の数だけ値が残ります。",
+        "np.sumで合計できます。同じ列にある別の行の値をまとめる指定はaxis=0です。",
+        "result = np.sum(x, axis=0)という形で書けます。"
+      ],
+      "solution": "result = np.sum(x, axis=0)\n",
+      "explanation": "axis=0は行の軸をまとめます。表示例では1+3+5=9、2+4+6=12となり、2列に対応する[9,12]が残ります。",
+      "common_mistakes": [
+        "axis=1では行ごとの[3,7,11]になります。",
+        "axisを省略すると全要素の合計21になり、列の区別がなくなります。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2536\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1.,2.],[3.,4.],[5.,6.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              9.0,
+              12.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2536\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,3))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2536\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1,2]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              1,
+              2
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2536\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((4,1))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              4.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP01",
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "結果は列の数だけ必要です。全体の合計や行ごとの合計になっていないか、axisを確認してください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([\n    [1.0, 2.0],\n    [3.0, 4.0],\n    [5.0, 6.0]\n])",
+        "task": "配列xの各列の合計を計算し、1次元のNumPy配列resultに代入してください。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP05-04",
+      "family_id": "NP05-04",
+      "version_id": "NP05-04@2",
+      "content_version": 2,
+      "concept_id": "NP05",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "prediction",
+      "difficulty": 2,
+      "title": "最大値を列次元付きで",
+      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\n各行の最大値をshape(N,1)で返す。列は1以上。",
+      "learning_goal": "どの軸を集約し、何次元を残すかを考えます。",
+      "input_conditions": "表示されたデータについてのみ予測します。",
+      "output_conditions": "各行の最大値をshape(N,1)で返す。列は1以上。",
+      "starter_code": "def solve(x):\n    # 最大値を列次元付きで\n    return ___\n",
+      "example": "observed = np.max(x,axis=1,keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "どの軸を集約し、何次元を残すかを考えます。",
+        "keepdimsはbroadcastingにも役立ちます。",
+        "戻り値のshape、型、境界条件を公開テストと比較してください。"
+      ],
+      "solution": "def solve(x):\n    return np.max(x,axis=1,keepdims=True)\n",
+      "explanation": "keepdimsはbroadcastingにも役立ちます。",
+      "common_mistakes": [
+        "axisを残す軸だと思い、集約の向きを逆にする。",
+        "keepdimsなしの結果を2次元入力へ減算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8305\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.4160949613386586
+              ],
+              [
+                1.3049143187699974
+              ],
+              [
+                0.8964960605539015
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP01",
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "answer": {
+          "mode": "fixed",
+          "wrap_array": true
+        },
+        "edit_instruction": "observedに入る値を入力してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "prediction",
+        "provided_code": "import numpy as np\n\nx = np.array([[-0.7282831498048612, -1.7663408494835806, 1.4160949613386586, -1.1198835483994025], [0.5516471004191124, 1.3049143187699974, -0.5896903589416378, -1.2063752962383156], [0.2977242577607454, 0.14645555860952014, 0.8964960605539015, -1.0653888929625714]], dtype=np.float64).reshape((3, 4))\n\nobserved = np.max(x, axis=1, keepdims=True)",
+        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
+        "authored": false,
+        "structure": "prediction",
+        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+      }
+    },
+    {
+      "id": "NP05-05",
+      "family_id": "NP05-05",
+      "version_id": "NP05-05@3",
+      "content_version": 3,
+      "concept_id": "NP05",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "画像ごと・チャネルごとの平均を計算する",
+      "description": "画像データxの、画像ごと・チャネルごとの平均を求めてください。軸は画像数、チャネル数、高さ、幅の順です。高さと幅の2軸を平均し、2次元のNumPy配列resultに代入します。",
+      "learning_goal": "どの軸を集約し、何次元を残すかを考えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "shapeが(N,C)のNumPy配列。xの軸は順に画像数N、チャネル数C、高さH、幅Wです。表示例は[[1.5,5.5],[9.5,13.5]]です。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "x.mean(axis=1, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "xは2枚の画像、それぞれ2チャネル、高さ2・幅2です。画像とチャネルは区別したまま、各2×2領域を1つの数値にまとめます。",
+        "meanのaxisには複数の軸をタプルで指定できます。高さは軸2、幅は軸3です。",
+        "result = x.mean(axis=(2, 3))で、画像数とチャネル数の2軸だけが残ります。"
+      ],
+      "solution": "result = x.mean(axis=(2, 3))\n",
+      "explanation": "最初の画像の最初のチャネルは[[0,1],[2,3]]なので平均1.5です。同様に各領域を平均すると[[1.5,5.5],[9.5,13.5]]になります。N,Cを残し、H,Wの2軸をまとめています。",
+      "common_mistakes": [
+        "axis=(0,1)では画像とチャネルを混ぜてしまいます。",
+        "axis=3だけでは高さの軸が残り、結果が3次元になります。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3785\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.arange(16.).reshape(2,2,2,2)",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.5,
+                5.5
+              ],
+              [
+                9.5,
+                13.5
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3785\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,1,1,1))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3785\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,2,2,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 3785\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((2,1,3,1))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.0
+              ],
+              [
+                1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP01",
+        "NP03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "画像とチャネルの区別を残せていますか。平均するのは高さ・幅の軸2と3で、結果は2次元です。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.arange(16.0).reshape(2, 2, 2, 2)",
+        "task": "画像データxの、画像ごと・チャネルごとの平均を求めてください。軸は画像数、チャネル数、高さ、幅の順です。高さと幅の2軸を平均し、2次元のNumPy配列resultに代入します。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP05-06",
+      "family_id": "NP05-06",
+      "version_id": "NP05-06@2",
+      "content_version": 2,
+      "concept_id": "NP05",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "全体平均との差",
+      "description": "xから全要素の平均を引いた配列を返す。空配列は渡さない。",
+      "learning_goal": "どの軸を集約し、何次元を残すかを考えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "xから全要素の平均を引いた配列を返す。空配列は渡さない。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "x.mean(axis=1, keepdims=True)",
+      "editable_regions": [],
+      "hints": [
+        "どの軸を集約し、何次元を残すかを考えます。",
+        "axis未指定では全要素が集約されます。",
+        "解答部分は次の形で書けます。\nresult = x - x.mean()\n"
+      ],
+      "solution": "result = x - x.mean()\n",
+      "explanation": "axis未指定では全要素が集約されます。",
+      "common_mistakes": [
+        "axisを残す軸だと思い、集約の向きを逆にする。",
+        "keepdimsなしの結果を2次元入力へ減算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5692\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.1925551248959079,
+                -0.019183582533934485,
+                0.028801479661500318,
+                0.7568253066199697
+              ],
+              [
+                -0.11547218628078629,
+                0.6310489633515068,
+                -0.5669769013513735,
+                0.09156183028257109
+              ],
+              [
+                -0.958605184191982,
+                0.5068485504144323,
+                -1.4229114567528038,
+                -0.12449194411500811
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5692\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([3.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5692\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([1.,3.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              -1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5692\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((2,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP01",
+        "NP03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[1.0418882024006157, -0.16985050502922663, -0.12186544283379183, 0.6061583841246776], [-0.26613910877607844, 0.48038204085621466, -0.7176438238466656, -0.05910509221272107], [-1.1092721066872742, 0.35618162791914015, -1.573578379248096, -0.27515886661030026]], dtype=np.float64).reshape((3, 4))",
+        "task": "xから全要素の平均を引いた配列を返す。空配列は渡さない。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+html:has(.workspace-drawer[open]) {
+  overflow: hidden;
+}
+
+/* Keep the original content width on browsers with classic scrollbars. */
+html:has(.workspace-drawer[open][data-keep-scrollbar-gutter]) {
+  scrollbar-gutter: stable;
+}
+
+.workspace-drawer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  background: transparent;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.workspace-drawer::backdrop {
+  background: rgb(0 0 0 / 48%);
+}
+
+:root[data-theme="light"] .workspace-drawer::backdrop {
+  background: rgb(0 0 0 / 33%);
+}
+
+.workspace-drawer-panel {
+  position: relative;
+  width: min(320px, calc(100% - 36px));
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+}
+
+.workspace-drawer[open] .workspace-drawer-panel {
+  animation: workspace-slide-in 190ms ease-out;
+}
+
+/* Reuse the sidebar's styling while overriding its in-flow sizing and visibility. */
+.workspace-drawer-panel > .sidebar {
+  display: flex;
+  position: static;
+  height: auto;
+  min-height: 100%;
+  padding: 30px 18px 0;
+  border: 0;
+}
+
+.workspace-drawer-panel .sidebar-note {
+  display: block;
+}
+
+.workspace-drawer-close {
+  position: absolute;
+  top: 13px;
+  right: 12px;
+}
+
+.workspace-drawer-error {
+  padding: 0 18px 16px;
+  font-size: 12px;
+}
+
+@keyframes workspace-slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-drawer[open] .workspace-drawer-panel {
+    animation: none;
+  }
+}
