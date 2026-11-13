@@ -2,7 +2,7 @@
 
 **Write. Run. Understand.** 機械学習のコードを、読む力に変える。
 
-React / TypeScript / Vite と FastAPI で動く学習アプリです。MonacoでPythonを書き、Pyodideの公開テストを実行し、提出・解説・履歴・復習へ進めます。教材は5分野30概念、Drill 288問、Deep Dive 12課題、Code Reading 3プロジェクト（各8設問）です。
+React / TypeScript / Vite と FastAPI で動く学習アプリです。MonacoでPythonを書き、Pyodideの公開テストを実行し、提出・解説・履歴・復習へ進めます。教材は5分野30概念、Drill 312問、Deep Dive 12課題、Code Reading 3プロジェクト（各8設問）です。
 
 ## すぐに起動する
 
@@ -78,6 +78,8 @@ content/reshaping.json NP03「reshapeと次元の追加」18問の原本
 content/axis_permutation.json NP04「軸の入れ替え」18問の原本
 content/reductions.json NP05「集約・axis・keepdims」18問の原本
 content/broadcasting.json NP06「Broadcasting」18問の原本
+content/combining.json NP07「配列の結合」18問の原本
+content/conditional.json NP08「条件演算とclip」18問の原本
 content/compiled/  バージョン固定の公開／非公開教材、seed 42/99
 content/reading/   実行可能な3つのPythonプロジェクト
 scripts/           教材コンパイル・全件検証・DB同期・OpenAPI型生成

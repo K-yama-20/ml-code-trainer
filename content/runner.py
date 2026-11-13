@@ -183,7 +183,11 @@ def run_payload(payload, timings=None):
     for case in payload["cases"]:
         cleanup = None
         try:
-            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+            with (
+                contextlib.redirect_stdout(stdout),
+                contextlib.redirect_stderr(stderr),
+                contextlib.ExitStack() as case_context,
+            ):
                 env = {"__name__": "__exercise__", "seed": payload.get("seed", 1)}
                 exec(compile(case["setup"], "<fixture>", "exec"), env)
                 definition = payload.get("execution", {})
@@ -210,6 +214,8 @@ def run_payload(payload, timings=None):
                         | input_bindings
                     )
                 observation_env = env.copy()
+                if definition.get("strict_division"):
+                    case_context.enter_context(env["np"].errstate(divide="raise", invalid="raise"))
                 student_started = clock()
                 try:
                     exec(compile(payload["code"], "<student>", "exec"), env)
@@ -498,7 +504,7 @@ def check_syntax(tree, required):
 
 
 def check_call_keywords(tree, rule):
-    """Check named reduction options, including literal variables and **dicts."""
+    """Check explicit call options, including literal variables and **dicts."""
     bindings = {}
     for stmt in tree.body:
         if isinstance(stmt, (ast.Assign, ast.AnnAssign)) and stmt.value is not None:
@@ -519,14 +525,20 @@ def check_call_keywords(tree, rule):
                 or isinstance(fn, ast.Attribute) and fn.attr == rule["name"]):
             continue
         options = {}
-        for keyword in node.keywords:
+        arguments = [(keyword.arg, keyword.value) for keyword in node.keywords]
+        for name, position in rule.get("positions", {}).items():
+            if position < len(node.args) and not any(
+                isinstance(arg, ast.Starred) for arg in node.args[:position + 1]
+            ):
+                arguments.append((name, node.args[position]))
+        for name, expression in arguments:
             try:
-                value = literal(keyword.value)
-                if keyword.arg is None:
+                value = literal(expression)
+                if name is None:
                     if isinstance(value, dict):
                         options.update(value)
                 else:
-                    options[keyword.arg] = value
+                    options[name] = value
             except (ValueError, TypeError, SyntaxError):
                 continue
         if all(key in options and isinstance(options[key], bool) == isinstance(value, bool)

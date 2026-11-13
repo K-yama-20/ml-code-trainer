@@ -22,7 +22,7 @@ from content.catalog import (
 from content.runner import pack_expected
 from content.drill_phase1 import improve
 from content.concrete import improve_concrete
-from content import arguments, arrays, axis_permutation, broadcasting, files, indexing, iteration, reductions, reshaping
+from content import arguments, arrays, axis_permutation, broadcasting, combining, conditional, files, indexing, iteration, reductions, reshaping
 
 ORDERED_LESSONS = {
     iteration.CONCEPT_ID: (iteration.LESSONS, iteration.compile_iteration),
@@ -34,6 +34,8 @@ ORDERED_LESSONS = {
     axis_permutation.CONCEPT_ID: (axis_permutation.LESSONS, axis_permutation.compile_axis_permutation),
     reductions.CONCEPT_ID: (reductions.LESSONS, reductions.compile_reductions),
     broadcasting.CONCEPT_ID: (broadcasting.LESSONS, broadcasting.compile_broadcasting),
+    combining.CONCEPT_ID: (combining.LESSONS, combining.compile_combining),
+    conditional.CONCEPT_ID: (conditional.LESSONS, conditional.compile_conditional),
 }
 
 

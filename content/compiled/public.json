@@ -164,7 +164,9 @@
       "prerequisites": [
         "NP03"
       ],
-      "order": 9
+      "order": 9,
+      "ordered_practice": true,
+      "problem_count": 18
     },
     {
       "id": "NP08",
@@ -175,7 +177,9 @@
       "prerequisites": [
         "NP02"
       ],
-      "order": 10
+      "order": 10,
+      "ordered_practice": true,
+      "problem_count": 18
     },
     {
       "id": "NP09",
@@ -18453,101 +18457,71 @@
       }
     },
     {
-      "id": "NP07-01",
-      "family_id": "NP07-01",
-      "version_id": "NP07-01@2",
-      "content_version": 2,
+      "id": "NP07-07",
+      "family_id": "NP07-07",
+      "version_id": "NP07-07@1",
+      "content_version": 1,
       "concept_id": "NP07",
       "module_id": "numpy",
       "stage": "guided",
-      "type": "completion",
+      "type": "implementation",
       "difficulty": 1,
-      "title": "行方向に結合",
-      "description": "同じ列数のa,bを行方向に結合して返す。",
+      "title": "2つの1次元配列を順番につなぐ",
+      "description": "`np.concatenate()` を使って、1次元配列 `a` の後ろに `b` をつなげてください。結果は1次元配列にしてください。",
       "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "同じ列数のa,bを行方向に結合して返す。",
-      "starter_code": "result = np.concatenate([a, b], axis=___)\n",
-      "example": "np.concatenate([a, b], axis=0)",
-      "editable_regions": [],
-      "explanation": "concatenateは既存軸を伸ばします。",
-      "common_mistakes": [
-        "stackとconcatenateの次元数の違いを混同する。",
-        "結合しない軸のサイズが一致していない。"
+      "input_conditions": "",
+      "output_conditions": "`np.concatenate()` を使って、1次元配列 `a` の後ろに `b` をつなげてください。結果は1次元配列にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([4, 5])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "つなげたい配列を、順番にリストへ入れて渡します。1次元配列の軸は `axis=0` です。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 159\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "x,x",
+          "setup": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([4, 5])",
+          "args": "a, b",
           "expected": {
             "kind": "array",
             "shape": [
-              6,
-              4
+              5
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
-              [
-                -0.6814794528949022,
-                -1.1888893707980976,
-                0.7752000687960593,
-                -0.2745891431956734
-              ],
-              [
-                1.0034569925740142,
-                0.12164170563366085,
-                -0.513159407633873,
-                0.20070982409062696
-              ],
-              [
-                0.9830631223409243,
-                -1.1778131919340271,
-                -0.10787167895544798,
-                -1.8602155316303084
-              ],
-              [
-                -0.6814794528949022,
-                -1.1888893707980976,
-                0.7752000687960593,
-                -0.2745891431956734
-              ],
-              [
-                1.0034569925740142,
-                0.12164170563366085,
-                -0.513159407633873,
-                0.20070982409062696
-              ],
-              [
-                0.9830631223409243,
-                -1.1778131919340271,
-                -0.10787167895544798,
-                -1.8602155316303084
-              ]
+              1,
+              2,
+              3,
+              4,
+              5
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 159\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.zeros((0,2)),np.ones((1,2))",
+          "setup": "import numpy as np\n\na = np.array([-3])\nb = np.array([7, 8, 0, -5])",
+          "args": "a, b",
           "expected": {
             "kind": "array",
             "shape": [
-              1,
-              2
+              5
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
-              [
-                1.0,
-                1.0
-              ]
+              -3,
+              7,
+              8,
+              0,
+              -5
             ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:concatenate",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -18557,10 +18531,18 @@
       "prerequisites": [
         "NP03"
       ],
-      "estimated_minutes": 1,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "combining-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([4, 5])\n\n# 以下に答えを記入",
+        "task": "`np.concatenate()` を使って、1次元配列 `a` の後ろに `b` をつなげてください。結果は1次元配列にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
@@ -18568,79 +18550,101 @@
           "b"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\na = np.array([[-0.6814794528949022, -1.1888893707980976, 0.7752000687960593, -0.2745891431956734], [1.0034569925740142, 0.12164170563366085, -0.513159407633873, 0.20070982409062696], [0.9830631223409243, -1.1778131919340271, -0.10787167895544798, -1.8602155316303084]], dtype=np.float64).reshape((3, 4))\nb = np.array([[-0.6814794528949022, -1.1888893707980976, 0.7752000687960593, -0.2745891431956734], [1.0034569925740142, 0.12164170563366085, -0.513159407633873, 0.20070982409062696], [0.9830631223409243, -1.1778131919340271, -0.10787167895544798, -1.8602155316303084]], dtype=np.float64).reshape((3, 4))",
-        "task": "同じ列数のa,bを行方向に結合して返す。 処理の結果をresultに代入してください。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP07-02",
-      "family_id": "NP07-02",
-      "version_id": "NP07-02@2",
-      "content_version": 2,
+      "id": "NP07-01",
+      "family_id": "NP07-01",
+      "version_id": "NP07-01@3",
+      "content_version": 3,
       "concept_id": "NP07",
       "module_id": "numpy",
       "stage": "guided",
-      "type": "prediction",
+      "type": "implementation",
       "difficulty": 1,
-      "title": "stackのshape予測",
-      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\n同じshapeのa,bに対するnp.stack([a,b],axis=0).shapeを予測して返す。",
+      "title": "2次元配列を縦につないで行を増やす",
+      "description": "`np.concatenate()` を使って、2次元配列 `a` の下に `b` の行を追加してください。`a` と `b` の列数は同じです。",
       "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
-      "input_conditions": "表示されたデータについてのみ予測します。",
-      "output_conditions": "同じshapeのa,bに対するnp.stack([a,b],axis=0).shapeを予測して返す。",
-      "starter_code": "def solve(a, b):\n    return (___,*a.shape)\n",
-      "example": "observed = np.stack([a, b], axis=0).shape",
-      "editable_regions": [],
-      "explanation": "stackは次元数を1増やします。",
-      "common_mistakes": [
-        "stackとconcatenateの次元数の違いを混同する。",
-        "結合しない軸のサイズが一致していない。"
-      ],
-      "public_tests": [
+      "input_conditions": "",
+      "output_conditions": "`np.concatenate()` を使って、2次元配列 `a` の下に `b` の行を追加してください。`a` と `b` の列数は同じです。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
         {
-          "setup": "seed = 8598\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "x,x",
-          "expected": [
-            2,
-            3,
-            4
-          ],
-          "expected_tuple_paths": [
-            []
-          ]
+          "start": 9,
+          "end": 9
         }
       ],
-      "required_ast": "",
+      "explanation": "`axis=0` を指定すると、行の軸が伸びます。列数はそのままです。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                7,
+                8,
+                9
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.array([[0, -2]])\nb = np.arange(6).reshape(3, 2)",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                -2
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                4,
+                5
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:concatenate",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -18650,107 +18654,114 @@
       "prerequisites": [
         "NP03"
       ],
-      "estimated_minutes": 1,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "combining-fixtures-v1",
       "tolerance": 1e-05,
-      "presentation": {
-        "answer": {
-          "mode": "fixed",
-          "wrap_array": false
-        },
-        "edit_instruction": "observedに入る値を入力してください。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
       "workspace": {
-        "mode": "prediction",
-        "provided_code": "import numpy as np\n\na = np.array([[-1.1002408036253466, 1.0371642514872084, 0.10923922350510039, 0.6370893479680948], [0.8076356543660728, 1.6283606926325525, -0.6715321980986428, 0.2111106119896884], [0.2831702994655971, 0.3489151464435119, -1.1810272243654103, -0.8936700321142669]], dtype=np.float64).reshape((3, 4))\nb = np.array([[-1.1002408036253466, 1.0371642514872084, 0.10923922350510039, 0.6370893479680948], [0.8076356543660728, 1.6283606926325525, -0.6715321980986428, 0.2111106119896884], [0.2831702994655971, 0.3489151464435119, -1.1810272243654103, -0.8936700321142669]], dtype=np.float64).reshape((3, 4))\n\nobserved = np.stack([a, b], axis=0).shape",
-        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
-        "authored": false,
-        "structure": "prediction",
-        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n])\n\n# 以下に答えを記入",
+        "task": "`np.concatenate()` を使って、2次元配列 `a` の下に `b` の行を追加してください。`a` と `b` の列数は同じです。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
       "id": "NP07-03",
       "family_id": "NP07-03",
-      "version_id": "NP07-03@2",
-      "content_version": 2,
+      "version_id": "NP07-03@3",
+      "content_version": 3,
       "concept_id": "NP07",
       "module_id": "numpy",
       "stage": "partial",
-      "type": "completion",
+      "type": "implementation",
       "difficulty": 2,
-      "title": "列を追加",
-      "description": "同じ行数の2次元a,bを列方向に結合して返す。",
+      "title": "2次元配列を横につないで列を増やす",
+      "description": "`np.concatenate()` を使って、2次元配列 `a` の右に `b` の列を追加してください。`a` と `b` の行数は同じです。",
       "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "同じ行数の2次元a,bを列方向に結合して返す。",
-      "starter_code": "result =\n",
-      "example": "np.concatenate([a, b], axis=0)",
-      "editable_regions": [],
-      "explanation": "結合しない軸のサイズを揃えます。",
-      "common_mistakes": [
-        "stackとconcatenateの次元数の違いを混同する。",
-        "結合しない軸のサイズが一致していない。"
+      "input_conditions": "",
+      "output_conditions": "`np.concatenate()` を使って、2次元配列 `a` の右に `b` の列を追加してください。`a` と `b` の行数は同じです。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([\n    [10],\n    [20],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "`axis=1` を指定すると、列の軸が伸びます。結合に使わない行の軸の長さはそろっている必要があります。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 4153\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "x,x[:,:1]",
+          "setup": "import numpy as np\n\na = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([\n    [10],\n    [20],\n])",
+          "args": "a, b",
           "expected": {
             "kind": "array",
             "shape": [
-              3,
-              5
+              2,
+              3
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
               [
-                1.3757365879632522,
-                -1.162235480897548,
-                -0.3278823480956024,
-                0.9316703027396958,
-                1.3757365879632522
+                1,
+                2,
+                10
               ],
               [
-                -0.5167537093257885,
-                1.1477307378922939,
-                0.3850045974974714,
-                -1.3746431597074444,
-                -0.5167537093257885
-              ],
-              [
-                -0.4024060887519101,
-                2.3479361457720316,
-                0.0442033562504589,
-                -0.31851389735441293,
-                -0.4024060887519101
+                3,
+                4,
+                20
               ]
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 4153\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.zeros((0,2)),np.zeros((0,1))",
+          "setup": "import numpy as np\n\na = np.array([[9], [7], [-4]])\nb = np.arange(6).reshape(3, 2)",
+          "args": "a, b",
           "expected": {
             "kind": "array",
             "shape": [
-              0,
+              3,
               3
             ],
-            "dtype": "float64",
-            "data": []
+            "dtype": "int64",
+            "data": [
+              [
+                9,
+                0,
+                1
+              ],
+              [
+                7,
+                2,
+                3
+              ],
+              [
+                -4,
+                4,
+                5
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:concatenate",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -18762,8 +18773,16 @@
       ],
       "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "combining-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([\n    [10],\n    [20],\n])\n\n# 以下に答えを記入",
+        "task": "`np.concatenate()` を使って、2次元配列 `a` の右に `b` の列を追加してください。`a` と `b` の行数は同じです。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
@@ -18771,98 +18790,89 @@
           "b"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\na = np.array([[1.3757365879632522, -1.162235480897548, -0.3278823480956024, 0.9316703027396958], [-0.5167537093257885, 1.1477307378922939, 0.3850045974974714, -1.3746431597074444], [-0.4024060887519101, 2.3479361457720316, 0.0442033562504589, -0.31851389735441293]], dtype=np.float64).reshape((3, 4))\nb = np.array([[1.3757365879632522], [-0.5167537093257885], [-0.4024060887519101]], dtype=np.float64).reshape((3, 1))",
-        "task": "同じ行数の2次元a,bを列方向に結合して返す。 処理の結果をresultに代入してください。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP07-04",
-      "family_id": "NP07-04",
-      "version_id": "NP07-04@2",
-      "content_version": 2,
+      "id": "NP07-08",
+      "family_id": "NP07-08",
+      "version_id": "NP07-08@1",
+      "content_version": 1,
       "concept_id": "NP07",
       "module_id": "numpy",
-      "stage": "partial",
-      "type": "prediction",
-      "difficulty": 2,
-      "title": "特徴を最後にstack",
-      "description": "次の処理の戻り値を予測してください。solve内で同等の値を返します。\n\n同じshapeのa,bを最後の新しい軸でstackして返す。",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "次元数の異なる配列を1次元につなぐ",
+      "description": "`np.concatenate()` の `axis=None` を使って、2次元配列 `a` と1次元配列 `b` の全要素を、`a`、`b` の順に1次元配列へまとめてください。`a` の要素は上の行から順に、各行では左から右へ並べてください。",
       "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
-      "input_conditions": "表示されたデータについてのみ予測します。",
-      "output_conditions": "同じshapeのa,bを最後の新しい軸でstackして返す。",
-      "starter_code": "def solve(a, b):\n    # 特徴を最後にstack\n    return ___\n",
-      "example": "observed = np.stack([a,b],axis=-1)",
-      "editable_regions": [],
-      "explanation": "新しい軸のサイズは入力配列の個数です。",
-      "common_mistakes": [
-        "stackとconcatenateの次元数の違いを混同する。",
-        "結合しない軸のサイズが一致していない。"
+      "input_conditions": "",
+      "output_conditions": "`np.concatenate()` の `axis=None` を使って、2次元配列 `a` と1次元配列 `b` の全要素を、`a`、`b` の順に1次元配列へまとめてください。`a` の要素は上の行から順に、各行では左から右へ並べてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([5, 6, 7])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "`axis=None` を指定すると、各配列を1次元にしてからつなぎます。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 9349\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "v,v*2",
+          "setup": "import numpy as np\n\na = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([5, 6, 7])",
+          "args": "a, b",
           "expected": {
             "kind": "array",
             "shape": [
-              4,
-              2
+              7
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
-              [
-                9349.0,
-                18698.0
-              ],
-              [
-                9351.0,
-                18702.0
-              ],
-              [
-                9347.0,
-                18694.0
-              ],
-              [
-                9353.0,
-                18706.0
-              ]
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.arange(12).reshape(3, 4).T\nb = np.array([-2, 9])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              4,
+              8,
+              1,
+              5,
+              9,
+              2,
+              6,
+              10,
+              3,
+              7,
+              11,
+              -2,
+              9
             ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call-keywords:{\"name\": \"concatenate\", \"keywords\": {\"axis\": null}, \"positions\": {\"axis\": 1}}",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -18874,129 +18884,93 @@
       ],
       "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "combining-fixtures-v1",
       "tolerance": 1e-05,
-      "presentation": {
-        "answer": {
-          "mode": "fixed",
-          "wrap_array": true
-        },
-        "edit_instruction": "observedに入る値を入力してください。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
       "workspace": {
-        "mode": "prediction",
-        "provided_code": "import numpy as np\n\na = np.array([9349.0, 9351.0, 9347.0, 9353.0], dtype=np.float64).reshape((4,))\nb = np.array([18698.0, 18702.0, 18694.0, 18706.0], dtype=np.float64).reshape((4,))\n\nobserved = np.stack([a, b], axis=-1)",
-        "task": "表示されたコードを読み、observedに入る値を答えてください。コードの実装は不要です。",
-        "authored": false,
-        "structure": "prediction",
-        "classification_reason": "表示された固定コードの観察。数値・shape・値の専用回答欄"
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([5, 6, 7])\n\n# 以下に答えを記入",
+        "task": "`np.concatenate()` の `axis=None` を使って、2次元配列 `a` と1次元配列 `b` の全要素を、`a`、`b` の順に1次元配列へまとめてください。`a` の要素は上の行から順に、各行では左から右へ並べてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP07-05",
-      "family_id": "NP07-05",
-      "version_id": "NP07-05@2",
-      "content_version": 2,
+      "id": "NP07-09",
+      "family_id": "NP07-09",
+      "version_id": "NP07-09@1",
+      "content_version": 1,
       "concept_id": "NP07",
       "module_id": "numpy",
-      "stage": "independent",
+      "stage": "guided",
       "type": "implementation",
-      "difficulty": 3,
-      "title": "3チャネル画像を組む",
-      "description": "同じ(H,W)の3配列を(H,W,3)にまとめる。",
+      "difficulty": 1,
+      "title": "時系列データの前半と後半をつなぐ",
+      "description": "`first` と `second` は、shapeが `(バッチ数, 時刻数, 特徴数)` の配列です。`np.concatenate()` を使って、各サンプルの時系列を前半 `first`、後半 `second` の順につないでください。バッチ数と特徴数は共通です。",
       "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "同じ(H,W)の3配列を(H,W,3)にまとめる。",
-      "starter_code": "# ここに処理を書き、resultに代入してください\n",
-      "example": "np.concatenate([a, b], axis=0)",
-      "editable_regions": [],
-      "explanation": "チャネルの軸位置を意識します。",
-      "common_mistakes": [
-        "stackとconcatenateの次元数の違いを混同する。",
-        "結合しない軸のサイズが一致していない。"
+      "input_conditions": "",
+      "output_conditions": "`first` と `second` は、shapeが `(バッチ数, 時刻数, 特徴数)` の配列です。`np.concatenate()` を使って、各サンプルの時系列を前半 `first`、後半 `second` の順につないでください。バッチ数と特徴数は共通です。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nfirst = np.arange(8).reshape(2, 2, 2)\nsecond = np.arange(8, 12).reshape(2, 1, 2)\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "増やしたいのは時刻数です。時刻に対応する軸1を指定します。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 7244\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "x,x*2,x*3",
+          "setup": "import numpy as np\n\nfirst = np.arange(8).reshape(2, 2, 2)\nsecond = np.arange(8, 12).reshape(2, 1, 2)",
+          "args": "first, second",
           "expected": {
             "kind": "array",
             "shape": [
+              2,
               3,
-              4,
-              3
+              2
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
               [
                 [
-                  2.946669039529117,
-                  5.893338079058234,
-                  8.840007118587351
+                  0,
+                  1
                 ],
                 [
-                  -0.2671960348998825,
-                  -0.534392069799765,
-                  -0.8015881046996474
+                  2,
+                  3
                 ],
                 [
-                  1.81771203872356,
-                  3.63542407744712,
-                  5.45313611617068
-                ],
-                [
-                  -0.36134228753696124,
-                  -0.7226845750739225,
-                  -1.0840268626108838
+                  8,
+                  9
                 ]
               ],
               [
                 [
-                  -0.7720420493317349,
-                  -1.5440840986634699,
-                  -2.3161261479952047
+                  4,
+                  5
                 ],
                 [
-                  -0.024129701079128846,
-                  -0.04825940215825769,
-                  -0.07238910323738654
+                  6,
+                  7
                 ],
                 [
-                  -0.22370308277280754,
-                  -0.4474061655456151,
-                  -0.6711092483184227
-                ],
-                [
-                  1.7784864915253058,
-                  3.5569729830506116,
-                  5.335459474575917
-                ]
-              ],
-              [
-                [
-                  1.2514893585705469,
-                  2.5029787171410938,
-                  3.7544680757116407
-                ],
-                [
-                  -0.22437404804210864,
-                  -0.4487480960842173,
-                  -0.673122144126326
-                ],
-                [
-                  0.13090318644357468,
-                  0.26180637288714936,
-                  0.39270955933072405
-                ],
-                [
-                  -1.2010000992757037,
-                  -2.4020001985514075,
-                  -3.603000297827111
+                  10,
+                  11
                 ]
               ]
             ]
@@ -19004,22 +18978,55 @@
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 7244\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.zeros((0,2)),np.zeros((0,2)),np.zeros((0,2))",
+          "setup": "import numpy as np\n\nfirst = np.arange(12).reshape(1, 3, 4)\nsecond = np.arange(12, 20).reshape(1, 2, 4)",
+          "args": "first, second",
           "expected": {
             "kind": "array",
             "shape": [
-              0,
-              2,
-              3
+              1,
+              5,
+              4
             ],
-            "dtype": "float64",
-            "data": []
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                [
+                  8,
+                  9,
+                  10,
+                  11
+                ],
+                [
+                  12,
+                  13,
+                  14,
+                  15
+                ],
+                [
+                  16,
+                  17,
+                  18,
+                  19
+                ]
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:concatenate",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -19029,10 +19036,1168 @@
       "prerequisites": [
         "NP03"
       ],
-      "estimated_minutes": 3,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "combining-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nfirst = np.arange(8).reshape(2, 2, 2)\nsecond = np.arange(8, 12).reshape(2, 1, 2)\n\n# 以下に答えを記入",
+        "task": "`first` と `second` は、shapeが `(バッチ数, 時刻数, 特徴数)` の配列です。`np.concatenate()` を使って、各サンプルの時系列を前半 `first`、後半 `second` の順につないでください。バッチ数と特徴数は共通です。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "first",
+          "second"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-06",
+      "family_id": "NP07-06",
+      "version_id": "NP07-06@3",
+      "content_version": 3,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "複数のミニバッチを1つにまとめる",
+      "description": "`batches` は、列数が共通する2次元配列を1つ以上含むリストです。`np.concatenate()` を使って、すべての配列をリストの順番で行方向につないでください。各バッチの行数は異なっていて構いません。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`batches` は、列数が共通する2次元配列を1つ以上含むリストです。`np.concatenate()` を使って、すべての配列をリストの順番で行方向につないでください。各バッチの行数は異なっていて構いません。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nbatches = [\n    np.array([[1, 2]]),\n    np.array([[3, 4], [5, 6]]),\n    np.array([[7, 8]]),\n]\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "配列のリストはそのまま `np.concatenate()` に渡せます。行数を増やすので `axis=0` を指定します。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nbatches = [\n    np.array([[1, 2]]),\n    np.array([[3, 4], [5, 6]]),\n    np.array([[7, 8]]),\n]",
+          "args": "batches",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                7,
+                8
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nbatches = [np.array([[9, -4, 7], [2, 0, 8]])]",
+          "args": "batches",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                9,
+                -4,
+                7
+              ],
+              [
+                2,
+                0,
+                8
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:concatenate",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nbatches = [\n    np.array([[1, 2]]),\n    np.array([[3, 4], [5, 6]]),\n    np.array([[7, 8]]),\n]\n\n# 以下に答えを記入",
+        "task": "`batches` は、列数が共通する2次元配列を1つ以上含むリストです。`np.concatenate()` を使って、すべての配列をリストの順番で行方向につないでください。各バッチの行数は異なっていて構いません。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "batches"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-10",
+      "family_id": "NP07-10",
+      "version_id": "NP07-10@1",
+      "content_version": 1,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "1次元配列を1行ずつ並べる",
+      "description": "`np.vstack()` を使って、同じ長さの1次元配列 `a` と `b` を、1行目が `a`、2行目が `b` の2次元配列にしてください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`np.vstack()` を使って、同じ長さの1次元配列 `a` と `b` を、1行目が `a`、2行目が `b` の2次元配列にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([10, 20, 30])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.vstack()` に1次元配列を渡すと、それぞれが1行として扱われます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([10, 20, 30])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                10,
+                20,
+                30
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.array([-4, 1, 5, 9])\nb = np.array([7, 0, -2, 4])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              4
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                -4,
+                1,
+                5,
+                9
+              ],
+              [
+                7,
+                0,
+                -2,
+                4
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:vstack",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([10, 20, 30])\n\n# 以下に答えを記入",
+        "task": "`np.vstack()` を使って、同じ長さの1次元配列 `a` と `b` を、1行目が `a`、2行目が `b` の2次元配列にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-11",
+      "family_id": "NP07-11",
+      "version_id": "NP07-11@1",
+      "content_version": 1,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "1次元配列を1列ずつ並べる",
+      "description": "`np.column_stack()` を使って、同じ長さの1次元配列 `a` と `b` を、1列目が `a`、2列目が `b` の2次元配列にしてください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`np.column_stack()` を使って、同じ長さの1次元配列 `a` と `b` を、1列目が `a`、2列目が `b` の2次元配列にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([10, 20, 30])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.column_stack()` に1次元配列を渡すと、それぞれが1列として扱われます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([10, 20, 30])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                10
+              ],
+              [
+                2,
+                20
+              ],
+              [
+                3,
+                30
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.array([-4, 1, 5, 9])\nb = np.array([7, 0, -2, 4])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                -4,
+                7
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                5,
+                -2
+              ],
+              [
+                9,
+                4
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:column_stack",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([10, 20, 30])\n\n# 以下に答えを記入",
+        "task": "`np.column_stack()` を使って、同じ長さの1次元配列 `a` と `b` を、1列目が `a`、2列目が `b` の2次元配列にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-12",
+      "family_id": "NP07-12",
+      "version_id": "NP07-12@1",
+      "content_version": 1,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "特徴量の表に1列追加する",
+      "description": "1次元配列 `extra` は、2次元配列 `x` の各行に対応する追加の特徴量です。`extra` を1列の2次元配列に変形し、`np.concatenate()` を使って `x` の右端に追加してください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "1次元配列 `extra` は、2次元配列 `x` の各行に対応する追加の特徴量です。`extra` を1列の2次元配列に変形し、`np.concatenate()` を使って `x` の右端に追加してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([\n    [1, 2],\n    [3, 4],\n    [5, 6],\n])\nextra = np.array([10, 20, 30])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`extra.reshape(-1, 1)` で列の軸を追加できます。その後、列の軸で `x` と結合します。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([\n    [1, 2],\n    [3, 4],\n    [5, 6],\n])\nextra = np.array([10, 20, 30])",
+          "args": "x, extra",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                2,
+                10
+              ],
+              [
+                3,
+                4,
+                20
+              ],
+              [
+                5,
+                6,
+                30
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.arange(8).reshape(2, 4)\nextra = np.array([-3, 2])",
+          "args": "x, extra",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              5
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                1,
+                2,
+                3,
+                -3
+              ],
+              [
+                4,
+                5,
+                6,
+                7,
+                2
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:concatenate",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([\n    [1, 2],\n    [3, 4],\n    [5, 6],\n])\nextra = np.array([10, 20, 30])\n\n# 以下に答えを記入",
+        "task": "1次元配列 `extra` は、2次元配列 `x` の各行に対応する追加の特徴量です。`extra` を1列の2次元配列に変形し、`np.concatenate()` を使って `x` の右端に追加してください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "extra"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-02",
+      "family_id": "NP07-02",
+      "version_id": "NP07-02@3",
+      "content_version": 3,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "2枚の画像を1つのバッチにする",
+      "description": "`a` と `b` は、同じ高さ・幅の2次元配列です。`np.stack()` を使って先頭に画像を区別する軸を作り、`a`、`b` の順にまとめてください。結果のshapeは `(2, 高さ, 幅)` にしてください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`a` と `b` は、同じ高さ・幅の2次元配列です。`np.stack()` を使って先頭に画像を区別する軸を作り、`a`、`b` の順にまとめてください。結果のshapeは `(2, 高さ, 幅)` にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n    [10, 11, 12],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.stack()` は新しい軸を作ります。`axis=0` を指定すると、新しい軸が先頭に入ります。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n    [10, 11, 12],\n])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  1,
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  5,
+                  6
+                ]
+              ],
+              [
+                [
+                  7,
+                  8,
+                  9
+                ],
+                [
+                  10,
+                  11,
+                  12
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.arange(12).reshape(3, 4)\nb = (np.arange(12) + 20).reshape(3, 4)",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3,
+              4
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                [
+                  8,
+                  9,
+                  10,
+                  11
+                ]
+              ],
+              [
+                [
+                  20,
+                  21,
+                  22,
+                  23
+                ],
+                [
+                  24,
+                  25,
+                  26,
+                  27
+                ],
+                [
+                  28,
+                  29,
+                  30,
+                  31
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:stack",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n    [10, 11, 12],\n])\n\n# 以下に答えを記入",
+        "task": "`a` と `b` は、同じ高さ・幅の2次元配列です。`np.stack()` を使って先頭に画像を区別する軸を作り、`a`、`b` の順にまとめてください。結果のshapeは `(2, 高さ, 幅)` にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-04",
+      "family_id": "NP07-04",
+      "version_id": "NP07-04@3",
+      "content_version": 3,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "同じ位置の値を末尾の軸にまとめる",
+      "description": "`np.stack()` を使って、同じshapeの2次元配列 `a` と `b` の末尾に長さ2の軸を追加してください。各位置 `(i, j)` について、`result[i, j, 0]` に `a[i, j]`、`result[i, j, 1]` に `b[i, j]` が入るようにしてください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`np.stack()` を使って、同じshapeの2次元配列 `a` と `b` の末尾に長さ2の軸を追加してください。各位置 `(i, j)` について、`result[i, j, 0]` に `a[i, j]`、`result[i, j, 1]` に `b[i, j]` が入るようにしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [10, 20, 30],\n    [40, 50, 60],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`axis=-1` を指定すると、配列を区別する新しい軸が末尾に入ります。表示例の結果のshapeは `(2, 3, 2)` です。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [10, 20, 30],\n    [40, 50, 60],\n])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  20
+                ],
+                [
+                  3,
+                  30
+                ]
+              ],
+              [
+                [
+                  4,
+                  40
+                ],
+                [
+                  5,
+                  50
+                ],
+                [
+                  6,
+                  60
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.arange(12).reshape(3, 4)\nb = (np.arange(12) + 20).reshape(3, 4)",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  0,
+                  20
+                ],
+                [
+                  1,
+                  21
+                ],
+                [
+                  2,
+                  22
+                ],
+                [
+                  3,
+                  23
+                ]
+              ],
+              [
+                [
+                  4,
+                  24
+                ],
+                [
+                  5,
+                  25
+                ],
+                [
+                  6,
+                  26
+                ],
+                [
+                  7,
+                  27
+                ]
+              ],
+              [
+                [
+                  8,
+                  28
+                ],
+                [
+                  9,
+                  29
+                ],
+                [
+                  10,
+                  30
+                ],
+                [
+                  11,
+                  31
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:stack",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [10, 20, 30],\n    [40, 50, 60],\n])\n\n# 以下に答えを記入",
+        "task": "`np.stack()` を使って、同じshapeの2次元配列 `a` と `b` の末尾に長さ2の軸を追加してください。各位置 `(i, j)` について、`result[i, j, 0]` に `a[i, j]`、`result[i, j, 1]` に `b[i, j]` が入るようにしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-13",
+      "family_id": "NP07-13",
+      "version_id": "NP07-13@1",
+      "content_version": 1,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "サンプルごとに元の特徴と変換後の特徴を並べる",
+      "description": "`original` と `transformed` は、どちらもshapeが `(サンプル数, 特徴数)` の配列です。`np.stack()` を使って、サンプル軸と特徴軸の間に長さ2の軸を作り、元の特徴、変換後の特徴の順に並べてください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`original` と `transformed` は、どちらもshapeが `(サンプル数, 特徴数)` の配列です。`np.stack()` を使って、サンプル軸と特徴軸の間に長さ2の軸を作り、元の特徴、変換後の特徴の順に並べてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\noriginal = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\ntransformed = np.array([\n    [2, 4, 6],\n    [8, 10, 12],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "結果のshapeは `(サンプル数, 2, 特徴数)` です。新しい軸が入る位置を `axis` に指定します。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\noriginal = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\ntransformed = np.array([\n    [2, 4, 6],\n    [8, 10, 12],\n])",
+          "args": "original, transformed",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  1,
+                  2,
+                  3
+                ],
+                [
+                  2,
+                  4,
+                  6
+                ]
+              ],
+              [
+                [
+                  4,
+                  5,
+                  6
+                ],
+                [
+                  8,
+                  10,
+                  12
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\noriginal = np.arange(12).reshape(3, 4)\ntransformed = (np.arange(12) + 20).reshape(3, 4)",
+          "args": "original, transformed",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2,
+              4
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                [
+                  20,
+                  21,
+                  22,
+                  23
+                ]
+              ],
+              [
+                [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                [
+                  24,
+                  25,
+                  26,
+                  27
+                ]
+              ],
+              [
+                [
+                  8,
+                  9,
+                  10,
+                  11
+                ],
+                [
+                  28,
+                  29,
+                  30,
+                  31
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:stack",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\noriginal = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\ntransformed = np.array([\n    [2, 4, 6],\n    [8, 10, 12],\n])\n\n# 以下に答えを記入",
+        "task": "`original` と `transformed` は、どちらもshapeが `(サンプル数, 特徴数)` の配列です。`np.stack()` を使って、サンプル軸と特徴軸の間に長さ2の軸を作り、元の特徴、変換後の特徴の順に並べてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "original",
+          "transformed"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-05",
+      "family_id": "NP07-05",
+      "version_id": "NP07-05@3",
+      "content_version": 3,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "赤・緑・青の配列からRGB画像を作る",
+      "description": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持つ、同じshape `(高さ, 幅)` の配列です。`np.stack()` を使って、末尾のチャネル軸に赤、緑、青の順で並べ、shapeが `(高さ, 幅, 3)` の画像を作ってください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持つ、同じshape `(高さ, 幅)` の配列です。`np.stack()` を使って、末尾のチャネル軸に赤、緑、青の順で並べ、shapeが `(高さ, 幅, 3)` の画像を作ってください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nr = np.array([[10, 20], [30, 40]])\ng = np.array([[50, 60], [70, 80]])\nb = np.array([[90, 100], [110, 120]])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "末尾にチャネル軸を作ります。最初の画素には `[10, 50, 90]` が並びます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nr = np.array([[10, 20], [30, 40]])\ng = np.array([[50, 60], [70, 80]])\nb = np.array([[90, 100], [110, 120]])",
+          "args": "r, g, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  10,
+                  50,
+                  90
+                ],
+                [
+                  20,
+                  60,
+                  100
+                ]
+              ],
+              [
+                [
+                  30,
+                  70,
+                  110
+                ],
+                [
+                  40,
+                  80,
+                  120
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nr = np.arange(12).reshape(3, 4)\ng = r + 20\nb = r + 40",
+          "args": "r, g, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  0,
+                  20,
+                  40
+                ],
+                [
+                  1,
+                  21,
+                  41
+                ],
+                [
+                  2,
+                  22,
+                  42
+                ],
+                [
+                  3,
+                  23,
+                  43
+                ]
+              ],
+              [
+                [
+                  4,
+                  24,
+                  44
+                ],
+                [
+                  5,
+                  25,
+                  45
+                ],
+                [
+                  6,
+                  26,
+                  46
+                ],
+                [
+                  7,
+                  27,
+                  47
+                ]
+              ],
+              [
+                [
+                  8,
+                  28,
+                  48
+                ],
+                [
+                  9,
+                  29,
+                  49
+                ],
+                [
+                  10,
+                  30,
+                  50
+                ],
+                [
+                  11,
+                  31,
+                  51
+                ]
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:stack",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nr = np.array([[10, 20], [30, 40]])\ng = np.array([[50, 60], [70, 80]])\nb = np.array([[90, 100], [110, 120]])\n\n# 以下に答えを記入",
+        "task": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持つ、同じshape `(高さ, 幅)` の配列です。`np.stack()` を使って、末尾のチャネル軸に赤、緑、青の順で並べ、shapeが `(高さ, 幅, 3)` の画像を作ってください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
@@ -19041,119 +20206,162 @@
           "b"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\nr = np.array([[2.946669039529117, -0.2671960348998825, 1.81771203872356, -0.36134228753696124], [-0.7720420493317349, -0.024129701079128846, -0.22370308277280754, 1.7784864915253058], [1.2514893585705469, -0.22437404804210864, 0.13090318644357468, -1.2010000992757037]], dtype=np.float64).reshape((3, 4))\ng = np.array([[5.893338079058234, -0.534392069799765, 3.63542407744712, -0.7226845750739225], [-1.5440840986634699, -0.04825940215825769, -0.4474061655456151, 3.5569729830506116], [2.5029787171410938, -0.4487480960842173, 0.26180637288714936, -2.4020001985514075]], dtype=np.float64).reshape((3, 4))\nb = np.array([[8.840007118587351, -0.8015881046996474, 5.45313611617068, -1.0840268626108838], [-2.3161261479952047, -0.07238910323738654, -0.6711092483184227, 5.335459474575917], [3.7544680757116407, -0.673122144126326, 0.39270955933072405, -3.603000297827111]], dtype=np.float64).reshape((3, 4))",
-        "task": "同じ(H,W)の3配列を(H,W,3)にまとめる。 処理の結果をresultに代入してください。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP07-06",
-      "family_id": "NP07-06",
-      "version_id": "NP07-06@2",
-      "content_version": 2,
+      "id": "NP07-14",
+      "family_id": "NP07-14",
+      "version_id": "NP07-14@1",
+      "content_version": 1,
       "concept_id": "NP07",
       "module_id": "numpy",
-      "stage": "independent",
+      "stage": "partial",
       "type": "implementation",
-      "difficulty": 3,
-      "title": "バッチを統合",
-      "description": "同じ特徴数を持つ2次元配列の非空リストを行方向に連結して返す。",
+      "difficulty": 2,
+      "title": "チャネル軸がある3つの配列をRGB画像にまとめる",
+      "description": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持ち、どれもshapeが `(高さ, 幅, 1)` です。`np.concatenate()` を使って、末尾のチャネル軸に沿って赤、緑、青の順に結合し、shapeを `(高さ, 幅, 3)` にしてください。",
       "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "同じ特徴数を持つ2次元配列の非空リストを行方向に連結して返す。",
-      "starter_code": "# ここに処理を書き、resultに代入してください\n",
-      "example": "np.concatenate([a, b], axis=0)",
-      "editable_regions": [],
-      "explanation": "最後の短いバッチにも対応できます。",
-      "common_mistakes": [
-        "stackとconcatenateの次元数の違いを混同する。",
-        "結合しない軸のサイズが一致していない。"
+      "input_conditions": "",
+      "output_conditions": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持ち、どれもshapeが `(高さ, 幅, 1)` です。`np.concatenate()` を使って、末尾のチャネル軸に沿って赤、緑、青の順に結合し、shapeを `(高さ, 幅, 3)` にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nr = np.array([[[10], [20]], [[30], [40]]])\ng = np.array([[[50], [60]], [[70], [80]]])\nb = np.array([[[90], [100]], [[110], [120]]])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "各配列にはすでにチャネル軸があります。末尾の軸を指定して、その長さを1から3に伸ばします。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 9480\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "[x[:1],x[1:]]",
+          "setup": "import numpy as np\n\nr = np.array([[[10], [20]], [[30], [40]]])\ng = np.array([[[50], [60]], [[70], [80]]])\nb = np.array([[[90], [100]], [[110], [120]]])",
+          "args": "r, g, b",
           "expected": {
             "kind": "array",
             "shape": [
-              3,
-              4
+              2,
+              2,
+              3
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
               [
-                0.8685779001592152,
-                1.4264165739164194,
-                0.08746239907599682,
-                0.08572863468744972
+                [
+                  10,
+                  50,
+                  90
+                ],
+                [
+                  20,
+                  60,
+                  100
+                ]
               ],
               [
-                -0.3252784437215828,
-                -0.7706456163510029,
-                0.6210872550823602,
-                0.021668216804080386
-              ],
-              [
-                0.7205708440668463,
-                0.02847475962987188,
-                -0.2548772930627697,
-                1.2950947463261466
+                [
+                  30,
+                  70,
+                  110
+                ],
+                [
+                  40,
+                  80,
+                  120
+                ]
               ]
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 9480\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "[np.zeros((0,2)),np.ones((1,2))]",
+          "setup": "import numpy as np\n\nr = np.arange(12).reshape(3, 4)\ng = r + 20\nb = r + 40\nr = r[..., None]\ng = g[..., None]\nb = b[..., None]",
+          "args": "r, g, b",
           "expected": {
             "kind": "array",
             "shape": [
-              1,
-              2
+              3,
+              4,
+              3
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
               [
-                1.0,
-                1.0
+                [
+                  0,
+                  20,
+                  40
+                ],
+                [
+                  1,
+                  21,
+                  41
+                ],
+                [
+                  2,
+                  22,
+                  42
+                ],
+                [
+                  3,
+                  23,
+                  43
+                ]
+              ],
+              [
+                [
+                  4,
+                  24,
+                  44
+                ],
+                [
+                  5,
+                  25,
+                  45
+                ],
+                [
+                  6,
+                  26,
+                  46
+                ],
+                [
+                  7,
+                  27,
+                  47
+                ]
+              ],
+              [
+                [
+                  8,
+                  28,
+                  48
+                ],
+                [
+                  9,
+                  29,
+                  49
+                ],
+                [
+                  10,
+                  30,
+                  50
+                ],
+                [
+                  11,
+                  31,
+                  51
+                ]
               ]
             ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:concatenate",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -19163,123 +20371,696 @@
       "prerequisites": [
         "NP03"
       ],
-      "estimated_minutes": 3,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "combining-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nr = np.array([[[10], [20]], [[30], [40]]])\ng = np.array([[[50], [60]], [[70], [80]]])\nb = np.array([[[90], [100]], [[110], [120]]])\n\n# 以下に答えを記入",
+        "task": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持ち、どれもshapeが `(高さ, 幅, 1)` です。`np.concatenate()` を使って、末尾のチャネル軸に沿って赤、緑、青の順に結合し、shapeを `(高さ, 幅, 3)` にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
-          "batches"
+          "r",
+          "g",
+          "b"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\nbatches = [np.array([[0.8685779001592152, 1.4264165739164194, 0.08746239907599682, 0.08572863468744972]], dtype=np.float64).reshape((1, 4)), np.array([[-0.3252784437215828, -0.7706456163510029, 0.6210872550823602, 0.021668216804080386], [0.7205708440668463, 0.02847475962987188, -0.2548772930627697, 1.2950947463261466]], dtype=np.float64).reshape((2, 4))]",
-        "task": "同じ特徴数を持つ2次元配列の非空リストを行方向に連結して返す。 処理の結果をresultに代入してください。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP08-01",
-      "family_id": "NP08-01",
-      "version_id": "NP08-01@2",
-      "content_version": 2,
-      "concept_id": "NP08",
+      "id": "NP07-15",
+      "family_id": "NP07-15",
+      "version_id": "NP07-15@1",
+      "content_version": 1,
+      "concept_id": "NP07",
       "module_id": "numpy",
-      "stage": "guided",
-      "type": "completion",
-      "difficulty": 1,
-      "title": "ReLUを実装",
-      "description": "負の値を0にし、それ以外を保つ配列を返す。",
-      "learning_goal": "配列全体に条件付き演算を適用します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "負の値を0にし、それ以外を保つ配列を返す。",
-      "starter_code": "result = np.where(x > ___, x, 0)\n",
-      "example": "np.where(x > 0, x, 0)",
-      "editable_regions": [],
-      "explanation": "Pythonのifは配列全体の条件判定には使えません。",
-      "common_mistakes": [
-        "配列の条件にPythonのandやifを使う。",
-        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "バッチ内の各画像にチャネルを追加する",
+      "description": "`base` と `extra` は、shapeが `(バッチ数, チャネル数, 高さ, 幅)` の配列です。バッチ数・高さ・幅は共通です。`np.concatenate()` を使って、各画像について `base` のチャネルの後ろに `extra` のチャネルを追加してください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`base` と `extra` は、shapeが `(バッチ数, チャネル数, 高さ, 幅)` の配列です。バッチ数・高さ・幅は共通です。`np.concatenate()` を使って、各画像について `base` のチャネルの後ろに `extra` のチャネルを追加してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nbase = np.arange(8).reshape(2, 1, 2, 2)\nextra = np.arange(8, 24).reshape(2, 2, 2, 2)\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "結合するのは軸1のチャネルです。表示例では、各画像のチャネル数が `1 + 2` になります。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 3810\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "x",
+          "setup": "import numpy as np\n\nbase = np.arange(8).reshape(2, 1, 2, 2)\nextra = np.arange(8, 24).reshape(2, 2, 2, 2)",
+          "args": "base, extra",
           "expected": {
             "kind": "array",
             "shape": [
+              2,
               3,
-              4
+              2,
+              2
             ],
-            "dtype": "float64",
+            "dtype": "int64",
             "data": [
               [
-                0.16132778363666006,
-                0.0,
-                0.0,
-                1.0570253667139387
+                [
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    2,
+                    3
+                  ]
+                ],
+                [
+                  [
+                    8,
+                    9
+                  ],
+                  [
+                    10,
+                    11
+                  ]
+                ],
+                [
+                  [
+                    12,
+                    13
+                  ],
+                  [
+                    14,
+                    15
+                  ]
+                ]
               ],
               [
-                0.0,
-                0.0,
-                1.416706603989769,
-                0.5713997460127755
-              ],
-              [
-                0.0,
-                0.0,
-                1.3908611848854646,
-                0.0
+                [
+                  [
+                    4,
+                    5
+                  ],
+                  [
+                    6,
+                    7
+                  ]
+                ],
+                [
+                  [
+                    16,
+                    17
+                  ],
+                  [
+                    18,
+                    19
+                  ]
+                ],
+                [
+                  [
+                    20,
+                    21
+                  ],
+                  [
+                    22,
+                    23
+                  ]
+                ]
               ]
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 3810\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([])",
+          "setup": "import numpy as np\n\nbase = np.arange(24).reshape(1, 2, 3, 4)\nextra = np.arange(24, 36).reshape(1, 1, 3, 4)",
+          "args": "base, extra",
           "expected": {
             "kind": "array",
             "shape": [
-              0
+              1,
+              3,
+              3,
+              4
             ],
-            "dtype": "float64",
-            "data": []
+            "dtype": "int64",
+            "data": [
+              [
+                [
+                  [
+                    0,
+                    1,
+                    2,
+                    3
+                  ],
+                  [
+                    4,
+                    5,
+                    6,
+                    7
+                  ],
+                  [
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                ],
+                [
+                  [
+                    12,
+                    13,
+                    14,
+                    15
+                  ],
+                  [
+                    16,
+                    17,
+                    18,
+                    19
+                  ],
+                  [
+                    20,
+                    21,
+                    22,
+                    23
+                  ]
+                ],
+                [
+                  [
+                    24,
+                    25,
+                    26,
+                    27
+                  ],
+                  [
+                    28,
+                    29,
+                    30,
+                    31
+                  ],
+                  [
+                    32,
+                    33,
+                    34,
+                    35
+                  ]
+                ]
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:concatenate",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nbase = np.arange(8).reshape(2, 1, 2, 2)\nextra = np.arange(8, 24).reshape(2, 2, 2, 2)\n\n# 以下に答えを記入",
+        "task": "`base` と `extra` は、shapeが `(バッチ数, チャネル数, 高さ, 幅)` の配列です。バッチ数・高さ・幅は共通です。`np.concatenate()` を使って、各画像について `base` のチャネルの後ろに `extra` のチャネルを追加してください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "base",
+          "extra"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-16",
+      "family_id": "NP07-16",
+      "version_id": "NP07-16@1",
+      "content_version": 1,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "0次元配列を1次元にまとめる",
+      "description": "`np.stack()` を使って、0次元配列 `a`、`b`、`c` をこの順番で並べ、shapeが `(3,)` の1次元配列を作ってください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`np.stack()` を使って、0次元配列 `a`、`b`、`c` をこの順番で並べ、shapeが `(3,)` の1次元配列を作ってください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array(7)\nb = np.array(11)\nc = np.array(15)\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "各入力のshapeは `()` です。`stack()` が作る新しい軸に、3つの値が並びます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.array(7)\nb = np.array(11)\nc = np.array(15)",
+          "args": "a, b, c",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              7,
+              11,
+              15
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.array(-2)\nb = np.array(0)\nc = np.array(4)",
+          "args": "a, b, c",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              -2,
+              0,
+              4
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:stack",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array(7)\nb = np.array(11)\nc = np.array(15)\n\n# 以下に答えを記入",
+        "task": "`np.stack()` を使って、0次元配列 `a`、`b`、`c` をこの順番で並べ、shapeが `(3,)` の1次元配列を作ってください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b",
+          "c"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-17",
+      "family_id": "NP07-17",
+      "version_id": "NP07-17@1",
+      "content_version": 1,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "空のバッチを含む配列を結合する",
+      "description": "`np.concatenate()` を使って、同じ列数を持つ2次元配列 `a` と `b` を、`a`、`b` の順に行方向へつないでください。行数が0の入力があっても、結果は元の列数を保つ2次元配列にしてください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`np.concatenate()` を使って、同じ列数を持つ2次元配列 `a` と `b` を、`a`、`b` の順に行方向へつないでください。行数が0の入力があっても、結果は元の列数を保つ2次元配列にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.zeros((0, 3), dtype=np.int32)\nb = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n], dtype=np.int32)\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`a` は行数が0でも、列数3の軸を持っています。列数がそろっているので、行の軸で結合できます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.zeros((0, 3), dtype=np.int32)\nb = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n], dtype=np.int32)",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int32",
+            "data": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4,
+                5,
+                6
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.array([[7, -1], [3, 4]])\nb = np.empty((0, 2), dtype=int)",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                7,
+                -1
+              ],
+              [
+                3,
+                4
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:concatenate",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.zeros((0, 3), dtype=np.int32)\nb = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n], dtype=np.int32)\n\n# 以下に答えを記入",
+        "task": "`np.concatenate()` を使って、同じ列数を持つ2次元配列 `a` と `b` を、`a`、`b` の順に行方向へつないでください。行数が0の入力があっても、結果は元の列数を保つ2次元配列にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP07-18",
+      "family_id": "NP07-18",
+      "version_id": "NP07-18@1",
+      "content_version": 1,
+      "concept_id": "NP07",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "特徴量とラベルの対応を保ってデータセットを結合する",
+      "description": "`x_a` と `x_b` は特徴量の2次元配列で、列数は同じです。`y_a` と `y_b` は、それぞれの特徴量配列の各行に対応する1次元のラベル配列です。`np.concatenate()` を使って特徴量をA、Bの順に行方向へ結合し、ラベルもA、Bの順につないでください。結果は `(結合した特徴量, 結合したラベル)` のタプルにしてください。",
+      "learning_goal": "既存の軸を伸ばす操作と新しい軸を作る操作を区別します。",
+      "input_conditions": "",
+      "output_conditions": "`x_a` と `x_b` は特徴量の2次元配列で、列数は同じです。`y_a` と `y_b` は、それぞれの特徴量配列の各行に対応する1次元のラベル配列です。`np.concatenate()` を使って特徴量をA、Bの順に行方向へ結合し、ラベルもA、Bの順につないでください。結果は `(結合した特徴量, 結合したラベル)` のタプルにしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx_a = np.array([\n    [1, 2],\n    [3, 4],\n])\ny_a = np.array([0, 1])\n\nx_b = np.array([\n    [5, 6],\n    [7, 8],\n    [9, 10],\n])\ny_b = np.array([1, 0, 1])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "特徴量とラベルを別々に結合し、2つの結果をタプルに入れます。両方でA、Bの順番をそろえると、各行とラベルの対応が保たれます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx_a = np.array([\n    [1, 2],\n    [3, 4],\n])\ny_a = np.array([0, 1])\n\nx_b = np.array([\n    [5, 6],\n    [7, 8],\n    [9, 10],\n])\ny_b = np.array([1, 0, 1])",
+          "args": "x_a, y_a, x_b, y_b",
+          "expected": [
+            {
+              "kind": "array",
+              "shape": [
+                5,
+                2
+              ],
+              "dtype": "int64",
+              "data": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  9,
+                  10
+                ]
+              ]
+            },
+            {
+              "kind": "array",
+              "shape": [
+                5
+              ],
+              "dtype": "int64",
+              "data": [
+                0,
+                1,
+                1,
+                0,
+                1
+              ]
+            }
+          ],
+          "expected_tuple_paths": [
+            []
+          ]
+        },
+        {
+          "setup": "import numpy as np\n\nx_a = np.array([[9, 0, -5]])\ny_a = np.array([3])\nx_b = np.arange(6).reshape(2, 3)\ny_b = np.array([4, 2])",
+          "args": "x_a, y_a, x_b, y_b",
+          "expected": [
+            {
+              "kind": "array",
+              "shape": [
+                3,
+                3
+              ],
+              "dtype": "int64",
+              "data": [
+                [
+                  9,
+                  0,
+                  -5
+                ],
+                [
+                  0,
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4,
+                  5
+                ]
+              ]
+            },
+            {
+              "kind": "array",
+              "shape": [
+                3
+              ],
+              "dtype": "int64",
+              "data": [
+                3,
+                4,
+                2
+              ]
+            }
+          ],
+          "expected_tuple_paths": [
+            []
+          ]
+        }
+      ],
+      "required_ast": "call:concatenate",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "combining-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx_a = np.array([\n    [1, 2],\n    [3, 4],\n])\ny_a = np.array([0, 1])\n\nx_b = np.array([\n    [5, 6],\n    [7, 8],\n    [9, 10],\n])\ny_b = np.array([1, 0, 1])\n\n# 以下に答えを記入",
+        "task": "`x_a` と `x_b` は特徴量の2次元配列で、列数は同じです。`y_a` と `y_b` は、それぞれの特徴量配列の各行に対応する1次元のラベル配列です。`np.concatenate()` を使って特徴量をA、Bの順に行方向へ結合し、ラベルもA、Bの順につないでください。結果は `(結合した特徴量, 結合したラベル)` のタプルにしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x_a",
+          "y_a",
+          "x_b",
+          "y_b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "tuple"
+      }
+    },
+    {
+      "id": "NP08-01",
+      "family_id": "NP08-01",
+      "version_id": "NP08-01@3",
+      "content_version": 3,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "負の値を0にする",
+      "description": "`np.where()` を使って、配列 `x` の負の要素を `0.0` に置き換えてください。0以上の要素は元の値を使ってください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "`np.where()` を使って、配列 `x` の負の要素を `0.0` に置き換えてください。0以上の要素は元の値を使ってください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([-3.0, -0.5, 0.0, 2.0, 5.0])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.where(条件, 条件がTrueのときの値, 条件がFalseのときの値)` で、要素ごとに値を選べます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([-3.0, -0.5, 0.0, 2.0, 5.0])",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              5
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              0.0,
+              0.0,
+              2.0,
+              5.0
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.array([[-1.5, 0, 4], [-2, 9, -7]])",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0,
+                4.0
+              ],
+              [
+                0.0,
+                9.0,
+                0.0
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:where",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -19289,108 +21070,749 @@
       "prerequisites": [
         "NP02"
       ],
-      "estimated_minutes": 1,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "conditional-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([-3.0, -0.5, 0.0, 2.0, 5.0])\n\n# 以下に答えを記入",
+        "task": "`np.where()` を使って、配列 `x` の負の要素を `0.0` に置き換えてください。0以上の要素は元の値を使ってください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
           "x"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\nx = np.array([[0.16132778363666006, -1.777759671266675, -0.3183530194221422, 1.0570253667139387], [-1.364642379995666, -1.80654912495679, 1.416706603989769, 0.5713997460127755], [-1.1384527301871659, -0.7581660021863231, 1.3908611848854646, -0.6909753559938144]], dtype=np.float64).reshape((3, 4))",
-        "task": "負の値を0にし、それ以外を保つ配列を返す。 処理の結果をresultに代入してください。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP08-02",
-      "family_id": "NP08-02",
-      "version_id": "NP08-02@3",
-      "content_version": 3,
+      "id": "NP08-07",
+      "family_id": "NP08-07",
+      "version_id": "NP08-07@1",
+      "content_version": 1,
       "concept_id": "NP08",
       "module_id": "numpy",
       "stage": "guided",
-      "type": "completion",
+      "type": "implementation",
       "difficulty": 1,
-      "title": "値を0から1に収める",
-      "description": "xの各値が0未満なら0、1より大きければ1に置き換えてください。np.clipの結果はresultに入ります。",
+      "title": "マスクに従って2つの配列から値を選ぶ",
+      "description": "`np.where()` を使って、`use_a` が `True` の位置では `a` の値、`False` の位置では `b` の値を選んでください。3つの入力配列のshapeは同じです。",
       "learning_goal": "配列全体に条件付き演算を適用します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "xの各値が0未満なら0、1より大きければ1に置き換えてください。np.clipの結果はresultに入ります。",
-      "starter_code": "result = np.clip(x, 0, ___)\n",
-      "example": "np.where(x > 0, x, 0)",
-      "editable_regions": [],
-      "explanation": "境界は含まれます。",
-      "common_mistakes": [
-        "配列の条件にPythonのandやifを使う。",
-        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      "input_conditions": "",
+      "output_conditions": "`np.where()` を使って、`use_a` が `True` の位置では `a` の値、`False` の位置では `b` の値を選んでください。3つの入力配列のshapeは同じです。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([[1, 2, 3], [4, 5, 6]])\nb = np.array([[10, 20, 30], [40, 50, 60]])\nuse_a = np.array([\n    [True, False, True],\n    [False, True, False],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "`use_a` はすでに真偽値の配列なので、そのまま `np.where()` の条件に渡せます。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([-1.,0.,.5,2.])",
+          "setup": "import numpy as np\n\na = np.array([[1, 2, 3], [4, 5, 6]])\nb = np.array([[10, 20, 30], [40, 50, 60]])\nuse_a = np.array([\n    [True, False, True],\n    [False, True, False],\n])",
+          "args": "a, b, use_a",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                20,
+                3
+              ],
+              [
+                40,
+                5,
+                60
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.array([[2, 0], [5, 3], [-1, 8]])\nb = -a - 10\nuse_a = np.array([[False, True], [True, True], [False, False]])",
+          "args": "a, b, use_a",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                -12,
+                0
+              ],
+              [
+                5,
+                3
+              ],
+              [
+                -9,
+                -18
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:where",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([[1, 2, 3], [4, 5, 6]])\nb = np.array([[10, 20, 30], [40, 50, 60]])\nuse_a = np.array([\n    [True, False, True],\n    [False, True, False],\n])\n\n# 以下に答えを記入",
+        "task": "`np.where()` を使って、`use_a` が `True` の位置では `a` の値、`False` の位置では `b` の値を選んでください。3つの入力配列のshapeは同じです。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b",
+          "use_a"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-03",
+      "family_id": "NP08-03",
+      "version_id": "NP08-03@3",
+      "content_version": 3,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "しきい値以上を1、それ以外を0にする",
+      "description": "配列 `x` の各要素について、`threshold` 以上なら1、それ以外なら0にしてください。結果のdtypeは `int64` にしてください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "配列 `x` の各要素について、`threshold` 以上なら1、それ以外なら0にしてください。結果のdtypeは `int64` にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([0.2, 0.5, 0.8, 0.1, 0.5])\nthreshold = 0.5\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`x >= threshold` で真偽値の配列を作れます。`astype()` で整数型に変換すると、`True` は1、`False` は0になります。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([0.2, 0.5, 0.8, 0.1, 0.5])\nthreshold = 0.5",
+          "args": "x, threshold",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              5
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              1,
+              1,
+              0,
+              1
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.array([[-4, -2, 0], [5, -2, -3]])\nthreshold = -2",
+          "args": "x, threshold",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                0
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": true,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([0.2, 0.5, 0.8, 0.1, 0.5])\nthreshold = 0.5\n\n# 以下に答えを記入",
+        "task": "配列 `x` の各要素について、`threshold` 以上なら1、それ以外なら0にしてください。結果のdtypeは `int64` にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "threshold"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-08",
+      "family_id": "NP08-08",
+      "version_id": "NP08-08@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "指定範囲の外にある値を置き換える",
+      "description": "`np.where()` を使って、配列 `x` のうち `lower` 以上 `upper` 以下の要素は元の値を残し、範囲外の要素は `fallback` に置き換えてください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "`np.where()` を使って、配列 `x` のうち `lower` 以上 `upper` 以下の要素は元の値を残し、範囲外の要素は `fallback` に置き換えてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([-1, 0, 2, 4, 5])\nlower = 0\nupper = 4\nfallback = -99\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`(x >= lower) & (x <= upper)` で、両方の条件を満たす位置を表せます。各比較式は丸括弧で囲みます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([-1, 0, 2, 4, 5])\nlower = 0\nupper = 4\nfallback = -99",
+          "args": "x, lower, upper, fallback",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              5
+            ],
+            "dtype": "int64",
+            "data": [
+              -99,
+              0,
+              2,
+              4,
+              -99
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.array([[-5, -3, 0], [1, 2, 9]])\nlower = -3\nupper = 2\nfallback = 14",
+          "args": "x, lower, upper, fallback",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                14,
+                -3,
+                0
+              ],
+              [
+                1,
+                2,
+                14
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:where",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([-1, 0, 2, 4, 5])\nlower = 0\nupper = 4\nfallback = -99\n\n# 以下に答えを記入",
+        "task": "`np.where()` を使って、配列 `x` のうち `lower` 以上 `upper` 以下の要素は元の値を残し、範囲外の要素は `fallback` に置き換えてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "lower",
+          "upper",
+          "fallback"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-09",
+      "family_id": "NP08-09",
+      "version_id": "NP08-09@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "2つのしきい値で3段階に分類する",
+      "description": "`np.where()` を使って、配列 `scores` の各要素を3段階に分類してください。`lower` 未満は0、`lower` 以上 `upper` 未満は1、`upper` 以上は2にしてください。`lower` は `upper` より小さい値です。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "`np.where()` を使って、配列 `scores` の各要素を3段階に分類してください。`lower` 未満は0、`lower` 以上 `upper` 未満は1、`upper` 以上は2にしてください。`lower` は `upper` より小さい値です。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nscores = np.array([35, 50, 65, 80, 95])\nlower = 50\nupper = 80\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "最初に `lower` 未満かを判定し、残った要素を `upper` 未満かどうかでもう一度分けます。`np.where()` の中に別の `np.where()` を置けます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nscores = np.array([35, 50, 65, 80, 95])\nlower = 50\nupper = 80",
+          "args": "scores, lower, upper",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              5
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              1,
+              1,
+              2,
+              2
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nscores = np.array([[-5, -4, 0], [3, 4, 7]])\nlower = -4\nupper = 3",
+          "args": "scores, lower, upper",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                1,
+                1
+              ],
+              [
+                2,
+                2,
+                2
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:where",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nscores = np.array([35, 50, 65, 80, 95])\nlower = 50\nupper = 80\n\n# 以下に答えを記入",
+        "task": "`np.where()` を使って、配列 `scores` の各要素を3段階に分類してください。`lower` 未満は0、`lower` 以上 `upper` 未満は1、`upper` 以上は2にしてください。`lower` は `upper` より小さい値です。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "scores",
+          "lower",
+          "upper"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-10",
+      "family_id": "NP08-10",
+      "version_id": "NP08-10@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "同じ位置にある2つの値の大きい方を選ぶ",
+      "description": "`np.maximum()` を使って、同じshapeの配列 `a` と `b` から、各位置で大きい方の値を選んでください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "`np.maximum()` を使って、同じshapeの配列 `a` と `b` から、各位置で大きい方の値を選んでください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\na = np.array([[1, 7, 3], [8, 2, 6]])\nb = np.array([[4, 5, 3], [0, 9, 1]])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.maximum(a, b)` は、対応する位置の値を1組ずつ比較します。結果のshapeは入力と同じです。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\na = np.array([[1, 7, 3], [8, 2, 6]])\nb = np.array([[4, 5, 3], [0, 9, 1]])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                4,
+                7,
+                3
+              ],
+              [
+                8,
+                9,
+                6
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\na = np.array([[-3, 8], [0, 2], [4, 5]])\nb = np.array([[0, 2], [5, 2], [-4, 6]])",
+          "args": "a, b",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                8
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                4,
+                6
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:maximum",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\na = np.array([[1, 7, 3], [8, 2, 6]])\nb = np.array([[4, 5, 3], [0, 9, 1]])\n\n# 以下に答えを記入",
+        "task": "`np.maximum()` を使って、同じshapeの配列 `a` と `b` から、各位置で大きい方の値を選んでください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-11",
+      "family_id": "NP08-11",
+      "version_id": "NP08-11@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "在庫の範囲で出荷できる数を求める",
+      "description": "`requested` は商品ごとの注文数、`available` は同じ順番で並んだ在庫数です。`np.minimum()` を使って、各商品の出荷数を求めてください。出荷数は注文数と在庫数のうち小さい方です。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "`requested` は商品ごとの注文数、`available` は同じ順番で並んだ在庫数です。`np.minimum()` を使って、各商品の出荷数を求めてください。出荷数は注文数と在庫数のうち小さい方です。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nrequested = np.array([5, 2, 8, 4])\navailable = np.array([3, 6, 0, 4])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.minimum()` は、2つの配列の同じ位置を比べて、小さい方の値を選びます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nrequested = np.array([5, 2, 8, 4])\navailable = np.array([3, 6, 0, 4])",
+          "args": "requested, available",
           "expected": {
             "kind": "array",
             "shape": [
               4
             ],
+            "dtype": "int64",
+            "data": [
+              3,
+              2,
+              0,
+              4
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nrequested = np.array([0, 7, 2])\navailable = np.array([3, 2, 2])",
+          "args": "requested, available",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              0,
+              2,
+              2
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:minimum",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nrequested = np.array([5, 2, 8, 4])\navailable = np.array([3, 6, 0, 4])\n\n# 以下に答えを記入",
+        "task": "`requested` は商品ごとの注文数、`available` は同じ順番で並んだ在庫数です。`np.minimum()` を使って、各商品の出荷数を求めてください。出荷数は注文数と在庫数のうち小さい方です。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "requested",
+          "available"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-02",
+      "family_id": "NP08-02",
+      "version_id": "NP08-02@4",
+      "content_version": 4,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "値を0以上1以下に収める",
+      "description": "`np.clip()` を使って、配列 `x` の値を0以上1以下に収めてください。0未満は0に、1より大きい値は1にし、範囲内の値はそのまま残してください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "`np.clip()` を使って、配列 `x` の値を0以上1以下に収めてください。0未満は0に、1より大きい値は1にし、範囲内の値はそのまま残してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([-0.5, 0.0, 0.4, 1.0, 1.8])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.clip(配列, 下限, 上限)` で、範囲を外れた値を近い方の境界値に置き換えられます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([-0.5, 0.0, 0.4, 1.0, 1.8])",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              5
+            ],
             "dtype": "float64",
             "data": [
               0.0,
               0.0,
-              0.5,
+              0.4,
+              1.0,
               1.0
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([])",
+          "setup": "import numpy as np\n\nx = np.array([[-4., 0., 0.1], [0.7, 1., 2.5]])",
+          "args": "x",
           "expected": {
             "kind": "array",
             "shape": [
-              0
+              2,
+              3
             ],
             "dtype": "float64",
-            "data": []
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.1
+              ],
+              [
+                0.7,
+                1.0,
+                1.0
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:clip",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -19400,123 +21822,102 @@
       "prerequisites": [
         "NP02"
       ],
-      "estimated_minutes": 1,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "conditional-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([-0.5, 0.0, 0.4, 1.0, 1.8])\n\n# 以下に答えを記入",
+        "task": "`np.clip()` を使って、配列 `x` の値を0以上1以下に収めてください。0未満は0に、1より大きい値は1にし、範囲内の値はそのまま残してください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
           "x"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\nx = np.array([-1.0, 0.0, 0.5, 2.0])",
-        "task": "xの各値が0未満なら0、1より大きければ1に置き換えてください。np.clipの結果はresultに入ります。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP08-03",
-      "family_id": "NP08-03",
-      "version_id": "NP08-03@2",
-      "content_version": 2,
+      "id": "NP08-12",
+      "family_id": "NP08-12",
+      "version_id": "NP08-12@1",
+      "content_version": 1,
       "concept_id": "NP08",
       "module_id": "numpy",
       "stage": "partial",
-      "type": "completion",
+      "type": "implementation",
       "difficulty": 2,
-      "title": "しきい値で2値化",
-      "description": "x>=tなら1、それ以外は0のint64配列を返す。",
+      "title": "下限だけを設定する",
+      "description": "`np.clip()` を使って、配列 `x` の `lower` 未満の値を `lower` に置き換えてください。`lower` 以上の値はそのまま残してください。",
       "learning_goal": "配列全体に条件付き演算を適用します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "x>=tなら1、それ以外は0のint64配列を返す。",
-      "starter_code": "result =\n",
-      "example": "np.where(x > 0, x, 0)",
-      "editable_regions": [],
-      "explanation": "比較結果はbool型です。",
-      "common_mistakes": [
-        "配列の条件にPythonのandやifを使う。",
-        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      "input_conditions": "",
+      "output_conditions": "`np.clip()` を使って、配列 `x` の `lower` 未満の値を `lower` に置き換えてください。`lower` 以上の値はそのまま残してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([-5, -1, 0, 4, 10])\nlower = 0\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "`np.clip()` の上限に `None` を指定すると、下限だけを適用できます。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 4228\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "x,0",
+          "setup": "import numpy as np\n\nx = np.array([-5, -1, 0, 4, 10])\nlower = 0",
+          "args": "x, lower",
           "expected": {
             "kind": "array",
             "shape": [
-              3,
-              4
+              5
             ],
             "dtype": "int64",
             "data": [
-              [
-                0,
-                1,
-                1,
-                0
-              ],
-              [
-                1,
-                1,
-                0,
-                0
-              ],
-              [
-                0,
-                1,
-                1,
-                1
-              ]
+              0,
+              0,
+              0,
+              4,
+              10
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 4228\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([]),1",
+          "setup": "import numpy as np\n\nx = np.array([[-8, -3, 0], [7, 12, -4]])\nlower = -3",
+          "args": "x, lower",
           "expected": {
             "kind": "array",
             "shape": [
-              0
+              2,
+              3
             ],
             "dtype": "int64",
-            "data": []
+            "data": [
+              [
+                -3,
+                -3,
+                0
+              ],
+              [
+                7,
+                12,
+                -3
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:clip",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -19528,117 +21929,438 @@
       ],
       "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "conditional-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([-5, -1, 0, 4, 10])\nlower = 0\n\n# 以下に答えを記入",
+        "task": "`np.clip()` を使って、配列 `x` の `lower` 未満の値を `lower` に置き換えてください。`lower` 以上の値はそのまま残してください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
           "x",
-          "t"
+          "lower"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-13",
+      "family_id": "NP08-13",
+      "version_id": "NP08-13@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "上限だけを設定する",
+      "description": "`np.clip()` を使って、配列 `x` の `upper` より大きい値を `upper` に置き換えてください。`upper` 以下の値はそのまま残してください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "`np.clip()` を使って、配列 `x` の `upper` より大きい値を `upper` に置き換えてください。`upper` 以下の値はそのまま残してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([-8, -2, 3, 6, 10])\nupper = 6\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
         }
-      },
+      ],
+      "explanation": "`np.clip()` の下限に `None` を指定すると、上限だけを適用できます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([-8, -2, 3, 6, 10])\nupper = 6",
+          "args": "x, upper",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              5
+            ],
+            "dtype": "int64",
+            "data": [
+              -8,
+              -2,
+              3,
+              6,
+              6
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.array([[-9, -6, -3], [0, 2, -12]])\nupper = -6",
+          "args": "x, upper",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                -9,
+                -6,
+                -6
+              ],
+              [
+                -6,
+                -6,
+                -12
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:clip",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
       "workspace": {
         "mode": "script",
-        "provided_code": "import numpy as np\n\nx = np.array([[-1.7128145133625903, 0.045279587321823675, 0.5520100348201217, -0.06467829713426405], [0.12087691383190255, 0.5631669644510293, -0.5934852313501148, -0.3998490558209083], [-0.12637552597382223, 1.267418638049764, 0.9895241046827754, 0.4750890942475604]], dtype=np.float64).reshape((3, 4))\nt = 0",
-        "task": "x>=tなら1、それ以外は0のint64配列を返す。 処理の結果をresultに代入してください。",
-        "authored": false,
+        "provided_code": "import numpy as np\n\nx = np.array([-8, -2, 3, 6, 10])\nupper = 6\n\n# 以下に答えを記入",
+        "task": "`np.clip()` を使って、配列 `x` の `upper` より大きい値を `upper` に置き換えてください。`upper` 以下の値はそのまま残してください。",
         "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "upper"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-14",
+      "family_id": "NP08-14",
+      "version_id": "NP08-14@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "列ごとに異なる上下限を適用する",
+      "description": "2次元配列 `x` の各列について、対応する `lower` と `upper` の値を上下限として `np.clip()` を適用してください。`lower` と `upper` は、どちらも `x` の列数と同じ長さの1次元配列です。各列の下限は上限以下です。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "2次元配列 `x` の各列について、対応する `lower` と `upper` の値を上下限として `np.clip()` を適用してください。`lower` と `upper` は、どちらも `x` の列数と同じ長さの1次元配列です。各列の下限は上限以下です。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([\n    [-3, 15, 120],\n    [8, 5, 70],\n])\nlower = np.array([0, 10, 60])\nupper = np.array([5, 20, 100])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.clip()` の上下限に配列を渡せます。shape `(列数,)` の上下限は、Broadcastingによって `x` の各行に適用されます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([\n    [-3, 15, 120],\n    [8, 5, 70],\n])\nlower = np.array([0, 10, 60])\nupper = np.array([5, 20, 100])",
+          "args": "x, lower, upper",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                15,
+                100
+              ],
+              [
+                5,
+                10,
+                70
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.array([[-2, 8], [1, 4], [9, 6]])\nlower = np.array([1, 4])\nupper = np.array([7, 6])",
+          "args": "x, lower, upper",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                6
+              ],
+              [
+                1,
+                4
+              ],
+              [
+                7,
+                6
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:clip",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([\n    [-3, 15, 120],\n    [8, 5, 70],\n])\nlower = np.array([0, 10, 60])\nupper = np.array([5, 20, 100])\n\n# 以下に答えを記入",
+        "task": "2次元配列 `x` の各列について、対応する `lower` と `upper` の値を上下限として `np.clip()` を適用してください。`lower` と `upper` は、どちらも `x` の列数と同じ長さの1次元配列です。各列の下限は上限以下です。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "lower",
+          "upper"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-15",
+      "family_id": "NP08-15",
+      "version_id": "NP08-15@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "画素値を範囲に収めてからuint8に変換する",
+      "description": "整数配列 `pixels` を、0以上255以下の画素値を持つ `uint8` 配列に変換してください。まず `np.clip()` で値を範囲に収め、その後でdtypeを変換してください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "整数配列 `pixels` を、0以上255以下の画素値を持つ `uint8` 配列に変換してください。まず `np.clip()` で値を範囲に収め、その後でdtypeを変換してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\npixels = np.array([\n    [-20, 0, 128],\n    [200, 255, 300],\n], dtype=np.int32)\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "先に0未満を0に、255より大きい値を255にします。範囲に収まった配列に `astype(np.uint8)` を適用します。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\npixels = np.array([\n    [-20, 0, 128],\n    [200, 255, 300],\n], dtype=np.int32)",
+          "args": "pixels",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "uint8",
+            "data": [
+              [
+                0,
+                0,
+                128
+              ],
+              [
+                200,
+                255,
+                255
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\npixels = np.array([[-300, 255], [256, 7], [0, 512]], dtype=np.int32)",
+          "args": "pixels",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "uint8",
+            "data": [
+              [
+                0,
+                255
+              ],
+              [
+                255,
+                7
+              ],
+              [
+                0,
+                255
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:clip",
+      "check_dtype": true,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\npixels = np.array([\n    [-20, 0, 128],\n    [200, 255, 300],\n], dtype=np.int32)\n\n# 以下に答えを記入",
+        "task": "整数配列 `pixels` を、0以上255以下の画素値を持つ `uint8` 配列に変換してください。まず `np.clip()` で値を範囲に収め、その後でdtypeを変換してください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "pixels"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
       "id": "NP08-04",
       "family_id": "NP08-04",
-      "version_id": "NP08-04@2",
-      "content_version": 2,
+      "version_id": "NP08-04@3",
+      "content_version": 3,
       "concept_id": "NP08",
       "module_id": "numpy",
       "stage": "partial",
-      "type": "completion",
+      "type": "implementation",
       "difficulty": 2,
-      "title": "要素ごとの二乗誤差",
-      "description": "同じshapeの予測と正解の要素ごとの二乗誤差を返す。",
+      "title": "予測値と正解値の二乗誤差を求める",
+      "description": "同じshapeの予測値 `pred` と正解値 `target` について、対応する要素の差を二乗してください。結果は、要素ごとの二乗誤差を持つ、入力と同じshapeの配列にしてください。",
       "learning_goal": "配列全体に条件付き演算を適用します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "同じshapeの予測と正解の要素ごとの二乗誤差を返す。",
-      "starter_code": "result =\n",
-      "example": "np.where(x > 0, x, 0)",
-      "editable_regions": [],
-      "explanation": "この問題では平均を取りません。",
-      "common_mistakes": [
-        "配列の条件にPythonのandやifを使う。",
-        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      "input_conditions": "",
+      "output_conditions": "同じshapeの予測値 `pred` と正解値 `target` について、対応する要素の差を二乗してください。結果は、要素ごとの二乗誤差を持つ、入力と同じshapeの配列にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\npred = np.array([\n    [2.0, 1.0, 5.0],\n    [4.0, 6.0, 3.0],\n])\ntarget = np.array([\n    [1.0, 3.0, 5.0],\n    [6.0, 5.0, 0.0],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "`pred - target` で位置ごとの差が得られます。その配列を `** 2` で二乗します。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 7723\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "x,x+1",
+          "setup": "import numpy as np\n\npred = np.array([\n    [2.0, 1.0, 5.0],\n    [4.0, 6.0, 3.0],\n])\ntarget = np.array([\n    [1.0, 3.0, 5.0],\n    [6.0, 5.0, 0.0],\n])",
+          "args": "pred, target",
           "expected": {
             "kind": "array",
             "shape": [
-              3,
-              4
+              2,
+              3
             ],
             "dtype": "float64",
             "data": [
               [
-                0.9999999999999998,
-                0.9999999999999998,
                 1.0,
-                1.0
+                4.0,
+                0.0
               ],
               [
+                4.0,
                 1.0,
-                1.0,
-                1.0,
-                1.0
-              ],
-              [
-                1.0,
-                1.0,
-                1.0,
-                1.0
+                9.0
               ]
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 7723\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([]),np.array([])",
+          "setup": "import numpy as np\n\npred = np.array([[2., 1.], [-3., 0.], [5., 2.]])\ntarget = np.array([[0., 4.], [-3., 3.], [1., 2.]])",
+          "args": "pred, target",
           "expected": {
             "kind": "array",
             "shape": [
-              0
+              3,
+              2
             ],
             "dtype": "float64",
-            "data": []
+            "data": [
+              [
+                4.0,
+                9.0
+              ],
+              [
+                0.0,
+                9.0
+              ],
+              [
+                16.0,
+                0.0
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
@@ -19655,8 +22377,16 @@
       ],
       "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "conditional-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\npred = np.array([\n    [2.0, 1.0, 5.0],\n    [4.0, 6.0, 3.0],\n])\ntarget = np.array([\n    [1.0, 3.0, 5.0],\n    [6.0, 5.0, 0.0],\n])\n\n# 以下に答えを記入",
+        "task": "同じshapeの予測値 `pred` と正解値 `target` について、対応する要素の差を二乗してください。結果は、要素ごとの二乗誤差を持つ、入力と同じshapeの配列にしてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
@@ -19664,92 +22394,196 @@
           "target"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\npred = np.array([[0.6088271760955167, 0.8550017261968771, 0.5002930637762277, 0.4624522230509339], [0.7100771096142754, -0.19111665874226913, -1.315211467491541, 0.4813079823690556], [-0.3041931044718184, -0.16854015695140795, 1.291557705669323, -1.3812445193923248]], dtype=np.float64).reshape((3, 4))\ntarget = np.array([[1.6088271760955166, 1.855001726196877, 1.5002930637762277, 1.462452223050934], [1.7100771096142755, 0.8088833412577309, -0.31521146749154094, 1.4813079823690556], [0.6958068955281815, 0.831459843048592, 2.291557705669323, -0.38124451939232484]], dtype=np.float64).reshape((3, 4))",
-        "task": "同じshapeの予測と正解の要素ごとの二乗誤差を返す。 処理の結果をresultに代入してください。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP08-05",
-      "family_id": "NP08-05",
-      "version_id": "NP08-05@2",
-      "content_version": 2,
+      "id": "NP08-16",
+      "family_id": "NP08-16",
+      "version_id": "NP08-16@1",
+      "content_version": 1,
       "concept_id": "NP08",
       "module_id": "numpy",
       "stage": "independent",
       "type": "implementation",
       "difficulty": 3,
-      "title": "NaNをゼロへ置換",
-      "description": "NaNだけを0へ置換する。Infは保持する。",
+      "title": "有効な位置の二乗誤差だけを残す",
+      "description": "`pred`、`target`、`valid` のshapeは同じです。`np.where()` を使って、`valid` が `True` の位置には予測値と正解値の二乗誤差を入れ、`False` の位置には `0.0` を入れてください。",
       "learning_goal": "配列全体に条件付き演算を適用します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "NaNだけを0へ置換する。Infは保持する。",
-      "starter_code": "# ここに処理を書き、resultに代入してください\n",
-      "example": "np.where(x > 0, x, 0)",
-      "editable_regions": [],
-      "explanation": "nan_to_numのデフォルトはInfも置き換えます。",
-      "common_mistakes": [
-        "配列の条件にPythonのandやifを使う。",
-        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      "input_conditions": "",
+      "output_conditions": "`pred`、`target`、`valid` のshapeは同じです。`np.where()` を使って、`valid` が `True` の位置には予測値と正解値の二乗誤差を入れ、`False` の位置には `0.0` を入れてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\npred = np.array([[2.0, 1.0, 5.0], [4.0, 6.0, 3.0]])\ntarget = np.array([[1.0, 3.0, 5.0], [6.0, 5.0, 0.0]])\nvalid = np.array([\n    [True, False, True],\n    [False, True, True],\n])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "二乗誤差の配列と `0.0` のどちらを使うかを、`valid` の各要素で決めます。マスクを使って値を選ぶと、元の位置とshapeが保たれます。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 3913\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([np.nan,1.,np.inf])",
+          "setup": "import numpy as np\n\npred = np.array([[2.0, 1.0, 5.0], [4.0, 6.0, 3.0]])\ntarget = np.array([[1.0, 3.0, 5.0], [6.0, 5.0, 0.0]])\nvalid = np.array([\n    [True, False, True],\n    [False, True, True],\n])",
+          "args": "pred, target, valid",
           "expected": {
             "kind": "array",
             "shape": [
+              2,
               3
             ],
             "dtype": "float64",
             "data": [
-              0.0,
-              1.0,
-              "__Inf__"
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                9.0
+              ]
             ]
           },
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 3913\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([])",
+          "setup": "import numpy as np\n\npred = np.array([[2., 1.], [-3., 0.], [5., 2.]])\ntarget = np.array([[0., 4.], [-3., 3.], [1., 2.]])\nvalid = np.array([[False, True], [True, False], [True, False]])",
+          "args": "pred, target, valid",
           "expected": {
             "kind": "array",
             "shape": [
-              0
+              3,
+              2
             ],
             "dtype": "float64",
-            "data": []
+            "data": [
+              [
+                0.0,
+                9.0
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                16.0,
+                0.0
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:where",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\npred = np.array([[2.0, 1.0, 5.0], [4.0, 6.0, 3.0]])\ntarget = np.array([[1.0, 3.0, 5.0], [6.0, 5.0, 0.0]])\nvalid = np.array([\n    [True, False, True],\n    [False, True, True],\n])\n\n# 以下に答えを記入",
+        "task": "`pred`、`target`、`valid` のshapeは同じです。`np.where()` を使って、`valid` が `True` の位置には予測値と正解値の二乗誤差を入れ、`False` の位置には `0.0` を入れてください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "pred",
+          "target",
+          "valid"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-05",
+      "family_id": "NP08-05",
+      "version_id": "NP08-05@3",
+      "content_version": 3,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "NaNだけを0に置き換える",
+      "description": "配列 `x` の `NaN` だけを `0.0` に置き換えてください。有限の値、正の無限大、負の無限大はそのまま残してください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "配列 `x` の `NaN` だけを `0.0` に置き換えてください。有限の値、正の無限大、負の無限大はそのまま残してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([np.nan, 1.5, np.inf, -np.inf, -2.0])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.isnan(x)` は `NaN` の位置だけを `True` にします。この真偽値配列を `np.where()` に渡せます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([np.nan, 1.5, np.inf, -np.inf, -2.0])",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              5
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              1.5,
+              "__Inf__",
+              "__-Inf__",
+              -2.0
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.array([[np.inf, -np.inf], [np.nan, 9.], [-7., np.nan]])",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                "__Inf__",
+                "__-Inf__"
+              ],
+              [
+                0.0,
+                9.0
+              ],
+              [
+                -7.0,
+                0.0
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
@@ -19764,86 +22598,177 @@
       "prerequisites": [
         "NP02"
       ],
-      "estimated_minutes": 3,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "conditional-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([np.nan, 1.5, np.inf, -np.inf, -2.0])\n\n# 以下に答えを記入",
+        "task": "配列 `x` の `NaN` だけを `0.0` に置き換えてください。有限の値、正の無限大、負の無限大はそのまま残してください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
           "x"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
-        }
-      },
-      "workspace": {
-        "mode": "script",
-        "provided_code": "import numpy as np\n\nx = np.array([np.nan, 1.0, np.inf])",
-        "task": "NaNだけを0へ置換する。Infは保持する。 処理の結果をresultに代入してください。",
-        "authored": false,
-        "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "allow_input_mutation": true,
+        "result_type": "array"
       }
     },
     {
-      "id": "NP08-06",
-      "family_id": "NP08-06",
-      "version_id": "NP08-06@2",
-      "content_version": 2,
+      "id": "NP08-17",
+      "family_id": "NP08-17",
+      "version_id": "NP08-17@1",
+      "content_version": 1,
       "concept_id": "NP08",
       "module_id": "numpy",
       "stage": "independent",
       "type": "implementation",
       "difficulty": 3,
-      "title": "対数の入力を安定化",
-      "description": "各値をeps以上へclipして自然対数を返す。epsは正。",
+      "title": "NaNと正負の無限大をそれぞれ置き換える",
+      "description": "`np.nan_to_num()` を使って、配列 `x` の `NaN` を `0.0`、正の無限大を `high`、負の無限大を `low` に置き換えてください。有限の値はそのまま残してください。",
       "learning_goal": "配列全体に条件付き演算を適用します。",
-      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
-      "output_conditions": "各値をeps以上へclipして自然対数を返す。epsは正。",
-      "starter_code": "# ここに処理を書き、resultに代入してください\n",
-      "example": "np.where(x > 0, x, 0)",
-      "editable_regions": [],
-      "explanation": "log(0)や負数のlogを避けます。",
-      "common_mistakes": [
-        "配列の条件にPythonのandやifを使う。",
-        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      "input_conditions": "",
+      "output_conditions": "`np.nan_to_num()` を使って、配列 `x` の `NaN` を `0.0`、正の無限大を `high`、負の無限大を `low` に置き換えてください。有限の値はそのまま残してください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([np.nan, 4.0, np.inf, -np.inf, -7.0])\nhigh = 5.0\nlow = -5.0\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
       ],
+      "explanation": "`np.nan_to_num()` の `nan`、`posinf`、`neginf` に、それぞれの置き換え先を指定できます。",
+      "common_mistakes": [],
       "public_tests": [
         {
-          "setup": "seed = 880\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([0.,1.,2.]),1e-6",
+          "setup": "import numpy as np\n\nx = np.array([np.nan, 4.0, np.inf, -np.inf, -7.0])\nhigh = 5.0\nlow = -5.0",
+          "args": "x, high, low",
           "expected": {
             "kind": "array",
             "shape": [
+              5
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              4.0,
+              5.0,
+              -5.0,
+              -7.0
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nx = np.array([[np.nan, -np.inf, -12.], [np.inf, 10., 0.]])\nhigh = 3.0\nlow = -2.0",
+          "args": "x, high, low",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
               3
             ],
             "dtype": "float64",
             "data": [
-              -13.815510557964274,
+              [
+                0.0,
+                -2.0,
+                -12.0
+              ],
+              [
+                3.0,
+                10.0,
+                0.0
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:nan_to_num",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([np.nan, 4.0, np.inf, -np.inf, -7.0])\nhigh = 5.0\nlow = -5.0\n\n# 以下に答えを記入",
+        "task": "`np.nan_to_num()` を使って、配列 `x` の `NaN` を `0.0`、正の無限大を `high`、負の無限大を `low` に置き換えてください。有限の値はそのまま残してください。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "high",
+          "low"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-06",
+      "family_id": "NP08-06",
+      "version_id": "NP08-06@3",
+      "content_version": 3,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "下限を適用してから自然対数を取る",
+      "description": "配列 `x` の値を `np.clip()` で `eps` 以上にしてから、各要素の自然対数を求めてください。`eps` は正の値です。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "配列 `x` の値を `np.clip()` で `eps` 以上にしてから、各要素の自然対数を求めてください。`eps` は正の値です。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nx = np.array([-1.0, 0.0, 0.001, 0.01, 1.0, 2.0])\neps = 0.01\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
+        }
+      ],
+      "explanation": "`np.clip()` の下限に `eps`、上限に `None` を指定します。調整後の配列を `np.log()` に渡すと、0や負の値に対する対数計算を避けられます。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nx = np.array([-1.0, 0.0, 0.001, 0.01, 1.0, 2.0])\neps = 0.01",
+          "args": "x, eps",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              6
+            ],
+            "dtype": "float64",
+            "data": [
+              -4.605170185988091,
+              -4.605170185988091,
+              -4.605170185988091,
+              -4.605170185988091,
               0.0,
               0.6931471805599453
             ]
@@ -19851,20 +22776,32 @@
           "expected_tuple_paths": []
         },
         {
-          "setup": "seed = 880\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
-          "args": "np.array([]),1e-3",
+          "setup": "import numpy as np\n\nx = np.array([[-2., 0., 0.1], [0.25, 1., 4.]])\neps = 0.25",
+          "args": "x, eps",
           "expected": {
             "kind": "array",
             "shape": [
-              0
+              2,
+              3
             ],
             "dtype": "float64",
-            "data": []
+            "data": [
+              [
+                -1.3862943611198906,
+                -1.3862943611198906,
+                -1.3862943611198906
+              ],
+              [
+                -1.3862943611198906,
+                0.0,
+                1.3862943611198906
+              ]
+            ]
           },
           "expected_tuple_paths": []
         }
       ],
-      "required_ast": "",
+      "required_ast": "call:clip",
       "check_dtype": false,
       "protect_inputs": false,
       "runtime": "browser",
@@ -19874,10 +22811,18 @@
       "prerequisites": [
         "NP02"
       ],
-      "estimated_minutes": 3,
+      "estimated_minutes": 2,
       "variant_seed": 42,
-      "variant_generator": "reproducible-random-v1",
+      "variant_generator": "conditional-fixtures-v1",
       "tolerance": 1e-05,
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([-1.0, 0.0, 0.001, 0.01, 1.0, 2.0])\neps = 0.01\n\n# 以下に答えを記入",
+        "task": "配列 `x` の値を `np.clip()` で `eps` 以上にしてから、各要素の自然対数を求めてください。`eps` は正の値です。",
+        "structure": "script",
+        "authored": true,
+        "hint_count": 1
+      },
       "execution": {
         "mode": "script",
         "inputs": [
@@ -19885,39 +22830,118 @@
           "eps"
         ],
         "globals": [
-          "LinearRegression",
-          "LogisticRegression",
-          "Path",
-          "Pipeline",
-          "StandardScaler",
-          "accuracy_score",
-          "confusion_matrix",
-          "f1_score",
-          "json",
-          "math",
-          "mean_absolute_error",
-          "np",
-          "pd",
-          "tempfile",
-          "train_test_split"
+          "np"
         ],
-        "allow_input_mutation": true
-      },
-      "presentation": {
-        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
-        "worked_example": "",
-        "feedback": {
-          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
-          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        "allow_input_mutation": true,
+        "result_type": "array"
+      }
+    },
+    {
+      "id": "NP08-18",
+      "family_id": "NP08-18",
+      "version_id": "NP08-18@1",
+      "content_version": 1,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "分母が0でない位置だけで割る",
+      "description": "同じshapeの `numerator` と `denominator` について、`np.divide()` を使って、分母が0でない位置で要素ごとの割り算を行ってください。分母が0の位置では除算を行わず、結果を `0.0` にしてください。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "",
+      "output_conditions": "同じshapeの `numerator` と `denominator` について、`np.divide()` を使って、分母が0でない位置で要素ごとの割り算を行ってください。分母が0の位置では除算を行わず、結果を `0.0` にしてください。",
+      "starter_code": "result = ",
+      "example": "import numpy as np\n\nnumerator = np.array([6.0, 7.0, 0.0, -8.0])\ndenominator = np.array([2.0, 0.0, 0.0, 4.0])\n\n# 以下に答えを記入",
+      "editable_regions": [
+        {
+          "start": 9,
+          "end": 9
         }
-      },
+      ],
+      "explanation": "`np.divide()` の `where` に、割り算する位置を表す条件を渡します。`out` にゼロで初期化した配列を渡すと、計算しない位置には0が残ります。",
+      "common_mistakes": [],
+      "public_tests": [
+        {
+          "setup": "import numpy as np\n\nnumerator = np.array([6.0, 7.0, 0.0, -8.0])\ndenominator = np.array([2.0, 0.0, 0.0, 4.0])",
+          "args": "numerator, denominator",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              3.0,
+              0.0,
+              0.0,
+              -2.0
+            ]
+          },
+          "expected_tuple_paths": []
+        },
+        {
+          "setup": "import numpy as np\n\nnumerator = np.array([[0., 3.], [5., -8.], [6., 0.]])\ndenominator = np.array([[0., -0.0], [2., -2.], [3., 4.]])",
+          "args": "numerator, denominator",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                2.5,
+                4.0
+              ],
+              [
+                2.0,
+                0.0
+              ]
+            ]
+          },
+          "expected_tuple_paths": []
+        }
+      ],
+      "required_ast": "call:divide",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "conditional-fixtures-v1",
+      "tolerance": 1e-05,
       "workspace": {
         "mode": "script",
-        "provided_code": "import numpy as np\n\nx = np.array([0.0, 1.0, 2.0])\neps = 1e-06",
-        "task": "各値をeps以上へclipして自然対数を返す。epsは正。 処理の結果をresultに代入してください。",
-        "authored": false,
+        "provided_code": "import numpy as np\n\nnumerator = np.array([6.0, 7.0, 0.0, -8.0])\ndenominator = np.array([2.0, 0.0, 0.0, 4.0])\n\n# 以下に答えを記入",
+        "task": "同じshapeの `numerator` と `denominator` について、`np.divide()` を使って、分母が0でない位置で要素ごとの割り算を行ってください。分母が0の位置では除算を行わず、結果を `0.0` にしてください。",
         "structure": "script",
-        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+        "authored": true,
+        "hint_count": 1
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "numerator",
+          "denominator"
+        ],
+        "globals": [
+          "np"
+        ],
+        "allow_input_mutation": true,
+        "result_type": "array",
+        "strict_division": true
       }
     },
     {

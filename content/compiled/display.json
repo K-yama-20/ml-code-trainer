@@ -5902,5 +5902,665 @@
     "hidden_tests": [
       []
     ]
+  },
+  "NP07-07@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-01@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-03@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-08@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-09@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-06@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-10@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-11@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-12@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-02@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-04@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-13@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-05@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-14@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-15@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-16@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-17@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-18@1:42": {
+    "public_tests": [
+      [
+        []
+      ],
+      [
+        []
+      ]
+    ],
+    "hidden_tests": [
+      [
+        []
+      ]
+    ]
+  },
+  "NP07-07@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-01@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-03@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-08@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-09@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-06@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-10@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-11@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-12@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-02@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-04@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-13@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-05@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-14@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-15@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-16@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-17@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP07-18@1:99": {
+    "public_tests": [
+      [
+        []
+      ],
+      [
+        []
+      ]
+    ],
+    "hidden_tests": [
+      [
+        []
+      ]
+    ]
+  },
+  "NP08-01@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-07@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-03@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-08@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-09@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-10@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-11@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-02@4:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-12@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-13@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-14@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-15@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-04@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-16@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-05@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-17@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-06@3:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-18@1:42": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-01@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-07@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-03@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-08@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-09@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-10@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-11@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-02@4:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-12@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-13@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-14@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-15@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-04@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-16@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-05@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-17@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-06@3:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
+  },
+  "NP08-18@1:99": {
+    "public_tests": [
+      [],
+      []
+    ],
+    "hidden_tests": [
+      []
+    ]
   }
 }

@@ -142,13 +142,11 @@ def validate():
     )
     assert distribution == collections.Counter(
         {
-            ("guided", "completion"): 30,
-            ("partial", "completion"): 30,
-            ("independent", "implementation"): 86,
-            ("guided", "implementation"): 54,
-            ("partial", "implementation"): 54,
-            ("guided", "prediction"): 2,
-            ("partial", "prediction"): 2,
+            ("guided", "completion"): 28,
+            ("partial", "completion"): 28,
+            ("independent", "implementation"): 94,
+            ("guided", "implementation"): 66,
+            ("partial", "implementation"): 66,
             ("guided", "bugfix"): 10,
             ("partial", "bugfix"): 10,
             ("independent", "bugfix"): 10,
@@ -182,7 +180,7 @@ def validate():
                 3 if p["variant_generator"] in (
                     "file-fixtures-v1", "array-fixtures-v1", "indexing-fixtures-v1",
                     "reshaping-fixtures-v1", "axis-permutation-fixtures-v1", "reduction-fixtures-v1",
-                    "broadcasting-fixtures-v1"
+                    "broadcasting-fixtures-v1", "combining-fixtures-v1", "conditional-fixtures-v1"
                 ) else 4
             )
             assert len(cases) >= minimum
