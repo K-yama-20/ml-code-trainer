@@ -55,42 +55,51 @@ def expected_broadcast(number, env):
     if number in (7, 8, 9, 17, 18):
         if number == 7:
             shape = (len(env["row_values"]), env["col_values"].shape[1])
-            element = lambda i: env["row_values"][i[0], 0] + env["col_values"][0, i[1]]
+            def element(i):
+                return env["row_values"][i[0], 0] + env["col_values"][0, i[1]]
         elif number in (8, 9):
             shape = (len(env["a"]), len(env["b"]))
             element = (lambda i: env["a"][i[0]] * env["b"][i[1]]) if number == 8 else (
                 lambda i: env["a"][i[0]] - env["b"][i[1]])
         elif number == 17:
             shape = (env["rows"], len(env["values"]))
-            element = lambda i: env["values"][i[1]]
+            def element(i):
+                return env["values"][i[1]]
         else:
             points, centers = env["points"], env["centers"]
             shape = (len(points), len(centers))
-            element = lambda i: sum((points[i[0], k] - centers[i[1], k]) ** 2
-                                    for k in range(points.shape[1]))
+            def element(i):
+                return sum((points[i[0], k] - centers[i[1], k]) ** 2
+                           for k in range(points.shape[1]))
     else:
         x = env["pixels"] if number == 2 else env["image"] if number == 14 else env["x"]
         shape = x.shape
         if number == 1:
-            element = lambda i: x[i] + env["offset"]
+            def element(i):
+                return x[i] + env["offset"]
         elif number == 2:
-            element = lambda i: x[i] / 255
+            def element(i):
+                return x[i] / 255
         elif number in (3, 5, 14, 15):
             axis = {3: 1, 5: 0, 14: 2, 15: 1}[number]
-            element = lambda i: x[i] + env["bias"][i[axis]]
+            def element(i):
+                return x[i] + env["bias"][i[axis]]
         elif number in (4, 6, 16):
             axis = 1 if number == 4 else 0
-            element = lambda i: x[i] * env["weights"][i[axis]]
+            def element(i):
+                return x[i] * env["weights"][i[axis]]
         elif number == 10:
             means = [sum(float(x[r, c]) for r in range(x.shape[0])) / x.shape[0]
                      for c in range(x.shape[1])]
-            element = lambda i: x[i] - means[i[1]]
+            def element(i):
+                return x[i] - means[i[1]]
         elif number in (11, 12):
             totals = [sum(float(v) for v in row) for row in x]
             element = (lambda i: x[i] - totals[i[0]] / x.shape[1]) if number == 11 else (
                 lambda i: x[i] / totals[i[0]])
         elif number == 13:
-            element = lambda i: (x[i] - env["means"][i[1]]) / env["stds"][i[1]]
+            def element(i):
+                return (x[i] - env["means"][i[1]]) / env["stds"][i[1]]
         else:
             raise ValueError(number)
     return np.array([element(index) for index in np.ndindex(shape)]).reshape(shape)
