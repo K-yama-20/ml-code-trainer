@@ -369,13 +369,12 @@ test("cancel is explicit and never displays a completed result for the cancelled
   );
 });
 
-test("starting Guided from the concept page continues into Partial; ending is explicit", async ({
+test("starting from the concept page shows no stage labels; ending is explicit", async ({
   page,
 }) => {
   await page.goto("/concepts/NP05");
   await page
-    .getByRole("button", { name: "このステージを練習", exact: true })
-    .first()
+    .getByRole("button", { name: "演習を開始", exact: true })
     .click();
   for (let n = 0; n < 2; n++) {
     await expect(page.locator(".problem-content h1")).toBeVisible();
@@ -391,12 +390,12 @@ test("starting Guided from the concept page continues into Partial; ending is ex
     await page.getByRole("button", { name: "次の問題", exact: true }).click();
     await expect(page).not.toHaveURL(new RegExp(ids.at(-1)!));
   }
-  await expect(page.locator(".transition-note")).toContainText("部分記述");
   await expect(page.locator(".problem-content h1")).toBeVisible();
-  await page.screenshot({
-    path: "docs/ux-concrete/after-guided-to-partial.png",
-    fullPage: true,
-  });
+  await expect(
+    page.locator(".transition-note, .session-label", {
+      hasText: /穴埋め|部分記述|補助なし|Guided|Partial|Independent/,
+    }),
+  ).toHaveCount(0);
   await page.locator(".drill-top .drill-menu summary").click();
   await page.getByRole("button", { name: "演習を終了", exact: true }).click();
   await expect(

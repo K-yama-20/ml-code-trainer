@@ -77,7 +77,6 @@ class DraftPut(StrictModel):
 
 class SettingsPatch(StrictModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=60)
-    theme: Literal["dark", "light", "system"] | None = None
     font_size: int | None = Field(default=None, ge=12, le=24)
     daily_goal: int | None = Field(default=None, ge=1, le=100)
     timezone: str | None = None
@@ -197,7 +196,6 @@ class DraftView(BaseModel):
 
 class SettingsView(BaseModel):
     display_name: str
-    theme: Literal["dark", "light", "system"]
     font_size: int
     daily_goal: int
     timezone: str

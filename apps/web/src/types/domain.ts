@@ -113,7 +113,6 @@ export interface Review {
 }
 export interface UserSettings {
   display_name: string;
-  theme: "dark" | "light" | "system";
   font_size: number;
   daily_goal: number;
   timezone: string;

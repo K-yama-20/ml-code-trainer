@@ -42,7 +42,7 @@ Modal実接続とSupabase実DB RLSは資格情報がないため明示的にskip
 2. Ctrl+Enter / Ctrl+Shift+Enter / Alt+H / Alt+N、MacのCommand、IME変換中の抑止。
 3. 分割幅と結果高をドラッグ／キーボードで変え、集中モードへ切り替える。
 4. オフライン、DB通信失敗、2タブ同時編集でもコードが残ること。
-5. 390px・768px・1440pxで操作でき、ライトテーマと文字サイズが保存されること。
+5. 390px・768px・1440pxで操作でき、文字サイズが保存されること。
 6. Sandboxのネットワーク、メモリ、CPU、ファイル権限、timeout、cancelと自動破棄。
 
 GitHub Actionsはlint・typecheck・build・unit・integration・native content・OpenAPI差分・セキュリティ不変条件・E2E・npm auditを実行します。ワークフロー自体のGitHub上での実行はpushしていないため未検証です。

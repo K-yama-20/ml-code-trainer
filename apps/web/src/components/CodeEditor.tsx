@@ -30,7 +30,6 @@ export function CodeEditor({
   value,
   onChange,
   fontSize = 14,
-  theme = "dark",
   readOnly = false,
   errorLine,
   jump,
@@ -40,7 +39,6 @@ export function CodeEditor({
   value: string;
   onChange?: (v: string) => void;
   fontSize?: number;
-  theme?: string;
   readOnly?: boolean;
   errorLine?: number;
   jump?: number;
@@ -82,13 +80,7 @@ export function CodeEditor({
       language="python"
       value={uncontrolled ? undefined : value}
       defaultValue={value}
-      theme={
-        theme === "light" ||
-        (theme === "system" &&
-          matchMedia("(prefers-color-scheme: light)").matches)
-          ? "vs"
-          : "trainer-dark"
-      }
+      theme="trainer-dark"
       loading={<Loading />}
       onChange={(v) => onChange?.(v ?? "")}
       onMount={(editor, api) => {

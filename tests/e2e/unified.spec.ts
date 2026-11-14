@@ -68,15 +68,8 @@ test("zip: protection, undo/redo, disclosure, grading, draft and screenshots", a
   await page.screenshot({ path: "docs/ux-unified/zip-dark-correct.png" });
   await page.reload();
   await expect(page.locator(".view-lines")).toContainText("result = dict(zip");
-  await page.goto("/settings");
-  await page.getByLabel("テーマ", { exact: true }).selectOption("light");
-  await page.getByRole("button", { name: "変更を保存", exact: true }).click();
-  await expect(page.getByRole("status")).toContainText("設定を保存");
-  await page.goto(`/drill/s/${item.session_id}/${item.id}`);
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await expect(page.locator(".problem-content h1")).toBeVisible();
   await expect(page.locator(".monaco-editor")).toBeVisible();
-  await page.screenshot({ path: "docs/ux-unified/zip-light-correct.png" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("tab", { name: "回答・結果", exact: true }).click();
   expect(

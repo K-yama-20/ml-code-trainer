@@ -2,9 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft,
   ArrowRight,
-  CheckCircle2,
   ChevronRight,
-  Circle,
   Play,
   Search,
 } from "lucide-react";
@@ -24,10 +22,8 @@ import {
   Loading,
   PageTitle,
   ProgressBar,
-  stageLabels,
-  typeLabels,
 } from "../components/ui";
-import type { Concept, Stage } from "../types/domain";
+import type { Concept } from "../types/domain";
 export function Curriculum() {
   const { moduleId } = useParams(),
     [search, setSearch] = useState("");
@@ -116,20 +112,6 @@ export function Curriculum() {
                       <h3>{c.title}</h3>
                       <p>{c.description}</p>
                       <pre className="code-preview">{c.example}</pre>
-                      <div className="stage-dots">
-                        {(["guided", "partial", "independent"] as Stage[]).map(
-                          (s) => (
-                            <span key={s}>
-                              {(p?.stage_families[s]?.length ?? 0) >= 2 ? (
-                                <CheckCircle2 size={13} />
-                              ) : (
-                                <Circle size={13} />
-                              )}{" "}
-                              {stageLabels[s]}
-                            </span>
-                          ),
-                        )}
-                      </div>
                       <div className="concept-card-bottom">
                         <span>
                           {c.problem_count
@@ -173,11 +155,7 @@ export function ConceptDetail() {
   if (error || !c) return <ErrorBox error={error} />;
   const p = d?.concepts.find((p) => p.concept_id === c.id);
   const exerciseCount = c.problem_count ?? 6;
-  const orderedProblems = c.ordered_practice ? c.problems : undefined;
-  const includesFunctionDefinitions = orderedProblems?.some(
-    (problem) => problem.workspace?.structure === "function",
-  );
-  async function start(stage?: Stage) {
+  async function start() {
     setBusy(true);
     try {
       navigate(
@@ -185,11 +163,7 @@ export function ConceptDetail() {
           await newSession({
             kind: "concept",
             concept_id: conceptId,
-            count:
-              stage && orderedProblems
-                ? orderedProblems.filter((item) => item.stage === stage).length
-                : exerciseCount,
-            ...(stage ? { stages: [stage] } : {}),
+            count: exerciseCount,
           }),
         ),
       );
@@ -237,54 +211,19 @@ export function ConceptDetail() {
           <h3>現在の習熟度</h3>
           <strong>{p ? `${p.mastery_level} / 5` : "未測定"}</strong>
           <ProgressBar value={(p?.mastery_level ?? 0) * 20} />
-          <p className="muted">
-            Guided・Partialは暫定進捗です。自力実装の習得認定にはサーバー検証が必要です。
-          </p>
         </section>
         <section>
-          <h2 className="mb-20">3ステージで身につける</h2>
-          {(["guided", "partial", "independent"] as Stage[]).map((stage, i) => (
-            <div className="stage-card panel" key={stage}>
-              <div className="stage-number">0{i + 1}</div>
-              <div>
-                <h3>
-                  {stageLabels[stage]}
-                  <Badge color="gray">
-                    {p?.stage_families[stage]?.length ?? 0}/2
-                  </Badge>
-                </h3>
-                <p>
-                  {c.ordered_practice
-                    ? includesFunctionDefinitions
-                      ? "指定の順番で、関数の呼び出しや定義を書く"
-                      : "指定の順番で、式全体を書いて練習する"
-                    : [
-                        "完成に近いコードの空欄を埋める",
-                        "APIや引数を選び、部分的に実装する",
-                        "最小限の条件から、自力で実装する",
-                      ][i]}
-                </p>
-                <ul>
-                  {c.problems
-                    ?.filter((p) => p.stage === stage)
-                    .map((p) => (
-                      <li key={p.id}>
-                        <span>{p.title}</span>
-                        <small>{typeLabels[p.type]}</small>
-                      </li>
-                    ))}
-                </ul>
-                <Button
-                  variant="secondary"
-                  onClick={() => start(stage)}
-                  disabled={busy}
-                >
-                  このステージを練習
-                  <ChevronRight size={15} />
-                </Button>
-              </div>
-            </div>
-          ))}
+          <h2 className="mb-20">演習（{exerciseCount}問）</h2>
+          <div className="practice-list panel">
+            <ol>
+              {c.problems?.map((problem, i) => (
+                <li key={problem.id}>
+                  <small>{String(i + 1).padStart(2, "0")}</small>
+                  <span>{problem.title}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
       </div>
     </>

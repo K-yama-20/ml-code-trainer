@@ -124,22 +124,8 @@ export function Settings() {
             </label>
           </div>
           <div className="settings-section">
-            <h2>外観とエディタ</h2>
+            <h2>エディタ</h2>
             <div className="settings-field-grid">
-              <label>
-                テーマ
-                <select
-                  aria-label="テーマ"
-                  value={form.theme}
-                  onChange={(e) =>
-                    change("theme", e.target.value as UserSettings["theme"])
-                  }
-                >
-                  <option value="dark">Dark</option>
-                  <option value="light">Light</option>
-                  <option value="system">システムに合わせる</option>
-                </select>
-              </label>
               <label>
                 フォントサイズ
                 <select

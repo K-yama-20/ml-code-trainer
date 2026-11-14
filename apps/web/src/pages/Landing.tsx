@@ -2,10 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { problemCount, queries } from "../lib/api";
 import {
   ArrowRight,
-  Braces,
   Check,
   Code2,
-  Layers,
   Play,
   Terminal,
 } from "lucide-react";
@@ -24,7 +22,6 @@ export function Landing() {
           </span>
         </Link>
         <nav>
-          <a href="#how">学び方</a>
           <a href="#curriculum">カリキュラム</a>
           <Link className="btn secondary" to="/home">
             学習を始める
@@ -127,38 +124,6 @@ export function Landing() {
             </div>
           </div>
         </div>
-        <section id="how" className="landing-how">
-          <div>
-            <span className="eyebrow">SMALL STEPS. REAL UNDERSTANDING.</span>
-            <h2>見るだけで終わらない、3段階の学習。</h2>
-          </div>
-          <div className="landing-steps">
-            {[
-              {
-                icon: Braces,
-                name: "Guided",
-                text: "空欄を埋めながら、頻出パターンを覚える。",
-              },
-              {
-                icon: Code2,
-                name: "Partial",
-                text: "APIと引数を選び、自分で処理を書いてみる。",
-              },
-              {
-                icon: Layers,
-                name: "Independent",
-                text: "条件から実装を組み立て、確かな理解へ。",
-              },
-            ].map(({ icon: Icon, ...s }, i) => (
-              <article key={s.name}>
-                <span>0{i + 1}</span>
-                <Icon size={25} />
-                <h3>{s.name}</h3>
-                <p>{s.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
         <section id="curriculum" className="landing-curriculum">
           <div>
             <h2>毎日出会うコードを、ひとつずつ。</h2>

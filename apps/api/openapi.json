@@ -2140,22 +2140,6 @@
             ],
             "title": "Display Name"
           },
-          "theme": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "dark",
-                  "light",
-                  "system"
-                ]
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Theme"
-          },
           "font_size": {
             "anyOf": [
               {
@@ -2204,15 +2188,6 @@
             "type": "string",
             "title": "Display Name"
           },
-          "theme": {
-            "type": "string",
-            "enum": [
-              "dark",
-              "light",
-              "system"
-            ],
-            "title": "Theme"
-          },
           "font_size": {
             "type": "integer",
             "title": "Font Size"
@@ -2229,7 +2204,6 @@
         "type": "object",
         "required": [
           "display_name",
-          "theme",
           "font_size",
           "daily_goal",
           "timezone"

@@ -241,7 +241,7 @@ def continuation_queue(db, user_id, session, policy, previous, items):
         ]
         candidates = eligible or candidates or pool
         if not candidates:
-            return [], "この条件で続けられる問題がありません。分野やステージを変えて続けられます。"
+            return [], "この条件で続けられる問題がありません。分野を変えて続けられます。"
         target = min(
             candidates,
             key=lambda p: (
@@ -263,8 +263,7 @@ def continuation_queue(db, user_id, session, policy, previous, items):
     if target["concept_id"] != cid:
         message = f"続いて「{CONCEPTS[target['concept_id']]['title']}」を練習します。"
     elif target["stage"] != current["stage"]:
-        label = {"guided": "穴埋め", "partial": "部分記述", "independent": "補助なしの練習"}[target["stage"]]
-        message = f"次は{label}へ進みます。"
+        message = ""
     else:
         message = "もう一度、ヒントなしで確かめましょう。前の練習の記録はそのまま残ります。"
     return selected[:2], message

@@ -6,7 +6,7 @@ import {
   type RefObject,
 } from "react";
 import { Link } from "react-router-dom";
-import { Button, ErrorBox, typeLabels } from "../components/ui";
+import { Button, ErrorBox } from "../components/ui";
 import { AnswerWorkspace, needsAnswer } from "../components/AnswerWorkspace";
 import { ResultValue } from "../components/ResultValue";
 import { ComputedResult, hasActualValue } from "../components/ComputedResult";
@@ -55,7 +55,6 @@ interface Props {
   restored: boolean;
   sandboxAvailable: boolean;
   fontSize?: number;
-  theme?: string;
   actions: {
     check: () => void;
     run: () => void;
@@ -228,12 +227,7 @@ export function DrillView(v: Props) {
     >
       <header className="drill-top">
         <span className="session-label">
-          {libraries[p.module_id]} /{" "}
-          {p.type === "completion"
-            ? p.stage === "guided"
-              ? "穴埋め"
-              : "部分記述"
-            : typeLabels[p.type]}
+          {libraries[p.module_id]}
         </span>
         <span className="drill-count">
           {item.position + 1}問目{" "}
@@ -460,7 +454,6 @@ export function DrillView(v: Props) {
                   code={v.code}
                   onChange={a.code}
                   fontSize={v.fontSize ?? 15}
-                  theme={v.theme}
                   errorLine={result?.error_line}
                   autoFocus={v.focusAnswer}
                   onFocusReady={(focus) => {

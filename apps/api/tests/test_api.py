@@ -203,11 +203,13 @@ def test_settings_timezone_and_error_contract(client):
     assert (
         client.patch(
             "/api/v1/settings",
-            json={"theme": "light", "font_size": 18, "daily_goal": 30, "timezone": "UTC", "display_name": "Test"},
+            json={"font_size": 18, "daily_goal": 30, "timezone": "UTC", "display_name": "Test"},
         ).status_code
         == 200
     )
-    assert client.get("/api/v1/settings").json()["daily_goal"] == 30
+    saved = client.get("/api/v1/settings").json()
+    assert saved["daily_goal"] == 30 and "theme" not in saved
+    assert client.patch("/api/v1/settings", json={"theme": "light"}).status_code == 422
     assert client.patch("/api/v1/settings", json={"timezone": "nonsense"}).status_code == 422
     assert client.patch("/api/v1/settings", json={"daily_goal": 0}).status_code == 422
     assert client.post("/api/v1/sessions", json={}, headers={"Origin": "https://attacker.invalid"}).status_code == 403

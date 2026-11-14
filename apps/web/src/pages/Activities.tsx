@@ -250,7 +250,6 @@ export function DeepDive() {
             <CodeEditor
               value={t.code ?? ""}
               readOnly
-              theme={d?.settings.theme}
               fontSize={d?.settings.font_size}
             />
           </div>
@@ -361,7 +360,6 @@ export function ReadingProject() {
               readOnly
               jump={jump}
               fontSize={d?.settings.font_size ?? 13}
-              theme={d?.settings.theme}
             />
           </div>
           <div className="definition-jumps">

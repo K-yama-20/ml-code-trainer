@@ -7,7 +7,6 @@ from .config import settings
 from .db import Profile, UserSettings, db_session
 
 DEFAULT_SETTINGS = {
-    "theme": "dark",
     "font_size": 14,
     "daily_goal": 20,
     "timezone": "Asia/Tokyo",

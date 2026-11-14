@@ -970,8 +970,6 @@ export interface components {
     SettingsPatch: {
       /** Display Name */
       display_name?: string | null;
-      /** Theme */
-      theme?: ("dark" | "light" | "system") | null;
       /** Font Size */
       font_size?: number | null;
       /** Daily Goal */
@@ -983,11 +981,6 @@ export interface components {
     SettingsView: {
       /** Display Name */
       display_name: string;
-      /**
-       * Theme
-       * @enum {string}
-       */
-      theme: "dark" | "light" | "system";
       /** Font Size */
       font_size: number;
       /** Daily Goal */
