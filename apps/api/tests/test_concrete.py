@@ -18,7 +18,7 @@ def evaluate(p, code=None):
 def test_all_versioned_workspaces_and_reference_solutions():
     assert len(PILOT) == 15
     for seed, data in VARIANTS.items():
-        assert len(data["problems"]) == 312
+        assert len(data["problems"]) == 540
         for p in data["problems"]:
             assert p["workspace"]["provided_code"] or (
                 p["editable_regions"] and p["starter_code"] and p["workspace"]["invocation"]

@@ -78,11 +78,13 @@ test("model answer exposes copyable Python operators", async ({ page }) => {
   await expect(solution).not.toContainText("≠");
 });
 
-test("the split answer fits the fixed names in the Guided scaffold", async ({
+test("a multi-step split answer runs after the fixed import and input", async ({
   page,
 }) => {
   const { editor, lines } = await drillItem(page, "SK01-01");
-  await expect(lines).toContainText("X_train, X_test, y_train, y_test");
+  await expect(lines).toContainText(
+    "from sklearn.model_selection import train_test_split",
+  );
   await expect(lines).not.toContainText("___");
   await page.locator(".solution-accordion summary").click();
   await expect(page.locator(".solution-accordion pre")).toContainText(
@@ -90,7 +92,10 @@ test("the split answer fits the fixed names in the Guided scaffold", async ({
   );
   await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.evaluate(() =>
-    navigator.clipboard.writeText("(len(X_train), len(X_test))"),
+    navigator.clipboard.writeText(
+      "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)\n" +
+        "result = (len(X_train), len(X_test))",
+    ),
   );
   await editor.press("ControlOrMeta+A");
   await editor.press("ControlOrMeta+V");

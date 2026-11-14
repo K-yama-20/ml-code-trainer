@@ -1,0 +1,164 @@
+[
+  {
+    "number": 1, "id": "SK02-01", "version": 3, "stage": "guided",
+    "title": "学習データを標準化する",
+    "task": "`StandardScaler` を学習データ `train` で学習し、同じ `train` を変換した配列を `result` にしてください。各列は平均0、母標準偏差1になります。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([\n    [1.0, 10.0],\n    [3.0, 20.0],\n    [5.0, 60.0],\n])",
+    "hint": "`StandardScaler().fit_transform(train)` は、`fit()` で列ごとの平均と標準偏差を求め、続けて `transform()` で同じデータを変換します。",
+    "solution": "result = StandardScaler().fit_transform(train)"
+  },
+  {
+    "number": 2, "id": "SK02-02", "version": 4, "stage": "guided",
+    "title": "学習データの統計量でテストデータを変換する",
+    "task": "`StandardScaler` を `train` だけで学習し、そのScalerで `test` を変換した配列を `result` にしてください。`test` で学習し直してはいけません。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[1.0, 10.0], [3.0, 20.0], [5.0, 60.0]])\ntest = np.array([[3.0, 30.0], [7.0, 0.0]])",
+    "hint": "`scaler = StandardScaler().fit(train)` で学習し、`scaler.transform(test)` で変換します。`fit_transform(test)` を使うと、テストデータの平均と標準偏差で変換されます。",
+    "solution": "scaler = StandardScaler().fit(train)\nresult = scaler.transform(test)"
+  },
+  {
+    "number": 3, "id": "SK02-07", "version": 1, "stage": "guided",
+    "title": "MinMaxScalerでテストデータを0から1の基準に変換する",
+    "task": "`MinMaxScaler` を `train` で学習し、`test` を変換した配列を `result` にしてください。学習データの範囲外の値は、0未満や1より大きい値になります。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import MinMaxScaler",
+    "input": "train = np.array([[0.0, 10.0], [5.0, 30.0], [10.0, 20.0]])\ntest = np.array([[5.0, 40.0], [-5.0, 10.0]])",
+    "hint": "`MinMaxScaler` は学習データの列ごとの最小値と最大値で `(x - 最小値) / (最大値 - 最小値)` を計算します。既定では範囲外の値を0から1に収めません。",
+    "solution": "result = MinMaxScaler().fit(train).transform(test)"
+  },
+  {
+    "number": 4, "id": "SK02-04", "version": 4, "stage": "guided",
+    "title": "学習データだけから平均を学習する",
+    "task": "`StandardScaler` を `train` だけで学習し、学習済みの列ごとの平均 `mean_` を `result` にしてください。`test` は学習に使いません。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[0.0, 2.0], [2.0, 4.0], [4.0, 6.0]])\ntest = np.array([[100.0, 102.0]])",
+    "hint": "`fit()` の後に、末尾がアンダースコアの属性に学習結果が入ります。`np.vstack([train, test])` で学習すると、テストデータの値が平均に混ざります。",
+    "solution": "result = StandardScaler().fit(train).mean_"
+  },
+  {
+    "number": 5, "id": "SK02-05", "version": 3, "stage": "guided",
+    "title": "学習した分散を取り出す",
+    "task": "`StandardScaler` を `train` で学習し、列ごとの分散 `var_` を `result` にしてください。`var_` は母分散（`ddof=0`）です。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[1.0, 4.0], [3.0, 4.0], [5.0, 10.0]])",
+    "hint": "学習済みの `StandardScaler` の `var_` 属性に、列ごとの分散が入っています。`np.var(train, axis=0)` と同じ値です。",
+    "solution": "result = StandardScaler().fit(train).var_"
+  },
+  {
+    "number": 6, "id": "SK02-08", "version": 1, "stage": "guided",
+    "title": "定数列を含むときのスケールを確かめる",
+    "task": "`StandardScaler` を `train` で学習し、変換の分母として使われる列ごとの値 `scale_` を `result` にしてください。標準偏差が0の定数列では、`scale_` は1になります。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[1.0, 7.0], [3.0, 7.0], [5.0, 7.0]])",
+    "hint": "`scale_` は通常は列の母標準偏差です。0で割らないように、標準偏差が0の列では1が使われます。",
+    "solution": "result = StandardScaler().fit(train).scale_"
+  },
+  {
+    "number": 7, "id": "SK02-06", "version": 3, "stage": "partial",
+    "title": "変換したデータを元の単位に戻す",
+    "task": "`StandardScaler` を `train` で学習し、そのScalerで `test` を変換してから、`inverse_transform()` で元の単位に戻した配列を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[1.0, 10.0], [3.0, 20.0], [5.0, 60.0]])\ntest = np.array([[2.0, 50.0], [9.0, -10.0]])",
+    "hint": "`inverse_transform()` は、学習済みの平均と標準偏差を使って `z * 標準偏差 + 平均` を計算します。同じScalerを使うと元の値に戻ります。",
+    "solution": "scaler = StandardScaler().fit(train)\nresult = scaler.inverse_transform(scaler.transform(test))"
+  },
+  {
+    "number": 8, "id": "SK02-03", "version": 3, "stage": "partial",
+    "title": "Pipelineに前処理をまとめる",
+    "task": "`StandardScaler` だけを `\"scale\"` という名前で持つ `Pipeline` を作り、`train` で学習してから `test` を変換した配列を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[1.0, 10.0], [3.0, 20.0], [5.0, 60.0]])\ntest = np.array([[3.0, 30.0], [7.0, 0.0]])",
+    "hint": "`Pipeline([(\"scale\", StandardScaler())])` のように、`(名前, 処理)` のタプルをリストで渡します。`fit(train)` の後に `transform(test)` を呼びます。",
+    "solution": "pipe = Pipeline([(\"scale\", StandardScaler())])\npipe.fit(train)\nresult = pipe.transform(test)"
+  },
+  {
+    "number": 9, "id": "SK02-09", "version": 1, "stage": "partial",
+    "title": "平均を引かずに標準偏差だけで割る",
+    "task": "`StandardScaler(with_mean=False)` を `train` で学習し、`test` を変換した配列を `result` にしてください。平均は引かず、学習データの列ごとの母標準偏差で割るだけになります。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[1.0, 10.0], [3.0, 20.0], [5.0, 60.0]])\ntest = np.array([[4.0, 50.0]])",
+    "hint": "`with_mean=False` を指定すると、`transform()` は `x / 標準偏差` を計算します。0を多く含む疎なデータでよく使われます。",
+    "solution": "result = StandardScaler(with_mean=False).fit(train).transform(test)"
+  },
+  {
+    "number": 10, "id": "SK02-10", "version": 1, "stage": "partial",
+    "title": "-1から1の範囲を基準にMin-Max変換する",
+    "task": "`MinMaxScaler(feature_range=(-1, 1))` を `train` で学習し、`test` を変換した配列を `result` にしてください。学習データの最小値が-1、最大値が1に対応します。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import MinMaxScaler",
+    "input": "train = np.array([[0.0, 10.0], [5.0, 30.0], [10.0, 20.0]])\ntest = np.array([[5.0, 20.0], [15.0, 10.0]])",
+    "hint": "`feature_range` で変換後の最小値と最大値を指定します。0から1に変換した値を `2 * 値 - 1` にしたものと同じです。",
+    "solution": "result = MinMaxScaler(feature_range=(-1, 1)).fit(train).transform(test)"
+  },
+  {
+    "number": 11, "id": "SK02-11", "version": 1, "stage": "partial",
+    "title": "標準化と線形回帰をPipelineで学習して予測する",
+    "task": "`StandardScaler` を `\"scale\"`、`LinearRegression` を `\"model\"` という名前で持つ `Pipeline` を作り、`X_train` と `y_train` で学習してください。学習したPipelineで `X_test` を予測した配列を `result` にします。",
+    "imports": "import numpy as np\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "X_train = np.array([[0.0, 1.0], [1.0, 0.0], [2.0, 2.0], [3.0, 1.0]])\ny_train = np.array([1.0, 3.0, 7.0, 8.0])\nX_test = np.array([[4.0, 0.0], [1.0, 3.0]])",
+    "hint": "Pipelineの `fit(X_train, y_train)` は、Scalerを学習データで学習して変換し、その結果でモデルを学習します。`predict(X_test)` では同じScalerで変換してから予測します。",
+    "solution": "pipe = Pipeline([(\"scale\", StandardScaler()), (\"model\", LinearRegression())])\npipe.fit(X_train, y_train)\nresult = pipe.predict(X_test)"
+  },
+  {
+    "number": 12, "id": "SK02-12", "version": 1, "stage": "partial",
+    "title": "make_pipelineで自動で付いた名前から手順を取り出す",
+    "task": "`make_pipeline(StandardScaler(), LinearRegression())` でPipelineを作り、`X` と `y` で学習してください。学習後、`named_steps` から `StandardScaler` の手順を取り出し、その `mean_` を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "X = np.array([[0.0, 4.0], [2.0, 8.0], [4.0, 0.0]])\ny = np.array([1.0, 2.0, 3.0])",
+    "hint": "`make_pipeline()` は、各手順のクラス名を小文字にした名前を自動で付けます。`StandardScaler` の名前は `\"standardscaler\"` です。",
+    "solution": "pipe = make_pipeline(StandardScaler(), LinearRegression()).fit(X, y)\nresult = pipe.named_steps[\"standardscaler\"].mean_"
+  },
+  {
+    "number": 13, "id": "SK02-13", "version": 1, "stage": "independent",
+    "title": "ColumnTransformerで指定した列だけを標準化する",
+    "task": "`ColumnTransformer` を使って、DataFrame `df` の `x1` 列と `x2` 列だけを `StandardScaler` で標準化した配列を `result` にしてください。他の列は結果に含めません（`remainder=\"drop\"`）。`df` で学習して同じ `df` を変換します。",
+    "imports": "import numpy as np\nimport pandas as pd\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "df = pd.DataFrame({\n    \"x1\": [1.0, 3.0, 5.0],\n    \"name\": [\"a\", \"b\", \"c\"],\n    \"x2\": [10.0, 10.0, 40.0],\n})",
+    "hint": "`ColumnTransformer([(\"num\", StandardScaler(), [\"x1\", \"x2\"])], remainder=\"drop\")` のように、`(名前, 処理, 列名のリスト)` を渡します。`fit_transform(df)` は指定した列だけを変換した配列を返します。",
+    "solution": "ct = ColumnTransformer([(\"num\", StandardScaler(), [\"x1\", \"x2\"])], remainder=\"drop\")\nresult = ct.fit_transform(df)"
+  },
+  {
+    "number": 14, "id": "SK02-14", "version": 1, "stage": "independent",
+    "title": "学習時になかったカテゴリを無視してOne-Hot化する",
+    "task": "`OneHotEncoder(handle_unknown=\"ignore\", sparse_output=False)` を `train` で学習し、`test` を変換した配列を `result` にしてください。列は学習データのカテゴリを昇順に並べた順です。学習時になかったカテゴリの行は、すべて0になります。",
+    "imports": "import numpy as np\nfrom sklearn.preprocessing import OneHotEncoder",
+    "input": "train = np.array([[\"red\"], [\"blue\"], [\"red\"], [\"green\"]])\ntest = np.array([[\"green\"], [\"black\"], [\"blue\"]])",
+    "hint": "カテゴリは `fit()` したデータから決まります。`handle_unknown=\"ignore\"` を指定すると、未知のカテゴリでエラーにならず、すべて0の行になります。`sparse_output=False` で通常の配列を返します。",
+    "solution": "encoder = OneHotEncoder(handle_unknown=\"ignore\", sparse_output=False).fit(train)\nresult = encoder.transform(test)"
+  },
+  {
+    "number": 15, "id": "SK02-15", "version": 1, "stage": "independent",
+    "title": "学習データの平均で欠損を補完する",
+    "task": "`SimpleImputer(strategy=\"mean\")` を `train` で学習し、`test` の欠損値を補完した配列を `result` にしてください。補完値は、学習データの列ごとの平均（欠損を除いて計算）です。",
+    "imports": "import numpy as np\nfrom sklearn.impute import SimpleImputer",
+    "input": "train = np.array([\n    [1.0, np.nan],\n    [2.0, 4.0],\n    [6.0, 8.0],\n    [np.nan, 9.0],\n])\ntest = np.array([[np.nan, np.nan], [5.0, np.nan]])",
+    "hint": "`SimpleImputer` も `fit()` で学習データから補完値を学習し、`transform()` で別のデータに適用します。`test` で学習すると、テストデータの平均で補完されます。",
+    "solution": "result = SimpleImputer(strategy=\"mean\").fit(train).transform(test)"
+  },
+  {
+    "number": 16, "id": "SK02-16", "version": 1, "stage": "independent",
+    "title": "欠損補完と標準化をPipelineで順に適用する",
+    "task": "`SimpleImputer(strategy=\"mean\")` を `\"impute\"`、`StandardScaler` を `\"scale\"` という名前で、この順に持つ `Pipeline` を作ってください。`train` で学習し、`test` を変換した配列を `result` にします。",
+    "imports": "import numpy as np\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "train = np.array([[1.0, 2.0], [np.nan, 4.0], [5.0, 6.0]])\ntest = np.array([[np.nan, 2.0], [7.0, np.nan]])",
+    "hint": "Pipelineでは、Scalerは補完後の学習データで学習されます。補完値で埋めた行も、標準偏差の計算に含まれます。",
+    "solution": "pipe = Pipeline([(\"impute\", SimpleImputer(strategy=\"mean\")), (\"scale\", StandardScaler())])\nresult = pipe.fit(train).transform(test)"
+  },
+  {
+    "number": 17, "id": "SK02-17", "version": 1, "stage": "independent",
+    "title": "交差検証の各分割でScalerを学習し直す",
+    "task": "`make_pipeline(StandardScaler(), LogisticRegression())` を `cross_val_score()` に渡し、`X` と `y` を `cv=2` で評価した正解率の配列を `result` にしてください。Pipelineを渡すと、各分割の学習用データだけでScalerが学習されます。",
+    "imports": "import numpy as np\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.model_selection import cross_val_score\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "X = np.array([[0.0], [1.0], [2.0], [3.0], [10.0], [11.0], [12.0], [2.5]])\ny = np.array([0, 0, 0, 0, 1, 1, 1, 1])",
+    "hint": "`cross_val_score(pipe, X, y, cv=2)` は、分類器ではクラス比をそろえた2分割で学習と評価を繰り返し、分割ごとの正解率を返します。先に全体を標準化すると、評価用の分割の情報が前処理に混ざります。",
+    "solution": "pipe = make_pipeline(StandardScaler(), LogisticRegression())\nresult = cross_val_score(pipe, X, y, cv=2)"
+  },
+  {
+    "number": 18, "id": "SK02-18", "version": 1, "stage": "independent",
+    "title": "Pipelineの中のモデルから学習済みの係数を取り出す",
+    "task": "`StandardScaler` を `\"scale\"`、`LinearRegression` を `\"model\"` という名前で持つ `Pipeline` を `X` と `y` で学習し、`\"model\"` の手順の係数 `coef_` を `result` にしてください。係数は標準化した特徴量に対する値です。",
+    "imports": "import numpy as np\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler",
+    "input": "X = np.array([[0.0, 1.0], [1.0, 0.0], [2.0, 2.0], [3.0, 1.0]])\ny = np.array([1.0, 3.0, 7.0, 8.0])",
+    "hint": "`pipe.named_steps[\"model\"]` で、学習済みの `LinearRegression` を取り出せます。標準化した特徴量で学習したので、元の単位の係数に各列の標準偏差を掛けた値になります。",
+    "solution": "pipe = Pipeline([(\"scale\", StandardScaler()), (\"model\", LinearRegression())]).fit(X, y)\nresult = pipe.named_steps[\"model\"].coef_"
+  }
+]

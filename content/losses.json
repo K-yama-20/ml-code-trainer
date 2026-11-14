@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PT06-01", "version": 3, "stage": "guided",
+    "title": "平均二乗誤差の損失を求める",
+    "task": "`nn.MSELoss()` を使って、同じshapeの `pred` と `target` の平均二乗誤差を、0次元のTensorで求めてください。",
+    "input": "pred = torch.tensor([1.0, 3.0, 2.0])\ntarget = torch.tensor([2.0, 1.0, 2.0])",
+    "hint": "損失のクラスは、インスタンスを作ってから関数のように呼び出します。`nn.MSELoss()(pred, target)` は既定で全要素の平均を返します。",
+    "solution": "result = nn.MSELoss()(pred, target)"
+  },
+  {
+    "number": 2, "id": "PT06-03", "version": 3, "stage": "guided",
+    "title": "要素ごとの二乗誤差を集約せずに求める",
+    "task": "`nn.MSELoss(reduction=\"none\")` を使って、`pred` と `target` の要素ごとの二乗誤差を求めてください。結果は入力と同じshapeです。",
+    "input": "pred = torch.tensor([[1.0, 2.0], [3.0, 4.0]])\ntarget = torch.tensor([[0.0, 2.0], [5.0, 4.0]])",
+    "hint": "`reduction=\"none\"` を指定すると、平均や合計を取らずに要素ごとの損失を返します。サンプルごとに重みを付けたいときなどに使います。",
+    "solution": "result = nn.MSELoss(reduction=\"none\")(pred, target)"
+  },
+  {
+    "number": 3, "id": "PT06-06", "version": 3, "stage": "guided",
+    "title": "二乗誤差の合計を損失にする",
+    "task": "`nn.MSELoss` の `reduction` を `\"sum\"` にして、`pred` と `target` の二乗誤差の合計を0次元のTensorで求めてください。",
+    "input": "pred = torch.tensor([1.0, 3.0, 2.0])\ntarget = torch.tensor([2.0, 1.0, 2.0])",
+    "hint": "`reduction=\"sum\"` は合計、既定の `\"mean\"` は平均です。合計を使うと、バッチサイズによって損失の大きさが変わります。",
+    "solution": "result = nn.MSELoss(reduction=\"sum\")(pred, target)"
+  },
+  {
+    "number": 4, "id": "PT06-07", "version": 1, "stage": "guided",
+    "title": "平均絶対誤差の損失を求める",
+    "task": "`nn.L1Loss()` を使って、`pred` と `target` の平均絶対誤差を、0次元のTensorで求めてください。",
+    "input": "pred = torch.tensor([1.0, 3.0, 2.0])\ntarget = torch.tensor([2.0, 1.0, 2.0])",
+    "hint": "`nn.L1Loss()` は誤差の絶対値の平均です。2乗しないので、大きな誤差の影響がMSEより小さくなります。",
+    "solution": "result = nn.L1Loss()(pred, target)"
+  },
+  {
+    "number": 5, "id": "PT06-05", "version": 3, "stage": "guided",
+    "title": "logitsから予測クラスを求める",
+    "task": "shape `(N, クラス数)` の `logits` の各行で、値が最大のクラスの番号をint64の1次元Tensorで求めてください。",
+    "input": "logits = torch.tensor([[1.0, 3.0, 0.0], [2.0, 0.0, -1.0]])",
+    "hint": "softmaxは大小関係を変えないので、予測クラスだけが必要ならsoftmaxは不要です。`logits.argmax(dim=1)` で各行の最大の位置を求めます。",
+    "solution": "result = logits.argmax(dim=1)"
+  },
+  {
+    "number": 6, "id": "PT06-08", "version": 1, "stage": "guided",
+    "title": "logitsをクラスごとの確率に変換する",
+    "task": "shape `(N, クラス数)` の `logits` の各行にsoftmaxを適用し、クラスごとの確率を求めてください。各行の合計は1です。",
+    "input": "logits = torch.tensor([[0.0, 0.0], [2.0, 0.0]])",
+    "hint": "`torch.softmax(logits, dim=1)` で、クラスの軸に沿って確率に変換します。",
+    "solution": "result = torch.softmax(logits, dim=1)"
+  },
+  {
+    "number": 7, "id": "PT06-02", "version": 3, "stage": "partial",
+    "title": "softmaxせずにlogitsをCrossEntropyLossに渡す",
+    "task": "`nn.CrossEntropyLoss()` を使って、`logits` とint64の正解ラベル `labels` の損失を求めてください。`logits` にsoftmaxを適用せず、そのまま渡します。",
+    "input": "logits = torch.tensor([[2.0, 1.0], [0.0, 3.0]])\nlabels = torch.tensor([0, 1])",
+    "hint": "`nn.CrossEntropyLoss` は内部でlog-softmaxを安定に計算します。先にsoftmaxすると、softmaxを2回適用したことになり、損失の値が変わります。",
+    "solution": "result = nn.CrossEntropyLoss()(logits, labels)"
+  },
+  {
+    "number": 8, "id": "PT06-04", "version": 3, "stage": "partial",
+    "title": "浮動小数点数のラベルをint64にして損失を求める",
+    "task": "`labels` はクラス番号をfloat32で持つTensorです。int64に変換してから、`logits` との `nn.CrossEntropyLoss()` を求めてください。",
+    "input": "logits = torch.tensor([[1.0, 1.0, 1.0], [0.0, 2.0, 0.0]])\nlabels = torch.tensor([0.0, 1.0])",
+    "hint": "クラス番号として渡す正解ラベルはint64（long）にします。`labels.long()` で変換します。",
+    "solution": "result = nn.CrossEntropyLoss()(logits, labels.long())"
+  },
+  {
+    "number": 9, "id": "PT06-09", "version": 1, "stage": "partial",
+    "title": "サンプルごとのクロスエントロピーを求める",
+    "task": "`nn.CrossEntropyLoss(reduction=\"none\")` を使って、`logits` と `labels` からサンプルごとの損失を求めてください。結果はshape `(N,)` です。",
+    "input": "logits = torch.tensor([[2.0, 0.0], [0.0, 2.0], [1.0, 1.0]])\nlabels = torch.tensor([0, 0, 1])",
+    "hint": "`reduction=\"none\"` なら平均を取らず、各サンプルの `-log(正解クラスの確率)` を並べたTensorになります。",
+    "solution": "result = nn.CrossEntropyLoss(reduction=\"none\")(logits, labels)"
+  },
+  {
+    "number": 10, "id": "PT06-10", "version": 1, "stage": "partial",
+    "title": "2値分類のlogitsから損失を求める",
+    "task": "`nn.BCEWithLogitsLoss()` を使って、2値分類のlogits `logits` と、0.0または1.0の正解 `targets` の損失を求めてください。`logits` にシグモイドを適用せず、そのまま渡します。",
+    "input": "logits = torch.tensor([2.0, -1.0, 0.0])\ntargets = torch.tensor([1.0, 0.0, 1.0])",
+    "hint": "`BCEWithLogitsLoss` は内部でシグモイドと2値クロスエントロピーをまとめて安定に計算します。正解はlogitsと同じshapeの浮動小数点数にします。",
+    "solution": "result = nn.BCEWithLogitsLoss()(logits, targets)"
+  },
+  {
+    "number": 11, "id": "PT06-11", "version": 1, "stage": "partial",
+    "title": "logitsから正解率を求める",
+    "task": "`logits` の各行で最大のクラスを予測とし、正解ラベル `labels` と一致した割合を0次元のfloat32のTensorで求めてください。",
+    "input": "logits = torch.tensor([[1.0, 3.0], [2.0, 0.0], [0.5, 0.1]])\nlabels = torch.tensor([1, 1, 0])",
+    "hint": "`logits.argmax(dim=1) == labels` は真偽値のTensorです。`float()` で0と1にしてから `mean()` を取ります。",
+    "solution": "result = (logits.argmax(dim=1) == labels).float().mean()"
+  },
+  {
+    "number": 12, "id": "PT06-12", "version": 1, "stage": "partial",
+    "title": "クラスに重みを付けてクロスエントロピーを求める",
+    "task": "`nn.CrossEntropyLoss(weight=class_weights)` を使って、`logits` と `labels` の損失を求めてください。各サンプルの損失に正解クラスの重みが掛かり、平均は重みの合計で割って求められます。",
+    "input": "logits = torch.tensor([[2.0, 0.0], [0.0, 1.0], [1.0, 1.0]])\nlabels = torch.tensor([0, 1, 1])\nclass_weights = torch.tensor([1.0, 3.0])",
+    "hint": "少ないクラスの重みを大きくすると、そのクラスの誤りを重く扱えます。重み付きの平均は、サンプル数ではなく、使った重みの合計で割ります。",
+    "solution": "result = nn.CrossEntropyLoss(weight=class_weights)(logits, labels)"
+  },
+  {
+    "number": 13, "id": "PT06-13", "version": 1, "stage": "independent",
+    "title": "log_softmaxからクロスエントロピーを計算する",
+    "task": "`torch.log_softmax()` で `logits` の各行の対数確率を求め、各行の正解ラベル `labels` の位置の値を取り出してください。その値の符号を反転した平均を、0次元のTensorで `result` にします。`nn.CrossEntropyLoss()` と同じ値になります。",
+    "input": "logits = torch.tensor([[2.0, 1.0, 0.0], [0.0, 0.0, 3.0]])\nlabels = torch.tensor([0, 2])",
+    "hint": "`log_probs = torch.log_softmax(logits, dim=1)` の、各行で `labels` の位置の値は `log_probs[torch.arange(len(labels)), labels]` で取り出せます。",
+    "solution": "log_probs = torch.log_softmax(logits, dim=1)\npicked = log_probs[torch.arange(len(labels)), labels]\nresult = -picked.mean()"
+  },
+  {
+    "number": 14, "id": "PT06-14", "version": 1, "stage": "independent",
+    "title": "陽性の例に重みを付けて2値分類の損失を求める",
+    "task": "`nn.BCEWithLogitsLoss(pos_weight=pos_weight)` を使って、`logits` と `targets` の損失を求めてください。正解が1の例の損失に `pos_weight` が掛かります。",
+    "input": "logits = torch.tensor([1.0, -1.0, 0.5])\ntargets = torch.tensor([1.0, 0.0, 1.0])\npos_weight = torch.tensor([2.0])",
+    "hint": "陽性の例が少ないときに、`pos_weight` で陽性の誤りを重く扱えます。陰性の例の損失は変わりません。",
+    "solution": "result = nn.BCEWithLogitsLoss(pos_weight=pos_weight)(logits, targets)"
+  },
+  {
+    "number": 15, "id": "PT06-15", "version": 1, "stage": "independent",
+    "title": "パディングのラベルを損失から除く",
+    "task": "`labels` の値が `-100` の位置はパディングです。`nn.CrossEntropyLoss(ignore_index=-100)` を使って、パディングを除いたサンプルだけの平均損失を求めてください。",
+    "input": "logits = torch.tensor([[2.0, 0.0], [0.0, 2.0], [5.0, -5.0]])\nlabels = torch.tensor([0, -100, 1])",
+    "hint": "`ignore_index` に指定したラベルの位置は損失の計算から除かれ、平均の分母にも数えられません。既定値も `-100` ですが、意図を明示するために指定します。",
+    "solution": "result = nn.CrossEntropyLoss(ignore_index=-100)(logits, labels)"
+  },
+  {
+    "number": 16, "id": "PT06-16", "version": 1, "stage": "independent",
+    "title": "ラベル平滑化を使ってクロスエントロピーを求める",
+    "task": "`nn.CrossEntropyLoss(label_smoothing=0.1)` を使って、`logits` と `labels` の損失を求めてください。正解クラスの目標確率が1より少し小さくなり、残りが全クラスに等しく配られます。",
+    "input": "logits = torch.tensor([[2.0, 0.0, 0.0], [0.0, 1.0, 0.0]])\nlabels = torch.tensor([0, 1])",
+    "hint": "`label_smoothing=0.1` のとき、目標の分布は正解クラスが `0.9 + 0.1 / クラス数`、他のクラスが `0.1 / クラス数` です。損失はこの分布と予測の対数確率のクロスエントロピーです。",
+    "solution": "result = nn.CrossEntropyLoss(label_smoothing=0.1)(logits, labels)"
+  },
+  {
+    "number": 17, "id": "PT06-17", "version": 1, "stage": "independent",
+    "title": "外れ値に強いHuber損失を求める",
+    "task": "`nn.HuberLoss(delta=1.0)` を使って、`pred` と `target` の損失を求めてください。誤差の絶対値が `delta` 以下の要素は二乗誤差の半分、それより大きい要素は直線的な損失になり、全要素の平均を取ります。",
+    "input": "pred = torch.tensor([0.5, 3.0, -2.0])\ntarget = torch.tensor([0.0, 0.0, 0.0])",
+    "hint": "誤差を `e` とすると、`|e| <= delta` なら `0.5 * e ** 2`、それ以外は `delta * (|e| - 0.5 * delta)` です。大きな誤差でも損失が2乗で増えません。",
+    "solution": "result = nn.HuberLoss(delta=1.0)(pred, target)"
+  },
+  {
+    "number": 18, "id": "PT06-18", "version": 1, "stage": "independent",
+    "title": "マスクした位置だけで二乗誤差の平均を求める",
+    "task": "`mask` は有効な位置が1.0、無効な位置が0.0のTensorです。`pred` と `target` の二乗誤差のうち、有効な位置だけの平均を0次元のTensorで求めてください。有効な位置は1つ以上あります。",
+    "input": "pred = torch.tensor([1.0, 2.0, 10.0])\ntarget = torch.tensor([0.0, 4.0, 0.0])\nmask = torch.tensor([1.0, 1.0, 0.0])",
+    "hint": "`nn.MSELoss(reduction=\"none\")` で要素ごとの損失を求め、`mask` を掛けて合計し、`mask.sum()` で割ります。全要素の平均で割ると、無効な位置まで分母に数えてしまいます。",
+    "solution": "per_item = nn.MSELoss(reduction=\"none\")(pred, target)\nresult = (per_item * mask).sum() / mask.sum()"
+  }
+]

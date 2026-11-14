@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PT04-01", "version": 3, "stage": "guided",
+    "title": "二乗和を逆伝播して勾配を求める",
+    "task": "`values` から、`requires_grad=True` のfloat32のTensor `x` を作ってください。`(x ** 2).sum()` を `backward()` で逆伝播し、`x.grad` を `result` にします。",
+    "input": "values = [1.0, 2.0, 3.0]",
+    "hint": "`x = torch.tensor(values, dtype=torch.float32, requires_grad=True)` で勾配を追跡する葉Tensorを作ります。`x ** 2` の和の微分は `2 * x` です。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\n(x ** 2).sum().backward()\nresult = x.grad"
+  },
+  {
+    "number": 2, "id": "PT04-02", "version": 3, "stage": "guided",
+    "title": "勾配の追跡を有効にしてから計算する",
+    "task": "`value` から `requires_grad=True` のスカラーのfloat32のTensor `x` を作り、`a * x` を逆伝播して、`x.grad` を `result` にしてください。勾配の追跡は計算の前に有効にします。",
+    "input": "value = 2.0\na = 3.0",
+    "hint": "計算した後で `requires_grad` を有効にしても、計算グラフは作られていません。Tensorを作るときに `requires_grad=True` を指定します。`a * x` の微分は `a` です。",
+    "solution": "x = torch.tensor(value, dtype=torch.float32, requires_grad=True)\n(a * x).backward()\nresult = x.grad"
+  },
+  {
+    "number": 3, "id": "PT04-03", "version": 3, "stage": "guided",
+    "title": "平均を逆伝播して勾配を求める",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`x.mean()` を逆伝播して、`x.grad` を `result` にしてください。",
+    "input": "values = [1.0, 2.0, 3.0, 4.0]",
+    "hint": "平均は合計を要素数 `N` で割った値なので、各要素についての微分は `1 / N` です。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\nx.mean().backward()\nresult = x.grad"
+  },
+  {
+    "number": 4, "id": "PT04-07", "version": 1, "stage": "guided",
+    "title": "多項式の微分係数を求める",
+    "task": "`value` から `requires_grad=True` のスカラーのfloat32のTensor `x` を作り、`y = x ** 3 - 2 * x` を逆伝播して、`x.grad` を `result` にしてください。",
+    "input": "value = 2.0",
+    "hint": "`y.backward()` の後の `x.grad` は、`y` を `x` で微分した `3 * x ** 2 - 2` の、`x = value` での値です。",
+    "solution": "x = torch.tensor(value, dtype=torch.float32, requires_grad=True)\ny = x ** 3 - 2 * x\ny.backward()\nresult = x.grad"
+  },
+  {
+    "number": 5, "id": "PT04-05", "version": 3, "stage": "guided",
+    "title": "detachした値を定数として扱う",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`(x * x.detach()).sum()` を逆伝播して、`x.grad` を `result` にしてください。`x.detach()` 側には勾配が流れないので、勾配は `2 * x` ではなく `x` になります。",
+    "input": "values = [1.0, -2.0, 3.0]",
+    "hint": "`detach()` は計算グラフから切り離したTensorを返します。逆伝播では、切り離した側は定数として扱われます。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\n(x * x.detach()).sum().backward()\nresult = x.grad"
+  },
+  {
+    "number": 6, "id": "PT04-08", "version": 1, "stage": "guided",
+    "title": "2つの葉Tensorの勾配を同時に求める",
+    "task": "`a_values` と `b_values` から、どちらも `requires_grad=True` のfloat32のTensor `a` と `b` を作ってください。`(a * b).sum()` を逆伝播し、`(a.grad, b.grad)` のタプルを `result` にします。",
+    "input": "a_values = [1.0, 2.0]\nb_values = [3.0, -1.0]",
+    "hint": "1回の `backward()` で、グラフに含まれるすべての葉Tensorに勾配が入ります。`a * b` の和の、`a` についての微分は `b`、`b` についての微分は `a` です。",
+    "solution": "a = torch.tensor(a_values, dtype=torch.float32, requires_grad=True)\nb = torch.tensor(b_values, dtype=torch.float32, requires_grad=True)\n(a * b).sum().backward()\nresult = (a.grad, b.grad)"
+  },
+  {
+    "number": 7, "id": "PT04-04", "version": 3, "stage": "partial",
+    "title": "前の勾配を消してから次の勾配を求める",
+    "task": "`value` から `requires_grad=True` のスカラーのfloat32のTensor `x` を作り、まず `x ** 2` を逆伝播してください。次に `x.grad = None` で勾配を消してから `c * x` を逆伝播し、最後の `x.grad` を `result` にします。",
+    "input": "value = 2.0\nc = 3.0",
+    "hint": "`backward()` は既存の `x.grad` に勾配を加算します。消さずに続けると、`2 * x + c` になってしまいます。",
+    "solution": "x = torch.tensor(value, dtype=torch.float32, requires_grad=True)\n(x ** 2).backward()\nx.grad = None\n(c * x).backward()\nresult = x.grad"
+  },
+  {
+    "number": 8, "id": "PT04-09", "version": 1, "stage": "partial",
+    "title": "勾配が加算されることを確かめる",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`(x ** 2).sum()` を2回、毎回計算し直して逆伝播してください。間で勾配は消さず、最後の `x.grad` を `result` にします。",
+    "input": "values = [1.0, 2.0, 3.0]",
+    "hint": "勾配は自動ではリセットされず、`backward()` のたびに `x.grad` に加算されます。2回分なので `2 * x` の2倍になります。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\nfor _ in range(2):\n    (x ** 2).sum().backward()\nresult = x.grad"
+  },
+  {
+    "number": 9, "id": "PT04-06", "version": 3, "stage": "partial",
+    "title": "非スカラーの結果を合計してから逆伝播する",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作ってください。`x ** 3` はスカラーではないので、合計してから逆伝播し、`x.grad` を `result` にします。",
+    "input": "values = [1.0, 2.0, -1.0]",
+    "hint": "`backward()` を引数なしで呼べるのはスカラーだけです。`(x ** 3).sum().backward()` とすると、各要素の微分 `3 * x ** 2` が `x.grad` に入ります。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\n(x ** 3).sum().backward()\nresult = x.grad"
+  },
+  {
+    "number": 10, "id": "PT04-10", "version": 1, "stage": "partial",
+    "title": "上流の勾配を指定して逆伝播する",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`y = 2 * x` を計算してください。`y.backward(gradient=upstream)` で、上流から来た勾配 `upstream` を指定して逆伝播し、`x.grad` を `result` にします。",
+    "input": "values = [1.0, 2.0, 3.0]\nupstream = torch.tensor([1.0, 0.5, -1.0])",
+    "hint": "非スカラーの `y` を逆伝播するときは、`y` と同じshapeの勾配を `gradient` に渡します。`x.grad` は `upstream` に `y` の微分 `2` を掛けた値です。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\ny = 2 * x\ny.backward(gradient=upstream)\nresult = x.grad"
+  },
+  {
+    "number": 11, "id": "PT04-11", "version": 1, "stage": "partial",
+    "title": "no_gradの中で勾配降下の1ステップを行う",
+    "task": "`initial` から `requires_grad=True` のfloat32のTensor `w` を作り、`(w ** 2).sum()` を逆伝播してください。その後 `torch.no_grad()` の中で `w -= lr * w.grad` と更新し、更新後の `w` を `result` にします。",
+    "input": "initial = [1.0, -2.0]\nlr = 0.1",
+    "hint": "勾配を追跡している葉Tensorは、そのままではその場で更新できません。`with torch.no_grad():` の中で更新すると、更新の操作は計算グラフに記録されません。",
+    "solution": "w = torch.tensor(initial, dtype=torch.float32, requires_grad=True)\n(w ** 2).sum().backward()\nwith torch.no_grad():\n    w -= lr * w.grad\nresult = w"
+  },
+  {
+    "number": 12, "id": "PT04-12", "version": 1, "stage": "partial",
+    "title": "合成関数の勾配を連鎖律で求める",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`torch.exp(2 * x).sum()` を逆伝播して、`x.grad` を `result` にしてください。",
+    "input": "values = [0.0, 0.5, -1.0]",
+    "hint": "連鎖律により、`exp(2x)` の微分は `exp(2x)` に内側の `2x` の微分 `2` を掛けた `2 * exp(2x)` です。autogradは自動でこの積を計算します。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\ntorch.exp(2 * x).sum().backward()\nresult = x.grad"
+  },
+  {
+    "number": 13, "id": "PT04-13", "version": 1, "stage": "independent",
+    "title": "MSEの予測値についての勾配を求める",
+    "task": "`pred_values` から `requires_grad=True` のfloat32のTensor `pred` を作り、float32のTensor `target` との平均二乗誤差 `((pred - target) ** 2).mean()` を逆伝播して、`pred.grad` を `result` にしてください。",
+    "input": "pred_values = [2.0, 0.0, 1.0]\ntarget = torch.tensor([1.0, 0.0, 3.0])",
+    "hint": "平均二乗誤差の各予測値についての微分は `2 * (pred - target) / N` です。`target` は勾配を追跡しないので、勾配は `pred` だけに入ります。",
+    "solution": "pred = torch.tensor(pred_values, dtype=torch.float32, requires_grad=True)\n((pred - target) ** 2).mean().backward()\nresult = pred.grad"
+  },
+  {
+    "number": 14, "id": "PT04-14", "version": 1, "stage": "independent",
+    "title": "線形モデルの重みについての勾配を求める",
+    "task": "`w_values` から `requires_grad=True` のfloat32のTensor `w` を作ってください。予測 `x @ w` と `y` の平均二乗誤差を逆伝播し、`w.grad` を `result` にします。",
+    "input": "x = torch.tensor([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])\ny = torch.tensor([1.0, 2.0, 2.0])\nw_values = [0.0, 0.0]",
+    "hint": "損失は `((x @ w - y) ** 2).mean()` です。`w.grad` は `2 * x.T @ (x @ w - y) / N` と同じ値になります。",
+    "solution": "w = torch.tensor(w_values, dtype=torch.float32, requires_grad=True)\nloss = ((x @ w - y) ** 2).mean()\nloss.backward()\nresult = w.grad"
+  },
+  {
+    "number": 15, "id": "PT04-15", "version": 1, "stage": "independent",
+    "title": "torch.autograd.grad()で2階微分を求める",
+    "task": "`value` から `requires_grad=True` のスカラーのfloat32のTensor `x` を作り、`y = x ** 3` とします。`torch.autograd.grad()` で `y` の `x` についての1階微分を求め（`create_graph=True`）、さらにそれを微分した2階微分を `result` にしてください。",
+    "input": "value = 2.0",
+    "hint": "`(g,) = torch.autograd.grad(y, x, create_graph=True)` は1階微分 `3 * x ** 2` を、計算グラフを保ったまま返します。もう一度 `torch.autograd.grad(g, x)` を使うと `6 * x` が得られます。",
+    "solution": "x = torch.tensor(value, dtype=torch.float32, requires_grad=True)\ny = x ** 3\n(g,) = torch.autograd.grad(y, x, create_graph=True)\n(g2,) = torch.autograd.grad(g, x)\nresult = g2"
+  },
+  {
+    "number": 16, "id": "PT04-16", "version": 1, "stage": "independent",
+    "title": "同じ計算グラフで2回逆伝播する",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`y = (x ** 2).sum()` を1回だけ計算してください。同じ `y` を2回逆伝播し、最後の `x.grad` を `result` にします。1回目は `retain_graph=True` を指定します。",
+    "input": "values = [1.0, -1.0, 2.0]",
+    "hint": "`backward()` は既定で計算グラフを解放するので、2回目はエラーになります。`y.backward(retain_graph=True)` でグラフを残すと2回目も実行でき、勾配は加算されます。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\ny = (x ** 2).sum()\ny.backward(retain_graph=True)\ny.backward()\nresult = x.grad"
+  },
+  {
+    "number": 17, "id": "PT04-17", "version": 1, "stage": "independent",
+    "title": "最大値の勾配が流れる位置を確かめる",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`x.max()` を逆伝播して、`x.grad` を `result` にしてください。`values` の最大値は1つだけです。",
+    "input": "values = [1.0, 5.0, 3.0]",
+    "hint": "`max()` の結果は最大値の要素だけで決まるので、勾配はその位置だけ1、他は0になります。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\nx.max().backward()\nresult = x.grad"
+  },
+  {
+    "number": 18, "id": "PT04-18", "version": 1, "stage": "independent",
+    "title": "ReLUを通した値の勾配を求める",
+    "task": "`values` から `requires_grad=True` のfloat32のTensor `x` を作り、`torch.relu(x).sum()` を逆伝播して、`x.grad` を `result` にしてください。PyTorchでは、`x` が0の位置の勾配は0です。",
+    "input": "values = [-1.0, 0.0, 2.0, 3.0]",
+    "hint": "ReLUは正の値をそのまま通し、0以下を0にします。微分は正の位置で1、それ以外で0です。",
+    "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\ntorch.relu(x).sum().backward()\nresult = x.grad"
+  }
+]

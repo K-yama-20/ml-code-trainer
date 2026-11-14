@@ -16,7 +16,9 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.compile_content import compile_all, public_problem
+from scripts.compile_content import AUTHORED_MODULES, compile_all, public_problem
+from content.concrete import literal
+from content.ordered import GENERATOR as ORDERED_GENERATOR
 from content.runner import pack, run_payload, wrong_result_type
 from content.activities import DEEP_DIVES, READING_META, READING_QUESTIONS
 from apps.api.app.grading import judge
@@ -144,6 +146,42 @@ def check_reference(p):
     return judge(output["outputs"], cases, code, p["required_ast"], p["check_dtype"], p.get("protect_inputs", False))
 
 
+LESSON_NUMBERS = {
+    lesson["id"]: (module, lesson["number"])
+    for module, _ in AUTHORED_MODULES for lesson in module.LESSONS
+}
+
+
+def check_wrong_answers(p):
+    """Authored drills: representative mistakes and a hard-coded copy of the
+    display result must both be rejected. Returns the number of codes run."""
+    if p["variant_generator"] != ORDERED_GENERATOR:
+        return 0
+    cases = p["public_tests"] + p["hidden_tests"]
+    distinct = {json.dumps(case["expected"], sort_keys=True) for case in cases}
+    assert len(distinct) > 1, (p["version_id"], "every case has the same expected value")
+    env = {}
+    exec(p["workspace"]["provided_code"] + "\n" + p["solution"], env)
+    module, number = LESSON_NUMBERS[p["id"]]
+
+    def contiguous(value):
+        # literal() rebuilds tensors from data; transposed views need a copy.
+        if type(value).__module__.split(".")[0] == "torch":
+            return value.detach().contiguous()
+        if isinstance(value, (tuple, list)):
+            return type(value)(contiguous(v) for v in value)
+        return value
+
+    codes = ["result = " + literal(contiguous(env["result"])), *module.WRONG.get(number, [])]
+    assert module.WRONG.get(number), (p["version_id"], "no representative wrong answer")
+    for code in codes:
+        out = run_payload({"code": code, "cases": cases, "execution": p.get("execution", {})})
+        verdict = judge(out["outputs"], cases, code, p["required_ast"], p["check_dtype"],
+                        p.get("protect_inputs", False))["verdict"]
+        assert verdict != "Accepted", (p["version_id"], p["variant_seed"], "wrong answer accepted", code)
+    return len(codes)
+
+
 def validate_concept(concept_id):
     """Quickly test the compiled data for one edited concept."""
     total = cases = 0
@@ -157,6 +195,7 @@ def validate_concept(concept_id):
             check_display(p)
             result = check_reference(p)
             assert result["verdict"] == "Accepted", (p["version_id"], name, result)
+            check_wrong_answers(p)
             total += 1
             cases += result["total_tests"]
     print(f"{concept_id}: {total // 2} questions, two variants, {cases} reference cases passed")
@@ -175,14 +214,9 @@ def validate():
     )
     assert distribution == collections.Counter(
         {
-            ("guided", "completion"): 28,
-            ("partial", "completion"): 28,
-            ("independent", "implementation"): 94,
-            ("guided", "implementation"): 66,
-            ("partial", "implementation"): 66,
-            ("guided", "bugfix"): 10,
-            ("partial", "bugfix"): 10,
-            ("independent", "bugfix"): 10,
+            ("guided", "implementation"): 180,
+            ("partial", "implementation"): 180,
+            ("independent", "implementation"): 180,
         }
     ), distribution
     for c in data["concepts"]:
@@ -194,6 +228,7 @@ def validate():
         assert len({p["title"] for p in ps}) == c.get("problem_count", 6)
     failures = []
     count = 0
+    wrong_answers = 0
     catalogs = [data, compile_all(99)]
     check_versions(catalogs)
     compiled = ROOT / "content" / "compiled"
@@ -213,13 +248,15 @@ def validate():
                 3 if p["variant_generator"] in (
                     "file-fixtures-v1", "array-fixtures-v1", "indexing-fixtures-v1",
                     "reshaping-fixtures-v1", "axis-permutation-fixtures-v1", "reduction-fixtures-v1",
-                    "broadcasting-fixtures-v1", "combining-fixtures-v1", "conditional-fixtures-v1"
+                    "broadcasting-fixtures-v1", "combining-fixtures-v1", "conditional-fixtures-v1",
+                    ORDERED_GENERATOR,
                 ) else 4
             )
             assert len(cases) >= minimum
             result = check_reference(p)
             if result["verdict"] != "Accepted":
                 failures.append({"id": p["id"], "seed": seed, "result": result})
+            wrong_answers += check_wrong_answers(p)
             wrong = "def solve(*args, **kwargs):\n    return None\n"
             bad = run_payload({"code": wrong, "cases": cases, "execution": p.get("execution", {})})
             assert judge(bad["outputs"], cases, wrong)["verdict"] != "Accepted", p["id"]
@@ -258,7 +295,7 @@ def validate():
         "concepts": 30,
         "seeds": 2,
         "reference_cases": count,
-        "wrong_answers_rejected": problem_count * 2,
+        "wrong_answers_rejected": problem_count * 2 + wrong_answers,
         "completed_workspaces": problem_count * 2,
         "invalid_python_unicode": 0,
         "failures": failures,

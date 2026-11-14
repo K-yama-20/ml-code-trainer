@@ -1,0 +1,958 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PD03-01",
+      "family_id": "PD03-01",
+      "version_id": "PD03-01@2",
+      "content_version": 2,
+      "concept_id": "PD03",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "グループごとの平均",
+      "description": "groupごとにvalueの平均を求めSeriesで返す。キーを昇順にする。",
+      "learning_goal": "グループ単位でデータを要約します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "groupごとにvalueの平均を求めSeriesで返す。キーを昇順にする。",
+      "starter_code": "result = ___\n",
+      "example": "df.groupby('group')['value'].mean()",
+      "editable_regions": [],
+      "hints": [
+        "グループ単位でデータを要約します。",
+        "meanは欠損値を除外します。",
+        "空欄には df.groupby('group')['value'].mean() と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = df.groupby('group')['value'].mean()\n",
+      "explanation": "meanは欠損値を除外します。",
+      "common_mistakes": [
+        "countとsizeの欠損の扱いを混同する。",
+        "aggの集約結果を元の全行と同じ長さだと思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1268\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              3.0,
+              3.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1268\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "series",
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1268\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a"
+            ],
+            "data": [
+              3.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1268\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.fillna(0)",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              3.0,
+              1.5
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01",
+        "PD02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "groupごとにvalueの平均を求めSeriesで返す。キーを昇順にする。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD03-02",
+      "family_id": "PD03-02",
+      "version_id": "PD03-02@3",
+      "content_version": 3,
+      "concept_id": "PD03",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "グループごとの全行数",
+      "description": "groupごとの行数を数え、Seriesをresultに代入してください。valueが欠損した行も数えます。",
+      "learning_goal": "グループ単位でデータを要約します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "groupごとの行数を数え、Seriesをresultに代入してください。valueが欠損した行も数えます。",
+      "starter_code": "result = ___\n",
+      "example": "df.groupby('group')['value'].mean()",
+      "editable_regions": [],
+      "hints": [
+        "グループ単位でデータを要約します。",
+        "countは欠損を除き、sizeは行数を数えます。",
+        "空欄には df.groupby('group').size() と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = df.groupby('group').size()\n",
+      "explanation": "countは欠損を除き、sizeは行数を数えます。",
+      "common_mistakes": [
+        "countとsizeの欠損の扱いを混同する。",
+        "aggの集約結果を元の全行と同じ長さだと思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              2,
+              2
+            ]
+          }
+        },
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "series",
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(value=np.nan)",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              2,
+              2
+            ]
+          }
+        },
+        {
+          "setup": "seed = 463\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "series",
+            "index": [
+              "a"
+            ],
+            "data": [
+              4
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01",
+        "PD02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "groupごとの行数を数え、Seriesをresultに代入してください。valueが欠損した行も数えます。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD03-03",
+      "family_id": "PD03-03",
+      "version_id": "PD03-03@2",
+      "content_version": 2,
+      "concept_id": "PD03",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "複数の集約",
+      "description": "groupでまとめ、valueのmin,maxをこの順の列に持つDataFrameを返す。",
+      "learning_goal": "グループ単位でデータを要約します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "groupでまとめ、valueのmin,maxをこの順の列に持つDataFrameを返す。",
+      "starter_code": "result =\n",
+      "example": "df.groupby('group')['value'].mean()",
+      "editable_regions": [],
+      "hints": [
+        "グループ単位でデータを要約します。",
+        "複数関数はリストで指定できます。",
+        "解答部分は次の形で書けます。\nresult = df.groupby('group')['value'].agg(['min', 'max'])\n"
+      ],
+      "solution": "result = df.groupby('group')['value'].agg(['min', 'max'])\n",
+      "explanation": "複数関数はリストで指定できます。",
+      "common_mistakes": [
+        "countとsizeの欠損の扱いを混同する。",
+        "aggの集約結果を元の全行と同じ長さだと思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1352\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "min",
+              "max"
+            ],
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              [
+                1.0,
+                5.0
+              ],
+              [
+                3.0,
+                3.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1352\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "min",
+              "max"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1352\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(value=3.)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "min",
+              "max"
+            ],
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              [
+                3.0,
+                3.0
+              ],
+              [
+                3.0,
+                3.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1352\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "min",
+              "max"
+            ],
+            "index": [
+              "a"
+            ],
+            "data": [
+              [
+                1.0,
+                5.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01",
+        "PD02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "groupでまとめ、valueのmin,maxをこの順の列に持つDataFrameを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD03-04",
+      "family_id": "PD03-04",
+      "version_id": "PD03-04@2",
+      "content_version": 2,
+      "concept_id": "PD03",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "集約後にindexを戻す",
+      "description": "groupごとのscore合計を、groupとscore列を持つDataFrameで返す。",
+      "learning_goal": "グループ単位でデータを要約します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "groupごとのscore合計を、groupとscore列を持つDataFrameで返す。",
+      "starter_code": "result =\n",
+      "example": "df.groupby('group')['value'].mean()",
+      "editable_regions": [],
+      "hints": [
+        "グループ単位でデータを要約します。",
+        "as_index=Falseでキーを通常の列に保ちます。",
+        "解答部分は次の形で書けます。\nresult = df.groupby('group', as_index=False)['score'].sum()\n"
+      ],
+      "solution": "result = df.groupby('group', as_index=False)['score'].sum()\n",
+      "explanation": "as_index=Falseでキーを通常の列に保ちます。",
+      "common_mistakes": [
+        "countとsizeの欠損の扱いを混同する。",
+        "aggの集約結果を元の全行と同じ長さだと思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7557\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "score"
+            ],
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              [
+                "a",
+                6
+              ],
+              [
+                "b",
+                16
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7557\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7557\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "score"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                "a",
+                22
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7557\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(score=0)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "score"
+            ],
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              [
+                "a",
+                0
+              ],
+              [
+                "b",
+                0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01",
+        "PD02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "groupごとのscore合計を、groupとscore列を持つDataFrameで返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD03-05",
+      "family_id": "PD03-05",
+      "version_id": "PD03-05@2",
+      "content_version": 2,
+      "concept_id": "PD03",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "グループ平均との差",
+      "description": "各行のscoreから所属グループのscore平均を引いたSeriesを返す。",
+      "learning_goal": "グループ単位でデータを要約します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各行のscoreから所属グループのscore平均を引いたSeriesを返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "df.groupby('group')['value'].mean()",
+      "editable_regions": [],
+      "hints": [
+        "グループ単位でデータを要約します。",
+        "transformは元の行数に揃えた結果を返します。",
+        "解答部分は次の形で書けます。\nresult = df.score - df.groupby('group').score.transform('mean')\n"
+      ],
+      "solution": "result = df.score - df.groupby('group').score.transform('mean')\n",
+      "explanation": "transformは元の行数に揃えた結果を返します。",
+      "common_mistakes": [
+        "countとsizeの欠損の扱いを混同する。",
+        "aggの集約結果を元の全行と同じ長さだと思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1359\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              -1.0,
+              -1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1359\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "series",
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1359\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:1]",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0
+            ],
+            "data": [
+              0.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1359\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              -3.5,
+              1.5,
+              -1.5,
+              3.5
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01",
+        "PD02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "各行のscoreから所属グループのscore平均を引いたSeriesを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD03-06",
+      "family_id": "PD03-06",
+      "version_id": "PD03-06@2",
+      "content_version": 2,
+      "concept_id": "PD03",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "名前付き集約",
+      "description": "groupごとのscore平均をmean_score、全行数をnという列で返す。groupはindexにする。",
+      "learning_goal": "グループ単位でデータを要約します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "groupごとのscore平均をmean_score、全行数をnという列で返す。groupはindexにする。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "df.groupby('group')['value'].mean()",
+      "editable_regions": [],
+      "hints": [
+        "グループ単位でデータを要約します。",
+        "名前付き集約は出力列の意味を明示します。",
+        "解答部分は次の形で書けます。\nresult = df.groupby('group').agg(mean_score=('score', 'mean'), n=('score', 'size'))\n"
+      ],
+      "solution": "result = df.groupby('group').agg(mean_score=('score', 'mean'), n=('score', 'size'))\n",
+      "explanation": "名前付き集約は出力列の意味を明示します。",
+      "common_mistakes": [
+        "countとsizeの欠損の扱いを混同する。",
+        "aggの集約結果を元の全行と同じ長さだと思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3023\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "mean_score",
+              "n"
+            ],
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              [
+                3.0,
+                2.0
+              ],
+              [
+                8.0,
+                2.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3023\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "mean_score",
+              "n"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3023\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "mean_score",
+              "n"
+            ],
+            "index": [
+              "a"
+            ],
+            "data": [
+              [
+                5.5,
+                4.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3023\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(score=1)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "mean_score",
+              "n"
+            ],
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                1.0,
+                2.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01",
+        "PD02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "groupごとのscore平均をmean_score、全行数をnという列で返す。groupはindexにする。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

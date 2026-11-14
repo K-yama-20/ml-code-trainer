@@ -1,0 +1,962 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT08-01",
+      "family_id": "PT08-01",
+      "version_id": "PT08-01@2",
+      "content_version": 2,
+      "concept_id": "PT08",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "TensorDatasetの長さ",
+      "description": "TensorDataset(x,y)を作りサンプル数を返す。",
+      "learning_goal": "サンプルからバッチへ、データ供給の仕組みを理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "TensorDataset(x,y)を作りサンプル数を返す。",
+      "starter_code": "result = ___\n",
+      "example": "DataLoader(dataset, batch_size=4, shuffle=True)",
+      "editable_regions": [],
+      "hints": [
+        "サンプルからバッチへ、データ供給の仕組みを理解します。",
+        "先頭軸の長さが一致する必要があります。",
+        "空欄には len(TensorDataset(x, y)) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = len(TensorDataset(x, y))\n",
+      "explanation": "先頭軸の長さが一致する必要があります。",
+      "common_mistakes": [
+        "サンプル数とバッチ数を混同する。",
+        "特徴とラベルを別のLoaderでシャッフルする。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4950\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(5,2),torch.zeros(5)",
+          "expected": 5
+        },
+        {
+          "setup": "seed = 4950\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(0,2),torch.zeros(0)",
+          "expected": 0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4950\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,2),torch.zeros(1)",
+          "expected": 1
+        },
+        {
+          "setup": "seed = 4950\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(7,3),torch.ones(7)",
+          "expected": 7
+        }
+      ],
+      "required_ast": "call:TensorDataset",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "y"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch.utils.data import TensorDataset\n\nx = torch.ones(5, 2)\ny = torch.zeros(5)",
+        "task": "TensorDataset(x,y)を作りサンプル数を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT08-02",
+      "family_id": "PT08-02",
+      "version_id": "PT08-02@2",
+      "content_version": 2,
+      "concept_id": "PT08",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "バッチ数の取り違え修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nn件のDatasetをdrop_last=Falseでバッチ化したバッチ数を返す。batch>0。",
+      "learning_goal": "サンプルからバッチへ、データ供給の仕組みを理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "n件のDatasetをdrop_last=Falseでバッチ化したバッチ数を返す。batch>0。",
+      "starter_code": "d = TensorDataset(torch.arange(n))\nresult = n // batch\n",
+      "example": "DataLoader(dataset, batch_size=4, shuffle=True)",
+      "editable_regions": [],
+      "hints": [
+        "サンプルからバッチへ、データ供給の仕組みを理解します。",
+        "最後の小さいバッチも1バッチです。",
+        "解答部分は次の形で書けます。\nd = TensorDataset(torch.arange(n))\nresult = len(DataLoader(d, batch_size=batch, drop_last=False))\n"
+      ],
+      "solution": "d = TensorDataset(torch.arange(n))\nresult = len(DataLoader(d, batch_size=batch, drop_last=False))\n",
+      "explanation": "最後の小さいバッチも1バッチです。",
+      "common_mistakes": [
+        "サンプル数とバッチ数を混同する。",
+        "特徴とラベルを別のLoaderでシャッフルする。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3502\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "5,2",
+          "expected": 3
+        },
+        {
+          "setup": "seed = 3502\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0,4",
+          "expected": 0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3502\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "1,8",
+          "expected": 1
+        },
+        {
+          "setup": "seed = 3502\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "8,4",
+          "expected": 2
+        }
+      ],
+      "required_ast": "call:DataLoader",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "n",
+          "batch"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch.utils.data import TensorDataset, DataLoader\n\nn = 5\nbatch = 2",
+        "task": "n件のDatasetをdrop_last=Falseでバッチ化したバッチ数を返す。batch>0。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT08-03",
+      "family_id": "PT08-03",
+      "version_id": "PT08-03@2",
+      "content_version": 2,
+      "concept_id": "PT08",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "先頭バッチ",
+      "description": "非空Tensor xをTensorDataset化し、shuffle=FalseのDataLoaderから先頭バッチのxを返す。",
+      "learning_goal": "サンプルからバッチへ、データ供給の仕組みを理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "非空Tensor xをTensorDataset化し、shuffle=FalseのDataLoaderから先頭バッチのxを返す。",
+      "starter_code": "result =\n",
+      "example": "DataLoader(dataset, batch_size=4, shuffle=True)",
+      "editable_regions": [],
+      "hints": [
+        "サンプルからバッチへ、データ供給の仕組みを理解します。",
+        "各バッチはDatasetの戻り値をまとめた構造です。",
+        "解答部分は次の形で書けます。\nd = TensorDataset(x)\nresult = next(iter(DataLoader(d, batch_size=batch, shuffle=False)))[0]\n"
+      ],
+      "solution": "d = TensorDataset(x)\nresult = next(iter(DataLoader(d, batch_size=batch, shuffle=False)))[0]\n",
+      "explanation": "各バッチはDatasetの戻り値をまとめた構造です。",
+      "common_mistakes": [
+        "サンプル数とバッチ数を混同する。",
+        "特徴とラベルを別のLoaderでシャッフルする。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2022\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(10).reshape(5,2),2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                3
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2022\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,2),8",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2022\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(6).reshape(3,2),1",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              [
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2022\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(2,3),2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "call:DataLoader",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "batch"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch.utils.data import TensorDataset, DataLoader\n\nx = torch.arange(10).reshape(5, 2)\nbatch = 2",
+        "task": "非空Tensor xをTensorDataset化し、shuffle=FalseのDataLoaderから先頭バッチのxを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT08-04",
+      "family_id": "PT08-04",
+      "version_id": "PT08-04@2",
+      "content_version": 2,
+      "concept_id": "PT08",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "drop_lastを修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\ndrop_last=TrueのDataLoaderでバッチ数を返す。n>=0,batch>0。",
+      "learning_goal": "サンプルからバッチへ、データ供給の仕組みを理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "drop_last=TrueのDataLoaderでバッチ数を返す。n>=0,batch>0。",
+      "starter_code": "result = len(DataLoader(TensorDataset(torch.arange(n)), batch_size=batch, drop_last=False))\n",
+      "example": "DataLoader(dataset, batch_size=4, shuffle=True)",
+      "editable_regions": [],
+      "hints": [
+        "サンプルからバッチへ、データ供給の仕組みを理解します。",
+        "不完全な末尾バッチは捨てられます。",
+        "解答部分は次の形で書けます。\nresult = len(DataLoader(TensorDataset(torch.arange(n)), batch_size=batch, drop_last=True))\n"
+      ],
+      "solution": "result = len(DataLoader(TensorDataset(torch.arange(n)), batch_size=batch, drop_last=True))\n",
+      "explanation": "不完全な末尾バッチは捨てられます。",
+      "common_mistakes": [
+        "サンプル数とバッチ数を混同する。",
+        "特徴とラベルを別のLoaderでシャッフルする。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2881\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "5,2",
+          "expected": 2
+        },
+        {
+          "setup": "seed = 2881\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0,4",
+          "expected": 0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2881\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "1,8",
+          "expected": 0
+        },
+        {
+          "setup": "seed = 2881\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "8,4",
+          "expected": 2
+        }
+      ],
+      "required_ast": "call:DataLoader",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "n",
+          "batch"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch.utils.data import TensorDataset, DataLoader\n\nn = 5\nbatch = 2",
+        "task": "drop_last=TrueのDataLoaderでバッチ数を返す。n>=0,batch>0。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT08-05",
+      "family_id": "PT08-05",
+      "version_id": "PT08-05@2",
+      "content_version": 2,
+      "concept_id": "PT08",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "全バッチを復元",
+      "description": "非空xをshuffle=Falseでバッチ化し、全バッチをcatして元のTensorを返す。",
+      "learning_goal": "サンプルからバッチへ、データ供給の仕組みを理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "非空xをshuffle=Falseでバッチ化し、全バッチをcatして元のTensorを返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "DataLoader(dataset, batch_size=4, shuffle=True)",
+      "editable_regions": [],
+      "hints": [
+        "サンプルからバッチへ、データ供給の仕組みを理解します。",
+        "バッチの境界が変わってもサンプルの順序は維持されます。",
+        "解答部分は次の形で書けます。\nloader = DataLoader(TensorDataset(x), batch_size=batch, shuffle=False)\nresult = torch.cat([a for a, in loader], dim=0)\n"
+      ],
+      "solution": "loader = DataLoader(TensorDataset(x), batch_size=batch, shuffle=False)\nresult = torch.cat([a for a, in loader], dim=0)\n",
+      "explanation": "バッチの境界が変わってもサンプルの順序は維持されます。",
+      "common_mistakes": [
+        "サンプル数とバッチ数を混同する。",
+        "特徴とラベルを別のLoaderでシャッフルする。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6547\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(10).reshape(5,2),2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              5,
+              2
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                6,
+                7
+              ],
+              [
+                8,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6547\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,2),8",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6547\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(6).reshape(3,2),1",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                4,
+                5
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6547\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(2,3),2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "call:DataLoader",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "batch"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch.utils.data import TensorDataset, DataLoader\n\nx = torch.arange(10).reshape(5, 2)\nbatch = 2",
+        "task": "非空xをshuffle=Falseでバッチ化し、全バッチをcatして元のTensorを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT08-06",
+      "family_id": "PT08-06",
+      "version_id": "PT08-06@2",
+      "content_version": 2,
+      "concept_id": "PT08",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "ラベル対応のバグ修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nxとyを同じTensorDatasetへ入れ、先頭バッチの(x,y)をタプルで返す。shuffle=False。",
+      "learning_goal": "サンプルからバッチへ、データ供給の仕組みを理解します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "xとyを同じTensorDatasetへ入れ、先頭バッチの(x,y)をタプルで返す。shuffle=False。",
+      "starter_code": "loader = DataLoader(TensorDataset(x, y.flip(0)), batch_size=batch, shuffle=False)\na, b = next(iter(loader))\nresult = (a, b)\n",
+      "example": "DataLoader(dataset, batch_size=4, shuffle=True)",
+      "editable_regions": [],
+      "hints": [
+        "サンプルからバッチへ、データ供給の仕組みを理解します。",
+        "特徴とラベルは同じ単位でシャッフルします。",
+        "解答部分は次の形で書けます。\nloader = DataLoader(TensorDataset(x, y), batch_size=batch, shuffle=False)\na, b = next(iter(loader))\nresult = (a, b)\n"
+      ],
+      "solution": "loader = DataLoader(TensorDataset(x, y), batch_size=batch, shuffle=False)\na, b = next(iter(loader))\nresult = (a, b)\n",
+      "explanation": "特徴とラベルは同じ単位でシャッフルします。",
+      "common_mistakes": [
+        "サンプル数とバッチ数を混同する。",
+        "特徴とラベルを別のLoaderでシャッフルする。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8077\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(10).reshape(5,2),torch.arange(5),2",
+          "expected": [
+            {
+              "kind": "tensor",
+              "shape": [
+                2,
+                2
+              ],
+              "dtype": "torch.int64",
+              "device": "cpu",
+              "data": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            },
+            {
+              "kind": "tensor",
+              "shape": [
+                2
+              ],
+              "dtype": "torch.int64",
+              "device": "cpu",
+              "data": [
+                0,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "setup": "seed = 8077\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,2),torch.zeros(1),8",
+          "expected": [
+            {
+              "kind": "tensor",
+              "shape": [
+                1,
+                2
+              ],
+              "dtype": "torch.float32",
+              "device": "cpu",
+              "data": [
+                [
+                  1.0,
+                  1.0
+                ]
+              ]
+            },
+            {
+              "kind": "tensor",
+              "shape": [
+                1
+              ],
+              "dtype": "torch.float32",
+              "device": "cpu",
+              "data": [
+                0.0
+              ]
+            }
+          ]
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8077\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(3,2),torch.arange(3),1",
+          "expected": [
+            {
+              "kind": "tensor",
+              "shape": [
+                1,
+                2
+              ],
+              "dtype": "torch.float32",
+              "device": "cpu",
+              "data": [
+                [
+                  1.0,
+                  1.0
+                ]
+              ]
+            },
+            {
+              "kind": "tensor",
+              "shape": [
+                1
+              ],
+              "dtype": "torch.int64",
+              "device": "cpu",
+              "data": [
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "setup": "seed = 8077\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(2,3),torch.ones(2),2",
+          "expected": [
+            {
+              "kind": "tensor",
+              "shape": [
+                2,
+                3
+              ],
+              "dtype": "torch.float32",
+              "device": "cpu",
+              "data": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            {
+              "kind": "tensor",
+              "shape": [
+                2
+              ],
+              "dtype": "torch.float32",
+              "device": "cpu",
+              "data": [
+                1.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      ],
+      "required_ast": "call:TensorDataset",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "y",
+          "batch"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch.utils.data import TensorDataset, DataLoader\n\nx = torch.arange(10).reshape(5, 2)\ny = torch.arange(5)\nbatch = 2",
+        "task": "xとyを同じTensorDatasetへ入れ、先頭バッチの(x,y)をタプルで返す。shuffle=False。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

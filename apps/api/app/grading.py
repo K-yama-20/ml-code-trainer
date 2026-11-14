@@ -12,14 +12,17 @@ def static_check(code: str, required: str) -> bool:
     return check_syntax(ast.parse(code), required)
 
 
-def equivalent(actual, expected, tolerance=1e-5, check_dtype=False):
+def equivalent(actual, expected, tolerance=1e-5, check_dtype=False, relative=False):
+    """Compare packed values. ``relative`` drops the absolute floor so values
+    near 1e-16 (log1p/expm1 drills) are not accepted as 0."""
     if isinstance(expected, bool):
         return actual is expected
     if isinstance(expected, (int, float)):
         return (
             isinstance(actual, (int, float))
             and not isinstance(actual, bool)
-            and math.isclose(actual, expected, rel_tol=tolerance, abs_tol=tolerance)
+            and math.isclose(actual, expected, rel_tol=tolerance,
+                             abs_tol=0.0 if relative else tolerance)
         )
     if isinstance(expected, dict):
         if not isinstance(actual, dict):
@@ -30,12 +33,12 @@ def equivalent(actual, expected, tolerance=1e-5, check_dtype=False):
         actual_keys = set(actual) - ({"dtype"} if not check_dtype else set())
         if keys != actual_keys:
             return False
-        return all(k in actual and equivalent(actual[k], expected[k], tolerance, check_dtype) for k in keys)
+        return all(k in actual and equivalent(actual[k], expected[k], tolerance, check_dtype, relative) for k in keys)
     if isinstance(expected, list):
         return (
             isinstance(actual, list)
             and len(actual) == len(expected)
-            and all(equivalent(a, b, tolerance, check_dtype) for a, b in zip(actual, expected))
+            and all(equivalent(a, b, tolerance, check_dtype, relative) for a, b in zip(actual, expected))
         )
     return actual == expected
 
@@ -67,7 +70,9 @@ def judge(outputs, cases, code, required="", check_dtype=False, protect_inputs=F
             except (ValueError, TypeError):
                 ok = False
         else:
-            ok = "value" in out and equivalent(actual, expected, check_dtype=check_dtype)
+            ok = "value" in out and equivalent(
+                actual, expected, check_dtype=check_dtype, relative=comparison == "relative"
+            )
         if protect_inputs and out.get("mutated_inputs"):
             ok = False
         if out.get("replaced_inputs") or out.get("wrong_type"):

@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PT03-01", "version": 3, "stage": "guided",
+    "title": "各行の平均を求める",
+    "task": "2次元のfloat32のTensor `x` について、各行の平均を求め、shape `(行数,)` の1次元Tensorにしてください。",
+    "input": "x = torch.tensor([[1.0, 2.0, 3.0], [4.0, 6.0, 8.0]])",
+    "hint": "NumPyの `axis` に当たる引数は、PyTorchでは `dim` です。`x.mean(dim=1)` で列方向に平均し、各行の値を求めます。",
+    "solution": "result = x.mean(dim=1)"
+  },
+  {
+    "number": 2, "id": "PT03-07", "version": 1, "stage": "guided",
+    "title": "各列の合計を求める",
+    "task": "2次元Tensor `x` について、各列の合計を求め、shape `(列数,)` の1次元Tensorにしてください。",
+    "input": "x = torch.tensor([[1, 2, 3], [4, 5, 6]])",
+    "hint": "行をまたいで集約するので `dim=0` を指定します。`x.sum(dim=0)` で、各列の値を上下に足し合わせます。",
+    "solution": "result = x.sum(dim=0)"
+  },
+  {
+    "number": 3, "id": "PT03-06", "version": 3, "stage": "guided",
+    "title": "全要素の平均を0次元Tensorで求める",
+    "task": "float32のTensor `x` の全要素の平均を、0次元のTensorとして求めてください。`x` は空ではありません。",
+    "input": "x = torch.tensor([[1.0, 2.0], [3.0, 6.0]])",
+    "hint": "`x.mean()` のように `dim` を指定しないと、すべての軸を集約した0次元のTensorになります。",
+    "solution": "result = x.mean()"
+  },
+  {
+    "number": 4, "id": "PT03-08", "version": 1, "stage": "guided",
+    "title": "各行の最大値を取り出す",
+    "task": "2次元Tensor `x` の各行の最大値を、shape `(行数,)` の1次元Tensorにしてください。最大値の位置は不要です。",
+    "input": "x = torch.tensor([[3.0, 7.0, 5.0], [-1.0, -4.0, -2.0]])",
+    "hint": "`x.max(dim=1)` は最大値 `values` と位置 `indices` の組を返します。`.values` で最大値だけを取り出します。`x.amax(dim=1)` でも求まります。",
+    "solution": "result = x.max(dim=1).values"
+  },
+  {
+    "number": 5, "id": "PT03-09", "version": 1, "stage": "guided",
+    "title": "各行の最大値の位置を求める",
+    "task": "2次元Tensor `x` の各行で最大値がある列の位置を、int64の1次元Tensorにしてください。最大値が複数ある場合は、最初の位置を選びます。",
+    "input": "x = torch.tensor([[3.0, 7.0, 7.0], [-1.0, -4.0, -2.0]])",
+    "hint": "`x.argmax(dim=1)` は各行の最大値の位置を返します。CPUのTensorでは、同じ最大値が複数あると最初の位置が選ばれます。",
+    "solution": "result = x.argmax(dim=1)"
+  },
+  {
+    "number": 6, "id": "PT03-10", "version": 1, "stage": "guided",
+    "title": "2つのベクトルの内積を求める",
+    "task": "同じ長さの1次元Tensor `a` と `b` の内積（対応する要素の積の合計）を、0次元のTensorで求めてください。",
+    "input": "a = torch.tensor([1.0, 2.0, 3.0])\nb = torch.tensor([4.0, -1.0, 0.5])",
+    "hint": "`(a * b).sum()` で要素ごとの積を合計します。`torch.dot(a, b)` や `a @ b` でも同じ値になります。",
+    "solution": "result = (a * b).sum()"
+  },
+  {
+    "number": 7, "id": "PT03-02", "version": 3, "stage": "partial",
+    "title": "各行から行の平均を引く",
+    "task": "2次元Tensor `x` の各要素から、その行の平均を引いてください。結果は `x` と同じshapeです。",
+    "input": "x = torch.tensor([[1.0, 2.0, 3.0], [2.0, 4.0, 12.0]])",
+    "hint": "`x.mean(dim=1)` はshape `(行数,)` で、そのまま引くと列の軸とBroadcastingされます。`keepdim=True` を付けてshape `(行数, 1)` にします。",
+    "solution": "result = x - x.mean(dim=1, keepdim=True)"
+  },
+  {
+    "number": 8, "id": "PT03-04", "version": 3, "stage": "partial",
+    "title": "行ごとに異なる重みを掛ける",
+    "task": "shape `(N, D)` のTensor `x` の各行に、shape `(N,)` のTensor `w` の対応する値を掛けてください。行 `i` のすべての要素に `w[i]` を掛けます。",
+    "input": "x = torch.tensor([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])\nw = torch.tensor([10.0, -1.0])",
+    "hint": "`w.unsqueeze(1)` でshape `(N, 1)` にすると、各行の全列に同じ重みが掛かります。`w.unsqueeze(0)` では列ごとの重みとして扱われます。",
+    "solution": "result = x * w.unsqueeze(1)"
+  },
+  {
+    "number": 9, "id": "PT03-03", "version": 3, "stage": "partial",
+    "title": "画像バッチのチャネルごとの合計を求める",
+    "task": "shape `(N, C, H, W)` のTensor `x` について、チャネルごとに全サンプル・全画素の値を合計し、shape `(C,)` のTensorにしてください。",
+    "input": "x = torch.arange(16.0).reshape(2, 2, 2, 2)",
+    "hint": "残したいのはチャネルの軸1です。`x.sum(dim=(0, 2, 3))` のように、集約する軸をタプルでまとめて指定します。",
+    "solution": "result = x.sum(dim=(0, 2, 3))"
+  },
+  {
+    "number": 10, "id": "PT03-11", "version": 1, "stage": "partial",
+    "title": "行列とベクトルの積を求める",
+    "task": "shape `(N, D)` のTensor `x` と、shape `(D,)` の重み `w` の行列積を求め、shape `(N,)` のTensorにしてください。各行と `w` の内積が並びます。",
+    "input": "x = torch.tensor([[1.0, 2.0], [3.0, 4.0], [0.0, -1.0]])\nw = torch.tensor([0.5, 2.0])",
+    "hint": "`x @ w` は、`x` の各行と `w` の内積を計算します。`x * w` は要素ごとの積で、shapeが `(N, D)` のままです。",
+    "solution": "result = x @ w"
+  },
+  {
+    "number": 11, "id": "PT03-12", "version": 1, "stage": "partial",
+    "title": "母標準偏差で列ごとに標準化する",
+    "task": "2次元Tensor `x` の各列から列の平均を引き、列の母標準偏差（補正なし、`correction=0`）で割ってください。各列の母標準偏差は正の値です。",
+    "input": "x = torch.tensor([[1.0, 10.0], [3.0, 20.0], [5.0, 60.0]])",
+    "hint": "PyTorchの `std()` の既定は `correction=1`（不偏標準偏差）で、NumPyの既定と違います。`x.std(dim=0, correction=0, keepdim=True)` のように指定します。",
+    "solution": "result = (x - x.mean(dim=0, keepdim=True)) / x.std(dim=0, correction=0, keepdim=True)"
+  },
+  {
+    "number": 12, "id": "PT03-13", "version": 1, "stage": "partial",
+    "title": "値を下限と上限の範囲に収める",
+    "task": "Tensor `x` の値を、`low` 以上 `high` 以下に収めてください。範囲外の値は近い方の境界値にします。",
+    "input": "x = torch.tensor([-2.0, 0.5, 3.0, 1.0])\nlow = 0.0\nhigh = 1.0",
+    "hint": "`torch.clamp(x, min=low, max=high)` は、NumPyの `np.clip()` に当たる操作です。",
+    "solution": "result = torch.clamp(x, min=low, max=high)"
+  },
+  {
+    "number": 13, "id": "PT03-05", "version": 3, "stage": "independent",
+    "title": "すべての組み合わせの内積を行列にする",
+    "task": "shape `(N, D)` のTensor `a` と shape `(M, D)` のTensor `b` について、`a` の各行と `b` の各行のすべての組み合わせの内積を、shape `(N, M)` のTensorにしてください。`result[i, j]` は `a[i]` と `b[j]` の内積です。",
+    "input": "a = torch.tensor([[1.0, 0.0], [1.0, 2.0]])\nb = torch.tensor([[3.0, 4.0], [-1.0, 1.0], [0.0, 2.0]])",
+    "hint": "`b.T` はshape `(D, M)` です。`a @ b.T` で、特徴量の軸 `D` を集約した `(N, M)` の行列になります。",
+    "solution": "result = a @ b.T"
+  },
+  {
+    "number": 14, "id": "PT03-14", "version": 1, "stage": "independent",
+    "title": "バッチごとに行列積を求める",
+    "task": "shape `(B, N, D)` のTensor `a` と shape `(B, D, M)` のTensor `b` について、バッチの番号ごとに行列積を求め、shape `(B, N, M)` のTensorにしてください。",
+    "input": "a = torch.tensor([[[1.0, 2.0]], [[0.0, 1.0]]])\nb = torch.tensor([[[1.0], [1.0]], [[2.0], [3.0]]])",
+    "hint": "3次元のTensorどうしの `a @ b`（または `torch.bmm(a, b)`）は、先頭のバッチの軸はそのままに、最後の2軸で行列積を計算します。",
+    "solution": "result = a @ b"
+  },
+  {
+    "number": 15, "id": "PT03-15", "version": 1, "stage": "independent",
+    "title": "各行をsoftmaxで確率にする",
+    "task": "2次元Tensor `x` の各行に `torch.softmax()` を適用してください。各行の値の合計は1になります。",
+    "input": "x = torch.tensor([[1.0, 2.0, 3.0], [1000.0, 1000.0, 1000.0]])",
+    "hint": "`torch.softmax(x, dim=1)` で行ごとに正規化します。`dim=0` にすると列ごとの確率になります。PyTorchのsoftmaxは大きな値でも安定に計算されます。",
+    "solution": "result = torch.softmax(x, dim=1)"
+  },
+  {
+    "number": 16, "id": "PT03-16", "version": 1, "stage": "independent",
+    "title": "各行のL2ノルムを求める",
+    "task": "2次元Tensor `x` の各行のL2ノルム（要素の2乗の合計の平方根）を、shape `(行数,)` のTensorにしてください。",
+    "input": "x = torch.tensor([[3.0, 4.0], [1.0, 1.0], [0.0, 0.0]])",
+    "hint": "`torch.linalg.vector_norm(x, dim=1)` や `x.norm(dim=1)` で行ごとのノルムが求まります。`(x ** 2).sum(dim=1).sqrt()` でも同じです。",
+    "solution": "result = torch.linalg.vector_norm(x, dim=1)"
+  },
+  {
+    "number": 17, "id": "PT03-17", "version": 1, "stage": "independent",
+    "title": "マスクで有効な位置だけの行平均を求める",
+    "task": "`mask` は `x` と同じshapeで、有効な位置が1.0、無効な位置が0.0のTensorです。各行について、有効な位置の値だけの平均を求め、shape `(行数,)` のTensorにしてください。各行には有効な位置が1つ以上あります。",
+    "input": "x = torch.tensor([[1.0, 2.0, 9.0], [4.0, 8.0, 6.0]])\nmask = torch.tensor([[1.0, 1.0, 0.0], [1.0, 1.0, 1.0]])",
+    "hint": "`(x * mask).sum(dim=1)` で有効な値の合計、`mask.sum(dim=1)` で有効な個数が求まります。合計を個数で割ります。",
+    "solution": "result = (x * mask).sum(dim=1) / mask.sum(dim=1)"
+  },
+  {
+    "number": 18, "id": "PT03-18", "version": 1, "stage": "independent",
+    "title": "すべての組み合わせの二乗距離を求める",
+    "task": "shape `(N, D)` のTensor `a` と shape `(M, D)` のTensor `b` について、`a` の各行と `b` の各行のユークリッド距離の2乗を、shape `(N, M)` のTensorにしてください。",
+    "input": "a = torch.tensor([[0.0, 0.0], [1.0, 1.0]])\nb = torch.tensor([[3.0, 4.0], [1.0, 0.0], [1.0, 1.0]])",
+    "hint": "`a[:, None, :] - b[None, :, :]` はBroadcastingでshape `(N, M, D)` の差になります。2乗して最後の軸で合計します。",
+    "solution": "diff = a[:, None, :] - b[None, :, :]\nresult = (diff ** 2).sum(dim=-1)"
+  }
+]

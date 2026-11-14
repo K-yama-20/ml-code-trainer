@@ -1,0 +1,747 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT09-01",
+      "family_id": "PT09-01",
+      "version_id": "PT09-01@2",
+      "content_version": 2,
+      "concept_id": "PT09",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "evalの状態",
+      "description": "nn.Dropout(p)をevalモードにしてtraining属性をboolで返す。0<=p<=1。",
+      "learning_goal": "モードの切り替えと勾配の無効化を別々に制御します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "nn.Dropout(p)をevalモードにしてtraining属性をboolで返す。0<=p<=1。",
+      "starter_code": "result = ___\n",
+      "example": "model.eval()\nwith torch.inference_mode():\n    y = model(x)",
+      "editable_regions": [],
+      "hints": [
+        "モードの切り替えと勾配の無効化を別々に制御します。",
+        "evalは内部でtrain(False)を呼びます。",
+        "空欄には nn.Dropout(p).eval().training と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = nn.Dropout(p).eval().training\n",
+      "explanation": "evalは内部でtrain(False)を呼びます。",
+      "common_mistakes": [
+        "evalだけで勾配計算も停止すると思う。",
+        "一時評価の後に元の学習モードを復元しない。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9181\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": ".5",
+          "expected": false
+        },
+        {
+          "setup": "seed = 9181\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0",
+          "expected": false
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9181\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "1",
+          "expected": false
+        },
+        {
+          "setup": "seed = 9181\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": ".2",
+          "expected": false
+        }
+      ],
+      "required_ast": "call:eval",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT05",
+        "PT07"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "p"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from torch import nn\n\np = 0.5",
+        "task": "nn.Dropout(p)をevalモードにしてtraining属性をboolで返す。0<=p<=1。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT09-02",
+      "family_id": "PT09-02",
+      "version_id": "PT09-02@2",
+      "content_version": 2,
+      "concept_id": "PT09",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "推論時Dropoutのバグ修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nnn.Dropout(0.5)をevalモードにしてxへ適用した結果を返す。",
+      "learning_goal": "モードの切り替えと勾配の無効化を別々に制御します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "nn.Dropout(0.5)をevalモードにしてxへ適用した結果を返す。",
+      "starter_code": "m = nn.Dropout(0.5)\nm.train()\nresult = m(x)\n",
+      "example": "model.eval()\nwith torch.inference_mode():\n    y = model(x)",
+      "editable_regions": [],
+      "hints": [
+        "モードの切り替えと勾配の無効化を別々に制御します。",
+        "eval時のDropoutは入力をそのまま返します。",
+        "解答部分は次の形で書けます。\nm = nn.Dropout(0.5)\nm.eval()\nresult = m(x)\n"
+      ],
+      "solution": "m = nn.Dropout(0.5)\nm.eval()\nresult = m(x)\n",
+      "explanation": "eval時のDropoutは入力をそのまま返します。",
+      "common_mistakes": [
+        "evalだけで勾配計算も停止すると思う。",
+        "一時評価の後に元の学習モードを復元しない。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(3,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([2.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              2.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(5.)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              5
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "call:eval",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT05",
+        "PT07"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nx = torch.ones(3, 4)",
+        "task": "nn.Dropout(0.5)をevalモードにしてxへ適用した結果を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT09-03",
+      "family_id": "PT09-03",
+      "version_id": "PT09-03@2",
+      "content_version": 2,
+      "concept_id": "PT09",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "inference_mode",
+      "description": "requires_grad=Trueのxについて、inference_mode内でx*2を計算し結果のrequires_gradを返す。",
+      "learning_goal": "モードの切り替えと勾配の無効化を別々に制御します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "requires_grad=Trueのxについて、inference_mode内でx*2を計算し結果のrequires_gradを返す。",
+      "starter_code": "result =\n",
+      "example": "model.eval()\nwith torch.inference_mode():\n    y = model(x)",
+      "editable_regions": [],
+      "hints": [
+        "モードの切り替えと勾配の無効化を別々に制御します。",
+        "inference_modeは勾配追跡を無効にします。",
+        "解答部分は次の形で書けます。\nwith torch.inference_mode():\n    y = x * 2\nresult = y.requires_grad\n"
+      ],
+      "solution": "with torch.inference_mode():\n    y = x * 2\nresult = y.requires_grad\n",
+      "explanation": "inference_modeは勾配追跡を無効にします。",
+      "common_mistakes": [
+        "evalだけで勾配計算も停止すると思う。",
+        "一時評価の後に元の学習モードを復元しない。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6320\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,requires_grad=True)",
+          "expected": false
+        },
+        {
+          "setup": "seed = 6320\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor(1.,requires_grad=True)",
+          "expected": false
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6320\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,requires_grad=True)",
+          "expected": false
+        },
+        {
+          "setup": "seed = 6320\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(3.,requires_grad=True)",
+          "expected": false
+        }
+      ],
+      "required_ast": "call:inference_mode",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT05",
+        "PT07"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.ones(2, requires_grad=True)",
+        "task": "requires_grad=Trueのxについて、inference_mode内でx*2を計算し結果のrequires_gradを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT09-04",
+      "family_id": "PT09-04",
+      "version_id": "PT09-04@2",
+      "content_version": 2,
+      "concept_id": "PT09",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "evalだけで勾配停止する誤解を修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nnn.Identityをevalにし、no_grad内でx*2を計算。そのrequires_gradを返す。",
+      "learning_goal": "モードの切り替えと勾配の無効化を別々に制御します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "nn.Identityをevalにし、no_grad内でx*2を計算。そのrequires_gradを返す。",
+      "starter_code": "m = nn.Identity().eval()\nif True:\n    out = m(x * 2)\nresult = out.requires_grad\n",
+      "example": "model.eval()\nwith torch.inference_mode():\n    y = model(x)",
+      "editable_regions": [],
+      "hints": [
+        "モードの切り替えと勾配の無効化を別々に制御します。",
+        "evalはautogradを停止しません。",
+        "解答部分は次の形で書けます。\nm = nn.Identity().eval()\nwith torch.no_grad():\n    out = m(x * 2)\nresult = out.requires_grad\n"
+      ],
+      "solution": "m = nn.Identity().eval()\nwith torch.no_grad():\n    out = m(x * 2)\nresult = out.requires_grad\n",
+      "explanation": "evalはautogradを停止しません。",
+      "common_mistakes": [
+        "evalだけで勾配計算も停止すると思う。",
+        "一時評価の後に元の学習モードを復元しない。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2944\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,requires_grad=True)",
+          "expected": false
+        },
+        {
+          "setup": "seed = 2944\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor(1.,requires_grad=True)",
+          "expected": false
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2944\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,requires_grad=True)",
+          "expected": false
+        },
+        {
+          "setup": "seed = 2944\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(3.,requires_grad=True)",
+          "expected": false
+        }
+      ],
+      "required_ast": "call:no_grad",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT05",
+        "PT07"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nx = torch.ones(2, requires_grad=True)",
+        "task": "nn.Identityをevalにし、no_grad内でx*2を計算。そのrequires_gradを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT09-05",
+      "family_id": "PT09-05",
+      "version_id": "PT09-05@2",
+      "content_version": 2,
+      "concept_id": "PT09",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "学習モードに戻す",
+      "description": "Dropout(p)をeval後にtrainへ戻してtraining属性を返す。",
+      "learning_goal": "モードの切り替えと勾配の無効化を別々に制御します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "Dropout(p)をeval後にtrainへ戻してtraining属性を返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "model.eval()\nwith torch.inference_mode():\n    y = model(x)",
+      "editable_regions": [],
+      "hints": [
+        "モードの切り替えと勾配の無効化を別々に制御します。",
+        "学習再開時はtrainを呼びます。",
+        "解答部分は次の形で書けます。\nm = nn.Dropout(p)\nm.eval()\nm.train()\nresult = m.training\n"
+      ],
+      "solution": "m = nn.Dropout(p)\nm.eval()\nm.train()\nresult = m.training\n",
+      "explanation": "学習再開時はtrainを呼びます。",
+      "common_mistakes": [
+        "evalだけで勾配計算も停止すると思う。",
+        "一時評価の後に元の学習モードを復元しない。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3943\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": ".5",
+          "expected": true
+        },
+        {
+          "setup": "seed = 3943\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0",
+          "expected": true
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3943\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "1",
+          "expected": true
+        },
+        {
+          "setup": "seed = 3943\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": ".2",
+          "expected": true
+        }
+      ],
+      "required_ast": "call:train",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT05",
+        "PT07"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "p"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from torch import nn\n\np = 0.5",
+        "task": "Dropout(p)をeval後にtrainへ戻してtraining属性を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT09-06",
+      "family_id": "PT09-06",
+      "version_id": "PT09-06@2",
+      "content_version": 2,
+      "concept_id": "PT09",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "モードを復元する修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nDropoutのモードをtrainingに設定、一時的にevalへ変更した後、元のモードに戻しtraining属性を返す。",
+      "learning_goal": "モードの切り替えと勾配の無効化を別々に制御します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "Dropoutのモードをtrainingに設定、一時的にevalへ変更した後、元のモードに戻しtraining属性を返す。",
+      "starter_code": "m = nn.Dropout(0.5)\nm.train(training)\nwas = m.training\nm.eval()\nm.train()\nresult = m.training\n",
+      "example": "model.eval()\nwith torch.inference_mode():\n    y = model(x)",
+      "editable_regions": [],
+      "hints": [
+        "モードの切り替えと勾配の無効化を別々に制御します。",
+        "評価ヘルパーが学習モードを壊さないようにします。",
+        "解答部分は次の形で書けます。\nm = nn.Dropout(0.5)\nm.train(training)\nwas = m.training\nm.eval()\nm.train(was)\nresult = m.training\n"
+      ],
+      "solution": "m = nn.Dropout(0.5)\nm.train(training)\nwas = m.training\nm.eval()\nm.train(was)\nresult = m.training\n",
+      "explanation": "評価ヘルパーが学習モードを壊さないようにします。",
+      "common_mistakes": [
+        "evalだけで勾配計算も停止すると思う。",
+        "一時評価の後に元の学習モードを復元しない。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6025\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "True",
+          "expected": true
+        },
+        {
+          "setup": "seed = 6025\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "False",
+          "expected": false
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6025\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "bool(seed%2)",
+          "expected": true
+        },
+        {
+          "setup": "seed = 6025\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "bool((seed+1)%2)",
+          "expected": false
+        }
+      ],
+      "required_ast": "call:train",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT05",
+        "PT07"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "training"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from torch import nn\n\ntraining = True",
+        "task": "Dropoutのモードをtrainingに設定、一時的にevalへ変更した後、元のモードに戻しtraining属性を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

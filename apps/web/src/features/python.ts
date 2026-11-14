@@ -4,8 +4,9 @@ export function equivalent(
   a: unknown,
   b: unknown,
   checkDtype = false,
-  comparison: "exact" | "json" | "json_unicode" = "exact",
+  comparison: "exact" | "json" | "json_unicode" | "relative" = "exact",
 ): boolean {
+  if (comparison === "relative") return relativeEquivalent(a, b, checkDtype);
   if (comparison !== "exact") {
     if (typeof a !== "string" || typeof b !== "string") return false;
     if (
@@ -39,6 +40,34 @@ export function equivalent(
         ([k, v]) =>
           (k === "dtype" && !checkDtype) ||
           equivalent((a as Record<string, unknown>)[k], v, checkDtype),
+      )
+    );
+  return a === b;
+}
+// Values near 1e-16 (log1p/expm1) must not pass as 0 under an absolute floor.
+function relativeEquivalent(
+  a: unknown,
+  b: unknown,
+  checkDtype: boolean,
+): boolean {
+  if (typeof b === "number")
+    return typeof a === "number" && Math.abs(a - b) <= 1e-5 * Math.abs(b);
+  if (Array.isArray(b))
+    return (
+      Array.isArray(a) &&
+      a.length === b.length &&
+      b.every((v, i) => relativeEquivalent(a[i], v, checkDtype))
+    );
+  if (b && typeof b === "object")
+    return (
+      !!a &&
+      typeof a === "object" &&
+      Object.keys(a).filter((k) => checkDtype || k !== "dtype").length ===
+        Object.keys(b).filter((k) => checkDtype || k !== "dtype").length &&
+      Object.entries(b).every(
+        ([k, v]) =>
+          (k === "dtype" && !checkDtype) ||
+          relativeEquivalent((a as Record<string, unknown>)[k], v, checkDtype),
       )
     );
   return a === b;

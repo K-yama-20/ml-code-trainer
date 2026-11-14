@@ -23,7 +23,7 @@ export interface TestCase {
   args: string;
   expected: unknown;
   expected_tuple_paths?: TuplePaths | null;
-  comparison?: "exact" | "json" | "json_unicode";
+  comparison?: "exact" | "json" | "json_unicode" | "relative";
 }
 export type Stage = "guided" | "partial" | "independent";
 export interface Problem {

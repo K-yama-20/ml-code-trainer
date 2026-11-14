@@ -1,0 +1,854 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT04-01",
+      "family_id": "PT04-01",
+      "version_id": "PT04-01@2",
+      "content_version": 2,
+      "concept_id": "PT04",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "二乗和の勾配",
+      "description": "float32 leaf Tensorをrequires_grad=Trueで作り、二乗和をbackwardしgradを返す。",
+      "learning_goal": "計算グラフを作り、逆伝播で微分を得ます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "float32 leaf Tensorをrequires_grad=Trueで作り、二乗和をbackwardしgradを返す。",
+      "starter_code": "x = torch.tensor(values, dtype=___, requires_grad=True)\n(x * x).sum().backward()\nresult = x.grad\n",
+      "example": "loss.backward()\nx.grad",
+      "editable_regions": [],
+      "hints": [
+        "計算グラフを作り、逆伝播で微分を得ます。",
+        "d(x²)/dx=2xです。",
+        "空欄には torch.float32 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\n(x * x).sum().backward()\nresult = x.grad\n",
+      "explanation": "d(x²)/dx=2xです。",
+      "common_mistakes": [
+        "requires_gradを計算の後から有効にする。",
+        "backwardのたびにgradが加算されることを忘れる。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8526\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[1.,2.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              2.0,
+              4.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8526\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8526\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[0.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8526\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[-2.,3.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              -4.0,
+              6.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "call:backward",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "values"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nvalues = [1.0, 2.0]",
+        "task": "float32 leaf Tensorをrequires_grad=Trueで作り、二乗和をbackwardしgradを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT04-02",
+      "family_id": "PT04-02",
+      "version_id": "PT04-02@2",
+      "content_version": 2,
+      "concept_id": "PT04",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "requires_grad不足を修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nスカラーxの3*xを微分しx.gradを返す。計算追跡を有効にする。",
+      "learning_goal": "計算グラフを作り、逆伝播で微分を得ます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "スカラーxの3*xを微分しx.gradを返す。計算追跡を有効にする。",
+      "starter_code": "x = torch.tensor(float(value), requires_grad=False)\n(3 * x).backward()\nresult = x.grad\n",
+      "example": "loss.backward()\nx.grad",
+      "editable_regions": [],
+      "hints": [
+        "計算グラフを作り、逆伝播で微分を得ます。",
+        "計算後にrequires_gradを付けても過去のグラフは作られません。",
+        "解答部分は次の形で書けます。\nx = torch.tensor(float(value), requires_grad=True)\n(3 * x).backward()\nresult = x.grad\n"
+      ],
+      "solution": "x = torch.tensor(float(value), requires_grad=True)\n(3 * x).backward()\nresult = x.grad\n",
+      "explanation": "計算後にrequires_gradを付けても過去のグラフは作られません。",
+      "common_mistakes": [
+        "requires_gradを計算の後から有効にする。",
+        "backwardのたびにgradが加算されることを忘れる。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4033\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        },
+        {
+          "setup": "seed = 4033\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4033\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-3",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        },
+        {
+          "setup": "seed = 4033\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "seed",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        }
+      ],
+      "required_ast": "call:backward",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "value"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nvalue = 2",
+        "task": "スカラーxの3*xを微分しx.gradを返す。計算追跡を有効にする。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT04-03",
+      "family_id": "PT04-03",
+      "version_id": "PT04-03@2",
+      "content_version": 2,
+      "concept_id": "PT04",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "平均の勾配",
+      "description": "非空float32 Tensorのmeanを逆伝播しgradを返す。",
+      "learning_goal": "計算グラフを作り、逆伝播で微分を得ます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "非空float32 Tensorのmeanを逆伝播しgradを返す。",
+      "starter_code": "result =\n",
+      "example": "loss.backward()\nx.grad",
+      "editable_regions": [],
+      "hints": [
+        "計算グラフを作り、逆伝播で微分を得ます。",
+        "各要素への勾配は1/Nです。",
+        "解答部分は次の形で書けます。\nx = torch.tensor(values, dtype=torch.float32, requires_grad=True)\nx.mean().backward()\nresult = x.grad\n"
+      ],
+      "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\nx.mean().backward()\nresult = x.grad\n",
+      "explanation": "各要素への勾配は1/Nです。",
+      "common_mistakes": [
+        "requires_gradを計算の後から有効にする。",
+        "backwardのたびにgradが加算されることを忘れる。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[1.,2.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.5,
+              0.5
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[0.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              1.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[1.,2.,3.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.3333333432674408,
+              0.3333333432674408,
+              0.3333333432674408
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9681\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[-1.,1.,0.,4.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          }
+        }
+      ],
+      "required_ast": "call:backward",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "values"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nvalues = [1.0, 2.0]",
+        "task": "非空float32 Tensorのmeanを逆伝播しgradを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT04-04",
+      "family_id": "PT04-04",
+      "version_id": "PT04-04@2",
+      "content_version": 2,
+      "concept_id": "PT04",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "勾配蓄積を修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nx²のbackward後、x.gradをNoneにしてから3*xをbackwardし、最後の勾配だけ返す。",
+      "learning_goal": "計算グラフを作り、逆伝播で微分を得ます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "x²のbackward後、x.gradをNoneにしてから3*xをbackwardし、最後の勾配だけ返す。",
+      "starter_code": "x = torch.tensor(float(value), requires_grad=True)\n(x * x).backward()\n(3 * x).backward()\nresult = x.grad\n",
+      "example": "loss.backward()\nx.grad",
+      "editable_regions": [],
+      "hints": [
+        "計算グラフを作り、逆伝播で微分を得ます。",
+        "backwardは既存gradへ加算します。",
+        "解答部分は次の形で書けます。\nx = torch.tensor(float(value), requires_grad=True)\n(x * x).backward()\nx.grad = None\n(3 * x).backward()\nresult = x.grad\n"
+      ],
+      "solution": "x = torch.tensor(float(value), requires_grad=True)\n(x * x).backward()\nx.grad = None\n(3 * x).backward()\nresult = x.grad\n",
+      "explanation": "backwardは既存gradへ加算します。",
+      "common_mistakes": [
+        "requires_gradを計算の後から有効にする。",
+        "backwardのたびにgradが加算されることを忘れる。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6752\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        },
+        {
+          "setup": "seed = 6752\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6752\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        },
+        {
+          "setup": "seed = 6752\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "seed",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        }
+      ],
+      "required_ast": "call:backward",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "value"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nvalue = 2",
+        "task": "x²のbackward後、x.gradをNoneにしてから3*xをbackwardし、最後の勾配だけ返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT04-05",
+      "family_id": "PT04-05",
+      "version_id": "PT04-05@2",
+      "content_version": 2,
+      "concept_id": "PT04",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "detachして値を渡す",
+      "description": "requires_grad=TrueのTensorを作りdetachしたTensorのrequires_gradをboolで返す。",
+      "learning_goal": "計算グラフを作り、逆伝播で微分を得ます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "requires_grad=TrueのTensorを作りdetachしたTensorのrequires_gradをboolで返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "loss.backward()\nx.grad",
+      "editable_regions": [],
+      "hints": [
+        "計算グラフを作り、逆伝播で微分を得ます。",
+        "detachは計算グラフとの接続を切ります。",
+        "解答部分は次の形で書けます。\nx = torch.tensor(values, dtype=torch.float32, requires_grad=True)\nresult = x.detach().requires_grad\n"
+      ],
+      "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\nresult = x.detach().requires_grad\n",
+      "explanation": "detachは計算グラフとの接続を切ります。",
+      "common_mistakes": [
+        "requires_gradを計算の後から有効にする。",
+        "backwardのたびにgradが加算されることを忘れる。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6544\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[1.,2.]",
+          "expected": false
+        },
+        {
+          "setup": "seed = 6544\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[]",
+          "expected": false
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6544\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[0.]",
+          "expected": false
+        },
+        {
+          "setup": "seed = 6544\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[-1.]",
+          "expected": false
+        }
+      ],
+      "required_ast": "call:detach",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "values"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nvalues = [1.0, 2.0]",
+        "task": "requires_grad=TrueのTensorを作りdetachしたTensorのrequires_gradをboolで返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT04-06",
+      "family_id": "PT04-06",
+      "version_id": "PT04-06@2",
+      "content_version": 2,
+      "concept_id": "PT04",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "ベクトル逆伝播の修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nx**3は非スカラーなのでsumしてからbackwardし、gradを返す。",
+      "learning_goal": "計算グラフを作り、逆伝播で微分を得ます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "x**3は非スカラーなのでsumしてからbackwardし、gradを返す。",
+      "starter_code": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\n(x ** 3).backward()\nresult = x.grad\n",
+      "example": "loss.backward()\nx.grad",
+      "editable_regions": [],
+      "hints": [
+        "計算グラフを作り、逆伝播で微分を得ます。",
+        "非スカラーには上流勾配か集約が必要です。",
+        "解答部分は次の形で書けます。\nx = torch.tensor(values, dtype=torch.float32, requires_grad=True)\n(x ** 3).sum().backward()\nresult = x.grad\n"
+      ],
+      "solution": "x = torch.tensor(values, dtype=torch.float32, requires_grad=True)\n(x ** 3).sum().backward()\nresult = x.grad\n",
+      "explanation": "非スカラーには上流勾配か集約が必要です。",
+      "common_mistakes": [
+        "requires_gradを計算の後から有効にする。",
+        "backwardのたびにgradが加算されることを忘れる。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9495\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[1.,2.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              3.0,
+              12.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9495\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9495\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[0.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9495\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[-2.,3.]",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              12.0,
+              27.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "call:backward",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "values"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nvalues = [1.0, 2.0]",
+        "task": "x**3は非スカラーなのでsumしてからbackwardし、gradを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

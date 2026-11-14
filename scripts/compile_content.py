@@ -23,6 +23,13 @@ from content.runner import pack_expected
 from content.drill_phase1 import improve
 from content.concrete import improve_concrete
 from content import arguments, arrays, axis_permutation, broadcasting, combining, conditional, files, indexing, iteration, reductions, reshaping
+from content import autograd, checkpoints, data_loading, estimators, groupby, inference, losses, merging, metrics, missing, nn_modules, normalization, scaling, selection, splitting, tensor_ops, tensor_shapes, tensors, training
+
+# Concepts compiled by content.ordered. Each module exports compile_<module name>.
+AUTHORED_MODULES = [
+    (module, getattr(module, "compile_" + module.__name__.rsplit(".", 1)[-1]))
+    for module in (normalization, selection, missing, groupby, merging, splitting, scaling, estimators, metrics, tensors, tensor_shapes, tensor_ops, autograd, nn_modules, losses, training, data_loading, inference, checkpoints)
+]
 
 ORDERED_LESSONS = {
     iteration.CONCEPT_ID: (iteration.LESSONS, iteration.compile_iteration),
@@ -36,6 +43,7 @@ ORDERED_LESSONS = {
     broadcasting.CONCEPT_ID: (broadcasting.LESSONS, broadcasting.compile_broadcasting),
     combining.CONCEPT_ID: (combining.LESSONS, combining.compile_combining),
     conditional.CONCEPT_ID: (conditional.LESSONS, conditional.compile_conditional),
+    **{module.CONCEPT_ID: (module.LESSONS, fn) for module, fn in AUTHORED_MODULES},
 }
 
 

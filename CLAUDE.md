@@ -52,10 +52,11 @@ CI (`.github/workflows/ci.yml`) runs everything above except `test:browser-conte
 ## Architecture
 
 ### Content pipeline (most edits land here)
-- **Authoring.** `content/catalog.py` is the base catalog. Each ordered concept (PY01–PY03, NP01–NP08) is a pair of files:
+- **Authoring.** `content/catalog.py` is the base catalog. All 30 concepts are ordered 18-problem drills, each a pair of files:
   - `content/<topic>.json` holds the final wording, display examples, hints and reference solutions.
   - `content/<topic>.py` holds the fixtures, alternate inputs and grading rules. It exports `CONCEPT_ID`, `LESSONS` and `compile_<topic>(concept, seed)`.
-- **Registration.** A new concept must be registered in `ORDERED_LESSONS` in `scripts/compile_content.py`. Its fixture generator must also be added in `scripts/validate_content.py`. Problem totals are hard-coded in several places and must be bumped together:
+  - NP09, PD01–PD04, SK01–SK04 and PT01–PT10 use the shared compiler `content/ordered.py`: their `.py` defines `ALTERNATIVES`, independent `ORACLES` (expected values never come from the reference solution), `RULES` (AST requirement, dtype, `comparison`, `strict_division`/`strict_overflow`, input protection) and `WRONG` (representative mistakes that validation requires to fail).
+- **Registration.** A new concept must be registered in `ORDERED_LESSONS` in `scripts/compile_content.py` (shared-compiler concepts go in `AUTHORED_MODULES`, which the validator also reads for `WRONG`). Problem totals are hard-coded in several places and must be bumped together:
   - the format-distribution `Counter` in `validate_content.py`
   - `apps/api/tests/test_concrete.py` and `test_continuation.py`
   - `tests/e2e/trainer.spec.ts` (the "Drill N" link)

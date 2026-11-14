@@ -1,0 +1,164 @@
+[
+  {
+    "number": 1, "id": "SK01-01", "version": 5, "stage": "guided",
+    "title": "分割後の行数をタプルで確かめる",
+    "task": "`train_test_split()` で `X` と `y` を `test_size=0.25`、`random_state=42` で分割し、`(学習用の行数, テスト用の行数)` のタプルにしてください。テスト用の行数は、行数×0.25を切り上げた整数になります。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(20).reshape(10, 2)\ny = np.array([0, 1, 0, 1, 0, 1, 0, 1, 0, 1])",
+    "hint": "`train_test_split(X, y, ...)` は `X_train, X_test, y_train, y_test` の4つを返します。`len(X_train)` と `len(X_test)` をタプルにまとめます。",
+    "solution": "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)\nresult = (len(X_train), len(X_test))"
+  },
+  {
+    "number": 2, "id": "SK01-02", "version": 3, "stage": "guided",
+    "title": "random_stateを固定してテスト用の特徴量を取り出す",
+    "task": "`train_test_split()` で `X` と `y` を `test_size=0.25`、`random_state=42` で分割し、テスト用の特徴量 `X_test` を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(16).reshape(8, 2)\ny = np.array([0, 1, 0, 1, 0, 1, 0, 1])",
+    "hint": "戻り値は `X_train, X_test, y_train, y_test` の順です。`random_state` に同じ値を渡すと、何度実行しても同じ行が選ばれます。",
+    "solution": "result = train_test_split(X, y, test_size=0.25, random_state=42)[1]"
+  },
+  {
+    "number": 3, "id": "SK01-07", "version": 1, "stage": "guided",
+    "title": "テスト用の件数を整数で指定する",
+    "task": "`train_test_split()` で `X` と `y` を、テスト用がちょうど2行になるように `test_size=2`、`random_state=0` で分割し、学習用のラベル `y_train` を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(12).reshape(6, 2)\ny = np.array([10, 11, 12, 13, 14, 15])",
+    "hint": "`test_size` に整数を渡すと割合ではなく行数として扱われます。学習用のラベルは4つの戻り値の3番目です。",
+    "solution": "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=2, random_state=0)\nresult = y_train"
+  },
+  {
+    "number": 4, "id": "SK01-04", "version": 3, "stage": "guided",
+    "title": "シャッフルせずに末尾をテスト用にする",
+    "task": "時系列データとして、`X` と `y` を `shuffle=False`、`test_size=0.25` で分割し、テスト用の特徴量 `X_test` を `result` にしてください。行を並べ替えず、末尾の行がテスト用になります。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(16).reshape(8, 2)\ny = np.arange(8)",
+    "hint": "`shuffle=False` を指定すると、先頭側が学習用、末尾側がテスト用になります。未来のデータが学習用に混ざりません。",
+    "solution": "result = train_test_split(X, y, test_size=0.25, shuffle=False)[1]"
+  },
+  {
+    "number": 5, "id": "SK01-05", "version": 3, "stage": "guided",
+    "title": "特徴量とラベルの対応を保って分割する",
+    "task": "`X` と `y` を1回の `train_test_split()` で `test_size=0.3`、`random_state=3` で分割し、`(X_train, y_train)` のタプルにしてください。各行の特徴量とラベルの対応を保ちます。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(20).reshape(10, 2)\ny = np.arange(100, 110)",
+    "hint": "`X` と `y` を同じ呼び出しに渡すと、同じ並べ替えが両方に適用されます。別々に分割すると対応が崩れることがあります。",
+    "solution": "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=3)\nresult = (X_train, y_train)"
+  },
+  {
+    "number": 6, "id": "SK01-08", "version": 1, "stage": "guided",
+    "title": "戻り値の順番からテスト用のラベルを選ぶ",
+    "task": "`train_test_split()` で `X` と `y` を `test_size=0.4`、`random_state=1` で分割し、テスト用のラベル `y_test` を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(10).reshape(5, 2)\ny = np.array([5, 6, 7, 8, 9])",
+    "hint": "2つの配列を渡したときの戻り値は `X_train, X_test, y_train, y_test` の順です。`y_test` は最後の要素です。",
+    "solution": "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=1)\nresult = y_test"
+  },
+  {
+    "number": 7, "id": "SK01-03", "version": 3, "stage": "partial",
+    "title": "クラスの比率を保って分割する",
+    "task": "`train_test_split()` で `X` と `y` を `test_size=0.5`、`random_state=7`、`stratify=y` で分割し、テスト用のラベル `y_test` を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(16).reshape(8, 2)\ny = np.array([0, 0, 0, 0, 0, 0, 1, 1])",
+    "hint": "`stratify=y` を指定すると、学習用とテスト用で `y` のクラスの比率がほぼ同じになります。少ないクラスが片方に偏るのを防げます。",
+    "solution": "result = train_test_split(X, y, test_size=0.5, random_state=7, stratify=y)[3]"
+  },
+  {
+    "number": 8, "id": "SK01-09", "version": 1, "stage": "partial",
+    "title": "層化分割したテスト用のクラスごとの件数を数える",
+    "task": "`X` と `y` を `test_size=0.25`、`random_state=0`、`stratify=y` で分割し、テスト用のラベルに含まれるクラス0とクラス1の件数を `np.bincount()` で配列にしてください。`y` のクラスは0と1です。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(24).reshape(12, 2)\ny = np.array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1])",
+    "hint": "`np.bincount(y_test, minlength=2)` は、クラス0とクラス1の件数を順に並べた配列を返します。`minlength=2` で、クラス1がなくても長さが2になります。",
+    "solution": "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0, stratify=y)\nresult = np.bincount(y_test, minlength=2)"
+  },
+  {
+    "number": 9, "id": "SK01-06", "version": 3, "stage": "partial",
+    "title": "行番号を分割して再利用できるようにする",
+    "task": "`np.arange(n)` を `train_test_split()` で `test_size=0.2`、`random_state=11` で分割し、テスト用の行番号の配列を `result` にしてください。行番号を保存すると、同じ分割を別のデータにも適用できます。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "n = 10",
+    "hint": "`train_test_split()` には配列を1つだけ渡すこともできます。その場合の戻り値は `(学習用, テスト用)` の2つです。",
+    "solution": "result = train_test_split(np.arange(n), test_size=0.2, random_state=11)[1]"
+  },
+  {
+    "number": 10, "id": "SK01-10", "version": 1, "stage": "partial",
+    "title": "DataFrameを分割して行ラベルを確かめる",
+    "task": "DataFrame `df` を `train_test_split()` で `test_size=0.25`、`random_state=0` で分割し、テスト用のDataFrameを `result` にしてください。行ラベルは振り直さず、元の行ラベルを残します。",
+    "imports": "import numpy as np\nimport pandas as pd\nfrom sklearn.model_selection import train_test_split",
+    "input": "df = pd.DataFrame(\n    {\"x\": [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0], \"y\": [0, 1, 0, 1, 0, 1, 0, 1]},\n    index=[\"a\", \"b\", \"c\", \"d\", \"e\", \"f\", \"g\", \"h\"],\n)",
+    "hint": "DataFrameを渡すと、戻り値もDataFrameです。選ばれた行は元の行ラベルを持つので、どの行がテスト用になったかを確認できます。",
+    "solution": "result = train_test_split(df, test_size=0.25, random_state=0)[1]"
+  },
+  {
+    "number": 11, "id": "SK01-11", "version": 1, "stage": "partial",
+    "title": "KFoldの各分割のテスト用の行番号を並べる",
+    "task": "`KFold(n_splits=3)` で `X` を分割し、各分割のテスト用の行番号をリストにして、分割の順に並べたリストを `result` にしてください。シャッフルはしません。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import KFold",
+    "input": "X = np.arange(14).reshape(7, 2)",
+    "hint": "`KFold(n_splits=3).split(X)` は `(学習用の行番号, テスト用の行番号)` を分割の数だけ返します。行数が割り切れないときは、先頭の分割ほどテスト用が1行多くなります。",
+    "solution": "result = [test.tolist() for train, test in KFold(n_splits=3).split(X)]"
+  },
+  {
+    "number": 12, "id": "SK01-12", "version": 1, "stage": "partial",
+    "title": "シャッフルするKFoldを再現できるようにする",
+    "task": "`KFold(n_splits=3, shuffle=True, random_state=0)` で `X` を分割し、最初の分割のテスト用の行番号の配列を `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import KFold",
+    "input": "X = np.arange(18).reshape(9, 2)",
+    "hint": "`split()` はジェネレータなので、`next(iter(...))` で最初の分割だけを取り出せます。`random_state` を固定すると、毎回同じ行がテスト用になります。",
+    "solution": "train, test = next(iter(KFold(n_splits=3, shuffle=True, random_state=0).split(X)))\nresult = test"
+  },
+  {
+    "number": 13, "id": "SK01-13", "version": 1, "stage": "independent",
+    "title": "StratifiedKFoldで各分割のクラス比をそろえる",
+    "task": "`StratifiedKFold(n_splits=2)` で `X` と `y` を分割し、各分割のテスト用の行番号をリストにして、分割の順に並べたリストを `result` にしてください。シャッフルはしません。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import StratifiedKFold",
+    "input": "X = np.arange(16).reshape(8, 2)\ny = np.array([0, 0, 0, 0, 0, 0, 1, 1])",
+    "hint": "`StratifiedKFold` の `split()` には `X` と `y` の両方を渡します。各分割のテスト用に、クラス1が同じ数ずつ入ります。",
+    "solution": "result = [test.tolist() for train, test in StratifiedKFold(n_splits=2).split(X, y)]"
+  },
+  {
+    "number": 14, "id": "SK01-14", "version": 1, "stage": "independent",
+    "title": "学習用・検証用・テスト用の3つに分ける",
+    "task": "まず `X` を `test_size=0.2`、`random_state=0` で分割し、テスト用 `X_test` を取り分けてください。次に残りの学習用を `test_size=0.25`、`random_state=0` で分割し、`X_train` と `X_val` にします。`(X_train, X_val, X_test)` のタプルを `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.arange(20).reshape(10, 2)",
+    "hint": "2回目の分割には、元の `X` ではなく1回目の学習用を渡します。そうすると、テスト用の行が検証用に混ざりません。",
+    "solution": "X_rest, X_test = train_test_split(X, test_size=0.2, random_state=0)\nX_train, X_val = train_test_split(X_rest, test_size=0.25, random_state=0)\nresult = (X_train, X_val, X_test)"
+  },
+  {
+    "number": 15, "id": "SK01-15", "version": 1, "stage": "independent",
+    "title": "TimeSeriesSplitで過去から未来へ分割する",
+    "task": "`TimeSeriesSplit(n_splits=3)` で `X` を分割し、各分割について `(学習用の行数, テスト用の行番号のリスト)` のタプルを作り、分割の順に並べたリストを `result` にしてください。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import TimeSeriesSplit",
+    "input": "X = np.arange(16).reshape(8, 2)",
+    "hint": "`TimeSeriesSplit` の学習用は常に先頭からの連続した行で、テスト用はその直後の行です。分割が進むほど学習用が長くなります。",
+    "solution": "result = [(len(train), test.tolist()) for train, test in TimeSeriesSplit(n_splits=3).split(X)]"
+  },
+  {
+    "number": 16, "id": "SK01-16", "version": 1, "stage": "independent",
+    "title": "同じグループが学習用とテスト用に混ざらないように分ける",
+    "task": "`GroupKFold(n_splits=2)` で `X` を `groups` に従って分割し、各分割のテスト用に含まれるグループ名を昇順のリストにしてください。分割の順に並べたリストを `result` にします。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import GroupKFold",
+    "input": "X = np.arange(12).reshape(6, 2)\ngroups = np.array([\"a\", \"a\", \"a\", \"b\", \"c\", \"c\"])",
+    "hint": "`GroupKFold(n_splits=2).split(X, groups=groups)` は、1つのグループの行をすべて同じ側に入れます。テスト用の行番号で `groups` を選び、重複を除いて並べます。",
+    "solution": "folds = GroupKFold(n_splits=2).split(X, groups=groups)\nresult = [sorted(set(groups[test].tolist())) for train, test in folds]"
+  },
+  {
+    "number": 17, "id": "SK01-17", "version": 1, "stage": "independent",
+    "title": "分割した学習用データだけで平均を求める",
+    "task": "`X` を `test_size=0.25`、`random_state=0` で分割し、学習用 `X_train` の列ごとの平均を `result` にしてください。前処理の統計量にテスト用の行を含めないためです。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import train_test_split",
+    "input": "X = np.array([\n    [1.0, 10.0],\n    [2.0, 20.0],\n    [3.0, 30.0],\n    [4.0, 40.0],\n    [100.0, 0.0],\n    [6.0, 60.0],\n    [7.0, 70.0],\n    [8.0, 80.0],\n])",
+    "hint": "先に分割してから `X_train.mean(axis=0)` を求めます。分割前の `X` で平均を求めると、テスト用の行の値が混ざります。",
+    "solution": "X_train, X_test = train_test_split(X, test_size=0.25, random_state=0)\nresult = X_train.mean(axis=0)"
+  },
+  {
+    "number": 18, "id": "SK01-18", "version": 1, "stage": "independent",
+    "title": "ShuffleSplitで分割を複数回作る",
+    "task": "`ShuffleSplit(n_splits=2, test_size=0.25, random_state=0)` で `X` を分割し、各回のテスト用の行番号をリストにして、回の順に並べたリストを `result` にしてください。行番号は選ばれた順のまま並べます。",
+    "imports": "import numpy as np\nfrom sklearn.model_selection import ShuffleSplit",
+    "input": "X = np.arange(16).reshape(8, 2)",
+    "hint": "`ShuffleSplit` は回ごとに独立にシャッフルして分割します。`KFold` と違い、同じ行が複数回テスト用に選ばれることがあります。",
+    "solution": "splitter = ShuffleSplit(n_splits=2, test_size=0.25, random_state=0)\nresult = [test.tolist() for train, test in splitter.split(X)]"
+  }
+]

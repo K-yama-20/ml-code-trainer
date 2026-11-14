@@ -1,0 +1,147 @@
+[
+  {
+    "number": 1, "id": "PT05-01", "version": 3, "stage": "guided",
+    "title": "Linear層の出力shapeを確かめる",
+    "task": "`nn.Linear(d, out)` に、shape `(n, d)` のゼロのTensorを入力し、出力のshapeをタプルで `result` にしてください。",
+    "input": "n = 2\nd = 3\nout = 4",
+    "hint": "`nn.Linear(d, out)` は最後の軸の長さを `d` から `out` に変えます。先頭のバッチの軸 `n` はそのまま残ります。",
+    "solution": "layer = nn.Linear(d, out)\nresult = tuple(layer(torch.zeros(n, d)).shape)"
+  },
+  {
+    "number": 2, "id": "PT05-07", "version": 1, "stage": "guided",
+    "title": "Linear層の重みのshapeを確かめる",
+    "task": "`nn.Linear(d, out)` の重み `weight` のshapeをタプルで `result` にしてください。",
+    "input": "d = 3\nout = 2",
+    "hint": "`nn.Linear` の重みはshape `(出力の特徴数, 入力の特徴数)` で保存されています。入力の順とは逆に見えるので注意します。",
+    "solution": "result = tuple(nn.Linear(d, out).weight.shape)"
+  },
+  {
+    "number": 3, "id": "PT05-02", "version": 3, "stage": "guided",
+    "title": "初期化したModuleのパラメータ数を数える",
+    "task": "`nn.Module` を継承した `Model` クラスを定義し、`__init__` で `super().__init__()` を呼んでから `self.fc = nn.Linear(d, out)` を登録してください。`Model()` のパラメータの要素数の合計を `result` にします。",
+    "input": "d = 3\nout = 2",
+    "hint": "`super().__init__()` を先に呼ばないと、層を属性に登録できません。パラメータ数は `sum(p.numel() for p in model.parameters())` で数えられ、重み `d * out` とバイアス `out` の合計です。",
+    "solution": "class Model(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.fc = nn.Linear(d, out)\n\n    def forward(self, x):\n        return self.fc(x)\n\n\nresult = sum(p.numel() for p in Model().parameters())"
+  },
+  {
+    "number": 4, "id": "PT05-03", "version": 4, "stage": "guided",
+    "title": "forwardで入力を2倍にするModuleを作る",
+    "task": "`nn.Module` を継承した `Twice` クラスを定義し、`forward()` で入力 `x` を2倍にして返してください。`Twice()(x)` の結果を `result` にします。",
+    "input": "x = torch.tensor([1.0, -2.0, 3.0])",
+    "hint": "モデルの計算は `forward(self, x)` に書きます。呼び出すときは `forward()` を直接呼ばず、`Twice()(x)` のようにモデル自体を呼び出します。",
+    "solution": "class Twice(nn.Module):\n    def forward(self, x):\n        return x * 2\n\n\nresult = Twice()(x)"
+  },
+  {
+    "number": 5, "id": "PT05-08", "version": 1, "stage": "guided",
+    "title": "パラメータの名前を順に並べる",
+    "task": "`model` の `named_parameters()` から、パラメータの名前だけを順に並べたリストを `result` にしてください。",
+    "input": "model = nn.Sequential(nn.Linear(2, 3), nn.ReLU(), nn.Linear(3, 1))",
+    "hint": "`named_parameters()` は `(名前, パラメータ)` の組を返します。`nn.Sequential` の中の層は `0`、`1`、`2` のような番号で名前が付き、パラメータのないReLUは現れません。",
+    "solution": "result = [name for name, _ in model.named_parameters()]"
+  },
+  {
+    "number": 6, "id": "PT05-09", "version": 1, "stage": "guided",
+    "title": "バイアスの有無でパラメータの数が変わることを確かめる",
+    "task": "`nn.Linear(d, out, bias=bias)` を作り、`parameters()` が返すパラメータのTensorの個数を `result` にしてください。要素数ではなく、Tensorの個数を数えます。",
+    "input": "d = 3\nout = 2\nbias = False",
+    "hint": "`bias=False` のLinear層は重みだけを持ちます。`len(list(layer.parameters()))` でTensorの個数を数えます。",
+    "solution": "layer = nn.Linear(d, out, bias=bias)\nresult = len(list(layer.parameters()))"
+  },
+  {
+    "number": 7, "id": "PT05-04", "version": 3, "stage": "partial",
+    "title": "nn.Parameterだけが学習パラメータとして登録される",
+    "task": "`Model` クラスの `__init__` で、`values` から作ったfloat32のTensorを `nn.Parameter` として `self.weight` に登録し、`offsets` から作ったTensorは通常の属性 `self.offset` にしてください。`Model()` のパラメータの要素数の合計を `result` にします。",
+    "input": "values = [1.0, 2.0, 3.0]\noffsets = [0.5, 0.5]",
+    "hint": "`nn.Parameter` で包んだTensorだけが `parameters()` に含まれます。普通のTensorを属性にしても、学習パラメータにはなりません。",
+    "solution": "class Model(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.weight = nn.Parameter(torch.tensor(values, dtype=torch.float32))\n        self.offset = torch.tensor(offsets, dtype=torch.float32)\n\n\nresult = sum(p.numel() for p in Model().parameters())"
+  },
+  {
+    "number": 8, "id": "PT05-05", "version": 3, "stage": "partial",
+    "title": "Linear層に指定の重みを設定して出力を求める",
+    "task": "`nn.Linear(2, 1, bias=False)` を作り、`torch.no_grad()` の中で重みを `weight` の値に設定してください。その層に `x` を入力した出力を `result` にします。`weight` のshapeは `(1, 2)` です。",
+    "input": "weight = torch.tensor([[2.0, -1.0]])\nx = torch.tensor([[1.0, 2.0], [3.0, 4.0]])",
+    "hint": "`layer.weight.copy_(weight)` で重みをその場で書き換えます。パラメータを直接書き換える操作は `with torch.no_grad():` の中で行います。",
+    "solution": "layer = nn.Linear(2, 1, bias=False)\nwith torch.no_grad():\n    layer.weight.copy_(weight)\nresult = layer(x)"
+  },
+  {
+    "number": 9, "id": "PT05-06", "version": 3, "stage": "partial",
+    "title": "Sequentialで層をつなげて出力shapeを確かめる",
+    "task": "`nn.Linear(3, 4)`、`nn.ReLU()`、`nn.Linear(4, 2)` をこの順に持つ `nn.Sequential` を作り、`x` を入力した出力のshapeをタプルで `result` にしてください。",
+    "input": "x = torch.ones(5, 3)",
+    "hint": "前の層の出力の特徴数と、次の層の入力の特徴数をそろえます。`Linear(3, 4)` の出力は4なので、次は `Linear(4, ...)` です。",
+    "solution": "model = nn.Sequential(nn.Linear(3, 4), nn.ReLU(), nn.Linear(4, 2))\nresult = tuple(model(x).shape)"
+  },
+  {
+    "number": 10, "id": "PT05-10", "version": 1, "stage": "partial",
+    "title": "Linear層とReLUを使うforwardを書く",
+    "task": "`nn.Module` を継承した `Model` クラスに `self.fc = nn.Linear(2, 2)` を登録し、`forward()` で `torch.relu(self.fc(x))` を返してください。モデルを作った後、`torch.no_grad()` の中で `fc` の重みを `weight`、バイアスを `bias` に設定し、`x` を入力した出力を `result` にします。",
+    "input": "weight = torch.tensor([[1.0, -1.0], [0.5, 0.5]])\nbias = torch.tensor([0.0, -1.0])\nx = torch.tensor([[2.0, 1.0], [1.0, 3.0]])",
+    "hint": "`forward()` の中で、登録した層や関数を順に適用します。重みとバイアスは `model.fc.weight.copy_(weight)` と `model.fc.bias.copy_(bias)` で設定します。",
+    "solution": "class Model(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.fc = nn.Linear(2, 2)\n\n    def forward(self, x):\n        return torch.relu(self.fc(x))\n\n\nmodel = Model()\nwith torch.no_grad():\n    model.fc.weight.copy_(weight)\n    model.fc.bias.copy_(bias)\nresult = model(x)"
+  },
+  {
+    "number": 11, "id": "PT05-11", "version": 1, "stage": "partial",
+    "title": "最初の層を固定して学習するパラメータ数を数える",
+    "task": "`model[0]` のすべてのパラメータの `requires_grad` を `False` にして固定してください。その後、`model` のパラメータのうち `requires_grad` が `True` のものの要素数の合計を `result` にします。",
+    "input": "model = nn.Sequential(nn.Linear(4, 3), nn.ReLU(), nn.Linear(3, 2))",
+    "hint": "`for p in model[0].parameters(): p.requires_grad_(False)` で最初の層を固定します。数えるときは `if p.requires_grad` で学習するパラメータだけを選びます。",
+    "solution": "for p in model[0].parameters():\n    p.requires_grad_(False)\nresult = sum(p.numel() for p in model.parameters() if p.requires_grad)"
+  },
+  {
+    "number": 12, "id": "PT05-12", "version": 1, "stage": "partial",
+    "title": "バッファもstate_dictに含まれることを確かめる",
+    "task": "`Model` クラスに `self.fc = nn.Linear(d, out)` を登録し、`self.register_buffer(\"running\", torch.zeros(out))` でバッファも登録してください。`Model()` の `state_dict()` について、キーと、値のshapeのタプルを対応させた辞書を `result` にします。",
+    "input": "d = 3\nout = 2",
+    "hint": "バッファは学習パラメータではありませんが、`state_dict()` に保存されます。`{k: tuple(v.shape) for k, v in model.state_dict().items()}` で辞書を作れます。",
+    "solution": "class Model(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.fc = nn.Linear(d, out)\n        self.register_buffer(\"running\", torch.zeros(out))\n\n\nmodel = Model()\nresult = {k: tuple(v.shape) for k, v in model.state_dict().items()}"
+  },
+  {
+    "number": 13, "id": "PT05-13", "version": 1, "stage": "independent",
+    "title": "ModuleListで同じ形の層を複数登録する",
+    "task": "`Model` クラスで、`nn.Linear(d, d)` を `n` 個並べた `nn.ModuleList` を `self.layers` に登録してください。`Model()` のパラメータの要素数の合計を `result` にします。",
+    "input": "n = 3\nd = 2",
+    "hint": "Pythonのリストに層を入れただけでは、パラメータとして登録されません。`nn.ModuleList([nn.Linear(d, d) for _ in range(n)])` を使います。",
+    "solution": "class Model(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.layers = nn.ModuleList([nn.Linear(d, d) for _ in range(n)])\n\n\nresult = sum(p.numel() for p in Model().parameters())"
+  },
+  {
+    "number": 14, "id": "PT05-14", "version": 1, "stage": "independent",
+    "title": "入力を足し戻す残差接続を書く",
+    "task": "`Model` クラスに `self.fc = nn.Linear(2, 2)` を登録し、`forward()` で `x + self.fc(x)` を返してください。モデルを作った後、`torch.no_grad()` の中で重みを `weight`、バイアスを `bias` に設定し、`x` を入力した出力を `result` にします。",
+    "input": "weight = torch.tensor([[0.0, 1.0], [1.0, 0.0]])\nbias = torch.tensor([0.5, -0.5])\nx = torch.tensor([[1.0, 2.0]])",
+    "hint": "残差接続では、層の出力に元の入力をそのまま足します。入力と出力の特徴数が同じなので、shapeもそろいます。",
+    "solution": "class Model(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.fc = nn.Linear(2, 2)\n\n    def forward(self, x):\n        return x + self.fc(x)\n\n\nmodel = Model()\nwith torch.no_grad():\n    model.fc.weight.copy_(weight)\n    model.fc.bias.copy_(bias)\nresult = model(x)"
+  },
+  {
+    "number": 15, "id": "PT05-15", "version": 1, "stage": "independent",
+    "title": "applyで全Linear層の重みをまとめて初期化する",
+    "task": "`model` の `apply()` に初期化用の関数を渡し、`model` に含まれるすべての `nn.Linear` 層の重みを `value`、バイアスを0にしてください。初期化した `model` に `x` を入力した出力を `result` にします。",
+    "input": "model = nn.Sequential(nn.Linear(2, 3), nn.ReLU(), nn.Linear(3, 1))\nvalue = 0.5\nx = torch.tensor([[1.0, 2.0], [-1.0, 0.0]])",
+    "hint": "`model.apply(fn)` は、`model` 自身とその中のすべての層に `fn` を適用します。`fn` の中で `isinstance(m, nn.Linear)` を確かめ、`nn.init.constant_()` などで値を設定します。",
+    "solution": "def init(m):\n    if isinstance(m, nn.Linear):\n        nn.init.constant_(m.weight, value)\n        nn.init.zeros_(m.bias)\n\n\nmodel.apply(init)\nresult = model(x)"
+  },
+  {
+    "number": 16, "id": "PT05-16", "version": 1, "stage": "independent",
+    "title": "直下の子Moduleの種類を並べる",
+    "task": "`model.children()` で直下の子Moduleを順に取り出し、それぞれのクラス名の文字列を並べたリストを `result` にしてください。",
+    "input": "model = nn.Sequential(nn.Linear(2, 4), nn.ReLU(), nn.Dropout(0.1), nn.Linear(4, 1))",
+    "hint": "`type(m).__name__` でクラス名の文字列が得られます。`children()` は直下の層だけを返し、`modules()` は自分自身や孫の層も含みます。",
+    "solution": "result = [type(m).__name__ for m in model.children()]"
+  },
+  {
+    "number": 17, "id": "PT05-17", "version": 1, "stage": "independent",
+    "title": "初期化の引数をforwardで使うModuleを作る",
+    "task": "`nn.Module` を継承した `Scale` クラスを定義してください。`__init__(self, factor)` で `factor` を属性に保存し、`forward()` で入力に `factor` を掛けて返します。`Scale(factor)(x)` の結果を `result` にします。",
+    "input": "factor = 3.0\nx = torch.tensor([1.0, -1.0, 0.5])",
+    "hint": "`__init__` で受け取った値は `self.factor = factor` のように保存し、`forward()` の中で `self.factor` として使います。`super().__init__()` も忘れずに呼びます。",
+    "solution": "class Scale(nn.Module):\n    def __init__(self, factor):\n        super().__init__()\n        self.factor = factor\n\n    def forward(self, x):\n        return x * self.factor\n\n\nresult = Scale(factor)(x)"
+  },
+  {
+    "number": 18, "id": "PT05-18", "version": 1, "stage": "independent",
+    "title": "名前を付けた層を名前で取り出す",
+    "task": "`OrderedDict` を使って、`\"hidden\"` という名前の `nn.Linear(d, h)`、`\"act\"` という名前の `nn.ReLU()`、`\"out\"` という名前の `nn.Linear(h, 1)` をこの順に持つ `nn.Sequential` を作ってください。`hidden` 層の重みのshapeをタプルで `result` にします。",
+    "imports": "from collections import OrderedDict\n\nimport torch\nfrom torch import nn",
+    "input": "d = 3\nh = 5",
+    "hint": "`nn.Sequential(OrderedDict([(\"hidden\", ...), ...]))` のように名前と層の組を渡すと、`model.hidden` のように名前で層を取り出せます。",
+    "solution": "model = nn.Sequential(OrderedDict([\n    (\"hidden\", nn.Linear(d, h)),\n    (\"act\", nn.ReLU()),\n    (\"out\", nn.Linear(h, 1)),\n]))\nresult = tuple(model.hidden.weight.shape)"
+  }
+]

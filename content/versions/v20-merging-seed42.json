@@ -1,0 +1,1224 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PD04-01",
+      "family_id": "PD04-01",
+      "version_id": "PD04-01@2",
+      "content_version": 2,
+      "concept_id": "PD04",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "左結合",
+      "description": "idをキーにleft mergeして返す。行順は左側を保つ。rightのidは一意。",
+      "learning_goal": "キーとindexを意識して表を組み合わせます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "idをキーにleft mergeして返す。行順は左側を保つ。rightのidは一意。",
+      "starter_code": "result = ___\n",
+      "example": "left.merge(right, on='id', how='left')",
+      "editable_regions": [],
+      "hints": [
+        "キーとindexを意識して表を組み合わせます。",
+        "一致しない右側の値は欠損になります。",
+        "空欄には left.merge(right, on='id', how='left', sort=False) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = left.merge(right, on='id', how='left', sort=False)\n",
+      "explanation": "一致しない右側の値は欠損になります。",
+      "common_mistakes": [
+        "index整列と行位置の結合を混同する。",
+        "重複キーで多対多結合となり、行数が増殖する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7729\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[1,2]}),pd.DataFrame({'id':[2],'v':[4]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              [
+                1.0,
+                "__NaN__"
+              ],
+              [
+                2.0,
+                4.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7729\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[1]}),pd.DataFrame({'id':[1],'v':[3]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                1,
+                3
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7729\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[3]}),pd.DataFrame({'id':[1],'v':[2]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                3.0,
+                "__NaN__"
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7729\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[2,1]}),pd.DataFrame({'id':[1,2],'v':[5,6]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              [
+                2,
+                6
+              ],
+              [
+                1,
+                5
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "left",
+          "right"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\nleft = pd.DataFrame({'id': [1, 2]})\nright = pd.DataFrame({'id': [2], 'v': [4]})",
+        "task": "idをキーにleft mergeして返す。行順は左側を保つ。rightのidは一意。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD04-02",
+      "family_id": "PD04-02",
+      "version_id": "PD04-02@2",
+      "content_version": 2,
+      "concept_id": "PD04",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "内部結合",
+      "description": "idが両方にある行だけをinner mergeして返す。",
+      "learning_goal": "キーとindexを意識して表を組み合わせます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "idが両方にある行だけをinner mergeして返す。",
+      "starter_code": "result = ___\n",
+      "example": "left.merge(right, on='id', how='left')",
+      "editable_regions": [],
+      "hints": [
+        "キーとindexを意識して表を組み合わせます。",
+        "left joinとの行数の違いを理解します。",
+        "空欄には left.merge(right, on='id', how='inner', sort=False) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = left.merge(right, on='id', how='inner', sort=False)\n",
+      "explanation": "left joinとの行数の違いを理解します。",
+      "common_mistakes": [
+        "index整列と行位置の結合を混同する。",
+        "重複キーで多対多結合となり、行数が増殖する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8284\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[1,2]}),pd.DataFrame({'id':[2],'v':[4]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                2,
+                4
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8284\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[3]}),pd.DataFrame({'id':[1],'v':[2]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8284\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[1]}),pd.DataFrame({'id':[1],'v':[3]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                1,
+                3
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8284\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[2,1]}),pd.DataFrame({'id':[1,2],'v':[5,6]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              [
+                2,
+                6
+              ],
+              [
+                1,
+                5
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "left",
+          "right"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\nleft = pd.DataFrame({'id': [1, 2]})\nright = pd.DataFrame({'id': [2], 'v': [4]})",
+        "task": "idが両方にある行だけをinner mergeして返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD04-03",
+      "family_id": "PD04-03",
+      "version_id": "PD04-03@2",
+      "content_version": 2,
+      "concept_id": "PD04",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "行をconcat",
+      "description": "同じ列を持つa,bを縦に結合しindexを0から振り直す。",
+      "learning_goal": "キーとindexを意識して表を組み合わせます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "同じ列を持つa,bを縦に結合しindexを0から振り直す。",
+      "starter_code": "result =\n",
+      "example": "left.merge(right, on='id', how='left')",
+      "editable_regions": [],
+      "hints": [
+        "キーとindexを意識して表を組み合わせます。",
+        "ignore_indexは元indexの重複を避けます。",
+        "解答部分は次の形で書けます。\nresult = pd.concat([a, b], ignore_index=True)\n"
+      ],
+      "solution": "result = pd.concat([a, b], ignore_index=True)\n",
+      "explanation": "ignore_indexは元indexの重複を避けます。",
+      "common_mistakes": [
+        "index整列と行位置の結合を混同する。",
+        "重複キーで多対多結合となり、行数が増殖する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3887\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame,frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                "__NaN__",
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ],
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                "__NaN__",
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3887\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0],frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                "__NaN__",
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3887\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:1],frame.iloc[1:]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                "__NaN__",
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3887\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0],frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\na = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])\nb = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "同じ列を持つa,bを縦に結合しindexを0から振り直す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD04-04",
+      "family_id": "PD04-04",
+      "version_id": "PD04-04@2",
+      "content_version": 2,
+      "concept_id": "PD04",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "indexでjoin",
+      "description": "aのindexを保つleft joinを返す。列名は重複しない。",
+      "learning_goal": "キーとindexを意識して表を組み合わせます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "aのindexを保つleft joinを返す。列名は重複しない。",
+      "starter_code": "result =\n",
+      "example": "left.merge(right, on='id', how='left')",
+      "editable_regions": [],
+      "hints": [
+        "キーとindexを意識して表を組み合わせます。",
+        "joinのデフォルトキーはindexです。",
+        "解答部分は次の形で書けます。\nresult = a.join(b, how='left')\n"
+      ],
+      "solution": "result = a.join(b, how='left')\n",
+      "explanation": "joinのデフォルトキーはindexです。",
+      "common_mistakes": [
+        "index整列と行位置の結合を混同する。",
+        "重複キーで多対多結合となり、行数が増殖する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 453\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']],frame[['score']]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                "__NaN__",
+                7.0
+              ],
+              [
+                5.0,
+                4.0
+              ],
+              [
+                3.0,
+                9.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 453\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']],frame[['score']].iloc[:1]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                "__NaN__",
+                "__NaN__"
+              ],
+              [
+                5.0,
+                "__NaN__"
+              ],
+              [
+                3.0,
+                "__NaN__"
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 453\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']].iloc[:0],frame[['score']]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 453\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']],frame[['score']].iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                1.0,
+                "__NaN__"
+              ],
+              [
+                "__NaN__",
+                "__NaN__"
+              ],
+              [
+                5.0,
+                "__NaN__"
+              ],
+              [
+                3.0,
+                "__NaN__"
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\na = pd.DataFrame([[1.0], [float('nan')], [5.0], [3.0]], columns=['value'], index=[0, 1, 2, 3])\nb = pd.DataFrame([[2], [7], [4], [9]], columns=['score'], index=[0, 1, 2, 3])",
+        "task": "aのindexを保つleft joinを返す。列名は重複しない。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD04-05",
+      "family_id": "PD04-05",
+      "version_id": "PD04-05@2",
+      "content_version": 2,
+      "concept_id": "PD04",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "列方向にconcat",
+      "description": "indexの外部和でa,bを横結合して返す。",
+      "learning_goal": "キーとindexを意識して表を組み合わせます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "indexの外部和でa,bを横結合して返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "left.merge(right, on='id', how='left')",
+      "editable_regions": [],
+      "hints": [
+        "キーとindexを意識して表を組み合わせます。",
+        "行の位置ではなくindexで整列します。",
+        "解答部分は次の形で書けます。\nresult = pd.concat([a, b], axis=1)\n"
+      ],
+      "solution": "result = pd.concat([a, b], axis=1)\n",
+      "explanation": "行の位置ではなくindexで整列します。",
+      "common_mistakes": [
+        "index整列と行位置の結合を混同する。",
+        "重複キーで多対多結合となり、行数が増殖する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6661\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']],frame[['score']]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                "__NaN__",
+                7.0
+              ],
+              [
+                5.0,
+                4.0
+              ],
+              [
+                3.0,
+                9.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6661\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']].iloc[:1],frame[['score']]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                "__NaN__",
+                7.0
+              ],
+              [
+                "__NaN__",
+                4.0
+              ],
+              [
+                "__NaN__",
+                9.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6661\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']].iloc[:0],frame[['score']]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "__NaN__",
+                2.0
+              ],
+              [
+                "__NaN__",
+                7.0
+              ],
+              [
+                "__NaN__",
+                4.0
+              ],
+              [
+                "__NaN__",
+                9.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6661\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame[['value']],frame[['score']].iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                1.0,
+                "__NaN__"
+              ],
+              [
+                "__NaN__",
+                "__NaN__"
+              ],
+              [
+                5.0,
+                "__NaN__"
+              ],
+              [
+                3.0,
+                "__NaN__"
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\na = pd.DataFrame([[1.0], [float('nan')], [5.0], [3.0]], columns=['value'], index=[0, 1, 2, 3])\nb = pd.DataFrame([[2], [7], [4], [9]], columns=['score'], index=[0, 1, 2, 3])",
+        "task": "indexの外部和でa,bを横結合して返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD04-06",
+      "family_id": "PD04-06",
+      "version_id": "PD04-06@3",
+      "content_version": 3,
+      "concept_id": "PD04",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "右側のキーを確認して左結合する",
+      "description": "leftのすべての行を残し、idが一致するrightの列を追加してください。結合時にrightのidが重複しないことをvalidate='many_to_one'で確認し、表をresultに代入します。",
+      "learning_goal": "キーとindexを意識して表を組み合わせます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "idで左結合した表。対応する右の行がなければ、その列は欠損値になります。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "left.merge(right, on='id', how='left')",
+      "editable_regions": [],
+      "hints": [
+        "leftの行を残すにはhow='left'です。左右のidを対応させるのでon='id'を使います。",
+        "many_to_oneは『左は同じキーが複数でもよく、右は1つ』という指定です。",
+        "解答部分は次の形で書けます。\nresult = left.merge(right, on='id', how='left', validate='many_to_one')\n"
+      ],
+      "solution": "result = left.merge(right, on='id', how='left', validate='many_to_one')\n",
+      "explanation": "右に同じidが複数あると、左の1行が右の複数行に対応し、行が増えます。validate='many_to_one'はその状況を例外として検出する指定です。左のidの重複は許すので、左の行を保って情報を付けられます。",
+      "common_mistakes": [
+        "how='inner'では、rightに対応がないleftの行が消えます。",
+        "rightのid=[1,1]にleftのid=[1,1]を結合すると4行になります。右の一意性を確認する目的を意識しましょう。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 591\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[1,1,2]}),pd.DataFrame({'id':[1,2],'v':[2,3]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0,
+              1,
+              2
+            ],
+            "data": [
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                3
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 591\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[3]}),pd.DataFrame({'id':[1],'v':[2]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                3.0,
+                "__NaN__"
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 591\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[1]}),pd.DataFrame({'id':[1],'v':[4]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                1,
+                4
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 591\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.DataFrame({'id':[2,2]}),pd.DataFrame({'id':[2],'v':[seed]})",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "id",
+              "v"
+            ],
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              [
+                2,
+                591
+              ],
+              [
+                2,
+                591
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "on='id'とhow='left'を確認してください。この練習では右の一意性を確認するvalidateも指定します。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "left",
+          "right"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\nleft = pd.DataFrame({'id': [1, 1, 2]})\nright = pd.DataFrame({'id': [1, 2], 'v': [2, 3]})",
+        "task": "leftのすべての行を残し、idが一致するrightの列を追加してください。結合時にrightのidが重複しないことをvalidate='many_to_one'で確認し、表をresultに代入します。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

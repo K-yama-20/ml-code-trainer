@@ -10,6 +10,28 @@ describe("public result comparison", () => {
       false,
     );
   });
+  it("keeps tiny values distinct from zero in relative comparison", () => {
+    const expected = { kind: "array", data: [1e-16, 0, 2.5] };
+    expect(equivalent({ kind: "array", data: [0, 0, 2.5] }, expected)).toBe(
+      true,
+    );
+    expect(
+      equivalent(
+        { kind: "array", data: [0, 0, 2.5] },
+        expected,
+        false,
+        "relative",
+      ),
+    ).toBe(false);
+    expect(
+      equivalent(
+        { kind: "array", data: [1.0000001e-16, 0, 2.5] },
+        expected,
+        false,
+        "relative",
+      ),
+    ).toBe(true);
+  });
   it("distinguishes boolean and numeric output", () => {
     expect(equivalent(true, 1)).toBe(false);
     expect(equivalent(0, false)).toBe(false);

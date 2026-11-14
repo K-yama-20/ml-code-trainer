@@ -1,0 +1,872 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT06-01",
+      "family_id": "PT06-01",
+      "version_id": "PT06-01@2",
+      "content_version": 2,
+      "concept_id": "PT06",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "MSELoss",
+      "description": "nn.MSELossのmean reductionで損失を返す。非空の同shape Tensor。",
+      "learning_goal": "損失に必要な入力のshapeと型を揃えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "nn.MSELossのmean reductionで損失を返す。非空の同shape Tensor。",
+      "starter_code": "result = ___\n",
+      "example": "nn.CrossEntropyLoss()(logits, labels)",
+      "editable_regions": [],
+      "hints": [
+        "損失に必要な入力のshapeと型を揃えます。",
+        "各要素の二乗誤差を平均します。",
+        "空欄には nn.MSELoss()(pred, target) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = nn.MSELoss()(pred, target)\n",
+      "explanation": "各要素の二乗誤差を平均します。",
+      "common_mistakes": [
+        "CrossEntropyLossの前にsoftmaxを二重適用する。",
+        "クラス番号のdtypeやloss reductionを取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3875\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([1.,3.]),torch.tensor([2.,1.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 2.5
+          }
+        },
+        {
+          "setup": "seed = 3875\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([0.]),torch.tensor([0.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3875\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,2),torch.zeros(2,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.0
+          }
+        },
+        {
+          "setup": "seed = 3875\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([-1.]),torch.tensor([1.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 4.0
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03",
+        "PT05"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "pred",
+          "target"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\npred = torch.tensor([1.0, 3.0])\ntarget = torch.tensor([2.0, 1.0])",
+        "task": "nn.MSELossのmean reductionで損失を返す。非空の同shape Tensor。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT06-02",
+      "family_id": "PT06-02",
+      "version_id": "PT06-02@2",
+      "content_version": 2,
+      "concept_id": "PT06",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "CrossEntropy前のsoftmaxを修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nsoftmaxせず生のlogitsをnn.CrossEntropyLossに渡し損失を返す。labelsはint64。",
+      "learning_goal": "損失に必要な入力のshapeと型を揃えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "softmaxせず生のlogitsをnn.CrossEntropyLossに渡し損失を返す。labelsはint64。",
+      "starter_code": "result = nn.CrossEntropyLoss()(logits.softmax(dim=1), labels)\n",
+      "example": "nn.CrossEntropyLoss()(logits, labels)",
+      "editable_regions": [],
+      "hints": [
+        "損失に必要な入力のshapeと型を揃えます。",
+        "内部でlog_softmax相当を安定に計算します。",
+        "解答部分は次の形で書けます。\nresult = nn.CrossEntropyLoss()(logits, labels)\n"
+      ],
+      "solution": "result = nn.CrossEntropyLoss()(logits, labels)\n",
+      "explanation": "内部でlog_softmax相当を安定に計算します。",
+      "common_mistakes": [
+        "CrossEntropyLossの前にsoftmaxを二重適用する。",
+        "クラス番号のdtypeやloss reductionを取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7486\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[2.,1.],[0.,3.]]),torch.tensor([0,1])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.18092449009418488
+          }
+        },
+        {
+          "setup": "seed = 7486\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(1,2),torch.tensor([0])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.6931471824645996
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7486\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[1000.,-1000.]]),torch.tensor([1])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 2000.0
+          }
+        },
+        {
+          "setup": "seed = 7486\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(3,4),torch.tensor([0,1,2])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.3862943649291992
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03",
+        "PT05"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "logits",
+          "labels"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nlogits = torch.tensor([\n    [2.0, 1.0],\n    [0.0, 3.0]\n])\nlabels = torch.tensor([0, 1])",
+        "task": "softmaxせず生のlogitsをnn.CrossEntropyLossに渡し損失を返す。labelsはint64。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT06-03",
+      "family_id": "PT06-03",
+      "version_id": "PT06-03@2",
+      "content_version": 2,
+      "concept_id": "PT06",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "サンプル別の損失",
+      "description": "MSELoss(reduction='none')で各要素の損失を返す。",
+      "learning_goal": "損失に必要な入力のshapeと型を揃えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "MSELoss(reduction='none')で各要素の損失を返す。",
+      "starter_code": "result =\n",
+      "example": "nn.CrossEntropyLoss()(logits, labels)",
+      "editable_regions": [],
+      "hints": [
+        "損失に必要な入力のshapeと型を揃えます。",
+        "reduction='none'はshapeを保ちます。",
+        "解答部分は次の形で書けます。\nresult = nn.MSELoss(reduction='none')(pred, target)\n"
+      ],
+      "solution": "result = nn.MSELoss(reduction='none')(pred, target)\n",
+      "explanation": "reduction='none'はshapeを保ちます。",
+      "common_mistakes": [
+        "CrossEntropyLossの前にsoftmaxを二重適用する。",
+        "クラス番号のdtypeやloss reductionを取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8717\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3),torch.zeros(2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0,
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8717\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0),torch.zeros(0)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8717\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([1.,2.]),torch.tensor([2.,4.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              1.0,
+              4.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8717\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(1),torch.zeros(1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03",
+        "PT05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "pred",
+          "target"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\npred = torch.ones(2, 3)\ntarget = torch.zeros(2, 3)",
+        "task": "MSELoss(reduction='none')で各要素の損失を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT06-04",
+      "family_id": "PT06-04",
+      "version_id": "PT06-04@2",
+      "content_version": 2,
+      "concept_id": "PT06",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "ラベルdtypeの修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nfloatのクラス番号labelsをlongへ変換してCrossEntropyLossを返す。",
+      "learning_goal": "損失に必要な入力のshapeと型を揃えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "floatのクラス番号labelsをlongへ変換してCrossEntropyLossを返す。",
+      "starter_code": "result = nn.CrossEntropyLoss()(logits, labels)\n",
+      "example": "nn.CrossEntropyLoss()(logits, labels)",
+      "editable_regions": [],
+      "hints": [
+        "損失に必要な入力のshapeと型を揃えます。",
+        "one-hotではなく整数クラス番号のケースです。",
+        "解答部分は次の形で書けます。\nresult = nn.CrossEntropyLoss()(logits, labels.long())\n"
+      ],
+      "solution": "result = nn.CrossEntropyLoss()(logits, labels.long())\n",
+      "explanation": "one-hotではなく整数クラス番号のケースです。",
+      "common_mistakes": [
+        "CrossEntropyLossの前にsoftmaxを二重適用する。",
+        "クラス番号のdtypeやloss reductionを取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9835\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3),torch.tensor([0.,2.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.0986123085021973
+          }
+        },
+        {
+          "setup": "seed = 9835\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(1,2),torch.tensor([1.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.6931471824645996
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9835\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[2.,0.],[0.,2.]]),torch.tensor([0.,1.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.12692804634571075
+          }
+        },
+        {
+          "setup": "seed = 9835\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(3,2),torch.tensor([1.,0.,1.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.6931471824645996
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03",
+        "PT05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "logits",
+          "labels"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nlogits = torch.ones(2, 3)\nlabels = torch.tensor([0.0, 2.0])",
+        "task": "floatのクラス番号labelsをlongへ変換してCrossEntropyLossを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT06-05",
+      "family_id": "PT06-05",
+      "version_id": "PT06-05@2",
+      "content_version": 2,
+      "concept_id": "PT06",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "logitsからクラス予測",
+      "description": "各行の最大logitのクラスindexをint64 Tensorで返す。",
+      "learning_goal": "損失に必要な入力のshapeと型を揃えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各行の最大logitのクラスindexをint64 Tensorで返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "nn.CrossEntropyLoss()(logits, labels)",
+      "editable_regions": [],
+      "hints": [
+        "損失に必要な入力のshapeと型を揃えます。",
+        "予測ラベルだけならsoftmaxは不要です。",
+        "解答部分は次の形で書けます。\nresult = logits.argmax(dim=1)\n"
+      ],
+      "solution": "result = logits.argmax(dim=1)\n",
+      "explanation": "予測ラベルだけならsoftmaxは不要です。",
+      "common_mistakes": [
+        "CrossEntropyLossの前にsoftmaxを二重適用する。",
+        "クラス番号のdtypeやloss reductionを取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2685\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[1.,3.],[2.,0.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              1,
+              0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2685\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2685\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(1,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2685\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[-2.,-1.,-3.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              1
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03",
+        "PT05"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "logits"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nlogits = torch.tensor([\n    [1.0, 3.0],\n    [2.0, 0.0]\n])",
+        "task": "各行の最大logitのクラスindexをint64 Tensorで返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT06-06",
+      "family_id": "PT06-06",
+      "version_id": "PT06-06@2",
+      "content_version": 2,
+      "concept_id": "PT06",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "loss集約のバグ修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\n全要素の合計二乗誤差を返す。meanではなくsum reductionを使う。",
+      "learning_goal": "損失に必要な入力のshapeと型を揃えます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "全要素の合計二乗誤差を返す。meanではなくsum reductionを使う。",
+      "starter_code": "result = nn.MSELoss(reduction='mean')(pred, target)\n",
+      "example": "nn.CrossEntropyLoss()(logits, labels)",
+      "editable_regions": [],
+      "hints": [
+        "損失に必要な入力のshapeと型を揃えます。",
+        "sumとmeanではバッチサイズに対する損失スケールが違います。",
+        "解答部分は次の形で書けます。\nresult = nn.MSELoss(reduction='sum')(pred, target)\n"
+      ],
+      "solution": "result = nn.MSELoss(reduction='sum')(pred, target)\n",
+      "explanation": "sumとmeanではバッチサイズに対する損失スケールが違います。",
+      "common_mistakes": [
+        "CrossEntropyLossの前にsoftmaxを二重適用する。",
+        "クラス番号のdtypeやloss reductionを取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3289\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3),torch.zeros(2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 6.0
+          }
+        },
+        {
+          "setup": "seed = 3289\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0),torch.zeros(0)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3289\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([1.]),torch.tensor([3.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 4.0
+          }
+        },
+        {
+          "setup": "seed = 3289\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(4.),torch.zeros(4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 14.0
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT03",
+        "PT05"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "pred",
+          "target"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\npred = torch.ones(2, 3)\ntarget = torch.zeros(2, 3)",
+        "task": "全要素の合計二乗誤差を返す。meanではなくsum reductionを使う。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

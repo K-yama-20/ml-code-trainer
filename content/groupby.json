@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PD03-01", "version": 3, "stage": "guided",
+    "title": "グループごとの平均を求める",
+    "task": "`group` 列でグループ化し、グループごとの `value` の平均をSeriesで求めてください。行ラベルはグループ名で、昇順に並べます。欠損値は平均の計算から除きます。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"value\": [1.0, np.nan, 5.0, 4.0, 2.0],\n})",
+    "hint": "`df.groupby(\"group\")[\"value\"].mean()` で、グループごとの平均が求まります。`groupby()` は既定でグループ名を昇順に並べ、`mean()` は欠損値を除いて計算します。",
+    "solution": "result = df.groupby(\"group\")[\"value\"].mean()"
+  },
+  {
+    "number": 2, "id": "PD03-02", "version": 4, "stage": "guided",
+    "title": "欠損を含めたグループごとの行数を数える",
+    "task": "`group` 列でグループ化し、グループごとの行数をSeriesで求めてください。`value` が欠損している行も数えます。行ラベルはグループ名の昇順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"value\": [1.0, np.nan, 5.0, 4.0, np.nan],\n})",
+    "hint": "`df.groupby(\"group\").size()` は、値が欠損かどうかに関係なく行数を数えます。`count()` は欠損でない値だけを数えます。",
+    "solution": "result = df.groupby(\"group\").size()"
+  },
+  {
+    "number": 3, "id": "PD03-07", "version": 1, "stage": "guided",
+    "title": "グループごとの欠損でない値の数を数える",
+    "task": "`group` 列でグループ化し、グループごとに `value` が欠損していない行の数をSeriesで求めてください。行ラベルはグループ名の昇順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"value\": [1.0, np.nan, 5.0, 4.0, np.nan],\n})",
+    "hint": "`df.groupby(\"group\")[\"value\"].count()` は、欠損値を除いた値の個数を数えます。すべて欠損のグループは0になります。",
+    "solution": "result = df.groupby(\"group\")[\"value\"].count()"
+  },
+  {
+    "number": 4, "id": "PD03-08", "version": 1, "stage": "guided",
+    "title": "グループごとの合計を求める",
+    "task": "`group` 列でグループ化し、グループごとの `score` の合計をSeriesで求めてください。行ラベルはグループ名の昇順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"score\": [2, 7, 4, 9, 6],\n})",
+    "hint": "`groupby(\"group\")` の後で `[\"score\"]` を選び、`sum()` を使います。",
+    "solution": "result = df.groupby(\"group\")[\"score\"].sum()"
+  },
+  {
+    "number": 5, "id": "PD03-09", "version": 1, "stage": "guided",
+    "title": "グループごとの最大値を求める",
+    "task": "`group` 列でグループ化し、グループごとの `score` の最大値をSeriesで求めてください。行ラベルはグループ名の昇順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"score\": [2, 7, 4, 9, 6],\n})",
+    "hint": "グループごとの集約は `df.groupby(\"group\")[\"score\"]` の後に集約メソッドを続けます。最大値は `max()` です。",
+    "solution": "result = df.groupby(\"group\")[\"score\"].max()"
+  },
+  {
+    "number": 6, "id": "PD03-10", "version": 1, "stage": "guided",
+    "title": "2つの列の組み合わせでグループ化する",
+    "task": "`group` 列と `kind` 列の組み合わせでグループ化し、組み合わせごとの `score` の合計をSeriesで求めてください。行ラベルは `(group, kind)` の2段の行ラベルで、`group`、`kind` の順に昇順で並べます。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"a\"],\n    \"kind\": [\"x\", \"y\", \"x\", \"x\", \"y\"],\n    \"score\": [2, 7, 4, 9, 6],\n})",
+    "hint": "`df.groupby([\"group\", \"kind\"])` のように列名のリストを渡すと、組み合わせごとにグループ化されます。リストの順が行ラベルの段の順になります。",
+    "solution": "result = df.groupby([\"group\", \"kind\"])[\"score\"].sum()"
+  },
+  {
+    "number": 7, "id": "PD03-03", "version": 3, "stage": "partial",
+    "title": "最小値と最大値を同時に集約する",
+    "task": "`group` 列でグループ化し、`value` の最小値と最大値を、列名 `min`、`max` の順に並べたDataFrameにしてください。行ラベルはグループ名の昇順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"value\": [1.0, 8.0, 5.0, 4.0, 2.0],\n})",
+    "hint": "`agg([\"min\", \"max\"])` のように関数名のリストを渡すと、リストの順に列が並んだDataFrameになります。",
+    "solution": "result = df.groupby(\"group\")[\"value\"].agg([\"min\", \"max\"])"
+  },
+  {
+    "number": 8, "id": "PD03-04", "version": 3, "stage": "partial",
+    "title": "グループ名を通常の列にして集約する",
+    "task": "`group` 列でグループ化し、グループごとの `score` の合計を求めてください。結果は `group` 列と `score` 列をこの順に持つDataFrameで、行ラベルは0からの連番です。グループ名の昇順に並べます。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"score\": [2, 7, 4, 9, 6],\n})",
+    "hint": "`groupby(\"group\", as_index=False)` を使うと、グループ名が行ラベルではなく通常の列になります。Seriesにしてから `reset_index()` を使う方法もあります。",
+    "solution": "result = df.groupby(\"group\", as_index=False)[\"score\"].sum()"
+  },
+  {
+    "number": 9, "id": "PD03-11", "version": 1, "stage": "partial",
+    "title": "複数の列をまとめて平均する",
+    "task": "`group` 列でグループ化し、`score` 列と `value` 列のグループごとの平均を、この列順のDataFrameにしてください。行ラベルはグループ名の昇順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\"],\n    \"value\": [1.0, 3.0, 5.0, 4.0],\n    \"score\": [2, 7, 4, 9],\n})",
+    "hint": "`df.groupby(\"group\")[[\"score\", \"value\"]]` のように列名のリストで選ぶと、選んだ列の順に集約結果が並びます。",
+    "solution": "result = df.groupby(\"group\")[[\"score\", \"value\"]].mean()"
+  },
+  {
+    "number": 10, "id": "PD03-12", "version": 1, "stage": "partial",
+    "title": "グループを最初に現れた順に並べる",
+    "task": "`group` 列でグループ化し、グループごとの `score` の合計をSeriesで求めてください。グループ名を昇順に並べ替えず、`df` で最初に現れた順に並べます。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"c\", \"a\"],\n    \"score\": [2, 7, 4, 6, 9],\n})",
+    "hint": "`groupby()` は既定でグループ名を並べ替えます。`sort=False` を指定すると、最初に現れた順のままになります。",
+    "solution": "result = df.groupby(\"group\", sort=False)[\"score\"].sum()"
+  },
+  {
+    "number": 11, "id": "PD03-13", "version": 1, "stage": "partial",
+    "title": "列ごとに異なる集約を指定する",
+    "task": "`group` 列でグループ化し、`value` 列は合計、`score` 列は最大値で集約してください。結果は `value`、`score` の列順のDataFrameで、行ラベルはグループ名の昇順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\"],\n    \"value\": [1.0, 3.0, 5.0, 4.0],\n    \"score\": [2, 7, 4, 9],\n})",
+    "hint": "`agg({\"value\": \"sum\", \"score\": \"max\"})` のように、列名と集約関数名の辞書を渡せます。辞書の順に列が並びます。",
+    "solution": "result = df.groupby(\"group\").agg({\"value\": \"sum\", \"score\": \"max\"})"
+  },
+  {
+    "number": 12, "id": "PD03-14", "version": 1, "stage": "partial",
+    "title": "グループの合計が全体に占める割合を求める",
+    "task": "グループごとの `score` の合計を、`score` 全体の合計で割った割合をSeriesで求めてください。行ラベルはグループ名の昇順で、値の合計は1になります。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\"],\n    \"score\": [2, 7, 1, 10],\n})",
+    "hint": "グループごとの合計 `df.groupby(\"group\")[\"score\"].sum()` を、全体の合計 `df[\"score\"].sum()` で割ります。",
+    "solution": "result = df.groupby(\"group\")[\"score\"].sum() / df[\"score\"].sum()"
+  },
+  {
+    "number": 13, "id": "PD03-05", "version": 3, "stage": "independent",
+    "title": "所属グループの平均との差を求める",
+    "task": "各行の `score` から、その行が属する `group` の `score` の平均を引いた値をSeriesで求めてください。結果の行は `df` と同じ順で、行ラベルも元のままです。",
+    "input": "df = pd.DataFrame(\n    {\"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"], \"score\": [2, 7, 4, 9, 6]},\n    index=[\"r1\", \"r2\", \"r3\", \"r4\", \"r5\"],\n)",
+    "hint": "`df.groupby(\"group\")[\"score\"].transform(\"mean\")` は、各行に所属グループの平均を並べた、元と同じ長さのSeriesです。",
+    "solution": "result = df[\"score\"] - df.groupby(\"group\")[\"score\"].transform(\"mean\")"
+  },
+  {
+    "number": 14, "id": "PD03-06", "version": 3, "stage": "independent",
+    "title": "名前を付けて平均と行数を集約する",
+    "task": "`group` 列でグループ化し、`score` の平均を `mean_score` 列、欠損を含めた行数を `n` 列とするDataFrameを作ってください。列は `mean_score`、`n` の順で、行ラベルはグループ名の昇順です。平均は欠損値を除いて計算します。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"a\"],\n    \"score\": [2.0, 7.0, np.nan, 9.0, 5.0],\n})",
+    "hint": "`agg(mean_score=(\"score\", \"mean\"), n=(\"score\", \"size\"))` のように、`列名=(元の列, 集約関数名)` で名前付き集約を書けます。`\"count\"` は欠損を数えません。",
+    "solution": "result = df.groupby(\"group\").agg(mean_score=(\"score\", \"mean\"), n=(\"score\", \"size\"))"
+  },
+  {
+    "number": 15, "id": "PD03-15", "version": 1, "stage": "independent",
+    "title": "グループ内で累積和を求める",
+    "task": "`group` ごとに、`df` の行順で `score` の累積和を求め、Seriesにしてください。結果の行は `df` と同じ順で、行ラベルも元のままです。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"b\"],\n    \"score\": [2, 7, 4, 9, 1],\n})",
+    "hint": "`df.groupby(\"group\")[\"score\"].cumsum()` は、グループごとに上から順に足し合わせた値を元の行の位置に返します。",
+    "solution": "result = df.groupby(\"group\")[\"score\"].cumsum()"
+  },
+  {
+    "number": 16, "id": "PD03-16", "version": 1, "stage": "independent",
+    "title": "平均が基準以上のグループの行だけを残す",
+    "task": "`score` の平均が `threshold` 以上のグループに属する行だけを残してください。行単位ではなくグループ単位で判定します。結果は全列を持ち、行の順と行ラベルは `df` のままです。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\", \"c\"],\n    \"score\": [2, 7, 9, 5, 4],\n})\nthreshold = 5.5",
+    "hint": "`df.groupby(\"group\")[\"score\"].transform(\"mean\")` で各行にグループの平均を並べ、それを条件に行を選びます。`groupby().filter()` でも書けます。",
+    "solution": "result = df[df.groupby(\"group\")[\"score\"].transform(\"mean\") >= threshold]"
+  },
+  {
+    "number": 17, "id": "PD03-17", "version": 1, "stage": "independent",
+    "title": "グループごとに最大値を持つ行を取り出す",
+    "task": "`group` ごとに `score` が最大の行を1行ずつ取り出し、全列を持つDataFrameにしてください。グループ内で最大値が複数ある場合は、`df` で先に現れる行を選びます。結果はグループ名の昇順に並べ、行ラベルは元の行ラベルのままにします。",
+    "input": "df = pd.DataFrame(\n    {\"group\": [\"b\", \"a\", \"b\", \"a\", \"a\"], \"name\": [\"P\", \"Q\", \"R\", \"S\", \"T\"], \"score\": [2, 9, 4, 5, 9]},\n    index=[\"r1\", \"r2\", \"r3\", \"r4\", \"r5\"],\n)",
+    "hint": "`df.groupby(\"group\")[\"score\"].idxmax()` は、グループごとに最大値が最初に現れる行の行ラベルを、グループ名の昇順で返します。その行ラベルを `df.loc` に渡します。",
+    "solution": "result = df.loc[df.groupby(\"group\")[\"score\"].idxmax()]"
+  },
+  {
+    "number": 18, "id": "PD03-18", "version": 1, "stage": "independent",
+    "title": "グループ内での割合を求める",
+    "task": "各行の `score` を、その行が属する `group` の `score` の合計で割った割合をSeriesで求めてください。結果の行は `df` と同じ順で、グループごとの割合の合計は1になります。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"b\", \"a\", \"b\", \"a\"],\n    \"score\": [2, 6, 6, 2],\n})",
+    "hint": "`df.groupby(\"group\")[\"score\"].transform(\"sum\")` で、各行に所属グループの合計を並べます。全体の合計で割らないようにします。",
+    "solution": "result = df[\"score\"] / df.groupby(\"group\")[\"score\"].transform(\"sum\")"
+  }
+]
