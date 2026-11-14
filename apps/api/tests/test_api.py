@@ -74,7 +74,7 @@ def test_idempotency_and_client_cannot_claim_verification(client, database):
 
 
 def test_hints_and_solution_prevent_clean_progress(client):
-    s = create_session(client)
+    s = create_session(client, concept="NP09")
     item = s["items"][0]
     assert client.post(f"/api/v1/session-items/{item['id']}/hints/2/reveal").json()["level"] == 2
     assert client.post(f"/api/v1/session-items/{item['id']}/hints/1/reveal").json()["level"] == 2
@@ -87,7 +87,7 @@ def test_hints_and_solution_prevent_clean_progress(client):
 
 
 def test_stage_gates_distinct_families_and_formal_independent(client, database):
-    s = create_session(client)
+    s = create_session(client, concept="NP09")
     user = client.get("/api/v1/auth/me").json()["id"]
     items = sorted(s["items"], key=lambda i: i["problem_version_id"])
     for item in items[:4]:

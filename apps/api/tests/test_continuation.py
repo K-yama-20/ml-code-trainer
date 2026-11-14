@@ -5,8 +5,13 @@ from apps.api.app.main import app, hash_code
 from apps.api.app.content import problem, DATA
 
 
+# NP01-NP08 and PY01-PY03 are ordered drills that keep their authored order.
+# NP09 still uses the stage-gated flow (guided -> partial -> independent) tested here.
+STAGED = "NP09"
+
+
 def start(client, **options):
-    r = client.post("/api/v1/sessions", json={"kind": "concept", "concept_id": "NP05", **options})
+    r = client.post("/api/v1/sessions", json={"kind": "concept", "concept_id": STAGED, **options})
     assert r.status_code == 200, r.text
     return r.json()
 
@@ -59,8 +64,8 @@ def test_guided_partial_independent_and_related_continue(client, database):
         r = advance(client, session, current)
         session = r["session"]
         current = next(i for i in session["items"] if i["id"] == r["next_item_id"])
-    assert seen == [("NP05", s) for s in ["guided", "guided", "partial", "partial", "independent", "independent"]]
-    assert problem(current["problem_version_id"])["concept_id"] != "NP05"
+    assert seen == [(STAGED, s) for s in ["guided", "guided", "partial", "partial", "independent", "independent"]]
+    assert problem(current["problem_version_id"])["concept_id"] != STAGED
     progress = client.get("/api/v1/progress/concepts").json()[0]
     assert progress["mastery_level"] == 3
     assert client.get("/api/v1/history").json()["total"] == 6
@@ -75,7 +80,7 @@ def test_provisional_independent_can_continue_without_false_certification(client
         r = advance(client, session, current)
         session = r["session"]
         current = next(i for i in session["items"] if i["id"] == r["next_item_id"])
-    assert problem(current["problem_version_id"])["concept_id"] != "NP05"
+    assert problem(current["problem_version_id"])["concept_id"] != STAGED
     assert client.get("/api/v1/progress/concepts").json()[0]["mastery_level"] == 2
 
 
@@ -229,3 +234,15 @@ def test_phase1_archives_are_unchanged_and_references_still_pass():
                 )["verdict"]
                 == "Accepted"
             ), p["id"]
+
+
+def test_ordered_drill_concept_session_keeps_authored_order(client):
+    r = client.post("/api/v1/sessions", json={"kind": "concept", "concept_id": "NP05"})
+    assert r.status_code == 200, r.text
+    items = r.json()["items"]
+    ordered = [p["id"] for p in DATA["problems"] if p["concept_id"] == "NP05"]
+    assert len(ordered) == 18
+    assert [i["problem_version_id"].split("@")[0] for i in items] == ordered
+    # Ordered drills show a single hint; a level-2 request records that one hint.
+    reveal = client.post(f"/api/v1/session-items/{items[0]['id']}/hints/2/reveal").json()
+    assert reveal["level"] == len(problem(items[0]["problem_version_id"])["hints"]) == 1
