@@ -116,7 +116,7 @@ class PublicTestView(BaseModel):
     args: str
     expected: object
     expected_tuple_paths: list[list[int | str]] | None = None
-    comparison: Literal["exact", "json", "json_unicode"] = "exact"
+    comparison: Literal["exact", "json", "json_unicode", "relative"] = "exact"
 
 
 class ProblemView(BaseModel):

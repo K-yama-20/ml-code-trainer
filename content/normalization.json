@@ -1,0 +1,200 @@
+[
+  {
+    "number": 1,
+    "id": "NP09-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "絶対値の合計でL1正規化する",
+    "task": "1次元配列 `x` の各要素を、要素の絶対値の合計で割ってください。負の要素は符号を保ったまま割ります。絶対値の合計は正の値です。結果は `x` と同じshapeの配列にしてください。",
+    "input": "x = np.array([2.0, -3.0, 0.0, 5.0])",
+    "hint": "`np.abs(x).sum()` で絶対値の合計が求まります。`x.sum()` だと負の値が打ち消し合うので、分母が変わります。",
+    "solution": "result = x / np.abs(x).sum()"
+  },
+  {
+    "number": 2,
+    "id": "NP09-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "L2ノルムで割って長さを1にする",
+    "task": "`np.linalg.norm()` で1次元配列 `x` のL2ノルム（各要素の2乗の合計の平方根）を求め、`x` の各要素をその値で割ってください。L2ノルムは正の値です。",
+    "input": "x = np.array([3.0, -4.0, 0.0])",
+    "hint": "`np.linalg.norm(x)` は、引数を省略するとL2ノルムを返します。`x` をその値で割ると、結果のL2ノルムは1になります。",
+    "solution": "result = x / np.linalg.norm(x)"
+  },
+  {
+    "number": 3,
+    "id": "NP09-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "最小値0・最大値1に変換する",
+    "task": "1次元配列 `x` をMin-Max変換してください。各要素から `x` の最小値を引き、最大値と最小値の差で割ります。最大値と最小値の差は正の値です。結果では最小値が0、最大値が1になります。",
+    "input": "x = np.array([4.0, 10.0, 7.0, 6.0])",
+    "hint": "分子は `x - x.min()`、分母は `x.max() - x.min()` です。最大値だけで割ると、最小値が0になりません。",
+    "solution": "result = (x - x.min()) / (x.max() - x.min())"
+  },
+  {
+    "number": 4,
+    "id": "NP09-10",
+    "version": 1,
+    "stage": "guided",
+    "title": "平均0・母標準偏差1に標準化する",
+    "task": "1次元配列 `x` を標準化してください。各要素から `x` の平均を引き、`x` の母標準偏差（`ddof=0`）で割ります。母標準偏差は正の値です。",
+    "input": "x = np.array([2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0])",
+    "hint": "`x.std()` の既定は `ddof=0` で、母標準偏差を返します。`ddof=1` を指定すると不偏標準偏差になり、結果が変わります。",
+    "solution": "result = (x - x.mean()) / x.std()"
+  },
+  {
+    "number": 5,
+    "id": "NP09-01",
+    "version": 3,
+    "stage": "partial",
+    "title": "標準偏差に下限を設けて列ごとに標準化する",
+    "task": "2次元配列 `x` を列ごとに標準化してください。各列から列の平均を引き、`max(列の母標準偏差, eps)` で割ります。母標準偏差が0の定数列や、母標準偏差が `eps` 未満の列では、分母に `eps` を使います。それ以外の列は母標準偏差で割ります。結果は `x` と同じshapeの配列にしてください。",
+    "input": "x = np.array([\n    [1.0, 5.0, 0.0],\n    [2.0, 5.0, 1e-7],\n    [3.0, 5.0, 2e-7],\n])\neps = 1e-6",
+    "hint": "`x.mean(axis=0)` と `x.std(axis=0)` で列ごとの統計量が求まります。分母は `np.maximum(列の標準偏差, eps)` で、`eps` より小さい値をすべて `eps` に置き換えます。",
+    "solution": "result = (x - x.mean(axis=0)) / np.maximum(x.std(axis=0), eps)"
+  },
+  {
+    "number": 6,
+    "id": "NP09-06",
+    "version": 4,
+    "stage": "partial",
+    "title": "範囲が0の列を0にして列ごとにMin-Max変換する",
+    "task": "2次元配列 `x` を列ごとにMin-Max変換してください。各列から列の最小値を引き、列の範囲（最大値−最小値）で割ります。範囲が0の列は、すべて0にしてください。範囲が非常に小さくても正であれば、下限を設けずにその範囲で割ってください。",
+    "input": "x = np.array([\n    [2.0, 7.0, 0.0],\n    [4.0, 7.0, 1e-9],\n    [3.0, 7.0, 5e-10],\n])",
+    "hint": "列の範囲が0の位置だけ分母を1に置き換えます。`np.where(span == 0, 1, span)` を使うと、範囲が0の列では分子も0なので結果が0になります。`eps` で下限を設けると、範囲が小さい列の結果が変わってしまいます。",
+    "solution": "lo = x.min(axis=0)\nspan = x.max(axis=0) - lo\nresult = (x - lo) / np.where(span == 0, 1, span)"
+  },
+  {
+    "number": 7,
+    "id": "NP09-03",
+    "version": 3,
+    "stage": "independent",
+    "title": "ノルムに下限を設けて行ごとにL2正規化する",
+    "task": "2次元配列 `x` の各行を、`max(その行のL2ノルム, eps)` で割ってください。すべて0の行は0のまま残ります。L2ノルムが正でも `eps` 未満の行は、`eps` で割ります。結果は `x` と同じshapeの配列にしてください。",
+    "input": "x = np.array([\n    [3.0, 4.0],\n    [0.0, 0.0],\n    [3e-9, 4e-9],\n])\neps = 1e-6",
+    "hint": "`np.linalg.norm(x, axis=1, keepdims=True)` で、shape `(行数, 1)` のノルムが得られます。これを `np.maximum(..., eps)` で下限付きにすると、各行に対応する分母として割り算できます。",
+    "solution": "result = x / np.maximum(np.linalg.norm(x, axis=1, keepdims=True), eps)"
+  },
+  {
+    "number": 8,
+    "id": "NP09-11",
+    "version": 1,
+    "stage": "independent",
+    "title": "合計が0の行を割らずに行ごとにL1正規化する",
+    "task": "2次元配列 `x` の各行を、その行の要素の絶対値の合計で割ってください。絶対値の合計が0の行では除算を行わず、結果を0にしてください。結果は `x` と同じshapeの配列にしてください。",
+    "input": "x = np.array([\n    [1.0, -3.0],\n    [0.0, 0.0],\n    [2.0, 2.0],\n])",
+    "hint": "`np.abs(x).sum(axis=1, keepdims=True)` で行ごとの合計をshape `(行数, 1)` で求めます。`np.divide()` の `where` に合計が0でない位置を、`out` にゼロの配列を渡すと、0の行は割らずに0が残ります。",
+    "solution": "s = np.abs(x).sum(axis=1, keepdims=True)\nresult = np.divide(x, s, out=np.zeros_like(x, dtype=np.float64), where=s != 0)"
+  },
+  {
+    "number": 9,
+    "id": "NP09-05",
+    "version": 4,
+    "stage": "partial",
+    "title": "学習データの統計量でテストデータを標準化する",
+    "task": "`mean` と `std` は、学習データから求めた列ごとの平均と母標準偏差です。テストデータ `test` を列ごとに標準化してください。各列から `mean` を引き、`max(std, eps)` で割ります。`test` から平均や標準偏差を計算し直さないでください。",
+    "input": "test = np.array([\n    [4.0, 10.0],\n    [0.0, 12.0],\n])\nmean = np.array([3.0, 10.0])\nstd = np.array([2.0, 0.0])\neps = 1e-3",
+    "hint": "shape `(列数,)` の `mean` と `std` は、Broadcastingで `test` の各行に適用されます。分母は `np.maximum(std, eps)` です。テストデータ自身の統計量を使うと、学習時と異なる変換になります。",
+    "solution": "result = (test - mean) / np.maximum(std, eps)"
+  },
+  {
+    "number": 10,
+    "id": "NP09-12",
+    "version": 1,
+    "stage": "partial",
+    "title": "学習データの範囲でテストデータをMin-Max変換する",
+    "task": "`train_min` と `train_max` は、学習データから求めた列ごとの最小値と最大値です。テストデータ `test` を列ごとに `(test - train_min) / (train_max - train_min)` で変換してください。各列の `train_max - train_min` は正の値です。結果が0未満や1より大きくなっても、0から1の範囲に収めないでください。",
+    "input": "test = np.array([\n    [5.0, 25.0],\n    [-5.0, 10.0],\n])\ntrain_min = np.array([0.0, 10.0])\ntrain_max = np.array([10.0, 20.0])",
+    "hint": "学習データの範囲を外れたテストの値は、変換後に0未満や1より大きくなります。`test.min(axis=0)` などで計算し直したり、`np.clip()` で収めたりしないでください。",
+    "solution": "result = (test - train_min) / (train_max - train_min)"
+  },
+  {
+    "number": 11,
+    "id": "NP09-13",
+    "version": 1,
+    "stage": "guided",
+    "title": "np.log1p()で微小な値のlog(1 + x)を求める",
+    "task": "`np.log1p()` を使って、配列 `x` の各要素について `log(1 + x)` を求めてください。`x` には `1e-16` や `-1e-16` のように絶対値が非常に小さい値が含まれます。これらの位置でも0に丸めず、`x` とほぼ同じ値を返してください。",
+    "input": "x = np.array([0.0, 1e-16, -1e-16, 1.0, 9.0])",
+    "hint": "`1 + 1e-16` は浮動小数点数では1に丸められるため、`np.log(1 + x)` は0を返します。`np.log1p(x)` は、`1 + x` を作らずに `log(1 + x)` を計算します。",
+    "solution": "result = np.log1p(x)"
+  },
+  {
+    "number": 12,
+    "id": "NP09-14",
+    "version": 1,
+    "stage": "guided",
+    "title": "np.expm1()で微小な値のexp(x) - 1を求める",
+    "task": "`np.expm1()` を使って、配列 `x` の各要素について `exp(x) - 1` を求めてください。`x` には `1e-16` や `-1e-16` のように絶対値が非常に小さい値が含まれます。これらの位置でも0に丸めず、`x` とほぼ同じ値を返してください。",
+    "input": "x = np.array([0.0, 1e-16, -1e-16, 1.0, -1.0])",
+    "hint": "`np.exp(1e-16)` は1に丸められるため、そこから1を引くと0になります。`np.expm1(x)` は、`exp(x)` を作ってから引く場合の桁落ちを避けます。",
+    "solution": "result = np.expm1(x)"
+  },
+  {
+    "number": 13,
+    "id": "NP09-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "符号で式を選んで安定したシグモイドを求める",
+    "task": "配列 `x` の各要素にシグモイド関数 `1 / (1 + exp(-x))` を適用してください。`x` には `1000` や `-1000` が含まれるため、`exp()` がオーバーフローしない計算にします。まず `z = np.exp(-np.abs(x))` を求め、`x` が0以上の位置では `1 / (1 + z)`、負の位置では `z / (1 + z)` を使ってください。",
+    "input": "x = np.array([-1000.0, -2.0, 0.0, 2.0, 1000.0])",
+    "hint": "`-np.abs(x)` は常に0以下なので、`np.exp()` の結果は0から1の範囲に収まります。2つの式を計算してから、`np.where(x >= 0, ..., ...)` で位置ごとに選びます。",
+    "solution": "z = np.exp(-np.abs(x))\nresult = np.where(x >= 0, 1 / (1 + z), z / (1 + z))"
+  },
+  {
+    "number": 14,
+    "id": "NP09-16",
+    "version": 1,
+    "stage": "partial",
+    "title": "np.logaddexp()で対数の和を安定に求める",
+    "task": "`np.logaddexp()` を使って、同じshapeの配列 `a` と `b` について、要素ごとに `log(exp(a) + exp(b))` を求めてください。入力には `1000` や `-1000` のように、`exp()` を直接計算するとオーバーフローやアンダーフローを起こす値が含まれます。",
+    "input": "a = np.array([1000.0, -1000.0, 0.0, 2.0])\nb = np.array([1000.0, -1000.0, 0.0, -3.0])",
+    "hint": "`np.exp(1000.0)` は無限大になります。`np.logaddexp(a, b)` は、大きい方の値をくくり出して `log(exp(a) + exp(b))` を計算します。",
+    "solution": "result = np.logaddexp(a, b)"
+  },
+  {
+    "number": 15,
+    "id": "NP09-02",
+    "version": 4,
+    "stage": "partial",
+    "title": "行ごとの最大値を引いてから指数化する",
+    "task": "2次元配列 `x` の各行から、その行の最大値を引いてください。その後、各要素に `np.exp()` を適用してください。`x` には `1000` 程度の大きな値が含まれるため、最大値を引く前に指数化しないでください。結果は `x` と同じshapeの配列にしてください。",
+    "input": "x = np.array([\n    [1.0, 2.0, 3.0],\n    [1000.0, 1001.0, 999.0],\n])",
+    "hint": "`x.max(axis=1, keepdims=True)` はshape `(行数, 1)` なので、各行の全要素から同じ最大値を引けます。引いた後の値は0以下なので、`np.exp()` の結果は1以下になります。",
+    "solution": "result = np.exp(x - x.max(axis=1, keepdims=True))"
+  },
+  {
+    "number": 16,
+    "id": "NP09-04",
+    "version": 3,
+    "stage": "independent",
+    "title": "行ごとの安定したsoftmaxを求める",
+    "task": "2次元配列 `x` の行ごとにsoftmaxを求めてください。各行からその行の最大値を引いて指数化し、その行の指数値の合計で割ります。`x` には `1000` 程度の大きな値が含まれます。非常に小さい確率は0になっても構いません。結果は `x` と同じshapeで、各行の合計は1です。",
+    "input": "x = np.array([\n    [1.0, 2.0, 3.0],\n    [1000.0, 1000.0, 0.0],\n])",
+    "hint": "`e = np.exp(x - x.max(axis=1, keepdims=True))` を求め、`e.sum(axis=1, keepdims=True)` で割ります。どちらも `axis=1` と `keepdims=True` で、行ごとに計算します。",
+    "solution": "e = np.exp(x - x.max(axis=1, keepdims=True))\nresult = e / e.sum(axis=1, keepdims=True)"
+  },
+  {
+    "number": 17,
+    "id": "NP09-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "行ごとの安定したlog-sum-expを求める",
+    "task": "2次元配列 `x` の各行について、`log(exp(x_1) + exp(x_2) + ...)` を求めてください。`x` には `1000` 程度の大きな値が含まれるため、各行の最大値 `m` を使い、`m + log(exp(x - m) の行の合計)` で計算します。結果はshape `(行数,)` の1次元配列にしてください。",
+    "input": "x = np.array([\n    [1.0, 2.0, 3.0],\n    [1000.0, 1000.0, 1000.0],\n])",
+    "hint": "`m = x.max(axis=1, keepdims=True)` で引き算してから指数化し、行の合計の対数に `m` を足します。最後にshape `(行数, 1)` のままにせず、`(行数,)` にします。`keepdims=False` の最大値を足す方法もあります。",
+    "solution": "m = x.max(axis=1, keepdims=True)\nresult = m[:, 0] + np.log(np.exp(x - m).sum(axis=1))"
+  },
+  {
+    "number": 18,
+    "id": "NP09-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "行ごとの安定したlog-softmaxを求める",
+    "task": "2次元配列 `x` の行ごとにlog-softmax（softmaxの自然対数）を求めてください。各行からその行の最大値を引いたスコア `z` を作り、`z - log(exp(z) の行の合計)` で計算します。`[1000, 0, -1000]` のような行では、softmaxの値が0に丸められる要素もあります。softmaxを求めてから対数を取らず、すべての要素を有限の値にしてください。",
+    "input": "x = np.array([\n    [1000.0, 0.0, -1000.0],\n    [1.0, 2.0, 3.0],\n])",
+    "hint": "`z = x - x.max(axis=1, keepdims=True)` とすると、各行の最大値は0になり、`exp(z)` の行の合計は1以上になります。その対数を `z` から引けば、`log(0)` を計算せずに済みます。",
+    "solution": "z = x - x.max(axis=1, keepdims=True)\nresult = z - np.log(np.exp(z).sum(axis=1, keepdims=True))"
+  }
+]

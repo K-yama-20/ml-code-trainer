@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PD04-01", "version": 3, "stage": "guided",
+    "title": "左の表の行をすべて残して結合する",
+    "task": "`id` 列をキーにして、`left` に `right` を左結合（`how=\"left\"`）してください。`left` の行はすべて、`left` の行順のまま残します。`right` に一致する `id` がない行の `price` は欠損値になります。`right` の `id` は重複しません。",
+    "input": "left = pd.DataFrame({\"id\": [1, 2, 3], \"name\": [\"A\", \"B\", \"C\"]})\nright = pd.DataFrame({\"id\": [3, 1], \"price\": [30, 10]})",
+    "hint": "`left.merge(right, on=\"id\", how=\"left\")` で左結合できます。結果の行ラベルは0からの連番になります。",
+    "solution": "result = left.merge(right, on=\"id\", how=\"left\")"
+  },
+  {
+    "number": 2, "id": "PD04-02", "version": 3, "stage": "guided",
+    "title": "両方の表にあるキーの行だけを結合する",
+    "task": "`id` 列をキーにして、`left` と `right` の両方にある `id` の行だけを内部結合（`how=\"inner\"`）してください。行は `left` の行順に並べます。",
+    "input": "left = pd.DataFrame({\"id\": [1, 2, 3], \"name\": [\"A\", \"B\", \"C\"]})\nright = pd.DataFrame({\"id\": [3, 1, 4], \"price\": [30, 10, 40]})",
+    "hint": "`how=\"inner\"` を指定すると、一致するキーがない行はどちらの表からも除かれます。左結合とは結果の行数が変わります。",
+    "solution": "result = left.merge(right, on=\"id\", how=\"inner\")"
+  },
+  {
+    "number": 3, "id": "PD04-03", "version": 3, "stage": "guided",
+    "title": "縦に結合して行ラベルを振り直す",
+    "task": "同じ列を持つ `a` と `b` を、`a` の下に `b` が続くように縦に結合してください。行ラベルは元の行ラベルを使わず、0からの連番にします。",
+    "input": "a = pd.DataFrame({\"id\": [1, 2], \"score\": [5, 7]})\nb = pd.DataFrame({\"id\": [3, 4], \"score\": [6, 8]})",
+    "hint": "`pd.concat([a, b], ignore_index=True)` で縦に結合し、行ラベルを振り直せます。`ignore_index` を省略すると、元の行ラベルが重複したまま残ります。",
+    "solution": "result = pd.concat([a, b], ignore_index=True)"
+  },
+  {
+    "number": 4, "id": "PD04-07", "version": 1, "stage": "guided",
+    "title": "元の行ラベルを残したまま縦に結合する",
+    "task": "同じ列を持つ `a` と `b` を、`a` の下に `b` が続くように縦に結合してください。行ラベルは振り直さず、元の行ラベルをそのまま残します。重複する行ラベルがあっても構いません。",
+    "input": "a = pd.DataFrame({\"id\": [1, 2], \"score\": [5, 7]})\nb = pd.DataFrame({\"id\": [3, 4], \"score\": [6, 8]})",
+    "hint": "`pd.concat([a, b])` は、既定で元の行ラベルを残します。`a` と `b` の行ラベルがどちらも0から始まる場合、結果には同じ行ラベルが2回現れます。",
+    "solution": "result = pd.concat([a, b])"
+  },
+  {
+    "number": 5, "id": "PD04-08", "version": 1, "stage": "guided",
+    "title": "どちらかの表にあるキーをすべて残して結合する",
+    "task": "`id` 列をキーにして、`left` と `right` を外部結合（`how=\"outer\"`）してください。どちらか一方にしかない `id` の行も残し、相手の表の列は欠損値になります。外部結合の結果は `id` の昇順に並びます。",
+    "input": "left = pd.DataFrame({\"id\": [3, 1], \"name\": [\"C\", \"A\"]})\nright = pd.DataFrame({\"id\": [2, 1], \"price\": [20, 10]})",
+    "hint": "`how=\"outer\"` は、両方の表のキーの和集合を使います。`merge()` の外部結合では、キーが昇順に並べ替えられます。",
+    "solution": "result = left.merge(right, on=\"id\", how=\"outer\")"
+  },
+  {
+    "number": 6, "id": "PD04-09", "version": 1, "stage": "guided",
+    "title": "名前の違うキー列どうしで結合する",
+    "task": "`left` の `user_id` 列と `right` の `id` 列をキーにして、`left` に `right` を左結合してください。結果には `user_id` 列と `id` 列の両方が残ります。`right` の `id` は重複しません。",
+    "input": "left = pd.DataFrame({\"user_id\": [1, 2, 3], \"name\": [\"A\", \"B\", \"C\"]})\nright = pd.DataFrame({\"id\": [2, 3], \"city\": [\"Kobe\", \"Nara\"]})",
+    "hint": "キー列の名前が違うときは、`on` の代わりに `left_on=\"user_id\"` と `right_on=\"id\"` を指定します。",
+    "solution": "result = left.merge(right, left_on=\"user_id\", right_on=\"id\", how=\"left\")"
+  },
+  {
+    "number": 7, "id": "PD04-04", "version": 3, "stage": "partial",
+    "title": "行ラベルをキーにして横に結合する",
+    "task": "`a` と `b` を行ラベルをキーにして結合し、`a` の行ラベルと行順を保ってください（左結合）。`b` にない行ラベルの `score` は欠損値になります。`a` と `b` に同じ名前の列はありません。",
+    "input": "a = pd.DataFrame({\"value\": [1.0, 2.0, 3.0]}, index=[\"x\", \"y\", \"z\"])\nb = pd.DataFrame({\"score\": [20, 10]}, index=[\"y\", \"x\"])",
+    "hint": "`a.join(b)` は、既定で行ラベルをキーにした左結合です。`b` の行の並びではなく、行ラベルで対応を取ります。",
+    "solution": "result = a.join(b)"
+  },
+  {
+    "number": 8, "id": "PD04-05", "version": 3, "stage": "partial",
+    "title": "行ラベルをそろえて列方向に連結する",
+    "task": "`pd.concat()` を使って、`a` と `b` を列方向（`axis=1`）に連結してください。行ラベルは両方の和集合になり、片方にしかない行ラベルの位置は欠損値になります。行は行ラベルで対応させます。",
+    "input": "a = pd.DataFrame({\"value\": [1.0, 2.0, 3.0]}, index=[0, 1, 2])\nb = pd.DataFrame({\"score\": [7, 8, 9]}, index=[1, 2, 3])",
+    "hint": "`pd.concat([a, b], axis=1)` は行の位置ではなく行ラベルで対応を取ります。既定の `join=\"outer\"` では、行ラベルの和集合が残ります。",
+    "solution": "result = pd.concat([a, b], axis=1)"
+  },
+  {
+    "number": 9, "id": "PD04-10", "version": 1, "stage": "partial",
+    "title": "同じ名前の列に接尾辞を付けて結合する",
+    "task": "`id` 列をキーにして `left` と `right` を内部結合してください。どちらの表にもある `score` 列は、`left` 側を `score_left`、`right` 側を `score_right` という列名にします。",
+    "input": "left = pd.DataFrame({\"id\": [1, 2], \"score\": [5, 7]})\nright = pd.DataFrame({\"id\": [2, 1], \"score\": [70, 50]})",
+    "hint": "`merge()` の `suffixes=(\"_left\", \"_right\")` で、重複する列名に付ける接尾辞を指定できます。既定は `(\"_x\", \"_y\")` です。",
+    "solution": "result = left.merge(right, on=\"id\", how=\"inner\", suffixes=(\"_left\", \"_right\"))"
+  },
+  {
+    "number": 10, "id": "PD04-11", "version": 1, "stage": "partial",
+    "title": "2つの列の組み合わせをキーにして結合する",
+    "task": "`store` 列と `day` 列の組み合わせをキーにして、`sales` に `targets` を左結合してください。2つの列の値がどちらも一致する行だけを対応させます。`targets` のキーの組み合わせは重複しません。",
+    "input": "sales = pd.DataFrame({\"store\": [\"A\", \"A\", \"B\"], \"day\": [1, 2, 1], \"amount\": [100, 80, 50]})\ntargets = pd.DataFrame({\"store\": [\"A\", \"B\"], \"day\": [2, 2], \"target\": [90, 60]})",
+    "hint": "`on=[\"store\", \"day\"]` のように列名のリストを渡すと、複数の列の組み合わせでキーを照合します。",
+    "solution": "result = sales.merge(targets, on=[\"store\", \"day\"], how=\"left\")"
+  },
+  {
+    "number": 11, "id": "PD04-12", "version": 1, "stage": "partial",
+    "title": "右の表にキーがない行だけを選ぶ",
+    "task": "`left` の行のうち、`id` が `right` の `id` 列に現れない行だけを選んでください。結果は `left` の列だけを持ち、`left` の行順と行ラベルを保ちます。",
+    "input": "left = pd.DataFrame({\"id\": [1, 2, 3, 4], \"name\": [\"A\", \"B\", \"C\", \"D\"]})\nright = pd.DataFrame({\"id\": [3, 1], \"price\": [30, 10]})",
+    "hint": "`left[\"id\"].isin(right[\"id\"])` で、`right` にある `id` の行が `True` になります。`~` で真偽を反転させて行を選びます。",
+    "solution": "result = left[~left[\"id\"].isin(right[\"id\"])]"
+  },
+  {
+    "number": 12, "id": "PD04-13", "version": 1, "stage": "partial",
+    "title": "列が異なる表を縦に結合する",
+    "task": "列の一部が異なる `a` と `b` を、`a` の下に `b` が続くように縦に結合し、行ラベルを0からの連番にしてください。列は `a` の列の後に、`b` にだけある列が続きます。一方の表にない列の値は欠損値になります。",
+    "input": "a = pd.DataFrame({\"id\": [1, 2], \"x\": [0.5, 1.5]})\nb = pd.DataFrame({\"id\": [3], \"y\": [9.0]})",
+    "hint": "`pd.concat([a, b], ignore_index=True)` は列名で列を対応させます。片方にしかない列は残り、もう片方の行では欠損値になります。",
+    "solution": "result = pd.concat([a, b], ignore_index=True)"
+  },
+  {
+    "number": 13, "id": "PD04-06", "version": 4, "stage": "independent",
+    "title": "右のキーが一意であることを検証して結合する",
+    "task": "`id` 列をキーにして `left` に `right` を左結合してください。結合時に `validate=\"many_to_one\"` を指定し、`right` の `id` が重複していないことを確認します。`left` の `id` は重複することがあります。",
+    "input": "left = pd.DataFrame({\"id\": [1, 1, 2, 3], \"qty\": [2, 1, 5, 4]})\nright = pd.DataFrame({\"id\": [1, 2], \"price\": [100, 250]})",
+    "hint": "`left.merge(right, on=\"id\", how=\"left\", validate=\"many_to_one\")` と書くと、`right` のキーが重複している場合にエラーになります。意図しない行の増加を防げます。",
+    "solution": "result = left.merge(right, on=\"id\", how=\"left\", validate=\"many_to_one\")"
+  },
+  {
+    "number": 14, "id": "PD04-14", "version": 1, "stage": "independent",
+    "title": "結合で生じた欠損を補完する",
+    "task": "`id` 列をキーにして `left` に `right` を左結合し、`right` に一致する行がなかった `price` を0にしてください。`left` の行順を保ちます。",
+    "input": "left = pd.DataFrame({\"id\": [1, 2, 3], \"name\": [\"A\", \"B\", \"C\"]})\nright = pd.DataFrame({\"id\": [3, 1], \"price\": [30.0, 10.0]})",
+    "hint": "左結合で一致しなかった行の `price` は欠損値です。結合結果に `fillna({\"price\": 0})` を使うと、その列だけを補完できます。",
+    "solution": "result = left.merge(right, on=\"id\", how=\"left\").fillna({\"price\": 0})"
+  },
+  {
+    "number": 15, "id": "PD04-15", "version": 1, "stage": "independent",
+    "title": "結合した列から金額の列を計算する",
+    "task": "`product` 列をキーにして `orders` に `prices` を左結合し、`qty` と `price` を掛けた `amount` 列を末尾に追加してください。すべての商品の価格が `prices` にあり、`prices` の `product` は重複しません。",
+    "input": "orders = pd.DataFrame({\"product\": [\"pen\", \"cup\", \"pen\"], \"qty\": [3, 1, 2]})\nprices = pd.DataFrame({\"product\": [\"cup\", \"pen\"], \"price\": [400, 120]})",
+    "hint": "先に `merge()` で価格を各注文の行に並べ、その後で `assign(amount=...)` で列を追加します。結合前の `orders` には `price` 列がありません。",
+    "solution": "merged = orders.merge(prices, on=\"product\", how=\"left\")\nresult = merged.assign(amount=merged[\"qty\"] * merged[\"price\"])"
+  },
+  {
+    "number": 16, "id": "PD04-16", "version": 1, "stage": "independent",
+    "title": "右の表を集約してから結合する",
+    "task": "`payments` には同じ `id` の行が複数あります。`id` ごとに `amount` を合計してから、`customers` に `id` で左結合してください。支払いのない顧客の `amount` は0にします。結果の行数と行順は `customers` と同じです。",
+    "input": "customers = pd.DataFrame({\"id\": [1, 2, 3], \"name\": [\"A\", \"B\", \"C\"]})\npayments = pd.DataFrame({\"id\": [1, 3, 1], \"amount\": [100.0, 50.0, 20.0]})",
+    "hint": "そのまま結合すると、支払いの数だけ顧客の行が増えます。`payments.groupby(\"id\", as_index=False)[\"amount\"].sum()` で1つの `id` を1行にしてから結合し、欠損を0で埋めます。",
+    "solution": "totals = payments.groupby(\"id\", as_index=False)[\"amount\"].sum()\nresult = customers.merge(totals, on=\"id\", how=\"left\").fillna({\"amount\": 0})"
+  },
+  {
+    "number": 17, "id": "PD04-17", "version": 1, "stage": "independent",
+    "title": "結合後も左の表の行ラベルを保つ",
+    "task": "`id` 列をキーにして `left` に `right` を左結合してください。`merge()` は行ラベルを0からの連番にするので、結果の行ラベルを `left` の行ラベルに戻します。`right` の `id` は重複しないため、結果の行数は `left` と同じです。",
+    "input": "left = pd.DataFrame({\"id\": [2, 1, 3], \"name\": [\"B\", \"A\", \"C\"]}, index=[\"r1\", \"r2\", \"r3\"])\nright = pd.DataFrame({\"id\": [1, 2], \"price\": [10, 20]})",
+    "hint": "左結合の結果は `left` と同じ行順です。結合結果に `set_index(left.index)` を使うと、行ラベルを `left` のものに置き換えられます。",
+    "solution": "result = left.merge(right, on=\"id\", how=\"left\").set_index(left.index)"
+  },
+  {
+    "number": 18, "id": "PD04-18", "version": 1, "stage": "independent",
+    "title": "共通する行ラベルだけを横に連結する",
+    "task": "`pd.concat()` を使って、`a` と `b` を列方向に連結してください。両方の表にある行ラベルの行だけを残し、行の順は `a` の順にします。",
+    "input": "a = pd.DataFrame({\"value\": [1.0, 2.0, 3.0]}, index=[\"x\", \"y\", \"z\"])\nb = pd.DataFrame({\"score\": [8, 9]}, index=[\"z\", \"x\"])",
+    "hint": "`pd.concat([a, b], axis=1, join=\"inner\")` のように `join=\"inner\"` を指定すると、行ラベルの共通部分だけが残ります。",
+    "solution": "result = pd.concat([a, b], axis=1, join=\"inner\")"
+  }
+]

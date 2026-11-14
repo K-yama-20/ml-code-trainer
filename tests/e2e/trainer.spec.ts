@@ -194,7 +194,7 @@ test("mobile pages fit viewport and navigation remains usable", async ({
   await page
     .getByRole("button", { name: "メニューを開く", exact: true })
     .click();
-  await page.getByRole("link", { name: "Drill 312", exact: true }).click();
+  await page.getByRole("link", { name: "Drill 540", exact: true }).click();
   await expect(page).toHaveURL("/drill");
   await exercise(page);
   await page.getByRole("tab", { name: "回答・結果", exact: true }).click();

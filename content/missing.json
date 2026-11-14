@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PD02-01", "version": 3, "stage": "guided",
+    "title": "1つの列の欠損数を数える",
+    "task": "`df` の `value` 列に含まれる欠損値（`NaN`）の個数を求めてください。結果は整数です。",
+    "input": "df = pd.DataFrame({\n    \"value\": [1.0, np.nan, 5.0, np.nan, 3.0],\n    \"score\": [2.0, 7.0, np.nan, 9.0, 6.0],\n})",
+    "hint": "`df[\"value\"].isna()` は欠損の位置が `True` の真偽値Seriesです。`sum()` で合計すると、`True` の個数が求まります。",
+    "solution": "result = int(df[\"value\"].isna().sum())"
+  },
+  {
+    "number": 2, "id": "PD02-07", "version": 1, "stage": "guided",
+    "title": "列ごとの欠損数をSeriesにする",
+    "task": "`df` の列ごとに欠損値の個数を数え、列名を行ラベルに持つSeriesにしてください。Seriesの並びは `df` の列の順です。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"a\", \"b\", \"a\", \"b\"],\n    \"value\": [1.0, np.nan, np.nan, 4.0],\n    \"score\": [np.nan, 7.0, 4.0, 9.0],\n})",
+    "hint": "`df.isna()` は表全体の欠損を真偽値のDataFrameにします。`sum()` の既定は列ごとの合計（`axis=0`）です。",
+    "solution": "result = df.isna().sum()"
+  },
+  {
+    "number": 3, "id": "PD02-08", "version": 1, "stage": "guided",
+    "title": "指定した列が欠損している行を選ぶ",
+    "task": "`value` 列が欠損している行を、全列と元の行ラベルを残して選んでください。",
+    "input": "df = pd.DataFrame(\n    {\"value\": [1.0, np.nan, 5.0, np.nan], \"score\": [2, 7, 4, 9]},\n    index=[\"r1\", \"r2\", \"r3\", \"r4\"],\n)",
+    "hint": "`df[\"value\"].isna()` を行の条件として `df[...]` に渡します。欠損かどうかは `df[\"value\"] == np.nan` では判定できません。",
+    "solution": "result = df[df[\"value\"].isna()]"
+  },
+  {
+    "number": 4, "id": "PD02-02", "version": 3, "stage": "guided",
+    "title": "指定した列が欠損している行を削除する",
+    "task": "`value` 列が欠損している行を削除してください。他の列の欠損は、行を削除するかどうかの判断に使いません。行ラベルは元のまま残します。",
+    "input": "df = pd.DataFrame({\n    \"value\": [1.0, np.nan, 5.0, 3.0],\n    \"score\": [2.0, 7.0, np.nan, 9.0],\n})",
+    "hint": "`df.dropna(subset=[\"value\"])` のように、判断に使う列を `subset` で指定します。`subset` を省略すると、どれか1列でも欠損している行が削除されます。",
+    "solution": "result = df.dropna(subset=[\"value\"])"
+  },
+  {
+    "number": 5, "id": "PD02-03", "version": 3, "stage": "guided",
+    "title": "指定した列の欠損だけを固定値で埋める",
+    "task": "`value` 列の欠損値だけを `fill` で埋めたDataFrameを作ってください。他の列の欠損値は残します。",
+    "input": "df = pd.DataFrame({\n    \"value\": [1.0, np.nan, 5.0],\n    \"score\": [np.nan, 7.0, 4.0],\n})\nfill = 0.0",
+    "hint": "`df.fillna({\"value\": fill})` のように、列名と埋める値の辞書を渡すと、その列だけが補完されます。`df.fillna(fill)` はすべての列を埋めます。",
+    "solution": "result = df.fillna({\"value\": fill})"
+  },
+  {
+    "number": 6, "id": "PD02-09", "version": 1, "stage": "guided",
+    "title": "どれかの列が欠損している行を削除する",
+    "task": "どれか1つの列でも欠損値を含む行を削除してください。すべての列に値がある行だけが残ります。",
+    "input": "df = pd.DataFrame({\n    \"value\": [1.0, np.nan, 5.0, 3.0],\n    \"score\": [2.0, 7.0, np.nan, 9.0],\n})",
+    "hint": "`dropna()` を引数なしで使うと、欠損値を1つでも含む行が削除されます。",
+    "solution": "result = df.dropna()"
+  },
+  {
+    "number": 7, "id": "PD02-04", "version": 4, "stage": "partial",
+    "title": "学習データの平均でテストデータの欠損を埋める",
+    "task": "`train_mean` は学習データから求めた平均です。Series `series` の欠損値を `train_mean` で埋めてください。`series` 自身の平均は使いません。行ラベルは元のままです。",
+    "input": "series = pd.Series([np.nan, 4.0, 10.0, np.nan], index=[\"a\", \"b\", \"c\", \"d\"])\ntrain_mean = 2.5",
+    "hint": "`series.fillna(train_mean)` で、外から与えた値を使って補完できます。`series.mean()` で埋めると、テストデータの情報が補完値に混ざります。",
+    "solution": "result = series.fillna(train_mean)"
+  },
+  {
+    "number": 8, "id": "PD02-05", "version": 3, "stage": "partial",
+    "title": "欠損を表す真偽値の列を追加する",
+    "task": "`value` 列が欠損している行で `True`、それ以外で `False` となる `value_missing` 列を、`df` の末尾に追加したDataFrameを作ってください。",
+    "input": "df = pd.DataFrame({\"value\": [1.0, np.nan, 5.0], \"score\": [2, 7, 4]})",
+    "hint": "`df.assign(value_missing=df[\"value\"].isna())` で、新しい列を末尾に追加したDataFrameが作れます。`assign()` は元の `df` を変更しません。",
+    "solution": "result = df.assign(value_missing=df[\"value\"].isna())"
+  },
+  {
+    "number": 9, "id": "PD02-10", "version": 1, "stage": "partial",
+    "title": "列ごとに異なる値で欠損を埋める",
+    "task": "辞書 `fill_values` には、列名ごとに欠損を埋める値が入っています。`fill_values` を使って、`df` の欠損値を列ごとに一度に埋めてください。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"a\", None, \"b\"],\n    \"value\": [np.nan, 2.0, np.nan],\n})\nfill_values = {\"group\": \"unknown\", \"value\": 0.0}",
+    "hint": "`fillna()` に辞書を渡すと、キーの列にはその値が使われます。辞書にない列は補完されません。",
+    "solution": "result = df.fillna(fill_values)"
+  },
+  {
+    "number": 10, "id": "PD02-11", "version": 1, "stage": "partial",
+    "title": "列の欠損の割合を求める",
+    "task": "`value` 列の行のうち、欠損値の行が占める割合を0から1の数値で求めてください。`df` は空ではありません。",
+    "input": "df = pd.DataFrame({\"value\": [1.0, np.nan, 5.0, np.nan], \"score\": [2, 7, 4, 9]})",
+    "hint": "`isna()` の真偽値は、平均を取ると `True` の割合になります。欠損の個数を行数で割っても同じです。",
+    "solution": "result = float(df[\"value\"].isna().mean())"
+  },
+  {
+    "number": 11, "id": "PD02-12", "version": 1, "stage": "partial",
+    "title": "すべての列が欠損している行だけを削除する",
+    "task": "すべての列が欠損している行だけを削除してください。一部の列に値がある行は残します。",
+    "input": "df = pd.DataFrame({\n    \"value\": [1.0, np.nan, np.nan, 3.0],\n    \"score\": [np.nan, np.nan, 4.0, 9.0],\n})",
+    "hint": "`dropna()` の `how` に `\"all\"` を指定すると、行のすべての値が欠損の場合だけ削除されます。既定の `\"any\"` は1つでも欠損があれば削除します。",
+    "solution": "result = df.dropna(how=\"all\")"
+  },
+  {
+    "number": 12, "id": "PD02-13", "version": 1, "stage": "partial",
+    "title": "値のある列が一定数以上の行を残す",
+    "task": "欠損でない値が `min_valid` 個以上ある行だけを残してください。値の個数が足りない行は削除します。",
+    "input": "df = pd.DataFrame({\n    \"a\": [1.0, np.nan, np.nan, 4.0],\n    \"b\": [np.nan, 2.0, np.nan, 5.0],\n    \"c\": [3.0, np.nan, 6.0, 7.0],\n})\nmin_valid = 2",
+    "hint": "`dropna(thresh=min_valid)` は、欠損でない値が `thresh` 個以上ある行を残します。`thresh` は欠損の個数ではなく、値のある個数です。",
+    "solution": "result = df.dropna(thresh=min_valid)"
+  },
+  {
+    "number": 13, "id": "PD02-06", "version": 3, "stage": "independent",
+    "title": "直前の値で前方補完する",
+    "task": "Series `series` の欠損値を、それより前にある直近の有効な値で埋めてください。先頭にある欠損値は、前に値がないので欠損のまま残します。",
+    "input": "series = pd.Series([np.nan, 1.0, np.nan, np.nan, 4.0, np.nan])",
+    "hint": "`series.ffill()` は前方（上から下）へ値を伝えて補完します。後ろの値を使う `bfill()` とは方向が逆です。",
+    "solution": "result = series.ffill()"
+  },
+  {
+    "number": 14, "id": "PD02-14", "version": 1, "stage": "independent",
+    "title": "前方補完の後で残った先頭を後方補完する",
+    "task": "Series `series` の欠損値を、まず直前の有効な値で埋め（前方補完）、それでも残った先頭の欠損値を直後の有効な値で埋めてください（後方補完）。この順番で補完します。",
+    "input": "series = pd.Series([np.nan, np.nan, 2.0, np.nan, 5.0])",
+    "hint": "`series.ffill().bfill()` のように順番に適用します。先に `bfill()` すると、途中の欠損が後ろの値で埋まり、結果が変わります。",
+    "solution": "result = series.ffill().bfill()"
+  },
+  {
+    "number": 15, "id": "PD02-15", "version": 1, "stage": "independent",
+    "title": "学習データの列ごとの中央値でテストデータを補完する",
+    "task": "`train` と `test` は同じ数値列を持つDataFrameです。`train` の列ごとの中央値（欠損を除いて計算）を求め、`test` の各列の欠損値をその列の中央値で埋めてください。`test` の統計量は使いません。",
+    "input": "train = pd.DataFrame({\"x\": [1.0, 3.0, np.nan, 10.0], \"y\": [5.0, np.nan, 7.0, 6.0]})\ntest = pd.DataFrame({\"x\": [np.nan, 2.0], \"y\": [np.nan, np.nan]})",
+    "hint": "`train.median()` は列名を行ラベルに持つSeriesです。このSeriesを `test.fillna()` に渡すと、列名が一致する列ごとに補完されます。",
+    "solution": "result = test.fillna(train.median())"
+  },
+  {
+    "number": 16, "id": "PD02-16", "version": 1, "stage": "independent",
+    "title": "所属グループの平均で欠損を埋める",
+    "task": "`value` 列の欠損値を、同じ `group` に属する行の `value` の平均（欠損を除いて計算）で埋め、`value` 列をSeriesで返してください。行ラベルは元のままです。グループの値がすべて欠損している場合は欠損のまま残します。",
+    "input": "df = pd.DataFrame({\n    \"group\": [\"a\", \"a\", \"b\", \"b\", \"a\"],\n    \"value\": [1.0, np.nan, 10.0, np.nan, 3.0],\n})",
+    "hint": "`df.groupby(\"group\")[\"value\"].transform(\"mean\")` は、各行に所属グループの平均を並べたSeriesです。これを `df[\"value\"].fillna()` に渡します。",
+    "solution": "result = df[\"value\"].fillna(df.groupby(\"group\")[\"value\"].transform(\"mean\"))"
+  },
+  {
+    "number": 17, "id": "PD02-17", "version": 1, "stage": "independent",
+    "title": "欠損の記録を残してから補完する",
+    "task": "元の `value` 列が欠損していたかを表す真偽値の `value_missing` 列を末尾に追加し、`value` 列の欠損値は `fill` で埋めたDataFrameを作ってください。`value_missing` は補完する前の状態を表します。",
+    "input": "df = pd.DataFrame({\"value\": [np.nan, 2.0, np.nan], \"score\": [1, 2, 3]})\nfill = -1.0",
+    "hint": "補完した後で `isna()` を使うと、すべて `False` になります。`df.assign(value_missing=df[\"value\"].isna(), value=df[\"value\"].fillna(fill))` のように、元の `df` から両方を計算します。",
+    "solution": "result = df.assign(value_missing=df[\"value\"].isna(), value=df[\"value\"].fillna(fill))"
+  },
+  {
+    "number": 18, "id": "PD02-18", "version": 1, "stage": "independent",
+    "title": "欠損を0で埋めてint64の配列にする",
+    "task": "`count` 列の欠損値を0で埋めてから、dtypeが `int64` のNumPy配列に変換してください。欠損のある行も削除せずに残します。",
+    "input": "df = pd.DataFrame({\"count\": [3.0, np.nan, 5.0, np.nan]})",
+    "hint": "欠損値を含む列は浮動小数点数型です。`fillna(0)` の後で `astype(\"int64\")` を使い、`to_numpy()` で配列にします。",
+    "solution": "result = df[\"count\"].fillna(0).astype(\"int64\").to_numpy()"
+  }
+]

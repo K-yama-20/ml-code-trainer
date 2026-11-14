@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PT07-01", "version": 3, "stage": "guided",
+    "title": "SGDでパラメータを1回更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=lr)` で `(w ** 2).sum()` を1回だけ最小化してください。`zero_grad()`、`backward()`、`step()` の順に呼び、更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [2.0, -1.0]\nlr = 0.1",
+    "hint": "SGDの更新は `w ← w - lr * 勾配` です。`w ** 2` の和の勾配は `2 * w` なので、更新後は `w * (1 - 2 * lr)` になります。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=lr)\noptimizer.zero_grad()\n(w ** 2).sum().backward()\noptimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 2, "id": "PT07-02", "version": 3, "stage": "guided",
+    "title": "backwardだけでは値が変わらないことを確かめる",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=0.1)` を用意してください。`(w ** 2).sum()` を逆伝播した直後の `w` の複製と、続けて `step()` した後の `w` の複製を、`(逆伝播の直後, 更新後)` のタプルにして `result` にします。複製は `w.detach().clone()` で作ります。",
+    "input": "initial = [2.0, -1.0]",
+    "hint": "`backward()` は勾配を `w.grad` に入れるだけで、`w` の値は変えません。値を更新するのは `optimizer.step()` です。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=0.1)\noptimizer.zero_grad()\n(w ** 2).sum().backward()\nafter_backward = w.detach().clone()\noptimizer.step()\nresult = (after_backward, w.detach().clone())"
+  },
+  {
+    "number": 3, "id": "PT07-03", "version": 3, "stage": "guided",
+    "title": "zero_gradで勾配がNoneになることを確かめる",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`(w ** 2).sum()` を逆伝播してください。そのときの `w.grad` の複製と、`optimizer.zero_grad(set_to_none=True)` を呼んだ後に `w.grad is None` かどうかを、`(勾配の複製, Noneかどうか)` のタプルにして `result` にします。",
+    "input": "initial = [2.0, -1.0]",
+    "hint": "`zero_grad(set_to_none=True)` は勾配を0のTensorで埋めるのではなく、`None` にします。消す前の勾配は `w.grad.clone()` で残しておきます。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=0.1)\n(w ** 2).sum().backward()\ngrad = w.grad.clone()\noptimizer.zero_grad(set_to_none=True)\nresult = (grad, w.grad is None)"
+  },
+  {
+    "number": 4, "id": "PT07-07", "version": 1, "stage": "guided",
+    "title": "線形モデルの重みをMSEで1回更新する",
+    "task": "`torch.optim.SGD(model.parameters(), lr=lr)` を作り、`model(x)` と `y` の `nn.MSELoss()` を1回だけ最小化してください。更新後の `model.weight` を `detach().clone()` して `result` にします。",
+    "input": "model = nn.Linear(2, 1)\nwith torch.no_grad():\n    model.weight.copy_(torch.tensor([[1.0, -1.0]]))\n    model.bias.fill_(0.0)\nx = torch.tensor([[1.0, 0.0], [0.0, 1.0]])\ny = torch.tensor([[2.0], [0.0]])\nlr = 0.5",
+    "hint": "`model.parameters()` をオプティマイザに渡すと、重みとバイアスの両方が更新されます。`zero_grad()`、損失の `backward()`、`step()` の順に呼びます。",
+    "solution": "optimizer = torch.optim.SGD(model.parameters(), lr=lr)\noptimizer.zero_grad()\nloss = nn.MSELoss()(model(x), y)\nloss.backward()\noptimizer.step()\nresult = model.weight.detach().clone()"
+  },
+  {
+    "number": 5, "id": "PT07-05", "version": 3, "stage": "guided",
+    "title": "目標値に近づくようにパラメータを更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=0.25)` で `((w - target) ** 2).sum()` を1回だけ最小化してください。更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [0.0, 4.0]\ntarget = torch.tensor([2.0, 2.0])",
+    "hint": "勾配は `2 * (w - target)` です。`lr=0.25` では `w - 0.5 * (w - target)` となり、`w` と `target` のちょうど中間になります。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=0.25)\noptimizer.zero_grad()\n((w - target) ** 2).sum().backward()\noptimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 6, "id": "PT07-08", "version": 1, "stage": "guided",
+    "title": "学習率を変更してから更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=1.0)` を用意してください。`optimizer.param_groups[0][\"lr\"]` を `new_lr` に書き換えてから、`(w ** 2).sum()` を1回だけ最小化し、更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [2.0, -1.0]\nnew_lr = 0.25",
+    "hint": "オプティマイザの学習率は `param_groups` のそれぞれの辞書に保存されています。`step()` はその時点の `\"lr\"` の値を使います。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=1.0)\noptimizer.param_groups[0][\"lr\"] = new_lr\noptimizer.zero_grad()\n(w ** 2).sum().backward()\noptimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 7, "id": "PT07-04", "version": 4, "stage": "partial",
+    "title": "毎回勾配を消して2回更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=lr)` で `(w ** 2).sum()` を2回更新してください。各回で `zero_grad()`、`backward()`、`step()` の順に呼び、更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [2.0, -1.0]\nlr = 0.1",
+    "hint": "勾配は自動では消えません。2回目の `backward()` の前に `zero_grad()` を呼ばないと、1回目の勾配が加算されます。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=lr)\nfor _ in range(2):\n    optimizer.zero_grad()\n    (w ** 2).sum().backward()\n    optimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 8, "id": "PT07-06", "version": 3, "stage": "partial",
+    "title": "更新を繰り返して損失の推移を記録する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=lr)` で `(w ** 2).sum()` を3回更新してください。各回で `zero_grad()` → 損失の計算 → `backward()` → `step()` の順に処理し、`step()` する前の損失を `item()` で数値にして、3つ並べたリストを `result` にします。",
+    "input": "initial = [2.0, -1.0]\nlr = 0.25",
+    "hint": "損失は各回で、その時点の `w` から計算し直します。`loss.item()` で記録すると、計算グラフを持たないPythonの数値になります。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=lr)\nresult = []\nfor _ in range(3):\n    optimizer.zero_grad()\n    loss = (w ** 2).sum()\n    loss.backward()\n    optimizer.step()\n    result.append(loss.item())"
+  },
+  {
+    "number": 9, "id": "PT07-09", "version": 1, "stage": "partial",
+    "title": "モーメンタム付きSGDで2回更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=0.1, momentum=0.9)` で `(w ** 2).sum()` を2回更新してください。各回で勾配を消してから逆伝播し、更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [2.0, -1.0]",
+    "hint": "モーメンタム付きSGDでは、速度 `v ← 0.9 * v + 勾配` を保ち、`w ← w - lr * v` と更新します。1回目は `v` が勾配そのものです。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=0.1, momentum=0.9)\nfor _ in range(2):\n    optimizer.zero_grad()\n    (w ** 2).sum().backward()\n    optimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 10, "id": "PT07-10", "version": 1, "stage": "partial",
+    "title": "Adamでパラメータを1回更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.Adam([w], lr=lr)` で `(w ** 2).sum()` を1回だけ最小化してください。更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [2.0, -1.0, 0.5]\nlr = 0.1",
+    "hint": "Adamの1回目の更新では、偏りを補正した移動平均が勾配 `g` と `g ** 2` に一致するので、各要素はおよそ `lr * g / |g|`、つまり勾配の符号の向きに `lr` だけ動きます。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.Adam([w], lr=lr)\noptimizer.zero_grad()\n(w ** 2).sum().backward()\noptimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 11, "id": "PT07-11", "version": 1, "stage": "partial",
+    "title": "重み減衰を付けてSGDで更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=0.1, weight_decay=weight_decay)` で `(w - target).sum()` を1回だけ最小化してください。更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [2.0, -1.0]\ntarget = torch.tensor([0.0, 0.0])\nweight_decay = 0.5",
+    "hint": "`weight_decay` を指定すると、勾配に `weight_decay * w` が加わります。`(w - target).sum()` の勾配はすべて1なので、更新は `w - lr * (1 + weight_decay * w)` です。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=0.1, weight_decay=weight_decay)\noptimizer.zero_grad()\n(w - target).sum().backward()\noptimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 12, "id": "PT07-12", "version": 1, "stage": "partial",
+    "title": "パラメータごとに異なる学習率で更新する",
+    "task": "`a_initial` と `b_initial` から、float32の `nn.Parameter` `a` と `b` を作ってください。`torch.optim.SGD([{\"params\": [a], \"lr\": lr_a}, {\"params\": [b], \"lr\": lr_b}])` で `(a ** 2).sum() + (b ** 2).sum()` を1回だけ最小化し、`(a, b)` をそれぞれ `detach()` したタプルを `result` にします。",
+    "input": "a_initial = [1.0, 2.0]\nb_initial = [3.0]\nlr_a = 0.1\nlr_b = 0.25",
+    "hint": "オプティマイザに辞書のリストを渡すと、パラメータのグループごとに学習率を設定できます。各パラメータは自分のグループの `lr` で更新されます。",
+    "solution": "a = nn.Parameter(torch.tensor(a_initial))\nb = nn.Parameter(torch.tensor(b_initial))\noptimizer = torch.optim.SGD([{\"params\": [a], \"lr\": lr_a}, {\"params\": [b], \"lr\": lr_b}])\noptimizer.zero_grad()\n((a ** 2).sum() + (b ** 2).sum()).backward()\noptimizer.step()\nresult = (a.detach(), b.detach())"
+  },
+  {
+    "number": 13, "id": "PT07-13", "version": 1, "stage": "independent",
+    "title": "学習ループで線形回帰のパラメータを更新する",
+    "task": "float32の `nn.Parameter` として、`w`（初期値0.0のスカラー）と `b`（初期値0.0のスカラー）を作ってください。`torch.optim.SGD([w, b], lr=lr)` で、予測 `w * x + b` と `y` の平均二乗誤差を `steps` 回最小化し、`(w, b)` をそれぞれ `detach()` したタプルを `result` にします。",
+    "input": "x = torch.tensor([0.0, 1.0, 2.0])\ny = torch.tensor([1.0, 3.0, 5.0])\nlr = 0.1\nsteps = 3",
+    "hint": "各回で `zero_grad()`、損失 `((w * x + b - y) ** 2).mean()` の計算、`backward()`、`step()` を繰り返します。",
+    "solution": "w = nn.Parameter(torch.tensor(0.0))\nb = nn.Parameter(torch.tensor(0.0))\noptimizer = torch.optim.SGD([w, b], lr=lr)\nfor _ in range(steps):\n    optimizer.zero_grad()\n    loss = ((w * x + b - y) ** 2).mean()\n    loss.backward()\n    optimizer.step()\nresult = (w.detach(), b.detach())"
+  },
+  {
+    "number": 14, "id": "PT07-14", "version": 1, "stage": "independent",
+    "title": "小さなバッチの勾配を蓄積してから更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w`（スカラー）を作り、`torch.optim.SGD([w], lr=0.1)` を用意してください。`x` を前半と後半の2つのバッチに分け、それぞれ `((w * バッチ - 1) ** 2).mean() / 2` を逆伝播して勾配を蓄積します。勾配は最初に1回だけ消し、2つのバッチの後で1回だけ `step()` してください。更新後の `w` を `detach()` して `result` にします。`x` の要素数は偶数です。",
+    "input": "initial = 1.0\nx = torch.tensor([1.0, 2.0, 3.0, 4.0])",
+    "hint": "各バッチの損失を2で割ってから逆伝播すると、勾配の合計が全体の平均損失の勾配と同じになります。バッチごとに `zero_grad()` すると前のバッチの勾配が消えます。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=0.1)\noptimizer.zero_grad()\nhalf = len(x) // 2\nfor batch in (x[:half], x[half:]):\n    loss = ((w * batch - 1) ** 2).mean() / 2\n    loss.backward()\noptimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 15, "id": "PT07-15", "version": 1, "stage": "independent",
+    "title": "勾配のノルムを制限してから更新する",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`(w ** 2).sum()` を逆伝播してください。`torch.nn.utils.clip_grad_norm_([w], max_norm)` で勾配全体のL2ノルムを `max_norm` 以下にしてから、`torch.optim.SGD([w], lr=1.0)` で1回更新し、更新後の `w` を `detach()` して `result` にします。",
+    "input": "initial = [3.0, 4.0]\nmax_norm = 1.0",
+    "hint": "`clip_grad_norm_()` は、勾配のノルムが `max_norm` を超えるとき、向きを保ったまま長さを `max_norm` に縮めます。`step()` の前に呼びます。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=1.0)\noptimizer.zero_grad()\n(w ** 2).sum().backward()\ntorch.nn.utils.clip_grad_norm_([w], max_norm)\noptimizer.step()\nresult = w.detach()"
+  },
+  {
+    "number": 16, "id": "PT07-16", "version": 1, "stage": "independent",
+    "title": "バイアスを固定して重みだけを更新する",
+    "task": "`model.bias.requires_grad_(False)` でバイアスを固定してから、`torch.optim.SGD(model.parameters(), lr=0.5)` で `model(x)` と `y` の `nn.MSELoss()` を1回だけ最小化してください。更新後の `(model.weight, model.bias)` をそれぞれ `detach().clone()` したタプルを `result` にします。",
+    "input": "model = nn.Linear(1, 1)\nwith torch.no_grad():\n    model.weight.fill_(1.0)\n    model.bias.fill_(1.0)\nx = torch.tensor([[1.0], [2.0]])\ny = torch.tensor([[1.0], [1.0]])",
+    "hint": "`requires_grad` が `False` のパラメータには勾配が計算されず、`step()` でも更新されません。重みだけが変わります。",
+    "solution": "model.bias.requires_grad_(False)\noptimizer = torch.optim.SGD(model.parameters(), lr=0.5)\noptimizer.zero_grad()\nnn.MSELoss()(model(x), y).backward()\noptimizer.step()\nresult = (model.weight.detach().clone(), model.bias.detach().clone())"
+  },
+  {
+    "number": 17, "id": "PT07-17", "version": 1, "stage": "independent",
+    "title": "学習率スケジューラで学習率を減らす",
+    "task": "float32の `nn.Parameter` `w`（`[1.0]`）と `torch.optim.SGD([w], lr=lr)` を作り、`torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.5)` を用意してください。`optimizer.step()` の後に `scheduler.step()` を呼ぶことを3回繰り返し、各回の `scheduler.step()` の後の `scheduler.get_last_lr()[0]` を並べたリストを `result` にします。勾配の計算は不要です。",
+    "input": "lr = 0.4",
+    "hint": "`StepLR` は `step_size` 回ごとに学習率を `gamma` 倍にします。`scheduler.step()` は `optimizer.step()` の後に呼びます。",
+    "solution": "w = nn.Parameter(torch.tensor([1.0]))\noptimizer = torch.optim.SGD([w], lr=lr)\nscheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.5)\nresult = []\nfor _ in range(3):\n    optimizer.step()\n    scheduler.step()\n    result.append(scheduler.get_last_lr()[0])"
+  },
+  {
+    "number": 18, "id": "PT07-18", "version": 1, "stage": "independent",
+    "title": "オプティマイザが保持する速度の状態を取り出す",
+    "task": "`initial` からfloat32の `nn.Parameter` `w` を作り、`torch.optim.SGD([w], lr=0.1, momentum=0.9)` で `(w ** 3).sum()` を1回だけ最小化してください。その後、オプティマイザの `state[w][\"momentum_buffer\"]` を `result` にします。",
+    "input": "initial = [1.0, -2.0]",
+    "hint": "モーメンタムの速度は、パラメータごとに `optimizer.state` に保存されます。1回目の更新後の速度は、その時点の勾配 `3 * w ** 2` と同じです。",
+    "solution": "w = nn.Parameter(torch.tensor(initial))\noptimizer = torch.optim.SGD([w], lr=0.1, momentum=0.9)\noptimizer.zero_grad()\n(w ** 3).sum().backward()\noptimizer.step()\nresult = optimizer.state[w][\"momentum_buffer\"]"
+  }
+]

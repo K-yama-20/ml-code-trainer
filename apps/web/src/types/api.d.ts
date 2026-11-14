@@ -881,7 +881,7 @@ export interface components {
        * @default exact
        * @enum {string}
        */
-      comparison: "exact" | "json" | "json_unicode";
+      comparison: "exact" | "json" | "json_unicode" | "relative";
     };
     /** SessionCreate */
     SessionCreate: {

@@ -1,0 +1,164 @@
+[
+  {
+    "number": 1, "id": "PT10-01", "version": 3, "stage": "guided",
+    "title": "state_dictのキーを並べる",
+    "task": "`model.state_dict()` のキーを昇順に並べたリストを `result` にしてください。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(2, 3)",
+    "hint": "`state_dict()` は、パラメータやバッファの名前とTensorを対応させた辞書です。`sorted(model.state_dict().keys())` でキーを並べます。",
+    "solution": "result = sorted(model.state_dict().keys())"
+  },
+  {
+    "number": 2, "id": "PT10-02", "version": 3, "stage": "guided",
+    "title": "Tensorの辞書を保存して安全に読み込む",
+    "task": "`values` から作ったfloat32のTensorを、キー `\"weight\"` の辞書に入れて一時ディレクトリの `weights.pt` に `torch.save()` で保存してください。`torch.load()` を `weights_only=True`、`map_location=\"cpu\"` で使って読み込み、`\"weight\"` のTensorを `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "values = [1.0, 2.0]",
+    "hint": "`weights_only=True` は、Tensorや基本的な型だけを読み込み、任意のPythonオブジェクトを復元しません。信頼できないファイルを読むときの安全策です。",
+    "solution": "with tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"weights.pt\"\n    torch.save({\"weight\": torch.tensor(values, dtype=torch.float32)}, path)\n    loaded = torch.load(path, weights_only=True, map_location=\"cpu\")\nresult = loaded[\"weight\"]"
+  },
+  {
+    "number": 3, "id": "PT10-03", "version": 3, "stage": "guided",
+    "title": "load_state_dictで重みを別のモデルに設定する",
+    "task": "`nn.Linear(2, 1, bias=False)` を作り、`load_state_dict({\"weight\": weight})` で重みを設定してください。設定後の重みを `detach()` して `result` にします。`weight` のshapeは `(1, 2)` です。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "weight = torch.tensor([[1.0, 2.0]])",
+    "hint": "`load_state_dict()` は、キーとshapeがモデルと一致する辞書から値をコピーします。キーが足りなかったり多すぎたりすると、既定ではエラーになります。",
+    "solution": "model = nn.Linear(2, 1, bias=False)\nmodel.load_state_dict({\"weight\": weight})\nresult = model.weight.detach()"
+  },
+  {
+    "number": 4, "id": "PT10-07", "version": 1, "stage": "guided",
+    "title": "state_dictの各値のshapeを確かめる",
+    "task": "`model.state_dict()` のキーと、値のshapeのタプルを対応させた辞書を `result` にしてください。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Sequential(nn.Linear(3, 2), nn.ReLU(), nn.Linear(2, 1))",
+    "hint": "`{k: tuple(v.shape) for k, v in model.state_dict().items()}` で辞書を作れます。ReLUのようにパラメータを持たない層はキーに現れません。",
+    "solution": "result = {k: tuple(v.shape) for k, v in model.state_dict().items()}"
+  },
+  {
+    "number": 5, "id": "PT10-08", "version": 1, "stage": "guided",
+    "title": "保存したstate_dictを同じ構造のモデルに読み込む",
+    "task": "`model.state_dict()` を一時ディレクトリの `model.pt` に保存し、同じ構造の新しい `nn.Linear(2, 1)` に `torch.load(..., weights_only=True)` で読み込んだ値を `load_state_dict()` で設定してください。新しいモデルに `x` を入力した出力を `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(2, 1)\nwith torch.no_grad():\n    model.weight.copy_(torch.tensor([[1.0, -1.0]]))\n    model.bias.fill_(0.5)\nx = torch.tensor([[2.0, 1.0], [0.0, 3.0]])",
+    "hint": "モデル全体ではなく `state_dict()` を保存すると、読み込む側で同じ構造のモデルを作ってから値を設定します。新しいモデルの初期値は乱数ですが、読み込みで上書きされます。",
+    "solution": "with tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"model.pt\"\n    torch.save(model.state_dict(), path)\n    restored = nn.Linear(2, 1)\n    restored.load_state_dict(torch.load(path, weights_only=True))\nresult = restored(x)"
+  },
+  {
+    "number": 6, "id": "PT10-05", "version": 3, "stage": "guided",
+    "title": "ステップ数を含むチェックポイントを復元する",
+    "task": "`{\"step\": step, \"tensor\": tensor}` を一時ディレクトリの `checkpoint.pt` に保存し、`weights_only=True`、`map_location=\"cpu\"` で読み込んでください。`(読み込んだstep, 読み込んだtensor)` のタプルを `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "step = 4\ntensor = torch.ones(2)",
+    "hint": "`weights_only=True` でも、整数・文字列・リスト・辞書などの基本的な型は読み込めます。チェックポイントには学習の進み具合も一緒に保存できます。",
+    "solution": "with tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"checkpoint.pt\"\n    torch.save({\"step\": step, \"tensor\": tensor}, path)\n    data = torch.load(path, weights_only=True, map_location=\"cpu\")\nresult = (data[\"step\"], data[\"tensor\"])"
+  },
+  {
+    "number": 7, "id": "PT10-04", "version": 3, "stage": "partial",
+    "title": "cloneしてstate_dictのスナップショットを残す",
+    "task": "`model.state_dict()` の各値を `clone()` で複製した辞書 `saved` を作ってください。その後 `torch.no_grad()` の中で `model.weight.zero_()` として重みを0にし、`saved[\"weight\"]` を `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(2, 1, bias=False)\nwith torch.no_grad():\n    model.weight.copy_(torch.tensor([[3.0, -1.0]]))",
+    "hint": "`state_dict()` の値はモデルのパラメータと同じメモリを参照しています。後でモデルを変更しても残るように、`{k: v.clone() for k, v in model.state_dict().items()}` で複製します。",
+    "solution": "saved = {k: v.clone() for k, v in model.state_dict().items()}\nwith torch.no_grad():\n    model.weight.zero_()\nresult = saved[\"weight\"]"
+  },
+  {
+    "number": 8, "id": "PT10-09", "version": 1, "stage": "partial",
+    "title": "複製しないstate_dictがモデルの変更に追従することを確かめる",
+    "task": "`model.state_dict()` をそのまま `shared` に、各値を `clone()` した辞書を `copied` にしてください。その後 `torch.no_grad()` の中で `model.weight.fill_(value)` とし、`(copied[\"weight\"], shared[\"weight\"])` のタプルを `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(2, 1, bias=False)\nwith torch.no_grad():\n    model.weight.copy_(torch.tensor([[1.0, 2.0]]))\nvalue = 0.0",
+    "hint": "複製していない `shared` の値はパラメータと同じTensorなので、`fill_()` の結果が反映されます。`copied` は変更前の値のままです。",
+    "solution": "shared = model.state_dict()\ncopied = {k: v.clone() for k, v in model.state_dict().items()}\nwith torch.no_grad():\n    model.weight.fill_(value)\nresult = (copied[\"weight\"], shared[\"weight\"])"
+  },
+  {
+    "number": 9, "id": "PT10-10", "version": 1, "stage": "partial",
+    "title": "strict=Falseで足りないキーを確かめる",
+    "task": "`model.load_state_dict(state, strict=False)` で `state` を読み込み、戻り値の `missing_keys`（モデルにあるが `state` にないキー）を昇順に並べたリストを `result` にしてください。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(2, 1)\nstate = {\"weight\": torch.zeros(1, 2)}",
+    "hint": "`strict=False` にすると、キーが一致しなくてもエラーにならず、一致したキーだけが読み込まれます。戻り値の `missing_keys` と `unexpected_keys` で不一致を確認できます。",
+    "solution": "outcome = model.load_state_dict(state, strict=False)\nresult = sorted(outcome.missing_keys)"
+  },
+  {
+    "number": 10, "id": "PT10-11", "version": 1, "stage": "partial",
+    "title": "strict=Falseで余分なキーを確かめる",
+    "task": "`model.load_state_dict(state, strict=False)` で `state` を読み込み、戻り値の `unexpected_keys`（`state` にあるがモデルにないキー）を昇順に並べたリストを `result` にしてください。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(2, 1)\nstate = {\"weight\": torch.zeros(1, 2), \"bias\": torch.zeros(1), \"scale\": torch.ones(1)}",
+    "hint": "モデルにない名前のキーは `unexpected_keys` に入り、読み込まれません。保存したモデルと読み込むモデルの構造の違いを見つける手がかりになります。",
+    "solution": "outcome = model.load_state_dict(state, strict=False)\nresult = sorted(outcome.unexpected_keys)"
+  },
+  {
+    "number": 11, "id": "PT10-12", "version": 1, "stage": "partial",
+    "title": "オプティマイザの状態を保存して復元する",
+    "task": "`torch.optim.SGD([w], lr=lr)` を作り、その `state_dict()` を、別に作った `torch.optim.SGD([w], lr=1.0)` に `load_state_dict()` で読み込んでください。読み込んだ側の `param_groups[0][\"lr\"]` を `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "w = nn.Parameter(torch.tensor([1.0, 2.0]))\nlr = 0.05",
+    "hint": "オプティマイザも `state_dict()` を持ち、学習率などの設定とモーメンタムなどの状態が含まれます。学習を再開するときは、モデルと一緒に復元します。",
+    "solution": "original = torch.optim.SGD([w], lr=lr)\nrestored = torch.optim.SGD([w], lr=1.0)\nrestored.load_state_dict(original.state_dict())\nresult = restored.param_groups[0][\"lr\"]"
+  },
+  {
+    "number": 12, "id": "PT10-13", "version": 1, "stage": "partial",
+    "title": "モデルと学習の進み具合をまとめて保存する",
+    "task": "`{\"model\": model.state_dict(), \"epoch\": epoch}` を一時ディレクトリの `checkpoint.pt` に保存し、`weights_only=True` で読み込んでください。新しい `nn.Linear(1, 1)` にモデルの値を読み込み、`(読み込んだepoch + 1, 新しいモデルのweightをdetachしたもの)` のタプルを `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(1, 1)\nwith torch.no_grad():\n    model.weight.fill_(2.5)\n    model.bias.fill_(0.0)\nepoch = 3",
+    "hint": "学習を再開するときは、次に始めるエポック番号を `epoch + 1` として計算します。チェックポイントの辞書から `\"model\"` の値を取り出して `load_state_dict()` に渡します。",
+    "solution": "with tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"checkpoint.pt\"\n    torch.save({\"model\": model.state_dict(), \"epoch\": epoch}, path)\n    checkpoint = torch.load(path, weights_only=True)\nrestored = nn.Linear(1, 1)\nrestored.load_state_dict(checkpoint[\"model\"])\nresult = (checkpoint[\"epoch\"] + 1, restored.weight.detach())"
+  },
+  {
+    "number": 13, "id": "PT10-06", "version": 4, "stage": "independent",
+    "title": "復元したモデルを評価モードにして推論する",
+    "task": "`model.state_dict()` を、同じ構造の新しい `nn.Sequential(nn.Linear(2, 1), nn.Dropout(0.5))` に `load_state_dict()` で読み込んでください。新しいモデルを `eval()` で評価モードにし、`torch.no_grad()` の中で `x` を入力した出力と、新しいモデルの `training` 属性を、`(出力, training)` のタプルにして `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Sequential(nn.Linear(2, 1), nn.Dropout(0.5))\nwith torch.no_grad():\n    model[0].weight.copy_(torch.tensor([[1.0, 2.0]]))\n    model[0].bias.fill_(-1.0)\nx = torch.tensor([[1.0, 1.0], [0.0, 2.0]])",
+    "hint": "`state_dict()` には学習モードか評価モードかは保存されません。新しく作ったモデルは学習モードなので、推論の前に `eval()` を呼びます。",
+    "solution": "restored = nn.Sequential(nn.Linear(2, 1), nn.Dropout(0.5))\nrestored.load_state_dict(model.state_dict())\nrestored.eval()\nwith torch.no_grad():\n    out = restored(x)\nresult = (out, restored.training)"
+  },
+  {
+    "number": 14, "id": "PT10-14", "version": 1, "stage": "independent",
+    "title": "map_locationでCPUに読み込む",
+    "task": "`tensor` を一時ディレクトリの `tensor.pt` に保存し、`torch.load()` を `map_location=\"cpu\"`、`weights_only=True` で使って読み込んでください。`(読み込んだTensorのdeviceの文字列, 読み込んだTensor)` のタプルを `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "tensor = torch.tensor([[1.5, -2.0]])",
+    "hint": "GPUで保存したファイルでも、`map_location=\"cpu\"` を指定するとCPU上に読み込めます。deviceは `str(loaded.device)` で文字列になります。",
+    "solution": "with tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"tensor.pt\"\n    torch.save(tensor, path)\n    loaded = torch.load(path, map_location=\"cpu\", weights_only=True)\nresult = (str(loaded.device), loaded)"
+  },
+  {
+    "number": 15, "id": "PT10-15", "version": 1, "stage": "independent",
+    "title": "一部の層の重みだけを別のモデルに移す",
+    "task": "`model[0]` の `state_dict()` を、新しく作った `nn.Linear(2, 2)` に `load_state_dict()` で読み込んでください。新しい層に `x` を入力した出力を `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Sequential(nn.Linear(2, 2), nn.ReLU(), nn.Linear(2, 1))\nwith torch.no_grad():\n    model[0].weight.copy_(torch.tensor([[1.0, 0.0], [1.0, 1.0]]))\n    model[0].bias.copy_(torch.tensor([0.0, -1.0]))\nx = torch.tensor([[2.0, 3.0]])",
+    "hint": "`model[0].state_dict()` のキーは `\"weight\"` と `\"bias\"` で、`model.state_dict()` の `\"0.weight\"` のような接頭辞は付きません。そのまま同じ形の層に読み込めます。",
+    "solution": "layer = nn.Linear(2, 2)\nlayer.load_state_dict(model[0].state_dict())\nresult = layer(x)"
+  },
+  {
+    "number": 16, "id": "PT10-16", "version": 1, "stage": "independent",
+    "title": "キーの接頭辞を取り除いてから読み込む",
+    "task": "`state` は、キーに `\"module.\"` という接頭辞が付いた状態で保存された `nn.Linear(2, 1)` の重みです。各キーから先頭の `\"module.\"` を取り除いた辞書を作り、新しい `nn.Linear(2, 1)` に `load_state_dict()` で読み込んでください。新しいモデルの重みを `detach()` して `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "state = {\"module.weight\": torch.tensor([[2.0, -1.0]]), \"module.bias\": torch.tensor([0.5])}",
+    "hint": "`k.removeprefix(\"module.\")` で文字列の先頭の接頭辞を取り除けます。辞書内包表記でキーだけを変えた新しい辞書を作ります。",
+    "solution": "cleaned = {k.removeprefix(\"module.\"): v for k, v in state.items()}\nmodel = nn.Linear(2, 1)\nmodel.load_state_dict(cleaned)\nresult = model.weight.detach()"
+  },
+  {
+    "number": 17, "id": "PT10-17", "version": 1, "stage": "independent",
+    "title": "BatchNormの統計もstate_dictで復元する",
+    "task": "`model`（`nn.BatchNorm1d`）の `state_dict()` を、新しい `nn.BatchNorm1d` に `load_state_dict()` で読み込んでください。新しいモデルの `running_mean` と `running_var` を、`(running_mean, running_var)` のタプルにして `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.BatchNorm1d(2)\nwith torch.no_grad():\n    model.running_mean.copy_(torch.tensor([1.0, -1.0]))\n    model.running_var.copy_(torch.tensor([4.0, 9.0]))",
+    "hint": "移動平均や移動分散はパラメータではなくバッファですが、`state_dict()` に含まれます。新しいモデルの特徴数を元と同じにして読み込みます。",
+    "solution": "restored = nn.BatchNorm1d(model.num_features)\nrestored.load_state_dict(model.state_dict())\nresult = (restored.running_mean, restored.running_var)"
+  },
+  {
+    "number": 18, "id": "PT10-18", "version": 1, "stage": "independent",
+    "title": "保存した時点の重みに戻す",
+    "task": "`model.state_dict()` を一時ディレクトリの `best.pt` に保存してから、`torch.optim.SGD(model.parameters(), lr=0.5)` で `model(x).sum()` を1回最小化してください。更新直後の重みの複製を残し、その後で保存したファイルを `load_state_dict()` で読み込みます。`(更新直後の重み, 読み込み後の重み)` を、どちらも `detach().clone()` したタプルにして `result` にします。",
+    "imports": "import tempfile\nfrom pathlib import Path\n\nimport torch\nfrom torch import nn",
+    "input": "model = nn.Linear(2, 1)\nwith torch.no_grad():\n    model.weight.copy_(torch.tensor([[1.0, 1.0]]))\n    model.bias.fill_(0.0)\nx = torch.tensor([[1.0, 2.0]])",
+    "hint": "保存したファイルの中身は、その後でモデルを更新しても変わりません。検証で一番よかった時点の重みを保存しておき、学習後に戻すときに使う方法です。",
+    "solution": "with tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"best.pt\"\n    torch.save(model.state_dict(), path)\n    optimizer = torch.optim.SGD(model.parameters(), lr=0.5)\n    optimizer.zero_grad()\n    model(x).sum().backward()\n    optimizer.step()\n    updated = model.weight.detach().clone()\n    model.load_state_dict(torch.load(path, weights_only=True))\nresult = (updated, model.weight.detach().clone())"
+  }
+]

@@ -74,22 +74,25 @@ def test_idempotency_and_client_cannot_claim_verification(client, database):
 
 
 def test_hints_and_solution_prevent_clean_progress(client):
+    # Every concept is an ordered drill with a single authored hint.
     s = create_session(client, concept="NP09")
     item = s["items"][0]
-    assert client.post(f"/api/v1/session-items/{item['id']}/hints/2/reveal").json()["level"] == 2
-    assert client.post(f"/api/v1/session-items/{item['id']}/hints/1/reveal").json()["level"] == 2
+    assert client.post(f"/api/v1/session-items/{item['id']}/hints/2/reveal").json()["level"] == 1
+    assert client.post(f"/api/v1/session-items/{item['id']}/hints/1/reveal").json()["level"] == 1
     assert "solution" in client.post(f"/api/v1/session-items/{item['id']}/solution/reveal").json()
     a = client.post("/api/v1/submissions", json=payload(item)).json()
-    assert a["hint_level_used"] == 2 and a["solution_viewed"]
+    assert a["hint_level_used"] == 1 and a["solution_viewed"]
     p = client.get("/api/v1/progress/concepts").json()[0]
     assert p["mastery_level"] == 0
     assert client.get("/api/v1/reviews/due").json()[0]["interval_days"] == 1
 
 
 def test_stage_gates_distinct_families_and_formal_independent(client, database):
-    s = create_session(client, concept="NP09")
+    s = create_session(client, concept="NP09", count=18)
     user = client.get("/api/v1/auth/me").json()["id"]
-    items = sorted(s["items"], key=lambda i: i["problem_version_id"])
+    by_stage = {stage: [i for i in s["items"] if PROBLEMS[i["problem_version_id"].split("@")[0]]["stage"] == stage]
+                for stage in ("guided", "partial", "independent")}
+    items = by_stage["guided"][:2] + by_stage["partial"][:2] + by_stage["independent"][:2]
     for item in items[:4]:
         body = payload(item)
         assert client.post("/api/v1/submissions", json=body).status_code == 200

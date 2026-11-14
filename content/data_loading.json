@@ -1,0 +1,164 @@
+[
+  {
+    "number": 1, "id": "PT08-01", "version": 3, "stage": "guided",
+    "title": "TensorDatasetのサンプル数を数える",
+    "task": "特徴量 `x` とラベル `y` から `TensorDataset` を作り、サンプル数を整数で `result` にしてください。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.ones(5, 2)\ny = torch.zeros(5)",
+    "hint": "`TensorDataset(x, y)` は、各Tensorの先頭の軸をサンプルの軸として扱います。`len()` で先頭の軸の長さが得られます。",
+    "solution": "result = len(TensorDataset(x, y))"
+  },
+  {
+    "number": 2, "id": "PT08-07", "version": 1, "stage": "guided",
+    "title": "Datasetから1つのサンプルを取り出す",
+    "task": "`x` と `y` から `TensorDataset` を作り、位置 `index` のサンプルを取り出してください。結果は `(特徴量, ラベル)` のタプルです。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.tensor([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])\ny = torch.tensor([0, 1, 0])\nindex = 1",
+    "hint": "`dataset[index]` は、作るときに渡した各Tensorの `index` 番目を並べたタプルを返します。",
+    "solution": "dataset = TensorDataset(x, y)\nresult = dataset[index]"
+  },
+  {
+    "number": 3, "id": "PT08-02", "version": 3, "stage": "guided",
+    "title": "最後の小さいバッチも含めたバッチ数を数える",
+    "task": "`n` 個のサンプルを持つ `TensorDataset(torch.arange(n))` を、`DataLoader` で `batch_size=batch`、`drop_last=False` でバッチに分けたときのバッチ数を `result` にしてください。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "n = 5\nbatch = 2",
+    "hint": "`len(DataLoader(...))` でバッチ数がわかります。割り切れないときは、残りのサンプルで最後の小さいバッチが1つ作られます。",
+    "solution": "dataset = TensorDataset(torch.arange(n))\nresult = len(DataLoader(dataset, batch_size=batch, drop_last=False))"
+  },
+  {
+    "number": 4, "id": "PT08-04", "version": 3, "stage": "guided",
+    "title": "不完全なバッチを捨てたときのバッチ数を数える",
+    "task": "`n` 個のサンプルを持つ `TensorDataset(torch.arange(n))` を、`DataLoader` で `batch_size=batch`、`drop_last=True` でバッチに分けたときのバッチ数を `result` にしてください。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "n = 5\nbatch = 2",
+    "hint": "`drop_last=True` では、`batch` 個に満たない最後のバッチが捨てられます。バッチ数は `n // batch` です。",
+    "solution": "dataset = TensorDataset(torch.arange(n))\nresult = len(DataLoader(dataset, batch_size=batch, drop_last=True))"
+  },
+  {
+    "number": 5, "id": "PT08-03", "version": 3, "stage": "guided",
+    "title": "シャッフルしない最初のバッチを取り出す",
+    "task": "`x` だけを持つ `TensorDataset` を作り、`DataLoader` で `batch_size=batch`、`shuffle=False` にしてください。最初のバッチの特徴量のTensorを `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.arange(10).reshape(5, 2)\nbatch = 2",
+    "hint": "`next(iter(loader))` で最初のバッチを取り出せます。Tensorが1つの `TensorDataset` でも、バッチは要素が1つのリストなので、`[0]` で特徴量を取り出します。",
+    "solution": "loader = DataLoader(TensorDataset(x), batch_size=batch, shuffle=False)\nresult = next(iter(loader))[0]"
+  },
+  {
+    "number": 6, "id": "PT08-08", "version": 1, "stage": "guided",
+    "title": "各バッチのshapeを順に並べる",
+    "task": "`x` だけを持つ `TensorDataset` を `DataLoader` で `batch_size=batch`、`shuffle=False` にしてください。各バッチの特徴量のshapeをタプルにし、バッチの順に並べたリストを `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.zeros(5, 3)\nbatch = 2",
+    "hint": "`for (xb,) in loader:` のようにすると、各バッチの特徴量を取り出せます。最後のバッチは残りのサンプル数になります。",
+    "solution": "loader = DataLoader(TensorDataset(x), batch_size=batch, shuffle=False)\nresult = [tuple(xb.shape) for (xb,) in loader]"
+  },
+  {
+    "number": 7, "id": "PT08-06", "version": 3, "stage": "partial",
+    "title": "特徴量とラベルの対応を保って最初のバッチを取り出す",
+    "task": "`x` と `y` を1つの `TensorDataset` に入れ、`DataLoader` で `batch_size=batch`、`shuffle=False` にしてください。最初のバッチの `(特徴量, ラベル)` をタプルで `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.arange(10).reshape(5, 2)\ny = torch.arange(5)\nbatch = 2",
+    "hint": "特徴量とラベルを同じ `TensorDataset` に入れると、同じ行が同じバッチにまとめられます。別々のDataLoaderで読み込むと、シャッフル時に対応が崩れます。",
+    "solution": "loader = DataLoader(TensorDataset(x, y), batch_size=batch, shuffle=False)\nxb, yb = next(iter(loader))\nresult = (xb, yb)"
+  },
+  {
+    "number": 8, "id": "PT08-05", "version": 3, "stage": "partial",
+    "title": "すべてのバッチをつなげて元のTensorに戻す",
+    "task": "`x` だけを持つ `TensorDataset` を `DataLoader` で `batch_size=batch`、`shuffle=False` にし、すべてのバッチの特徴量を `torch.cat()` で軸0に沿ってつなげたTensorを `result` にしてください。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.arange(10).reshape(5, 2)\nbatch = 2",
+    "hint": "シャッフルしなければ、バッチの区切りが変わってもサンプルの順は保たれます。`torch.cat([xb for (xb,) in loader], dim=0)` でつなげます。",
+    "solution": "loader = DataLoader(TensorDataset(x), batch_size=batch, shuffle=False)\nresult = torch.cat([xb for (xb,) in loader], dim=0)"
+  },
+  {
+    "number": 9, "id": "PT08-09", "version": 1, "stage": "partial",
+    "title": "自作のDatasetをDataLoaderで読み込む",
+    "task": "`Dataset` を継承した `SquareDataset` クラスを定義してください。`values` を受け取り、`__len__` は値の個数、`__getitem__(i)` は `(torch.tensor(v), torch.tensor(v * v))`（`v` は `values[i]`）を返します。`DataLoader(SquareDataset(values), batch_size=batch)` の最初のバッチの `(xb, yb)` をタプルで `result` にしてください。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, Dataset",
+    "input": "values = [1.0, 2.0, 3.0]\nbatch = 2",
+    "hint": "`__getitem__` が返したタプルは、DataLoaderによって要素ごとに1つのTensorへまとめられます。スカラーのTensorをまとめると、shape `(バッチサイズ,)` になります。",
+    "solution": "class SquareDataset(Dataset):\n    def __init__(self, values):\n        self.values = values\n\n    def __len__(self):\n        return len(self.values)\n\n    def __getitem__(self, i):\n        v = self.values[i]\n        return torch.tensor(v), torch.tensor(v * v)\n\n\nxb, yb = next(iter(DataLoader(SquareDataset(values), batch_size=batch)))\nresult = (xb, yb)"
+  },
+  {
+    "number": 10, "id": "PT08-10", "version": 1, "stage": "partial",
+    "title": "シャッフルの順をgeneratorで再現する",
+    "task": "`TensorDataset(torch.arange(n))` を、`DataLoader` で `batch_size=n`、`shuffle=True` にして読み込んでください。乱数は `generator=torch.Generator().manual_seed(seed)` で固定し、最初のバッチのTensorを `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "n = 5\nseed = 0",
+    "hint": "`shuffle=True` の並び順は乱数で決まります。`generator` にseedを設定したGeneratorを渡すと、毎回同じ順で読み込めます。",
+    "solution": "generator = torch.Generator().manual_seed(seed)\nloader = DataLoader(TensorDataset(torch.arange(n)), batch_size=n, shuffle=True, generator=generator)\nresult = next(iter(loader))[0]"
+  },
+  {
+    "number": 11, "id": "PT08-11", "version": 1, "stage": "partial",
+    "title": "各バッチのラベルの合計を並べる",
+    "task": "`x` と `y` の `TensorDataset` を `DataLoader` で `batch_size=batch`、`shuffle=False` にし、各バッチのラベルの合計を整数にして、バッチの順に並べたリストを `result` にしてください。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.zeros(5, 2)\ny = torch.tensor([1, 0, 1, 1, 0])\nbatch = 2",
+    "hint": "`for xb, yb in loader:` で各バッチを取り出し、`int(yb.sum())` で合計を整数にします。",
+    "solution": "loader = DataLoader(TensorDataset(x, y), batch_size=batch, shuffle=False)\nresult = [int(yb.sum()) for xb, yb in loader]"
+  },
+  {
+    "number": 12, "id": "PT08-12", "version": 1, "stage": "partial",
+    "title": "random_splitでデータを再現できるように分ける",
+    "task": "`TensorDataset(torch.arange(n))` を `random_split()` で長さ `[k, n - k]` の2つに分けてください。乱数は `generator=torch.Generator().manual_seed(seed)` で固定します。1つ目の部分集合の `indices` をリストで `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, random_split",
+    "input": "n = 6\nk = 2\nseed = 0",
+    "hint": "`random_split()` は `Subset` のリストを返し、各 `Subset` の `indices` に元のDatasetでの位置が入っています。`generator` を渡すと同じ分割を再現できます。",
+    "solution": "generator = torch.Generator().manual_seed(seed)\nfirst, second = random_split(TensorDataset(torch.arange(n)), [k, n - k], generator=generator)\nresult = list(first.indices)"
+  },
+  {
+    "number": 13, "id": "PT08-13", "version": 1, "stage": "independent",
+    "title": "Subsetで指定した行だけを読み込む",
+    "task": "`x` だけを持つ `TensorDataset` から、`Subset` で `indices` の位置のサンプルだけを取り出してください。それを `DataLoader` で `batch_size=2`、`shuffle=False` にして、すべてのバッチを軸0でつなげたTensorを `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, Subset, TensorDataset",
+    "input": "x = torch.tensor([[0.0], [10.0], [20.0], [30.0], [40.0]])\nindices = [3, 0, 4]",
+    "hint": "`Subset(dataset, indices)` は、`indices` の順にサンプルを並べた新しいDatasetです。シャッフルしなければ、読み込みもこの順になります。",
+    "solution": "subset = Subset(TensorDataset(x), indices)\nloader = DataLoader(subset, batch_size=2, shuffle=False)\nresult = torch.cat([xb for (xb,) in loader], dim=0)"
+  },
+  {
+    "number": 14, "id": "PT08-14", "version": 1, "stage": "independent",
+    "title": "長さの違う系列を0で埋めてバッチにする",
+    "task": "`sequences` は長さの違う1次元Tensorのリストです。`DataLoader(sequences, batch_size=batch, collate_fn=pad_batch)` で読み込み、最初のバッチを `result` にしてください。`pad_batch` は、バッチ内の系列を `torch.nn.utils.rnn.pad_sequence(batch, batch_first=True)` で最長の長さにそろえ、足りない部分を0で埋める関数として定義します。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader",
+    "input": "sequences = [torch.tensor([1, 2, 3]), torch.tensor([4]), torch.tensor([5, 6])]\nbatch = 2",
+    "hint": "既定のまとめ方ではshapeの違うTensorをまとめられず、エラーになります。`collate_fn` に、サンプルのリストを受け取ってバッチを返す関数を渡します。",
+    "solution": "def pad_batch(batch):\n    return torch.nn.utils.rnn.pad_sequence(batch, batch_first=True)\n\n\nloader = DataLoader(sequences, batch_size=batch, collate_fn=pad_batch)\nresult = next(iter(loader))"
+  },
+  {
+    "number": 15, "id": "PT08-15", "version": 1, "stage": "independent",
+    "title": "バッチごとの合計から全体の平均を求める",
+    "task": "`x` だけを持つ `TensorDataset` を `DataLoader` で `batch_size=batch` にして読み込み、各バッチの特徴量の列ごとの合計と、サンプル数を足し合わせてください。最後に、合計をサンプル数で割った列ごとの平均を `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.tensor([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0], [6.0, 0.0], [8.0, 40.0]])\nbatch = 2",
+    "hint": "バッチの平均をそのまま平均すると、最後の小さいバッチが重くなりすぎます。`xb.sum(dim=0)` と `len(xb)` を足し合わせてから、最後に1回だけ割ります。",
+    "solution": "loader = DataLoader(TensorDataset(x), batch_size=batch)\ntotal = torch.zeros(x.shape[1])\ncount = 0\nfor (xb,) in loader:\n    total += xb.sum(dim=0)\n    count += len(xb)\nresult = total / count"
+  },
+  {
+    "number": 16, "id": "PT08-16", "version": 1, "stage": "independent",
+    "title": "drop_lastで実際に使われるサンプル数を数える",
+    "task": "`n` 個のサンプルを持つ `TensorDataset(torch.arange(n))` を、`DataLoader` で `batch_size=batch`、`drop_last=True` にしてください。読み込まれたすべてのバッチのサンプル数の合計を整数で `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "n = 7\nbatch = 3",
+    "hint": "`drop_last=True` では、最後の不完全なバッチのサンプルは読み込まれません。各バッチの `len()` を合計します。",
+    "solution": "loader = DataLoader(TensorDataset(torch.arange(n)), batch_size=batch, drop_last=True)\nresult = sum(len(xb) for (xb,) in loader)"
+  },
+  {
+    "number": 17, "id": "PT08-17", "version": 1, "stage": "independent",
+    "title": "辞書を返すDatasetをバッチにする",
+    "task": "`Dataset` を継承した `DictDataset` クラスを定義してください。`x` と `y` を受け取り、`__getitem__(i)` は `{\"x\": x[i], \"y\": y[i]}` を返します。`DataLoader(DictDataset(x, y), batch_size=batch)` の最初のバッチを `result` にしてください。バッチはキーごとにTensorをまとめた辞書になります。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, Dataset",
+    "input": "x = torch.tensor([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])\ny = torch.tensor([0, 1, 1])\nbatch = 2",
+    "hint": "既定のまとめ方は、辞書のサンプルを受け取ると、同じキーの値をまとめた辞書を作ります。`__len__` も定義します。",
+    "solution": "class DictDataset(Dataset):\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __len__(self):\n        return len(self.x)\n\n    def __getitem__(self, i):\n        return {\"x\": self.x[i], \"y\": self.y[i]}\n\n\nresult = next(iter(DataLoader(DictDataset(x, y), batch_size=batch)))"
+  },
+  {
+    "number": 18, "id": "PT08-18", "version": 1, "stage": "independent",
+    "title": "ミニバッチで1エポック学習する",
+    "task": "float32のスカラーの `nn.Parameter` `w`（初期値0.0）と `torch.optim.SGD([w], lr=0.1)` を作ってください。`x` と `y` の `TensorDataset` を `DataLoader` で `batch_size=batch`、`shuffle=False` にして1エポック分読み込み、バッチごとに `((w * xb - yb) ** 2).mean()` を最小化します。学習後の `w` を `detach()` して `result` にします。",
+    "imports": "import torch\nfrom torch import nn\nfrom torch.utils.data import DataLoader, TensorDataset",
+    "input": "x = torch.tensor([1.0, 2.0, 3.0, 4.0])\ny = torch.tensor([2.0, 4.0, 6.0, 8.0])\nbatch = 2",
+    "hint": "バッチごとに `zero_grad()`、損失の `backward()`、`step()` を繰り返します。1エポックでバッチの数だけ更新されます。",
+    "solution": "w = nn.Parameter(torch.tensor(0.0))\noptimizer = torch.optim.SGD([w], lr=0.1)\nloader = DataLoader(TensorDataset(x, y), batch_size=batch, shuffle=False)\nfor xb, yb in loader:\n    optimizer.zero_grad()\n    ((w * xb - yb) ** 2).mean().backward()\n    optimizer.step()\nresult = w.detach()"
+  }
+]

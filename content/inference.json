@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PT09-01", "version": 3, "stage": "guided",
+    "title": "evalでtraining属性が変わることを確かめる",
+    "task": "`model.training` の値を記録してから `model.eval()` を呼び、`(eval前のtraining, eval後のtraining)` のタプルを `result` にしてください。`model` が最初に学習モードかどうかは問題によって異なります。",
+    "input": "model = nn.Dropout(0.5)\nmodel.train(True)",
+    "hint": "`training` 属性は、学習モードなら `True`、評価モードなら `False` です。`eval()` は内部で `train(False)` を呼びます。",
+    "solution": "before = model.training\nmodel.eval()\nresult = (before, model.training)"
+  },
+  {
+    "number": 2, "id": "PT09-02", "version": 3, "stage": "guided",
+    "title": "評価モードのDropoutに入力を通す",
+    "task": "`nn.Dropout(0.5)` を評価モードにして `x` を入力し、その出力を `result` にしてください。",
+    "input": "x = torch.tensor([[1.0, 2.0], [3.0, 4.0]])",
+    "hint": "評価モードのDropoutは要素を0にせず、入力をそのまま返します。学習モードのままだと、出力は乱数で変わります。",
+    "solution": "dropout = nn.Dropout(0.5)\ndropout.eval()\nresult = dropout(x)"
+  },
+  {
+    "number": 3, "id": "PT09-07", "version": 1, "stage": "guided",
+    "title": "evalが子Moduleにも伝わることを確かめる",
+    "task": "`model.eval()` を呼んだ後、`model` の直下の子Moduleの `training` 属性を順に並べたリストを `result` にしてください。",
+    "input": "model = nn.Sequential(nn.Linear(2, 2), nn.Dropout(0.1), nn.ReLU())",
+    "hint": "`eval()` や `train()` は、そのModuleの中にあるすべての層のモードを再帰的に切り替えます。`model.children()` で直下の層を取り出せます。",
+    "solution": "model.eval()\nresult = [m.training for m in model.children()]"
+  },
+  {
+    "number": 4, "id": "PT09-03", "version": 3, "stage": "guided",
+    "title": "inference_modeの中で推論する",
+    "task": "`torch.inference_mode()` の中で `model(x)` を計算し、`(出力, 出力のrequires_grad)` のタプルを `result` にしてください。",
+    "input": "model = nn.Linear(2, 1)\nwith torch.no_grad():\n    model.weight.copy_(torch.tensor([[1.0, 2.0]]))\n    model.bias.fill_(0.5)\nx = torch.tensor([[1.0, 1.0], [0.0, -1.0]])",
+    "hint": "`with torch.inference_mode():` の中の計算は勾配を追跡しないので、パラメータが勾配を必要としていても出力の `requires_grad` は `False` です。",
+    "solution": "with torch.inference_mode():\n    out = model(x)\nresult = (out, out.requires_grad)"
+  },
+  {
+    "number": 5, "id": "PT09-04", "version": 3, "stage": "guided",
+    "title": "no_gradで勾配の追跡を止める",
+    "task": "`requires_grad=True` のTensor `x` について、`torch.no_grad()` の中で `x * 2` を計算し、`(結果, 結果のrequires_grad)` のタプルを `result` にしてください。",
+    "input": "x = torch.tensor([1.0, -2.0], requires_grad=True)",
+    "hint": "`eval()` はモードを切り替えるだけで、勾配の追跡は止めません。勾配の追跡を止めるのは `torch.no_grad()` や `torch.inference_mode()` です。",
+    "solution": "with torch.no_grad():\n    out = x * 2\nresult = (out, out.requires_grad)"
+  },
+  {
+    "number": 6, "id": "PT09-05", "version": 3, "stage": "guided",
+    "title": "学習モードに戻したBatchNormでバッチの統計を使う",
+    "task": "`model` は `nn.BatchNorm1d` です。`model.eval()` の後で `model.train()` を呼んで学習モードに戻し、`x` を入力した出力を `result` にしてください。学習モードでは、バッチの平均と分散で正規化されます。",
+    "input": "model = nn.BatchNorm1d(2)\nx = torch.tensor([[1.0, 10.0], [3.0, 30.0]])",
+    "hint": "学習モードのBatchNormは、入力バッチの列ごとの平均と母分散で正規化します。評価モードでは、学習中に記録した移動平均を使います。",
+    "solution": "model.eval()\nmodel.train()\nresult = model(x)"
+  },
+  {
+    "number": 7, "id": "PT09-06", "version": 3, "stage": "partial",
+    "title": "一時的に評価モードにした後で元のモードに戻す",
+    "task": "`model` の現在の `training` を記録し、`model.eval()` にしてから `torch.no_grad()` の中で `model(x)` を計算してください。その後 `model.train(記録した値)` で元のモードに戻し、`(出力, model.training)` のタプルを `result` にします。",
+    "input": "model = nn.Dropout(0.5)\nmodel.train(True)\nx = torch.tensor([1.0, 2.0, 3.0])",
+    "hint": "評価用の処理の後で `model.train()` を呼ぶと、元が評価モードだった場合でも学習モードになってしまいます。記録した値を `train()` に渡して戻します。",
+    "solution": "was_training = model.training\nmodel.eval()\nwith torch.no_grad():\n    out = model(x)\nmodel.train(was_training)\nresult = (out, model.training)"
+  },
+  {
+    "number": 8, "id": "PT09-08", "version": 1, "stage": "partial",
+    "title": "評価モードのBatchNormで記録済みの統計を使う",
+    "task": "`model` は記録済みの移動平均 `running_mean` と移動分散 `running_var` を持つ `nn.BatchNorm1d` です。評価モードにして `x` を入力した出力を `result` にしてください。",
+    "input": "model = nn.BatchNorm1d(2)\nwith torch.no_grad():\n    model.running_mean.copy_(torch.tensor([1.0, 10.0]))\n    model.running_var.copy_(torch.tensor([4.0, 25.0]))\nx = torch.tensor([[3.0, 20.0], [1.0, 0.0]])",
+    "hint": "評価モードの出力は、各列で `(x - running_mean) / sqrt(running_var + eps)` に重みとバイアスを適用した値です。初期の重みは1、バイアスは0です。",
+    "solution": "model.eval()\nresult = model(x)"
+  },
+  {
+    "number": 9, "id": "PT09-09", "version": 1, "stage": "partial",
+    "title": "学習モードの順伝播で移動平均が更新されることを確かめる",
+    "task": "学習モードの `model`（`nn.BatchNorm1d`）に `x` を1回入力し、その後の `model.running_mean` の複製を `result` にしてください。",
+    "input": "model = nn.BatchNorm1d(2)\nx = torch.tensor([[1.0, 10.0], [3.0, 30.0]])",
+    "hint": "学習モードのBatchNormは、順伝播のたびに `running_mean ← (1 - momentum) * running_mean + momentum * バッチの平均` と更新します。`momentum` の既定は0.1、初期の移動平均は0です。",
+    "solution": "model.train()\nmodel(x)\nresult = model.running_mean.clone()"
+  },
+  {
+    "number": 10, "id": "PT09-10", "version": 1, "stage": "partial",
+    "title": "評価モードでは移動平均が更新されないことを確かめる",
+    "task": "`model.eval()` にしてから `model` に `x` を入力し、その後の `model.running_mean` の複製を `result` にしてください。",
+    "input": "model = nn.BatchNorm1d(2)\nwith torch.no_grad():\n    model.running_mean.copy_(torch.tensor([0.5, -0.5]))\nx = torch.tensor([[1.0, 10.0], [3.0, 30.0]])",
+    "hint": "評価モードの順伝播は記録済みの統計を使うだけで、更新はしません。評価用のデータで統計が変わらないようにするためです。",
+    "solution": "model.eval()\nmodel(x)\nresult = model.running_mean.clone()"
+  },
+  {
+    "number": 11, "id": "PT09-11", "version": 1, "stage": "partial",
+    "title": "評価モードと勾配なしでクラスを予測する",
+    "task": "`model` を評価モードにし、`torch.no_grad()` の中で `model(x)` のlogitsを計算してください。各行で最大のlogitのクラス番号をint64のTensorで `result` にします。",
+    "input": "model = nn.Sequential(nn.Linear(2, 3), nn.Dropout(0.5))\nwith torch.no_grad():\n    model[0].weight.copy_(torch.tensor([[1.0, 0.0], [0.0, 1.0], [-1.0, -1.0]]))\n    model[0].bias.zero_()\nx = torch.tensor([[2.0, 1.0], [0.0, 3.0], [-1.0, -2.0]])",
+    "hint": "評価モードにしないと、Dropoutで一部のlogitsが0になり予測が変わることがあります。勾配が不要な推論は `torch.no_grad()` の中で行います。",
+    "solution": "model.eval()\nwith torch.no_grad():\n    logits = model(x)\nresult = logits.argmax(dim=1)"
+  },
+  {
+    "number": 12, "id": "PT09-12", "version": 1, "stage": "partial",
+    "title": "no_gradをデコレータとして使う",
+    "task": "`@torch.no_grad()` を付けた関数 `predict(x)` を定義し、その中で `model(x)` を返してください。`predict(x)` の出力を `out` とし、`(out, out.requires_grad)` のタプルを `result` にします。",
+    "input": "model = nn.Linear(1, 1)\nwith torch.no_grad():\n    model.weight.fill_(2.0)\n    model.bias.fill_(-1.0)\nx = torch.tensor([[0.0], [1.5]])",
+    "hint": "`torch.no_grad()` はwith文だけでなく、関数のデコレータとしても使えます。関数の中の計算はすべて勾配を追跡しません。",
+    "solution": "@torch.no_grad()\ndef predict(x):\n    return model(x)\n\n\nout = predict(x)\nresult = (out, out.requires_grad)"
+  },
+  {
+    "number": 13, "id": "PT09-13", "version": 1, "stage": "independent",
+    "title": "評価関数で正解率を求めて学習モードに戻す",
+    "task": "学習モードの `model` を評価モードにし、`torch.no_grad()` の中で `x` の予測クラス（logitsの各行の最大の位置）を求め、`y` との正解率を数値で計算してください。最後に `model.train()` で学習モードに戻し、`(正解率, model.training)` のタプルを `result` にします。",
+    "input": "model = nn.Sequential(nn.Linear(2, 2), nn.Dropout(0.5))\nwith torch.no_grad():\n    model[0].weight.copy_(torch.tensor([[1.0, 0.0], [0.0, 1.0]]))\n    model[0].bias.zero_()\nmodel.train()\nx = torch.tensor([[2.0, 1.0], [0.0, 3.0], [5.0, 4.0], [1.0, 2.0]])\ny = torch.tensor([0, 1, 1, 1])",
+    "hint": "正解率は `(予測 == y).float().mean().item()` で数値になります。評価の後で学習を続けるときは、学習モードに戻すのを忘れないようにします。",
+    "solution": "model.eval()\nwith torch.no_grad():\n    pred = model(x).argmax(dim=1)\naccuracy = (pred == y).float().mean().item()\nmodel.train()\nresult = (accuracy, model.training)"
+  },
+  {
+    "number": 14, "id": "PT09-14", "version": 1, "stage": "independent",
+    "title": "Dropoutを含むモデルの評価モードの出力を求める",
+    "task": "`model` を評価モードにし、`torch.no_grad()` の中で `x` を入力した出力を `result` にしてください。評価モードではDropoutは何もしないので、出力はLinear層とReLUだけで決まります。",
+    "input": "model = nn.Sequential(nn.Linear(2, 2), nn.ReLU(), nn.Dropout(0.5))\nwith torch.no_grad():\n    model[0].weight.copy_(torch.tensor([[1.0, -1.0], [2.0, 0.0]]))\n    model[0].bias.copy_(torch.tensor([0.0, -1.0]))\nx = torch.tensor([[1.0, 3.0], [2.0, 1.0]])",
+    "hint": "Dropoutを含むモデルの出力を再現したいときは、評価モードにします。学習モードのままでは、実行のたびに出力が変わります。",
+    "solution": "model.eval()\nwith torch.no_grad():\n    result = model(x)"
+  },
+  {
+    "number": 15, "id": "PT09-15", "version": 1, "stage": "independent",
+    "title": "学習モードで統計を更新してから評価モードで出力する",
+    "task": "`model`（`nn.BatchNorm1d`）を学習モードにして `train_x` を1回入力し、移動平均と移動分散を更新してください。その後、評価モードにして `torch.no_grad()` の中で `test_x` を入力した出力を `result` にします。",
+    "input": "model = nn.BatchNorm1d(1)\ntrain_x = torch.tensor([[2.0], [4.0]])\ntest_x = torch.tensor([[3.0], [0.0]])",
+    "hint": "学習モードの1回の順伝播で、移動平均は `0.9 * 0 + 0.1 * バッチの平均`、移動分散は `0.9 * 1 + 0.1 * バッチの不偏分散` になります。評価モードではこの統計で正規化します。",
+    "solution": "model.train()\nmodel(train_x)\nmodel.eval()\nwith torch.no_grad():\n    result = model(test_x)"
+  },
+  {
+    "number": 16, "id": "PT09-16", "version": 1, "stage": "independent",
+    "title": "set_grad_enabledで勾配の追跡を切り替える",
+    "task": "`torch.set_grad_enabled(enabled)` の中で `x * 3` を計算し、`(結果, 結果のrequires_grad)` のタプルを `result` にしてください。`enabled` は真偽値で、問題によって異なります。",
+    "input": "x = torch.tensor([1.0, 2.0], requires_grad=True)\nenabled = False",
+    "hint": "`torch.set_grad_enabled(False)` は `torch.no_grad()` と同じ働きです。引数で切り替えられるので、学習と評価で同じ関数を使うときに便利です。",
+    "solution": "with torch.set_grad_enabled(enabled):\n    out = x * 3\nresult = (out, out.requires_grad)"
+  },
+  {
+    "number": 17, "id": "PT09-17", "version": 1, "stage": "independent",
+    "title": "一部の層だけを評価モードにする",
+    "task": "`model.train()` で全体を学習モードにした後、`model[1]`（Dropout）だけを `eval()` で評価モードにしてください。`torch.no_grad()` の中で `x` を入力した出力と、`model` の直下の層の `training` 属性を並べたリストを、`(出力, リスト)` のタプルにして `result` にします。",
+    "input": "model = nn.Sequential(nn.Linear(2, 1), nn.Dropout(0.5))\nwith torch.no_grad():\n    model[0].weight.copy_(torch.tensor([[1.0, 1.0]]))\n    model[0].bias.zero_()\nx = torch.tensor([[1.0, 2.0], [3.0, -1.0]])",
+    "hint": "子の層に `eval()` を呼ぶと、その層だけが評価モードになります。親の `model.training` は `True` のままです。",
+    "solution": "model.train()\nmodel[1].eval()\nwith torch.no_grad():\n    out = model(x)\nresult = (out, [m.training for m in model.children()])"
+  },
+  {
+    "number": 18, "id": "PT09-18", "version": 1, "stage": "independent",
+    "title": "モードを壊さない推論関数を作る",
+    "task": "関数 `predict(model, x)` を定義してください。元の `model.training` を記録し、評価モードと `torch.no_grad()` で `model(x)` を計算した後、元のモードに戻して出力を返します。`predict(model, x)` の出力と、呼び出し後の `model.training` を、`(出力, model.training)` のタプルにして `result` にします。",
+    "input": "model = nn.Sequential(nn.Linear(1, 1), nn.Dropout(0.5))\nwith torch.no_grad():\n    model[0].weight.fill_(3.0)\n    model[0].bias.fill_(1.0)\nmodel.train(False)\nx = torch.tensor([[1.0], [-1.0]])",
+    "hint": "推論のための関数がモードを `train()` に戻してしまうと、評価モードで使っていたモデルが学習モードに変わります。記録した値で `model.train(was_training)` とします。",
+    "solution": "def predict(model, x):\n    was_training = model.training\n    model.eval()\n    with torch.no_grad():\n        out = model(x)\n    model.train(was_training)\n    return out\n\n\nresult = (predict(model, x), model.training)"
+  }
+]

@@ -1,0 +1,164 @@
+[
+  {
+    "number": 1, "id": "SK04-01", "version": 3, "stage": "guided",
+    "title": "正解率を求める",
+    "task": "`accuracy_score()` を使って、正解ラベル `truth` と予測ラベル `pred` の正解率を求めてください。結果は0から1の数値です。",
+    "imports": "from sklearn.metrics import accuracy_score",
+    "input": "truth = [0, 1, 1, 0, 1]\npred = [0, 0, 1, 0, 1]",
+    "hint": "正解率は、予測が正解と一致した件数を全件数で割った値です。`accuracy_score(正解, 予測)` の順に渡します。",
+    "solution": "result = accuracy_score(truth, pred)"
+  },
+  {
+    "number": 2, "id": "SK04-07", "version": 1, "stage": "guided",
+    "title": "陽性と予測したうちの正解の割合を求める",
+    "task": "`precision_score()` を使って、クラス1を陽性とした適合率（Precision）を求めてください。適合率は、1と予測した件数のうち、正解も1だった件数の割合です。",
+    "imports": "from sklearn.metrics import precision_score",
+    "input": "truth = [1, 0, 1, 0, 0, 1]\npred = [1, 1, 1, 0, 1, 0]",
+    "hint": "適合率は `TP / (TP + FP)` です。`precision_score(truth, pred)` は、既定でクラス1を陽性として計算します。",
+    "solution": "result = precision_score(truth, pred)"
+  },
+  {
+    "number": 3, "id": "SK04-08", "version": 1, "stage": "guided",
+    "title": "正解が陽性のうち見つけられた割合を求める",
+    "task": "`recall_score()` を使って、クラス1を陽性とした再現率（Recall）を求めてください。再現率は、正解が1の件数のうち、1と予測できた件数の割合です。",
+    "imports": "from sklearn.metrics import recall_score",
+    "input": "truth = [1, 0, 1, 0, 0, 1]\npred = [1, 1, 1, 0, 1, 0]",
+    "hint": "再現率は `TP / (TP + FN)` です。分母は予測ではなく正解ラベルの陽性の件数なので、適合率とは分母が違います。",
+    "solution": "result = recall_score(truth, pred)"
+  },
+  {
+    "number": 4, "id": "SK04-02", "version": 3, "stage": "guided",
+    "title": "陽性が1件もないときのF1を0にする",
+    "task": "`f1_score()` を使って、クラス1を陽性としたF1スコアを求めてください。正解にも予測にもクラス1が1件もない場合はF1の分母が0になるので、`zero_division=0` を指定して0として扱います。",
+    "imports": "from sklearn.metrics import f1_score",
+    "input": "truth = [0, 0, 0]\npred = [0, 0, 0]",
+    "hint": "F1は `2TP / (2TP + FP + FN)` で計算されます。陽性が正解にも予測にもないと分母が0になるので、`f1_score(truth, pred, zero_division=0)` のように扱い方を指定します。",
+    "solution": "result = f1_score(truth, pred, zero_division=0)"
+  },
+  {
+    "number": 5, "id": "SK04-03", "version": 3, "stage": "guided",
+    "title": "平均絶対誤差を求める",
+    "task": "`mean_absolute_error()` を使って、正解値 `truth` と予測値 `pred` の平均絶対誤差（MAE）を求めてください。",
+    "imports": "from sklearn.metrics import mean_absolute_error",
+    "input": "truth = [3.0, -1.0, 2.0, 7.0]\npred = [2.5, 0.0, 2.0, 9.0]",
+    "hint": "MAEは、各要素の誤差の絶対値 `|正解 - 予測|` の平均です。単位は目的変数と同じです。",
+    "solution": "result = mean_absolute_error(truth, pred)"
+  },
+  {
+    "number": 6, "id": "SK04-09", "version": 1, "stage": "guided",
+    "title": "平均二乗誤差を求める",
+    "task": "`mean_squared_error()` を使って、正解値 `truth` と予測値 `pred` の平均二乗誤差（MSE）を求めてください。",
+    "imports": "from sklearn.metrics import mean_squared_error",
+    "input": "truth = [3.0, -1.0, 2.0, 7.0]\npred = [2.5, 0.0, 2.0, 9.0]",
+    "hint": "MSEは、各要素の誤差を二乗した値の平均です。大きな誤差ほど強く効くので、MAEとは値の大きさが変わります。",
+    "solution": "result = mean_squared_error(truth, pred)"
+  },
+  {
+    "number": 7, "id": "SK04-04", "version": 3, "stage": "partial",
+    "title": "行を正解、列を予測とする混同行列を作る",
+    "task": "`confusion_matrix()` を `labels=[0, 1]` で使い、行が正解ラベル、列が予測ラベルの2×2の混同行列を求めてください。データに一方のクラスしか現れない場合も、shapeは `(2, 2)` です。",
+    "imports": "from sklearn.metrics import confusion_matrix",
+    "input": "truth = [0, 0, 1, 1, 1]\npred = [0, 1, 1, 0, 1]",
+    "hint": "`confusion_matrix(truth, pred, labels=[0, 1])` の `[i, j]` 要素は、正解が `i` で `j` と予測した件数です。引数の順を逆にすると転置した行列になります。",
+    "solution": "result = confusion_matrix(truth, pred, labels=[0, 1])"
+  },
+  {
+    "number": 8, "id": "SK04-10", "version": 1, "stage": "partial",
+    "title": "混同行列からTN・FP・FN・TPを取り出す",
+    "task": "`labels=[0, 1]` の混同行列から、`(TN, FP, FN, TP)` の順の整数のタプルを作ってください。クラス1を陽性とします。",
+    "imports": "from sklearn.metrics import confusion_matrix",
+    "input": "truth = [0, 0, 1, 1, 1, 0]\npred = [0, 1, 1, 0, 1, 0]",
+    "hint": "2×2の混同行列を `ravel()` で1次元にすると、`[TN, FP, FN, TP]` の順に並びます。各要素を `int()` で変換してタプルにします。",
+    "solution": "matrix = confusion_matrix(truth, pred, labels=[0, 1])\nresult = tuple(int(v) for v in matrix.ravel())"
+  },
+  {
+    "number": 9, "id": "SK04-05", "version": 3, "stage": "partial",
+    "title": "クラスごとのF1を並べる",
+    "task": "`f1_score()` を `labels=[0, 1]`、`average=None`、`zero_division=0` で使い、クラス0とクラス1それぞれのF1スコアを並べた配列を求めてください。",
+    "imports": "from sklearn.metrics import f1_score",
+    "input": "truth = [0, 1, 1, 0, 1]\npred = [0, 0, 1, 0, 1]",
+    "hint": "`average=None` を指定すると、平均を取らずに `labels` の順でクラスごとのスコアを返します。各クラスを陽性とみなしてF1を計算します。",
+    "solution": "result = f1_score(truth, pred, labels=[0, 1], average=None, zero_division=0)"
+  },
+  {
+    "number": 10, "id": "SK04-11", "version": 1, "stage": "partial",
+    "title": "3クラスのF1をクラスごとに平均する",
+    "task": "`f1_score()` を `average=\"macro\"`、`zero_division=0` で使い、3クラス分類のマクロ平均F1を求めてください。マクロ平均は、クラスごとのF1を件数に関係なく同じ重みで平均します。",
+    "imports": "from sklearn.metrics import f1_score",
+    "input": "truth = [0, 1, 2, 2, 1, 0, 2]\npred = [0, 2, 2, 2, 1, 1, 0]",
+    "hint": "多クラスでは `average` の指定が必要です。`\"macro\"` は各クラスのF1の単純平均、`\"weighted\"` は件数で重み付けした平均です。",
+    "solution": "result = f1_score(truth, pred, average=\"macro\", zero_division=0)"
+  },
+  {
+    "number": 11, "id": "SK04-12", "version": 1, "stage": "partial",
+    "title": "回帰の決定係数を求める",
+    "task": "`r2_score()` を使って、正解値 `truth` と予測値 `pred` の決定係数（R²）を求めてください。平均値だけを予測するより悪い場合は負の値になります。",
+    "imports": "from sklearn.metrics import r2_score",
+    "input": "truth = [1.0, 2.0, 3.0, 4.0]\npred = [1.5, 2.0, 2.5, 4.5]",
+    "hint": "R²は `1 - (残差の二乗和) / (truth の偏差の二乗和)` です。`r2_score(正解, 予測)` の順に渡します。順を逆にすると値が変わります。",
+    "solution": "result = r2_score(truth, pred)"
+  },
+  {
+    "number": 12, "id": "SK04-13", "version": 1, "stage": "partial",
+    "title": "文字列のラベルで陽性クラスを指定する",
+    "task": "`precision_score()` を使って、ラベル `\"spam\"` を陽性とした適合率を求めてください。ラベルは文字列なので、陽性のラベルを `pos_label` で指定します。",
+    "imports": "from sklearn.metrics import precision_score",
+    "input": "truth = [\"spam\", \"ham\", \"spam\", \"ham\", \"spam\"]\npred = [\"spam\", \"spam\", \"ham\", \"ham\", \"spam\"]",
+    "hint": "`pos_label` の既定は1です。`precision_score(truth, pred, pos_label=\"spam\")` のように、陽性とするラベルを指定します。",
+    "solution": "result = precision_score(truth, pred, pos_label=\"spam\")"
+  },
+  {
+    "number": 13, "id": "SK04-06", "version": 3, "stage": "independent",
+    "title": "誤分類の件数を数える",
+    "task": "正解ラベル `truth` と予測ラベル `pred` が異なる件数を整数で求めてください。`truth` と `pred` はリストまたはNumPy配列で、空の場合は0です。",
+    "imports": "import numpy as np",
+    "input": "truth = [0, 1, 1, 2, 2]\npred = [0, 2, 1, 2, 0]",
+    "hint": "`np.asarray()` で配列にしてから `!=` で比較すると、異なる位置が `True` になります。`np.count_nonzero()` で `True` の数を数えます。",
+    "solution": "result = int(np.count_nonzero(np.asarray(truth) != np.asarray(pred)))"
+  },
+  {
+    "number": 14, "id": "SK04-14", "version": 1, "stage": "independent",
+    "title": "スコアの順位からROC AUCを求める",
+    "task": "`roc_auc_score()` を使って、正解ラベル `truth`（0と1）とクラス1のスコア `scores` からROC AUCを求めてください。予測ラベルではなく、スコアをそのまま渡します。",
+    "imports": "from sklearn.metrics import roc_auc_score",
+    "input": "truth = [0, 0, 1, 1, 0, 1]\nscores = [0.1, 0.4, 0.35, 0.8, 0.2, 0.9]",
+    "hint": "ROC AUCは、陽性と陰性を1つずつ選んだとき、陽性のスコアの方が大きい確率です。スコアを0/1に変換すると順位の情報が失われます。",
+    "solution": "result = roc_auc_score(truth, scores)"
+  },
+  {
+    "number": 15, "id": "SK04-15", "version": 1, "stage": "independent",
+    "title": "確率をしきい値でラベルにしてから正解率を求める",
+    "task": "`proba` はクラス1の予測確率です。`proba` が `threshold` 以上なら1、それ以外を0として予測ラベルを作り、`truth` に対する正解率を `accuracy_score()` で求めてください。",
+    "imports": "import numpy as np\nfrom sklearn.metrics import accuracy_score",
+    "input": "truth = np.array([0, 1, 1, 0, 1])\nproba = np.array([0.2, 0.55, 0.4, 0.6, 0.9])\nthreshold = 0.5",
+    "hint": "`(proba >= threshold).astype(int)` で予測ラベルを作ります。確率のまま `accuracy_score()` に渡すと、ラベルとして比較できません。",
+    "solution": "pred = (proba >= threshold).astype(int)\nresult = accuracy_score(truth, pred)"
+  },
+  {
+    "number": 16, "id": "SK04-16", "version": 1, "stage": "independent",
+    "title": "クラスの偏りを補正した正解率を求める",
+    "task": "`balanced_accuracy_score()` を使って、`truth` と `pred` のバランス正解率を求めてください。バランス正解率は、クラスごとの再現率の平均です。",
+    "imports": "from sklearn.metrics import balanced_accuracy_score",
+    "input": "truth = [0, 0, 0, 0, 0, 0, 1, 1]\npred = [0, 0, 0, 0, 0, 0, 0, 1]",
+    "hint": "多いクラスだけを当てても正解率は高くなります。バランス正解率は、各クラスの再現率を同じ重みで平均するので、少ないクラスの見逃しが反映されます。",
+    "solution": "result = balanced_accuracy_score(truth, pred)"
+  },
+  {
+    "number": 17, "id": "SK04-17", "version": 1, "stage": "independent",
+    "title": "平均二乗誤差の平方根を求める",
+    "task": "正解値 `truth` と予測値 `pred` の平均二乗誤差の平方根（RMSE）を求めてください。結果は目的変数と同じ単位の数値です。",
+    "imports": "import numpy as np\nfrom sklearn.metrics import mean_squared_error",
+    "input": "truth = [3.0, -1.0, 2.0, 7.0]\npred = [2.5, 0.0, 2.0, 9.0]",
+    "hint": "`mean_squared_error()` でMSEを求め、`np.sqrt()` で平方根を取ります。MAEとは一致しません。",
+    "solution": "result = float(np.sqrt(mean_squared_error(truth, pred)))"
+  },
+  {
+    "number": 18, "id": "SK04-18", "version": 1, "stage": "independent",
+    "title": "3つの指標を辞書にまとめる",
+    "task": "クラス1を陽性として、適合率・再現率・F1スコアを求め、キーが `\"precision\"`、`\"recall\"`、`\"f1\"` の辞書にしてください。分母が0になる指標は `zero_division=0` で0にします。",
+    "imports": "from sklearn.metrics import f1_score, precision_score, recall_score",
+    "input": "truth = [1, 1, 0, 0, 1, 0]\npred = [1, 0, 0, 1, 1, 1]",
+    "hint": "3つの関数に同じ `truth` と `pred` を渡し、`zero_division=0` を指定します。辞書のキーと関数の対応を取り違えないようにします。",
+    "solution": "result = {\n    \"precision\": precision_score(truth, pred, zero_division=0),\n    \"recall\": recall_score(truth, pred, zero_division=0),\n    \"f1\": f1_score(truth, pred, zero_division=0),\n}"
+  }
+]

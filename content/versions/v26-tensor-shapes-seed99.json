@@ -1,0 +1,1208 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT02-01",
+      "family_id": "PT02-01",
+      "version_id": "PT02-01@2",
+      "content_version": 2,
+      "concept_id": "PT02",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "バッチを平坦化",
+      "description": "先頭軸をバッチとして残し、残りを平坦化する。batchは正。",
+      "learning_goal": "連続性も考えてTensorのshapeを変換します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "先頭軸をバッチとして残し、残りを平坦化する。batchは正。",
+      "starter_code": "result = x.reshape(x.shape[0], -___)\n",
+      "example": "x.permute(0, 3, 1, 2)",
+      "editable_regions": [],
+      "hints": [
+        "連続性も考えてTensorのshapeを変換します。",
+        "reshapeは必要ならコピーします。",
+        "空欄には 1 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = x.reshape(x.shape[0], -1)\n",
+      "explanation": "reshapeは必要ならコピーします。",
+      "common_mistakes": [
+        "非連続Tensorにviewを使いstride条件を満たせない。",
+        "permuteで行う軸の並べ替えをreshapeで代用する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(24.).reshape(2,3,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              12
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0,
+                1.0,
+                2.0,
+                3.0,
+                4.0,
+                5.0,
+                6.0,
+                7.0,
+                8.0,
+                9.0,
+                10.0,
+                11.0
+              ],
+              [
+                12.0,
+                13.0,
+                14.0,
+                15.0,
+                16.0,
+                17.0,
+                18.0,
+                19.0,
+                20.0,
+                21.0,
+                22.0,
+                23.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(3,2,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(12.).reshape(2,2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              6
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0,
+                1.0,
+                2.0,
+                3.0,
+                4.0,
+                5.0
+              ],
+              [
+                6.0,
+                7.0,
+                8.0,
+                9.0,
+                10.0,
+                11.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT01",
+        "NP03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(24.0).reshape(2, 3, 4)",
+        "task": "先頭軸をバッチとして残し、残りを平坦化する。batchは正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT02-02",
+      "family_id": "PT02-02",
+      "version_id": "PT02-02@3",
+      "content_version": 3,
+      "concept_id": "PT02",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "転置したTensorも1次元にする",
+      "description": "転置されたTensor xの要素を、現在の並び順で1次元にしてください。初期コードのviewではエラーになる入力も扱えるように直し、resultに代入します。",
+      "learning_goal": "連続性も考えてTensorのshapeを変換します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "xを見た目の行の順に読み、1次元に並べたTensor。",
+      "starter_code": "result = x.view(-1)\n",
+      "example": "x.permute(0, 3, 1, 2)",
+      "editable_regions": [],
+      "hints": [
+        "転置は要素の見え方を変えますが、メモリ上の並びまで作り直すとは限りません。",
+        "viewは元の並び方を使える場合にだけ変形できます。reshapeは必要な場合にコピーを作れます。",
+        "解答部分は次の形で書けます。\nresult = x.reshape(-1)\n"
+      ],
+      "solution": "result = x.reshape(-1)\n",
+      "explanation": "転置後のTensorは、要素へ進む間隔（stride）が単純な1次元の並びに合わないことがあります。reshapeは必要なら連続したコピーを作るので、同じ見た目の順序で1次元にできます。viewとreshapeは、軸の入替えそのものとは別の操作です。",
+      "common_mistakes": [
+        "転置したxへview(-1)を使うと、stride条件を満たせずRuntime Errorになる場合があります。",
+        "flattenの前にxを転置し直すと、並べる要素の順序も変わってしまいます。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5230\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(12).reshape(3,4).T",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              12
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              0,
+              4,
+              8,
+              1,
+              5,
+              9,
+              2,
+              6,
+              10,
+              3,
+              7,
+              11
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5230\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5230\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 5230\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(6).reshape(2,3).T",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              6
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              0,
+              3,
+              1,
+              4,
+              2,
+              5
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT01",
+        "NP03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "result = x.view(-1)のviewを見直してください。転置された入力xはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "値の順序を変えず、転置済みのTensorでも変形できる操作を選んでください。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(12).reshape(3, 4).T",
+        "task": "転置されたTensor xの要素を、現在の並び順で1次元にしてください。初期コードのviewではエラーになる入力も扱えるように直し、resultに代入します。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT02-03",
+      "family_id": "PT02-03",
+      "version_id": "PT02-03@2",
+      "content_version": 2,
+      "concept_id": "PT02",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "バッチ軸追加",
+      "description": "先頭にサイズ1のバッチ軸を追加して返す。",
+      "learning_goal": "連続性も考えてTensorのshapeを変換します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "先頭にサイズ1のバッチ軸を追加して返す。",
+      "starter_code": "result =\n",
+      "example": "x.permute(0, 3, 1, 2)",
+      "editable_regions": [],
+      "hints": [
+        "連続性も考えてTensorのshapeを変換します。",
+        "unsqueezeは要素数を変えません。",
+        "解答部分は次の形で書けます。\nresult = x.unsqueeze(0)\n"
+      ],
+      "solution": "result = x.unsqueeze(0)\n",
+      "explanation": "unsqueezeは要素数を変えません。",
+      "common_mistakes": [
+        "非連続Tensorにviewを使いstride条件を満たせない。",
+        "permuteで行う軸の並べ替えをreshapeで代用する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9647\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(3,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              3,
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9647\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor(2.)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              2.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9647\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              []
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9647\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,1,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              2,
+              1,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                [
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ]
+                ],
+                [
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT01",
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.ones(3, 4)",
+        "task": "先頭にサイズ1のバッチ軸を追加して返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT02-04",
+      "family_id": "PT02-04",
+      "version_id": "PT02-04@2",
+      "content_version": 2,
+      "concept_id": "PT02",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "NHWC変換の修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nNHWCのxをNCHWへ並べ替える。reshapeでの並べ替えは誤り。",
+      "learning_goal": "連続性も考えてTensorのshapeを変換します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "NHWCのxをNCHWへ並べ替える。reshapeでの並べ替えは誤り。",
+      "starter_code": "result = x.reshape(0, 3, 1, 2)\n",
+      "example": "x.permute(0, 3, 1, 2)",
+      "editable_regions": [],
+      "hints": [
+        "連続性も考えてTensorのshapeを変換します。",
+        "permuteは各要素の軸上の位置を変えます。",
+        "解答部分は次の形で書けます。\nresult = x.permute(0, 3, 1, 2)\n"
+      ],
+      "solution": "result = x.permute(0, 3, 1, 2)\n",
+      "explanation": "permuteは各要素の軸上の位置を変えます。",
+      "common_mistakes": [
+        "非連続Tensorにviewを使いstride条件を満たせない。",
+        "permuteで行う軸の並べ替えをreshapeで代用する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2668\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(48).reshape(2,2,4,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              3,
+              2,
+              4
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              [
+                [
+                  [
+                    0,
+                    3,
+                    6,
+                    9
+                  ],
+                  [
+                    12,
+                    15,
+                    18,
+                    21
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    4,
+                    7,
+                    10
+                  ],
+                  [
+                    13,
+                    16,
+                    19,
+                    22
+                  ]
+                ],
+                [
+                  [
+                    2,
+                    5,
+                    8,
+                    11
+                  ],
+                  [
+                    14,
+                    17,
+                    20,
+                    23
+                  ]
+                ]
+              ],
+              [
+                [
+                  [
+                    24,
+                    27,
+                    30,
+                    33
+                  ],
+                  [
+                    36,
+                    39,
+                    42,
+                    45
+                  ]
+                ],
+                [
+                  [
+                    25,
+                    28,
+                    31,
+                    34
+                  ],
+                  [
+                    37,
+                    40,
+                    43,
+                    46
+                  ]
+                ],
+                [
+                  [
+                    26,
+                    29,
+                    32,
+                    35
+                  ],
+                  [
+                    38,
+                    41,
+                    44,
+                    47
+                  ]
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2668\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,1,1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                [
+                  [
+                    1.0
+                  ]
+                ]
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2668\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2,2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0,
+              3,
+              2,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 2668\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(24).reshape(1,2,4,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              3,
+              2,
+              4
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              [
+                [
+                  [
+                    0,
+                    3,
+                    6,
+                    9
+                  ],
+                  [
+                    12,
+                    15,
+                    18,
+                    21
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    4,
+                    7,
+                    10
+                  ],
+                  [
+                    13,
+                    16,
+                    19,
+                    22
+                  ]
+                ],
+                [
+                  [
+                    2,
+                    5,
+                    8,
+                    11
+                  ],
+                  [
+                    14,
+                    17,
+                    20,
+                    23
+                  ]
+                ]
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT01",
+        "NP03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(48).reshape(2, 2, 4, 3)",
+        "task": "NHWCのxをNCHWへ並べ替える。reshapeでの並べ替えは誤り。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT02-05",
+      "family_id": "PT02-05",
+      "version_id": "PT02-05@2",
+      "content_version": 2,
+      "concept_id": "PT02",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "最後の軸だけ除去",
+      "description": "最後の軸が1であるxからその軸だけ除去する。",
+      "learning_goal": "連続性も考えてTensorのshapeを変換します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "最後の軸が1であるxからその軸だけ除去する。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "x.permute(0, 3, 1, 2)",
+      "editable_regions": [],
+      "hints": [
+        "連続性も考えてTensorのshapeを変換します。",
+        "無引数squeezeはバッチ軸も消すことがあります。",
+        "解答部分は次の形で書けます。\nresult = x.squeeze(-1)\n"
+      ],
+      "solution": "result = x.squeeze(-1)\n",
+      "explanation": "無引数squeezeはバッチ軸も消すことがあります。",
+      "common_mistakes": [
+        "非連続Tensorにviewを使いstride条件を満たせない。",
+        "permuteで行う軸の並べ替えをreshapeで代用する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3536\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,3,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0,
+                1.0,
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3536\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3536\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.0
+          }
+        },
+        {
+          "setup": "seed = 3536\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0
+              ],
+              [
+                1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT01",
+        "NP03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.ones(1, 3, 1)",
+        "task": "最後の軸が1であるxからその軸だけ除去する。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT02-06",
+      "family_id": "PT02-06",
+      "version_id": "PT02-06@2",
+      "content_version": 2,
+      "concept_id": "PT02",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "転置後の平坦化を修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\n2次元xの行列転置を行い、転置後の論理順序で1次元Tensorを返す。",
+      "learning_goal": "連続性も考えてTensorのshapeを変換します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "2次元xの行列転置を行い、転置後の論理順序で1次元Tensorを返す。",
+      "starter_code": "result = x.reshape(-1)\n",
+      "example": "x.permute(0, 3, 1, 2)",
+      "editable_regions": [],
+      "hints": [
+        "連続性も考えてTensorのshapeを変換します。",
+        "contiguous().viewまたはreshapeを使えます。",
+        "解答部分は次の形で書けます。\nresult = x.T.reshape(-1)\n"
+      ],
+      "solution": "result = x.T.reshape(-1)\n",
+      "explanation": "contiguous().viewまたはreshapeを使えます。",
+      "common_mistakes": [
+        "非連続Tensorにviewを使いstride条件を満たせない。",
+        "permuteで行う軸の並べ替えをreshapeで代用する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(12).reshape(3,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              12
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              0,
+              4,
+              8,
+              1,
+              5,
+              9,
+              2,
+              6,
+              10,
+              3,
+              7,
+              11
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              1.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 8704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(6).reshape(2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              6
+            ],
+            "dtype": "torch.int64",
+            "device": "cpu",
+            "data": [
+              0,
+              3,
+              1,
+              4,
+              2,
+              5
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT01",
+        "NP03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(12).reshape(3, 4)",
+        "task": "2次元xの行列転置を行い、転置後の論理順序で1次元Tensorを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

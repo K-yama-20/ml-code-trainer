@@ -16,8 +16,14 @@ test("all browser problem references pass in the production Pyodide runner", asy
     page.getByRole("heading", { name: "今日も、コードを読む力を。" }),
   ).toBeVisible();
   const results = [];
+  // Optional scope for content work, e.g. BROWSER_CONTENT_CONCEPTS=NP09,PD01
+  const scope = (process.env.BROWSER_CONTENT_CONCEPTS ?? "")
+    .split(",")
+    .filter(Boolean);
   const problems = catalog.problems.filter(
-    (p: { runtime: string }) => p.runtime === "browser",
+    (p: { runtime: string; concept_id: string }) =>
+      p.runtime === "browser" &&
+      (!scope.length || scope.includes(p.concept_id)),
   );
   for (const p of problems) {
     const result = await page.evaluate(async (p) => {
