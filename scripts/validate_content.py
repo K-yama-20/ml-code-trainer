@@ -91,16 +91,16 @@ def check_display(p):
 
 
 def same_content(a, b):
-    """Exact equality, except floats may differ by platform rounding noise.
+    """Exact equality, except floats may differ by platform numeric noise.
 
-    Some expected values (e.g. scikit-learn solver output) differ in the last
-    bits between Windows and Linux. The tolerance is far tighter than grading's
-    1e-5, so any real content change still counts as a change.
+    Some expected values (e.g. scikit-learn lbfgs output in SK03) differ by
+    ~1e-8 between Windows and Linux BLAS builds. The tolerance is 10x tighter
+    than grading's 1e-5, so any change that could affect a verdict still counts.
     """
     if isinstance(a, float) or isinstance(b, float):
         return (isinstance(a, (int, float)) and isinstance(b, (int, float))
                 and not isinstance(a, bool) and not isinstance(b, bool)
-                and math.isclose(a, b, rel_tol=1e-9, abs_tol=1e-12))
+                and math.isclose(a, b, rel_tol=1e-6, abs_tol=1e-6))
     if isinstance(a, dict) and isinstance(b, dict):
         return a.keys() == b.keys() and all(same_content(a[k], b[k]) for k in a)
     if isinstance(a, list) and isinstance(b, list):
