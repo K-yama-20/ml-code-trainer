@@ -1931,7 +1931,8 @@
             "enum": [
               "exact",
               "json",
-              "json_unicode"
+              "json_unicode",
+              "relative"
             ],
             "title": "Comparison",
             "default": "exact"

@@ -1,0 +1,1063 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "NP09-01",
+      "family_id": "NP09-01",
+      "version_id": "NP09-01@2",
+      "content_version": 2,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "列ごとの標準化",
+      "description": "列ごとに平均0、母標準偏差1へ標準化。標準偏差は最低1e-8とする。行数は正。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "列ごとに平均0、母標準偏差1へ標準化。標準偏差は最低1e-8とする。行数は正。",
+      "starter_code": "result = (x - x.mean(axis=0)) / np.maximum(x.std(axis=___), 1e-08)\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "定数列や大きな数でも壊れない前処理を作ります。",
+        "定数列では0除算を避けます。ddof=0です。",
+        "空欄には 0 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = (x - x.mean(axis=0)) / np.maximum(x.std(axis=0), 1e-08)\n",
+      "explanation": "定数列では0除算を避けます。ddof=0です。",
+      "common_mistakes": [
+        "定数列やゼロノルムで0除算する。",
+        "テスト集合の統計で前処理を再学習する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1018\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.08084410945688708,
+                1.1368605567955865,
+                1.2601254144479652,
+                0.6761423763334073
+              ],
+              [
+                -1.2631641258434407,
+                -1.2968951408323666,
+                -1.1859970153007178,
+                -1.4137679926588709
+              ],
+              [
+                1.1823200163865533,
+                0.16003458403677978,
+                -0.07412839914724742,
+                0.7376256163254635
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1018\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((3,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1018\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[2.,4.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1018\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1.,2.],[3.,2.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.846245506166067, 1.2171896367885993, 1.0942281450690117, 0.6130421033506434], [-0.5412817464255536, -1.0500233643847008, -0.6141650155369842, -1.1124157497678515], [1.9833872280666536, 0.30720818405649414, 0.1623736876072404, 0.6638034856823726]], dtype=np.float64).reshape((3, 4))",
+        "task": "列ごとに平均0、母標準偏差1へ標準化。標準偏差は最低1e-8とする。行数は正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP09-02",
+      "family_id": "NP09-02",
+      "version_id": "NP09-02@3",
+      "content_version": 3,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "softmaxの出力shape",
+      "description": "行ごとにsoftmaxを適用した後のshapeをタプルでresultに代入してください。softmax自体は計算不要です。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "行ごとにsoftmaxを適用した後のshapeをタプルでresultに代入してください。softmax自体は計算不要です。",
+      "starter_code": "result = ___\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "定数列や大きな数でも壊れない前処理を作ります。",
+        "softmaxは入力と同じshapeです。",
+        "空欄には x.shape と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = x.shape\n",
+      "explanation": "softmaxは入力と同じshapeです。",
+      "common_mistakes": [
+        "定数列やゼロノルムで0除算する。",
+        "テスト集合の統計で前処理を再学習する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9677\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": [
+            3,
+            4
+          ]
+        },
+        {
+          "setup": "seed = 9677\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1000.,1001.]])",
+          "expected": [
+            1,
+            2
+          ]
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9677\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,1))",
+          "expected": [
+            1,
+            1
+          ]
+        },
+        {
+          "setup": "seed = 9677\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((2,3))",
+          "expected": [
+            2,
+            3
+          ]
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[-0.6329841589570709, 1.3907689615477326, 0.926949829004476, -0.11974751677121113], [1.2715695909100275, 1.8850614559824228, 0.39485852576155206, 0.46855266563072173], [1.1036197565082968, 0.09449705993926776, 0.9103833693333186, 1.7553192747911028]], dtype=np.float64).reshape((3, 4))",
+        "task": "行ごとにsoftmaxを適用した後のshapeをタプルでresultに代入してください。softmax自体は計算不要です。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP09-03",
+      "family_id": "NP09-03",
+      "version_id": "NP09-03@2",
+      "content_version": 2,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "行ごとのL2正規化",
+      "description": "各行をL2ノルムで割る。ノルムは最低1e-8。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各行をL2ノルムで割る。ノルムは最低1e-8。",
+      "starter_code": "result =\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "定数列や大きな数でも壊れない前処理を作ります。",
+        "ゼロベクトルはゼロのままにします。",
+        "解答部分は次の形で書けます。\nresult = x / np.maximum(np.linalg.norm(x, axis=1, keepdims=True), 1e-08)\n"
+      ],
+      "solution": "result = x / np.maximum(np.linalg.norm(x, axis=1, keepdims=True), 1e-08)\n",
+      "explanation": "ゼロベクトルはゼロのままにします。",
+      "common_mistakes": [
+        "定数列やゼロノルムで0除算する。",
+        "テスト集合の統計で前処理を再学習する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3111\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -0.8574924991406192,
+                -0.01240027849617342,
+                0.30869621595095065,
+                0.4114115862106421
+              ],
+              [
+                -0.34241381388718617,
+                -0.6001674138143281,
+                -0.006856690873669405,
+                0.7228449634914221
+              ],
+              [
+                0.8731337545264836,
+                0.3207352096395681,
+                -0.2919847980321427,
+                0.222511235046857
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3111\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((2,3))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3111\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[3.,4.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.6,
+                0.8
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3111\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[-2.5026680238791448, -0.03619131422219029, 0.9009573256059975, 1.2007412572059417], [-0.9435805897569512, -1.6538652919721482, -0.018894799672099904, 1.9919245348518406], [1.759529582549486, 0.6463420828714666, -0.5884045681762828, 0.4484022046850001]], dtype=np.float64).reshape((3, 4))",
+        "task": "各行をL2ノルムで割る。ノルムは最低1e-8。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP09-04",
+      "family_id": "NP09-04",
+      "version_id": "NP09-04@2",
+      "content_version": 2,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "安定なsoftmax",
+      "description": "2次元xの行ごとのsoftmaxを返す。列数は正。大きい入力でもオーバーフローさせない。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "2次元xの行ごとのsoftmaxを返す。列数は正。大きい入力でもオーバーフローさせない。",
+      "starter_code": "result =\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "定数列や大きな数でも壊れない前処理を作ります。",
+        "expの前に行最大値を引きます。",
+        "解答部分は次の形で書けます。\nz = x - x.max(axis=1, keepdims=True)\ne = np.exp(z)\nresult = e / e.sum(axis=1, keepdims=True)\n"
+      ],
+      "solution": "z = x - x.max(axis=1, keepdims=True)\ne = np.exp(z)\nresult = e / e.sum(axis=1, keepdims=True)\n",
+      "explanation": "expの前に行最大値を引きます。",
+      "common_mistakes": [
+        "定数列やゼロノルムで0除算する。",
+        "テスト集合の統計で前処理を再学習する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8791\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.3883654935034283,
+                0.053968431672418514,
+                0.05471589262521513,
+                0.5029501821989381
+              ],
+              [
+                0.042003286940552796,
+                0.7022504196704781,
+                0.03214180415302379,
+                0.22360448923594528
+              ],
+              [
+                0.18186290872167366,
+                0.3200146605846523,
+                0.48410996651459787,
+                0.014012464179076208
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8791\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1000.,1001.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.2689414213699951,
+                0.7310585786300049
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8791\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,1))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8791\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[-1000.,1000.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.4072968280334931, -1.5662507847968723, -1.552495852934482, 0.6658410620830123], [-1.6681930368304645, 1.1483491510515522, -1.9357834196122004, 0.0039379056222435815], [0.7488648311217038, 1.3139784857326924, 1.7279237611136993, -1.814441091298617]], dtype=np.float64).reshape((3, 4))",
+        "task": "2次元xの行ごとのsoftmaxを返す。列数は正。大きい入力でもオーバーフローさせない。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP09-05",
+      "family_id": "NP09-05",
+      "version_id": "NP09-05@3",
+      "content_version": 3,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "学習時の平均と標準偏差で標準化する",
+      "description": "testから学習時のmeanを引き、学習時のstdで割った配列を返してください。0で割らないよう、stdの各値が1e-8未満なら1e-8を使います。testから平均や標準偏差を計算し直しません。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "(test - mean) / np.maximum(std, 1e-8)。testと同じshapeのNumPy配列を返します。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "列ごとに『平均からどれだけ離れているか』を測ります。まずtest - meanを作ります。",
+        "割る前にstdを下限1e-8で置き換えます。std + 1e-8では、十分大きいstdまで変えてしまいます。",
+        "解答部分は次の形で書けます。\nresult = (test - mean) / np.maximum(std, 1e-08)\n"
+      ],
+      "solution": "result = (test - mean) / np.maximum(std, 1e-08)\n",
+      "explanation": "学習データで決めた基準を未知データにも使います。テスト側で基準を作り直すと、評価に使う情報を学習側へ混ぜる『データリーク』になります。stdの下限は、一定値だけの列でも0除算しないための処理です。",
+      "common_mistakes": [
+        "test.mean(axis=0)を使うと、渡された学習時の基準と異なる変換になります。",
+        "stdが0の列をそのまま割ると有限な結果になりません。下限を取ってから割ります。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 1450\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,np.zeros(4),np.ones(4)",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -2.470366218054764,
+                0.28514116503347753,
+                -0.9159051255491746,
+                -0.09361248107921122
+              ],
+              [
+                0.8326760801311156,
+                0.44067029102917704,
+                -0.8993932369093298,
+                0.7794003149425777
+              ],
+              [
+                -2.44749209659429,
+                0.8446558802329954,
+                0.059936688295602836,
+                -1.3974667259021833
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 1450\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((1,2)),np.array([1.,2.]),np.array([0.,2.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                -0.5
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 1450\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((0,2)),np.zeros(2),np.ones(2)",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 1450\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,np.ones(4),np.ones(4)*2",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -1.735183109027382,
+                -0.35742941748326124,
+                -0.9579525627745873,
+                -0.5468062405396056
+              ],
+              [
+                -0.0836619599344422,
+                -0.27966485448541145,
+                -0.9496966184546649,
+                -0.11029984252871117
+              ],
+              [
+                -1.723746048297145,
+                -0.07767205988350229,
+                -0.4700316558521986,
+                -1.1987333629510917
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "test=[[14, 5]], mean=[10, 1], std=[2, 4] → [[2, 1]]。",
+        "feedback": {
+          "wrong": "学習時のmeanとstdを使っているか、stdを加算ではなく下限で処理しているか確認してください。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "test",
+          "mean",
+          "std"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\ntest = np.array([[-2.470366218054764, 0.28514116503347753, -0.9159051255491746, -0.09361248107921122], [0.8326760801311156, 0.44067029102917704, -0.8993932369093298, 0.7794003149425777], [-2.44749209659429, 0.8446558802329954, 0.059936688295602836, -1.3974667259021833]], dtype=np.float64).reshape((3, 4))\nmean = np.zeros(4)\nstd = np.ones(4)",
+        "task": "testから学習時のmeanを引き、学習時のstdで割った配列を返してください。0で割らないよう、stdの各値が1e-8未満なら1e-8を使います。testから平均や標準偏差を計算し直しません。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP09-06",
+      "family_id": "NP09-06",
+      "version_id": "NP09-06@3",
+      "content_version": 3,
+      "concept_id": "NP09",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "Min-Max変換",
+      "description": "列ごとに最小0最大1へ変換。範囲が0の列は0とする。行数は正。",
+      "learning_goal": "定数列や大きな数でも壊れない前処理を作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "列ごとに最小0最大1へ変換。範囲が0の列は0とする。行数は正。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "(x - mean) / np.maximum(std, 1e-8)",
+      "editable_regions": [],
+      "hints": [
+        "定数列や大きな数でも壊れない前処理を作ります。",
+        "最大値と最小値の差が0の列だけ、分母を1に置き換えます。差が小さくても0でなければ、その差で割ります。",
+        "解答部分は次の形で書けます。\nlo = x.min(axis=0)\nspan = x.max(axis=0) - lo\nresult = (x - lo) / np.where(span == 0, 1, span)\n"
+      ],
+      "solution": "lo = x.min(axis=0)\nspan = x.max(axis=0) - lo\nresult = (x - lo) / np.where(span == 0, 1, span)\n",
+      "explanation": "最大値と最小値の差が0の列だけ、分母を1に置き換えます。差が小さくても0でなければ、その差で割ります。",
+      "common_mistakes": [
+        "定数列やゼロノルムで0除算する。",
+        "テスト集合の統計で前処理を再学習する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 243\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.13147199104021878,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.15875607973212758,
+                1.0
+              ],
+              [
+                0.0,
+                0.7547230469880928,
+                0.0,
+                0.34658819197869994
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 243\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.ones((3,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 243\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[1.,5.],[3.,5.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 243\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[2.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 243\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([[0.,2.],[1e-10,2.]])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP05",
+        "NP06",
+        "NP08"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[-0.6950931876730493, 0.032203515895611434, 0.8087126797675868, -1.2182365212964934], [0.8393393910029551, 1.4231993073848281, 0.4324668285112861, 0.19075862409239808], [-0.9273653817236768, 1.0820200979959667, 0.3614632647150597, -0.729895441349392]], dtype=np.float64).reshape((3, 4))",
+        "task": "列ごとに最小0最大1へ変換。範囲が0の列は0とする。行数は正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

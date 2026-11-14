@@ -1,0 +1,773 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "SK04-01",
+      "family_id": "SK04-01",
+      "version_id": "SK04-01@2",
+      "content_version": 2,
+      "concept_id": "SK04",
+      "module_id": "sklearn",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "Accuracy",
+      "description": "accuracy_scoreによる正解率を返す。入力は非空。",
+      "learning_goal": "分類と回帰に合った指標を選び、引数の向きを確認します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "accuracy_scoreによる正解率を返す。入力は非空。",
+      "starter_code": "result = ___\n",
+      "example": "f1_score(y_true, y_pred, zero_division=0)",
+      "editable_regions": [],
+      "hints": [
+        "分類と回帰に合った指標を選び、引数の向きを確認します。",
+        "Accuracyは正解個数/全件数です。",
+        "空欄には accuracy_score(truth, pred) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = accuracy_score(truth, pred)\n",
+      "explanation": "Accuracyは正解個数/全件数です。",
+      "common_mistakes": [
+        "truthとpredictionを逆にし混同行列の軸を変える。",
+        "クラス不均衡やF1のゼロ除算を見落とす。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4743\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,1,1],[0,0,1]",
+          "expected": 0.6666666666666666
+        },
+        {
+          "setup": "seed = 4743\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1],[1]",
+          "expected": 1.0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4743\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,0],[1,1]",
+          "expected": 0.0
+        },
+        {
+          "setup": "seed = 4743\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1,0,1,0],[1,0,1,0]",
+          "expected": 1.0
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "truth",
+          "pred"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from sklearn.metrics import accuracy_score\n\ntruth = [0, 1, 1]\npred = [0, 0, 1]",
+        "task": "accuracy_scoreによる正解率を返す。入力は非空。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "SK04-02",
+      "family_id": "SK04-02",
+      "version_id": "SK04-02@2",
+      "content_version": 2,
+      "concept_id": "SK04",
+      "module_id": "sklearn",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "F1のゼロ除算を修正",
+      "description": "陽性予測がない場合にも警告を出さずF1を返す。zero_division=0を使う。",
+      "learning_goal": "分類と回帰に合った指標を選び、引数の向きを確認します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "陽性予測がない場合にも警告を出さずF1を返す。zero_division=0を使う。",
+      "starter_code": "result = f1_score(truth, pred, zero_division=___)\n",
+      "example": "f1_score(y_true, y_pred, zero_division=0)",
+      "editable_regions": [],
+      "hints": [
+        "分類と回帰に合った指標を選び、引数の向きを確認します。",
+        "F1はPrecisionとRecallの調和平均です。",
+        "空欄には 0 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = f1_score(truth, pred, zero_division=0)\n",
+      "explanation": "F1はPrecisionとRecallの調和平均です。",
+      "common_mistakes": [
+        "truthとpredictionを逆にし混同行列の軸を変える。",
+        "クラス不均衡やF1のゼロ除算を見落とす。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5083\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1,0,1],[1,1,0]",
+          "expected": 0.5
+        },
+        {
+          "setup": "seed = 5083\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,0],[0,0]",
+          "expected": 0.0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5083\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1],[1]",
+          "expected": 1.0
+        },
+        {
+          "setup": "seed = 5083\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1,1],[0,0]",
+          "expected": 0.0
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK03"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "truth",
+          "pred"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from sklearn.metrics import f1_score\n\ntruth = [1, 0, 1]\npred = [1, 1, 0]",
+        "task": "陽性予測がない場合にも警告を出さずF1を返す。zero_division=0を使う。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "SK04-03",
+      "family_id": "SK04-03",
+      "version_id": "SK04-03@2",
+      "content_version": 2,
+      "concept_id": "SK04",
+      "module_id": "sklearn",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "平均絶対誤差",
+      "description": "MAEを返す。入力は非空。",
+      "learning_goal": "分類と回帰に合った指標を選び、引数の向きを確認します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "MAEを返す。入力は非空。",
+      "starter_code": "result =\n",
+      "example": "f1_score(y_true, y_pred, zero_division=0)",
+      "editable_regions": [],
+      "hints": [
+        "分類と回帰に合った指標を選び、引数の向きを確認します。",
+        "単位は目的変数と同じです。",
+        "解答部分は次の形で書けます。\nresult = mean_absolute_error(truth, pred)\n"
+      ],
+      "solution": "result = mean_absolute_error(truth, pred)\n",
+      "explanation": "単位は目的変数と同じです。",
+      "common_mistakes": [
+        "truthとpredictionを逆にし混同行列の軸を変える。",
+        "クラス不均衡やF1のゼロ除算を見落とす。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2337\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1.,2.],[2.,4.]",
+          "expected": 1.5
+        },
+        {
+          "setup": "seed = 2337\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0.],[0.]",
+          "expected": 0.0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2337\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[-2.,2.],[0.,0.]",
+          "expected": 2.0
+        },
+        {
+          "setup": "seed = 2337\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[seed,3.],[1.,5.]",
+          "expected": 1169.0
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "truth",
+          "pred"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from sklearn.metrics import mean_absolute_error\n\ntruth = [1.0, 2.0]\npred = [2.0, 4.0]",
+        "task": "MAEを返す。入力は非空。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "SK04-04",
+      "family_id": "SK04-04",
+      "version_id": "SK04-04@2",
+      "content_version": 2,
+      "concept_id": "SK04",
+      "module_id": "sklearn",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "混同行列の軸を修正",
+      "description": "行を正解、列を予測とする混同行列をlabels=[0,1]で返す。",
+      "learning_goal": "分類と回帰に合った指標を選び、引数の向きを確認します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "行を正解、列を予測とする混同行列をlabels=[0,1]で返す。",
+      "starter_code": "result =\n",
+      "example": "f1_score(y_true, y_pred, zero_division=0)",
+      "editable_regions": [],
+      "hints": [
+        "分類と回帰に合った指標を選び、引数の向きを確認します。",
+        "truthとpredを逆にすると行列が転置されます。",
+        "解答部分は次の形で書けます。\nresult = confusion_matrix(truth, pred, labels=[0, 1])\n"
+      ],
+      "solution": "result = confusion_matrix(truth, pred, labels=[0, 1])\n",
+      "explanation": "truthとpredを逆にすると行列が転置されます。",
+      "common_mistakes": [
+        "truthとpredictionを逆にし混同行列の軸を変える。",
+        "クラス不均衡やF1のゼロ除算を見落とす。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2497\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,0,1],[0,1,1]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2497\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1],[1]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2497\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,0],[1,1]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                2
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2497\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,1,1,1],[1,0,0,1]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                1
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "truth",
+          "pred"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from sklearn.metrics import confusion_matrix\n\ntruth = [0, 0, 1]\npred = [0, 1, 1]",
+        "task": "行を正解、列を予測とする混同行列をlabels=[0,1]で返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "SK04-05",
+      "family_id": "SK04-05",
+      "version_id": "SK04-05@2",
+      "content_version": 2,
+      "concept_id": "SK04",
+      "module_id": "sklearn",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "クラス別F1",
+      "description": "labels=[0,1],average=None,zero_division=0でクラス別F1を返す。",
+      "learning_goal": "分類と回帰に合った指標を選び、引数の向きを確認します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "labels=[0,1],average=None,zero_division=0でクラス別F1を返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "f1_score(y_true, y_pred, zero_division=0)",
+      "editable_regions": [],
+      "hints": [
+        "分類と回帰に合った指標を選び、引数の向きを確認します。",
+        "平均を取る前にクラスごとの挙動も確認します。",
+        "解答部分は次の形で書けます。\nresult = f1_score(truth, pred, labels=[0, 1], average=None, zero_division=0)\n"
+      ],
+      "solution": "result = f1_score(truth, pred, labels=[0, 1], average=None, zero_division=0)\n",
+      "explanation": "平均を取る前にクラスごとの挙動も確認します。",
+      "common_mistakes": [
+        "truthとpredictionを逆にし混同行列の軸を変える。",
+        "クラス不均衡やF1のゼロ除算を見落とす。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5746\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,1,1],[0,0,1]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              0.6666666666666666,
+              0.6666666666666666
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5746\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0],[0]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              1.0,
+              0.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5746\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,0],[1,1]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5746\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1,0],[1,0]",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "truth",
+          "pred"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from sklearn.metrics import f1_score\n\ntruth = [0, 1, 1]\npred = [0, 0, 1]",
+        "task": "labels=[0,1],average=None,zero_division=0でクラス別F1を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "SK04-06",
+      "family_id": "SK04-06",
+      "version_id": "SK04-06@2",
+      "content_version": 2,
+      "concept_id": "SK04",
+      "module_id": "sklearn",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "誤分類数",
+      "description": "異なるラベルの件数を整数で返す。NumPy配列入力にも対応。",
+      "learning_goal": "分類と回帰に合った指標を選び、引数の向きを確認します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "異なるラベルの件数を整数で返す。NumPy配列入力にも対応。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "f1_score(y_true, y_pred, zero_division=0)",
+      "editable_regions": [],
+      "hints": [
+        "分類と回帰に合った指標を選び、引数の向きを確認します。",
+        "正解率と件数の違いを意識します。",
+        "解答部分は次の形で書けます。\nresult = int(np.count_nonzero(np.asarray(truth) != np.asarray(pred)))\n"
+      ],
+      "solution": "result = int(np.count_nonzero(np.asarray(truth) != np.asarray(pred)))\n",
+      "explanation": "正解率と件数の違いを意識します。",
+      "common_mistakes": [
+        "truthとpredictionを逆にし混同行列の軸を変える。",
+        "クラス不均衡やF1のゼロ除算を見落とす。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7995\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[0,1,1],[1,1,0]",
+          "expected": 2
+        },
+        {
+          "setup": "seed = 7995\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[],[]",
+          "expected": 0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7995\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "np.array([1]),np.array([1])",
+          "expected": 0
+        },
+        {
+          "setup": "seed = 7995\nimport json, math, tempfile\nfrom pathlib import Path\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, confusion_matrix\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)",
+          "args": "[1,1],[0,0]",
+          "expected": 2
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "prerequisites": [
+        "SK03"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "truth",
+          "pred"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\ntruth = [0, 1, 1]\npred = [1, 1, 0]",
+        "task": "異なるラベルの件数を整数で返す。NumPy配列入力にも対応。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

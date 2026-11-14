@@ -1,0 +1,1058 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PD01-01",
+      "family_id": "PD01-01",
+      "version_id": "PD01-01@3",
+      "content_version": 3,
+      "concept_id": "PD01",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "点数が5以上の行を選ぶ",
+      "description": "表dfからscoreが5以上の行を選び、resultに代入してください。すべての列と元の行ラベルを残します。",
+      "learning_goal": "ラベルと位置を区別して表を選択します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "条件を満たす行だけのDataFrame。行ラベルを0から振り直しません。",
+      "starter_code": "result = df.loc[df['score'] >= ___]\n",
+      "example": "df.loc[df['score'] > 5, ['score']]",
+      "editable_regions": [],
+      "hints": [
+        "score列を5と比較すると、各行についてTrueかFalseかが得られます。",
+        "5も含めるため比較は>=です。locにTrue/Falseの列を渡すと、Trueの行だけが残ります。",
+        "空欄には 5 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = df.loc[df['score'] >= 5]\n",
+      "explanation": "df['score'] >= 5で行ごとの条件を作り、locでTrueの行を残します。元の行ラベルはそのままなので、後で元の表と対応付けられます。公開例ではindex 1と3が残ります。",
+      "common_mistakes": [
+        "score > 5では、scoreがちょうど5の行を除いてしまいます。",
+        "reset_index(drop=True)を足すと行ラベルが変わり、値が同じでも条件を満たしません。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8041\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              1,
+              3
+            ],
+            "data": [
+              [
+                "b",
+                "__NaN__",
+                7
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 8041\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8041\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:1]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 8041\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(score=5)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                5
+              ],
+              [
+                "b",
+                "__NaN__",
+                5
+              ],
+              [
+                "a",
+                5.0,
+                5
+              ],
+              [
+                "b",
+                3.0,
+                5
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PY01",
+        "NP01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "5の行を含めているか、全列と元のindexを残しているか確認してください。値が同じでもindexが違えば不正解になります。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "表dfからscoreが5以上の行を選び、resultに代入してください。すべての列と元の行ラベルを残します。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD01-02",
+      "family_id": "PD01-02",
+      "version_id": "PD01-02@2",
+      "content_version": 2,
+      "concept_id": "PD01",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "ラベル列を選択",
+      "description": "score列のみを2次元DataFrameで返す。",
+      "learning_goal": "ラベルと位置を区別して表を選択します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "score列のみを2次元DataFrameで返す。",
+      "starter_code": "result = ___\n",
+      "example": "df.loc[df['score'] > 5, ['score']]",
+      "editable_regions": [],
+      "hints": [
+        "ラベルと位置を区別して表を選択します。",
+        "リストで列を指定するとDataFrameを維持します。",
+        "空欄には df.loc[:, ['score']] と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = df.loc[:, ['score']]\n",
+      "explanation": "リストで列を指定するとDataFrameを維持します。",
+      "common_mistakes": [
+        "locのラベルとilocの位置を取り違える。",
+        "連鎖代入で意図しないコピーを更新する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4225\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                2
+              ],
+              [
+                7
+              ],
+              [
+                4
+              ],
+              [
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 4225\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4225\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:1]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "score"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 4225\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.set_index('group')",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "score"
+            ],
+            "index": [
+              "a",
+              "b",
+              "a",
+              "b"
+            ],
+            "data": [
+              [
+                2
+              ],
+              [
+                7
+              ],
+              [
+                4
+              ],
+              [
+                9
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PY01",
+        "NP01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "score列のみを2次元DataFrameで返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD01-03",
+      "family_id": "PD01-03",
+      "version_id": "PD01-03@2",
+      "content_version": 2,
+      "concept_id": "PD01",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "先頭2行を位置で",
+      "description": "先頭から最大2行をilocで返す。",
+      "learning_goal": "ラベルと位置を区別して表を選択します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "先頭から最大2行をilocで返す。",
+      "starter_code": "result =\n",
+      "example": "df.loc[df['score'] > 5, ['score']]",
+      "editable_regions": [],
+      "hints": [
+        "ラベルと位置を区別して表を選択します。",
+        "ilocはindexのラベルではなく位置を使います。",
+        "解答部分は次の形で書けます。\nresult = df.iloc[:2]\n"
+      ],
+      "solution": "result = df.iloc[:2]\n",
+      "explanation": "ilocはindexのラベルではなく位置を使います。",
+      "common_mistakes": [
+        "locのラベルとilocの位置を取り違える。",
+        "連鎖代入で意図しないコピーを更新する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2167\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                "__NaN__",
+                7
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2167\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2167\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:1]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2167\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.set_index('group')",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "value",
+              "score"
+            ],
+            "index": [
+              "a",
+              "b"
+            ],
+            "data": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                "__NaN__",
+                7.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "iloc",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PY01",
+        "NP01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "先頭から最大2行をilocで返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD01-04",
+      "family_id": "PD01-04",
+      "version_id": "PD01-04@2",
+      "content_version": 2,
+      "concept_id": "PD01",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "複合条件を抽出",
+      "description": "groupがaかつscoreが3以上の行を返す。",
+      "learning_goal": "ラベルと位置を区別して表を選択します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "groupがaかつscoreが3以上の行を返す。",
+      "starter_code": "result =\n",
+      "example": "df.loc[df['score'] > 5, ['score']]",
+      "editable_regions": [],
+      "hints": [
+        "ラベルと位置を区別して表を選択します。",
+        "&の左右の条件を括弧で囲みます。",
+        "解答部分は次の形で書けます。\nresult = df.loc[(df['group'] == 'a') & (df['score'] >= 3)]\n"
+      ],
+      "solution": "result = df.loc[(df['group'] == 'a') & (df['score'] >= 3)]\n",
+      "explanation": "&の左右の条件を括弧で囲みます。",
+      "common_mistakes": [
+        "locのラベルとilocの位置を取り違える。",
+        "連鎖代入で意図しないコピーを更新する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9087\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              2
+            ],
+            "data": [
+              [
+                "a",
+                5.0,
+                4
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9087\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9087\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(score=0)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 9087\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(group='a')",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                "__NaN__",
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "a",
+                3.0,
+                9
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PY01",
+        "NP01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "groupがaかつscoreが3以上の行を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD01-05",
+      "family_id": "PD01-05",
+      "version_id": "PD01-05@2",
+      "content_version": 2,
+      "concept_id": "PD01",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "条件付きの列更新",
+      "description": "元のdfは変更せず、scoreが5未満のvalueを0へ変えたDataFrameを返す。",
+      "learning_goal": "ラベルと位置を区別して表を選択します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "元のdfは変更せず、scoreが5未満のvalueを0へ変えたDataFrameを返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "df.loc[df['score'] > 5, ['score']]",
+      "editable_regions": [],
+      "hints": [
+        "ラベルと位置を区別して表を選択します。",
+        "連鎖代入を避けlocを使用します。",
+        "解答部分は次の形で書けます。\nout = df.copy()\nout.loc[out['score'] < 5, 'value'] = 0\nresult = out\n"
+      ],
+      "solution": "out = df.copy()\nout.loc[out['score'] < 5, 'value'] = 0\nresult = out\n",
+      "explanation": "連鎖代入を避けlocを使用します。",
+      "common_mistakes": [
+        "locのラベルとilocの位置を取り違える。",
+        "連鎖代入で意図しないコピーを更新する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5429\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                0.0,
+                2
+              ],
+              [
+                "b",
+                "__NaN__",
+                7
+              ],
+              [
+                "a",
+                0.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5429\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5429\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(score=7)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                7
+              ],
+              [
+                "b",
+                "__NaN__",
+                7
+              ],
+              [
+                "a",
+                5.0,
+                7
+              ],
+              [
+                "b",
+                3.0,
+                7
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5429\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(score=0)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                0.0,
+                0
+              ],
+              [
+                "b",
+                0.0,
+                0
+              ],
+              [
+                "a",
+                0.0,
+                0
+              ],
+              [
+                "b",
+                0.0,
+                0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": true,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PY01",
+        "NP01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": false
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "元のdfは変更せず、scoreが5未満のvalueを0へ変えたDataFrameを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD01-06",
+      "family_id": "PD01-06",
+      "version_id": "PD01-06@2",
+      "content_version": 2,
+      "concept_id": "PD01",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "末尾のスカラー",
+      "description": "非空dfの最終行のscoreを位置で取り出して返す。",
+      "learning_goal": "ラベルと位置を区別して表を選択します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "非空dfの最終行のscoreを位置で取り出して返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "df.loc[df['score'] > 5, ['score']]",
+      "editable_regions": [],
+      "hints": [
+        "ラベルと位置を区別して表を選択します。",
+        "負の位置は末尾から数えます。",
+        "解答部分は次の形で書けます。\nresult = int(df.iloc[-1]['score'])\n"
+      ],
+      "solution": "result = int(df.iloc[-1]['score'])\n",
+      "explanation": "負の位置は末尾から数えます。",
+      "common_mistakes": [
+        "locのラベルとilocの位置を取り違える。",
+        "連鎖代入で意図しないコピーを更新する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2868\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": 9
+        },
+        {
+          "setup": "seed = 2868\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:1]",
+          "expected": 2
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2868\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.set_index('group')",
+          "expected": 9
+        },
+        {
+          "setup": "seed = 2868\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(score=seed)",
+          "expected": 2868
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PY01",
+        "NP01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 99,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "非空dfの最終行のscoreを位置で取り出して返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

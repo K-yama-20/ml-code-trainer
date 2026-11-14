@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PD01-07", "version": 1, "stage": "guided",
+    "title": "1つの列をSeriesとして取り出す",
+    "task": "DataFrame `df` から `score` 列を取り出し、元の行ラベル（index）を持つSeriesにしてください。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"group\": [\"a\", \"b\", \"a\", \"b\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)",
+    "hint": "`df[\"score\"]` のように列名を1つ渡すとSeriesになります。`df[[\"score\"]]` のようにリストで渡すと、1列のDataFrameになります。",
+    "solution": "result = df[\"score\"]"
+  },
+  {
+    "number": 2, "id": "PD01-02", "version": 3, "stage": "guided",
+    "title": "列名のリストで複数の列を選ぶ",
+    "task": "`df` から `name` 列と `score` 列をこの順に選び、DataFrameにしてください。行ラベルは元のまま残します。`df` の列の並び順は問題によって異なります。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\"], \"group\": [\"a\", \"b\", \"a\"], \"score\": [7, 3, 9]},\n    index=[\"s1\", \"s2\", \"s3\"],\n)",
+    "hint": "`df[[\"name\", \"score\"]]` のように列名のリストを渡すと、リストの順に列が並んだDataFrameになります。列の位置で選ぶと、列の並びが違う表で別の列を選んでしまいます。",
+    "solution": "result = df[[\"name\", \"score\"]]"
+  },
+  {
+    "number": 3, "id": "PD01-08", "version": 1, "stage": "guided",
+    "title": "行ラベルと列名で1つの値を取り出す",
+    "task": "`df.loc` を使って、行ラベルが `label` の行の `score` の値を取り出してください。結果は数値です。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nlabel = \"s3\"",
+    "hint": "`df.loc[行ラベル, 列名]` の形で、行と列をどちらもラベルで指定します。行ラベルと列名を1つずつ渡すと、1つの値になります。",
+    "solution": "result = df.loc[label, \"score\"]"
+  },
+  {
+    "number": 4, "id": "PD01-03", "version": 3, "stage": "guided",
+    "title": "ilocで先頭から2行を選ぶ",
+    "task": "`df.iloc` を使って、`df` の先頭から2行を全列のまま選んでください。行ラベルは元のまま残します。行ラベルが整数でも、ラベルではなく位置で選びます。行数が2未満の場合は、あるだけの行を選びます。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\"], \"score\": [7, 3, 9]},\n    index=[10, 3, 7],\n)",
+    "hint": "`df.iloc[:2]` は位置0と1の行を選びます。`df.loc[:2]` は行ラベル2までを選ぶので、整数の行ラベルが並んでいない表では結果が変わります。",
+    "solution": "result = df.iloc[:2]"
+  },
+  {
+    "number": 5, "id": "PD01-01", "version": 4, "stage": "guided",
+    "title": "しきい値以上の行を選ぶ",
+    "task": "`score` が `threshold` 以上の行を、全列と元の行ラベルを残して選んでください。`threshold` と等しい行も含めます。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nthreshold = 5",
+    "hint": "`df[\"score\"] >= threshold` は行ごとの真偽値のSeriesです。これを `df[...]` に渡すと、`True` の行だけが残ります。",
+    "solution": "result = df[df[\"score\"] >= threshold]"
+  },
+  {
+    "number": 6, "id": "PD01-09", "version": 1, "stage": "guided",
+    "title": "ilocで行と列を位置で選ぶ",
+    "task": "`df.iloc` を使って、位置1と位置2の行（2行目と3行目）と、位置0と位置2の列を選んでください。結果はDataFrameで、行ラベルと列名は元のままです。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"group\": [\"a\", \"b\", \"a\", \"b\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)",
+    "hint": "`df.iloc[行の位置, 列の位置]` の形で指定します。行は `1:3`（終端の3は含まない）、列は `[0, 2]` のようにリストで渡せます。",
+    "solution": "result = df.iloc[1:3, [0, 2]]"
+  },
+  {
+    "number": 7, "id": "PD01-10", "version": 1, "stage": "partial",
+    "title": "ラベルのスライスで終端の行まで選ぶ",
+    "task": "`df.loc` を使って、行ラベル `start` の行から行ラベル `stop` の行までについて、`score` 列をSeriesで選んでください。ラベルのスライスでは `stop` の行も含めます。行は `df` に並んでいる順で数えます。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nstart = \"s2\"\nstop = \"s3\"",
+    "hint": "`df.loc[start:stop, \"score\"]` のラベルのスライスは、位置のスライスと違って終端のラベルを含みます。",
+    "solution": "result = df.loc[start:stop, \"score\"]"
+  },
+  {
+    "number": 8, "id": "PD01-04", "version": 3, "stage": "partial",
+    "title": "2つの条件を両方満たす行を選ぶ",
+    "task": "`group` が `\"a\"` で、かつ `score` が `min_score` 以上の行を、全列のまま選んでください。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"group\": [\"a\", \"b\", \"a\", \"a\"], \"score\": [7, 8, 2, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nmin_score = 5",
+    "hint": "2つの条件は `&` で結びます。`(df[\"group\"] == \"a\") & (df[\"score\"] >= min_score)` のように、各比較を丸括弧で囲みます。",
+    "solution": "result = df[(df[\"group\"] == \"a\") & (df[\"score\"] >= min_score)]"
+  },
+  {
+    "number": 9, "id": "PD01-11", "version": 1, "stage": "partial",
+    "title": "どちらかの条件を満たす行を選ぶ",
+    "task": "`score` が `low` 未満、または `high` より大きい行を、全列のまま選んでください。`low` と `high` に等しい行は含めません。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\", \"Eri\"], \"score\": [7, 3, 9, 5, 4]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\", \"s5\"],\n)\nlow = 4\nhigh = 7",
+    "hint": "「または」は `|` で結びます。`(df[\"score\"] < low) | (df[\"score\"] > high)` のように、各比較を丸括弧で囲みます。",
+    "solution": "result = df[(df[\"score\"] < low) | (df[\"score\"] > high)]"
+  },
+  {
+    "number": 10, "id": "PD01-12", "version": 1, "stage": "partial",
+    "title": "isin()で複数の値のどれかに一致する行を選ぶ",
+    "task": "`isin()` を使って、`name` がリスト `names` のいずれかに一致する行を選んでください。結果の行順は `names` の順ではなく、`df` の行順のままにします。`names` には `df` にない名前も含まれます。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nnames = [\"Dan\", \"Aoi\", \"Zoe\"]",
+    "hint": "`df[\"name\"].isin(names)` は、各行の名前が `names` に含まれるかを表す真偽値のSeriesです。これで行を選ぶと、元の行順が保たれます。",
+    "solution": "result = df[df[\"name\"].isin(names)]"
+  },
+  {
+    "number": 11, "id": "PD01-13", "version": 1, "stage": "partial",
+    "title": "条件で行を、列名で列を同時に選ぶ",
+    "task": "`df.loc` を使って、`score` が `threshold` より大きい行について、`name` 列と `score` 列をこの順に選んでください。結果はDataFrameです。",
+    "input": "df = pd.DataFrame(\n    {\"score\": [7, 3, 9, 5], \"group\": [\"a\", \"b\", \"a\", \"b\"], \"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nthreshold = 5",
+    "hint": "`df.loc[行の条件, 列名のリスト]` の形で、行と列を一度に選べます。列をリストで渡すとDataFrameになり、リストの順に列が並びます。",
+    "solution": "result = df.loc[df[\"score\"] > threshold, [\"name\", \"score\"]]"
+  },
+  {
+    "number": 12, "id": "PD01-06", "version": 3, "stage": "partial",
+    "title": "最後の行の値を位置で取り出す",
+    "task": "`df` の最後の行の `score` を、位置を使って取り出してください。行ラベルは連番とは限りません。結果は数値です。`df` は空ではありません。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\"], \"score\": [7, 3, 9]},\n    index=[2, 0, 1],\n)",
+    "hint": "`df[\"score\"].iloc[-1]` の `-1` は、末尾から1番目の位置です。`df.loc[-1, ...]` や `df[\"score\"][len(df) - 1]` は行ラベルとして解釈されます。",
+    "solution": "result = df[\"score\"].iloc[-1]"
+  },
+  {
+    "number": 13, "id": "PD01-05", "version": 3, "stage": "independent",
+    "title": "元の表を変えずに条件付きで値を書き換える",
+    "task": "`df` は変更せずにコピーを作り、`score` が `threshold` 未満の行の `score` を0に書き換えてください。書き換えたDataFrameを `result` にします。他の列と行ラベルは元のままです。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nthreshold = 6",
+    "hint": "`out = df.copy()` でコピーを作り、`out.loc[out[\"score\"] < threshold, \"score\"] = 0` のように、行の条件と列名を `loc` で一度に指定して代入します。",
+    "solution": "out = df.copy()\nout.loc[out[\"score\"] < threshold, \"score\"] = 0\nresult = out"
+  },
+  {
+    "number": 14, "id": "PD01-14", "version": 1, "stage": "independent",
+    "title": "抽出した行のラベルを0から振り直す",
+    "task": "`score` が `threshold` 以上の行を選び、行ラベルを0から始まる連番に振り直してください。元の行ラベルを列として残さないでください。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nthreshold = 5",
+    "hint": "抽出した表に `reset_index(drop=True)` を使います。`drop=True` を付けないと、元の行ラベルが `index` という列として追加されます。",
+    "solution": "result = df[df[\"score\"] >= threshold].reset_index(drop=True)"
+  },
+  {
+    "number": 15, "id": "PD01-15", "version": 1, "stage": "independent",
+    "title": "between()で両端を含む範囲の行を選ぶ",
+    "task": "`between()` を使って、`score` が `low` 以上 `high` 以下の行を選び、その `name` 列をSeriesにしてください。行ラベルは元のままです。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\", \"Eri\"], \"score\": [7, 3, 9, 5, 4]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\", \"s5\"],\n)\nlow = 4\nhigh = 7",
+    "hint": "`df[\"score\"].between(low, high)` は、既定で両端の値を含みます。この真偽値を `df.loc[条件, \"name\"]` の行の条件に使います。",
+    "solution": "result = df.loc[df[\"score\"].between(low, high), \"name\"]"
+  },
+  {
+    "number": 16, "id": "PD01-16", "version": 1, "stage": "independent",
+    "title": "ラベルのリストの順に行を並べて選ぶ",
+    "task": "リスト `labels` に並んだ行ラベルの行を選び、`name` 列と `score` 列だけのDataFrameにしてください。結果の行は `df` の順ではなく、`labels` の順に並べます。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"group\": [\"a\", \"b\", \"a\", \"b\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nlabels = [\"s3\", \"s1\"]",
+    "hint": "`df.loc[labels, [\"name\", \"score\"]]` のように行ラベルのリストを渡すと、リストの順に行が並びます。`isin()` で選ぶと `df` の行順のままになります。",
+    "solution": "result = df.loc[labels, [\"name\", \"score\"]]"
+  },
+  {
+    "number": 17, "id": "PD01-17", "version": 1, "stage": "independent",
+    "title": "条件を満たす行の行ラベルをリストにする",
+    "task": "`score` が `threshold` 以上の行の行ラベルを、`df` の行順に並べたリストにしてください。該当する行がない場合は空のリストにします。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 3, 9, 5]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)\nthreshold = 6",
+    "hint": "条件で選んだ表の `index` が行ラベルです。`df.index[条件]` や `df[条件].index` に `tolist()` を使うと、Pythonのリストになります。",
+    "solution": "result = df.index[df[\"score\"] >= threshold].tolist()"
+  },
+  {
+    "number": 18, "id": "PD01-18", "version": 1, "stage": "independent",
+    "title": "最大値を持つ行の名前を取り出す",
+    "task": "`score` が最大の行の `name` を、文字列で取り出してください。最大値の行が複数ある場合は、`df` で最初に現れる行を選びます。",
+    "input": "df = pd.DataFrame(\n    {\"name\": [\"Aoi\", \"Ben\", \"Chika\", \"Dan\"], \"score\": [7, 9, 3, 9]},\n    index=[\"s1\", \"s2\", \"s3\", \"s4\"],\n)",
+    "hint": "`df[\"score\"].idxmax()` は、最大値が最初に現れる行の行ラベルを返します。その行ラベルと列名を `df.loc` に渡します。",
+    "solution": "result = df.loc[df[\"score\"].idxmax(), \"name\"]"
+  }
+]

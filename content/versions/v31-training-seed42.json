@@ -1,0 +1,808 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT07-01",
+      "family_id": "PT07-01",
+      "version_id": "PT07-01@2",
+      "content_version": 2,
+      "concept_id": "PT07",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "SGDの1更新",
+      "description": "スカラーParameter wを作りSGDでw²を1ステップ最小化。更新後wをdetachして返す。",
+      "learning_goal": "勾配を初期化し、逆伝播し、パラメータを更新します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "スカラーParameter wを作りSGDでw²を1ステップ最小化。更新後wをdetachして返す。",
+      "starter_code": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=lr)\no.zero_grad()\n(w * w).backward()\no.step()\nresult = ___\n",
+      "example": "optimizer.zero_grad()\nloss.backward()\noptimizer.step()",
+      "editable_regions": [],
+      "hints": [
+        "勾配を初期化し、逆伝播し、パラメータを更新します。",
+        "更新はw←w−lr×gradです。",
+        "空欄には w.detach() と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=lr)\no.zero_grad()\n(w * w).backward()\no.step()\nresult = w.detach()\n",
+      "explanation": "更新はw←w−lr×gradです。",
+      "common_mistakes": [
+        "backwardだけで重みが更新されると思う。",
+        "ステップ間でzero_gradを忘れ、勾配を蓄積する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7661\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2,.1",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.600000023841858
+          }
+        },
+        {
+          "setup": "seed = 7661\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0,.2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7661\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-3,.05",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": -2.700000047683716
+          }
+        },
+        {
+          "setup": "seed = 7661\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "4,0",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 4.0
+          }
+        }
+      ],
+      "required_ast": "call:step",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT04",
+        "PT06"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "initial",
+          "lr"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\ninitial = 2\nlr = 0.1",
+        "task": "スカラーParameter wを作りSGDでw²を1ステップ最小化。更新後wをdetachして返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT07-02",
+      "family_id": "PT07-02",
+      "version_id": "PT07-02@2",
+      "content_version": 2,
+      "concept_id": "PT07",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "step不足を修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nw²をlr=0.1で1更新する。backwardだけでは値は変わらない。更新後wをdetachして返す。",
+      "learning_goal": "勾配を初期化し、逆伝播し、パラメータを更新します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "w²をlr=0.1で1更新する。backwardだけでは値は変わらない。更新後wをdetachして返す。",
+      "starter_code": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.1)\no.zero_grad()\n(w * w).backward()\nresult = w.detach()\n",
+      "example": "optimizer.zero_grad()\nloss.backward()\noptimizer.step()",
+      "editable_regions": [],
+      "hints": [
+        "勾配を初期化し、逆伝播し、パラメータを更新します。",
+        "stepがパラメータの更新を行います。",
+        "解答部分は次の形で書けます。\nw = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.1)\no.zero_grad()\n(w * w).backward()\no.step()\nresult = w.detach()\n"
+      ],
+      "solution": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.1)\no.zero_grad()\n(w * w).backward()\no.step()\nresult = w.detach()\n",
+      "explanation": "stepがパラメータの更新を行います。",
+      "common_mistakes": [
+        "backwardだけで重みが更新されると思う。",
+        "ステップ間でzero_gradを忘れ、勾配を蓄積する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9219\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.600000023841858
+          }
+        },
+        {
+          "setup": "seed = 9219\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9219\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-1",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": -0.800000011920929
+          }
+        },
+        {
+          "setup": "seed = 9219\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "seed",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 7375.2001953125
+          }
+        }
+      ],
+      "required_ast": "call:step",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT04",
+        "PT06"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "initial"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\ninitial = 2",
+        "task": "w²をlr=0.1で1更新する。backwardだけでは値は変わらない。更新後wをdetachして返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT07-03",
+      "family_id": "PT07-03",
+      "version_id": "PT07-03@2",
+      "content_version": 2,
+      "concept_id": "PT07",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "勾配をNoneにする",
+      "description": "Parameter wのw²をbackward後、optimizer.zero_grad(set_to_none=True)を呼びw.grad is Noneを返す。",
+      "learning_goal": "勾配を初期化し、逆伝播し、パラメータを更新します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "Parameter wのw²をbackward後、optimizer.zero_grad(set_to_none=True)を呼びw.grad is Noneを返す。",
+      "starter_code": "result =\n",
+      "example": "optimizer.zero_grad()\nloss.backward()\noptimizer.step()",
+      "editable_regions": [],
+      "hints": [
+        "勾配を初期化し、逆伝播し、パラメータを更新します。",
+        "Noneへの設定は勾配バッファのゼロ化とは異なります。",
+        "解答部分は次の形で書けます。\nw = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.1)\n(w * w).backward()\no.zero_grad(set_to_none=True)\nresult = w.grad is None\n"
+      ],
+      "solution": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.1)\n(w * w).backward()\no.zero_grad(set_to_none=True)\nresult = w.grad is None\n",
+      "explanation": "Noneへの設定は勾配バッファのゼロ化とは異なります。",
+      "common_mistakes": [
+        "backwardだけで重みが更新されると思う。",
+        "ステップ間でzero_gradを忘れ、勾配を蓄積する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6619\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2",
+          "expected": true
+        },
+        {
+          "setup": "seed = 6619\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0",
+          "expected": true
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6619\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-1",
+          "expected": true
+        },
+        {
+          "setup": "seed = 6619\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "seed",
+          "expected": true
+        }
+      ],
+      "required_ast": "call:zero_grad",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT04",
+        "PT06"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "initial"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\ninitial = 2",
+        "task": "Parameter wのw²をbackward後、optimizer.zero_grad(set_to_none=True)を呼びw.grad is Noneを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT07-04",
+      "family_id": "PT07-04",
+      "version_id": "PT07-04@3",
+      "content_version": 3,
+      "concept_id": "PT07",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "前の勾配を消して2回更新する",
+      "description": "w²を小さくするようにSGDでwを2回更新します。初期コードは前の勾配を残しています。各回のbackward前に勾配を消し、更新後のwをresultに代入してください。",
+      "learning_goal": "勾配を初期化し、逆伝播し、パラメータを更新します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "2回更新した後のw。最後のreturnは用意されています。",
+      "starter_code": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=lr)\nfor _ in range(2):\n    (w * w).backward()\n    o.step()\nresult = w.detach()\n",
+      "example": "optimizer.zero_grad()\nloss.backward()\noptimizer.step()",
+      "editable_regions": [],
+      "hints": [
+        "backwardは傾きを計算し、stepはその傾きでwを更新します。前回の傾きは自動では消えません。",
+        "前の勾配が残ると2回目は4+3.2=7.2を使い、wが0.88まで下がります。毎回、今のwの傾きだけを使う必要があります。",
+        "解答部分は次の形で書けます。\nw = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=lr)\nfor _ in range(2):\n    o.zero_grad()\n    (w * w).backward()\n    o.step()\nresult = w.detach()\n"
+      ],
+      "solution": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=lr)\nfor _ in range(2):\n    o.zero_grad()\n    (w * w).backward()\n    o.step()\nresult = w.detach()\n",
+      "explanation": "SGDはwからlr×勾配を引きます。最初は2-0.1×4=1.6、次は1.6-0.1×3.2=1.28です。zero_gradを省くと前の4が加算され、2回目の更新を誤ります。最後のdetachは、計算の履歴から切り離した値を返す処理です。",
+      "common_mistakes": [
+        "zero_gradをループの外だけで呼ぶと、2回目には1回目の勾配が残ります。",
+        "backwardの後でzero_gradすると、stepが使う勾配まで消してしまいます。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2,.1",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.2799999713897705
+          }
+        },
+        {
+          "setup": "seed = 2704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0,.2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-3,.05",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": -2.430000066757202
+          }
+        },
+        {
+          "setup": "seed = 2704\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "4,0",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 4.0
+          }
+        }
+      ],
+      "required_ast": "call:zero_grad",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT04",
+        "PT06"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "forループの各回で、backwardの前に勾配を消す処理を追加してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "勾配を消す位置を確認してください。各回のbackwardより前、ループの中に置きます。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "initial",
+          "lr"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\ninitial = 2\nlr = 0.1",
+        "task": "w²を小さくするようにSGDでwを2回更新します。初期コードは前の勾配を残しています。各回のbackward前に勾配を消し、更新後のwをresultに代入してください。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT07-05",
+      "family_id": "PT07-05",
+      "version_id": "PT07-05@2",
+      "content_version": 2,
+      "concept_id": "PT07",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "固定目標への更新",
+      "description": "(w-target)²をSGD(lr=0.25)で1更新しwを返す。",
+      "learning_goal": "勾配を初期化し、逆伝播し、パラメータを更新します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "(w-target)²をSGD(lr=0.25)で1更新しwを返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "optimizer.zero_grad()\nloss.backward()\noptimizer.step()",
+      "editable_regions": [],
+      "hints": [
+        "勾配を初期化し、逆伝播し、パラメータを更新します。",
+        "損失の勾配の符号が更新方向を決めます。",
+        "解答部分は次の形で書けます。\nw = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.25)\no.zero_grad()\n((w - target) ** 2).backward()\no.step()\nresult = w.detach()\n"
+      ],
+      "solution": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.25)\no.zero_grad()\n((w - target) ** 2).backward()\no.step()\nresult = w.detach()\n",
+      "explanation": "損失の勾配の符号が更新方向を決めます。",
+      "common_mistakes": [
+        "backwardだけで重みが更新されると思う。",
+        "ステップ間でzero_gradを忘れ、勾配を蓄積する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 8130\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0,2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.0
+          }
+        },
+        {
+          "setup": "seed = 8130\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "3,3",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 3.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 8130\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-2,4",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.0
+          }
+        },
+        {
+          "setup": "seed = 8130\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "seed,-1",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 4064.5
+          }
+        }
+      ],
+      "required_ast": "call:backward",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT04",
+        "PT06"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "initial",
+          "target"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\ninitial = 0\ntarget = 2",
+        "task": "(w-target)²をSGD(lr=0.25)で1更新しwを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT07-06",
+      "family_id": "PT07-06",
+      "version_id": "PT07-06@2",
+      "content_version": 2,
+      "concept_id": "PT07",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "学習順序を修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nzero_grad→backward→stepの順にw²をSGD(lr=0.5)で1更新。更新後wを返す。",
+      "learning_goal": "勾配を初期化し、逆伝播し、パラメータを更新します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "zero_grad→backward→stepの順にw²をSGD(lr=0.5)で1更新。更新後wを返す。",
+      "starter_code": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.5)\no.zero_grad()\n(w * w).backward()\no.zero_grad()\nresult = w.detach()\n",
+      "example": "optimizer.zero_grad()\nloss.backward()\noptimizer.step()",
+      "editable_regions": [],
+      "hints": [
+        "勾配を初期化し、逆伝播し、パラメータを更新します。",
+        "backwardより先のstepでは新しい勾配が使われません。",
+        "解答部分は次の形で書けます。\nw = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.5)\no.zero_grad()\n(w * w).backward()\no.step()\nresult = w.detach()\n"
+      ],
+      "solution": "w = nn.Parameter(torch.tensor(float(initial)))\no = torch.optim.SGD([w], lr=0.5)\no.zero_grad()\n(w * w).backward()\no.step()\nresult = w.detach()\n",
+      "explanation": "backwardより先のstepでは新しい勾配が使われません。",
+      "common_mistakes": [
+        "backwardだけで重みが更新されると思う。",
+        "ステップ間でzero_gradを忘れ、勾配を蓄積する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 163\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        },
+        {
+          "setup": "seed = 163\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 163\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "-3",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        },
+        {
+          "setup": "seed = 163\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "seed",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "required_ast": "call:step",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT04",
+        "PT06"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "initial"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\ninitial = 2",
+        "task": "zero_grad→backward→stepの順にw²をSGD(lr=0.5)で1更新。更新後wを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

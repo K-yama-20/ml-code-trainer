@@ -1,0 +1,809 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT05-01",
+      "family_id": "PT05-01",
+      "version_id": "PT05-01@2",
+      "content_version": 2,
+      "concept_id": "PT05",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "Linearの出力shape",
+      "description": "nn.Linear(d,out)に(n,d)のゼロを渡したshapeをタプルで返す。",
+      "learning_goal": "forwardと登録されたパラメータの関係を読み解きます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "nn.Linear(d,out)に(n,d)のゼロを渡したshapeをタプルで返す。",
+      "starter_code": "result = ___\n",
+      "example": "class Model(nn.Module):\n    def forward(self, x):\n        return self.linear(x)",
+      "editable_regions": [],
+      "hints": [
+        "forwardと登録されたパラメータの関係を読み解きます。",
+        "Linearは最後の特徴軸を変換します。",
+        "空欄には tuple(nn.Linear(d, out)(torch.zeros(n, d)).shape) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = tuple(nn.Linear(d, out)(torch.zeros(n, d)).shape)\n",
+      "explanation": "Linearは最後の特徴軸を変換します。",
+      "common_mistakes": [
+        "super().__init__より先に子Moduleを登録する。",
+        "通常のTensorがparametersへ登録されると思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7664\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2,3,4",
+          "expected": [
+            2,
+            4
+          ]
+        },
+        {
+          "setup": "seed = 7664\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "0,2,1",
+          "expected": [
+            0,
+            1
+          ]
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7664\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "1,1,1",
+          "expected": [
+            1,
+            1
+          ]
+        },
+        {
+          "setup": "seed = 7664\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "4,5,2",
+          "expected": [
+            4,
+            2
+          ]
+        }
+      ],
+      "required_ast": "call:Linear",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "n",
+          "d",
+          "out"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nn = 2\nd = 3\nout = 4",
+        "task": "nn.Linear(d,out)に(n,d)のゼロを渡したshapeをタプルで返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT05-02",
+      "family_id": "PT05-02",
+      "version_id": "PT05-02@2",
+      "content_version": 2,
+      "concept_id": "PT05",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "super初期化の修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nnn.Moduleを継承しsuper().__init__後にself.fc=nn.Linear(d,out)を登録する。パラメータ総数を返す。",
+      "learning_goal": "forwardと登録されたパラメータの関係を読み解きます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "nn.Moduleを継承しsuper().__init__後にself.fc=nn.Linear(d,out)を登録する。パラメータ総数を返す。",
+      "starter_code": "class Model(nn.Module):\n\n    def __init__(self):\n        pass\n        self.fc = nn.Linear(d, out)\n\n    def forward(self, x):\n        return self.fc(x)\nresult = sum((p.numel() for p in Model().parameters()))\n",
+      "example": "class Model(nn.Module):\n    def forward(self, x):\n        return self.linear(x)",
+      "editable_regions": [],
+      "hints": [
+        "forwardと登録されたパラメータの関係を読み解きます。",
+        "Moduleの初期化を先に呼びます。",
+        "解答部分は次の形で書けます。\nclass Model(nn.Module):\n\n    def __init__(self):\n        super().__init__()\n        self.fc = nn.Linear(d, out)\n\n    def forward(self, x):\n        return self.fc(x)\nresult = sum((p.numel() for p in Model().parameters()))\n"
+      ],
+      "solution": "class Model(nn.Module):\n\n    def __init__(self):\n        super().__init__()\n        self.fc = nn.Linear(d, out)\n\n    def forward(self, x):\n        return self.fc(x)\nresult = sum((p.numel() for p in Model().parameters()))\n",
+      "explanation": "Moduleの初期化を先に呼びます。",
+      "common_mistakes": [
+        "super().__init__より先に子Moduleを登録する。",
+        "通常のTensorがparametersへ登録されると思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2260\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "3,2",
+          "expected": 8
+        },
+        {
+          "setup": "seed = 2260\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "1,1",
+          "expected": 2
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2260\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "4,3",
+          "expected": 15
+        },
+        {
+          "setup": "seed = 2260\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "2,5",
+          "expected": 15
+        }
+      ],
+      "required_ast": "ClassDef",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "d",
+          "out"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "from torch import nn\n\nd = 3\nout = 2",
+        "task": "nn.Moduleを継承しsuper().__init__後にself.fc=nn.Linear(d,out)を登録する。パラメータ総数を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "class",
+        "classification_reason": "クラスとforwardを維持し、採点用だけの外側のsolveを除去"
+      }
+    },
+    {
+      "id": "PT05-03",
+      "family_id": "PT05-03",
+      "version_id": "PT05-03@3",
+      "content_version": 3,
+      "concept_id": "PT05",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "forwardで入力を2倍にする",
+      "description": "forwardで、受け取ったxを2倍したTensorを返してください。",
+      "learning_goal": "forwardと登録されたパラメータの関係を読み解きます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "forwardで、受け取ったxを2倍したTensorを返してください。",
+      "starter_code": "class Twice(nn.Module):\n    def forward(self, x):\n        pass\n\nresult = Twice()(x)\n",
+      "example": "class Model(nn.Module):\n    def forward(self, x):\n        return self.linear(x)",
+      "editable_regions": [],
+      "hints": [
+        "Twice()(x)でモデルを呼ぶと、forwardのxに入力Tensorが渡ります。今回は重みや学習は不要です。",
+        "Tensorに2を掛けると、各要素が2倍になります。shapeは変わりません。",
+        "forward内にreturn x * 2と書きます。最後のresult = Twice()(x)がその戻り値を受け取ります。"
+      ],
+      "solution": "class Twice(nn.Module):\n\n    def forward(self, x):\n        return x * 2\nresult = Twice()(x)\n",
+      "explanation": "nn.Moduleのインスタンスを関数のように呼ぶとforwardが実行されます。x*2は各要素を2倍にし、そのTensorをreturnで返します。クラスとメソッドはこの問題の学習対象なので残しています。",
+      "common_mistakes": [
+        "x*2を計算してもreturnがないと、結果がNoneになります。",
+        "Twice.forward(x)ではインスタンスを通さず、selfとxの引数が対応しません。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                2.0,
+                2.0,
+                2.0
+              ],
+              [
+                2.0,
+                2.0,
+                2.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor(-2.)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": -4.0
+          }
+        },
+        {
+          "setup": "seed = 235\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(4.)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.0,
+              2.0,
+              4.0,
+              6.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "ClassDef",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "forwardメソッドのpassを、処理とreturnに置き換えてください。入力と末尾の呼び出しは用意されています。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "forwardがTensorを返せているか確認してください。print(x*2)だけでは、戻り値はNoneになります。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nx = torch.ones(2, 3)",
+        "task": "forwardで、受け取ったxを2倍したTensorを返してください。",
+        "authored": true,
+        "structure": "class",
+        "classification_reason": "クラスとforwardを維持し、採点用だけの外側のsolveを除去"
+      }
+    },
+    {
+      "id": "PT05-04",
+      "family_id": "PT05-04",
+      "version_id": "PT05-04@2",
+      "content_version": 2,
+      "concept_id": "PT05",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "パラメータ登録の修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nModule内でvaluesをfloat32のnn.Parameterとして登録し、parameters()の要素数（Tensor個数）を返す。",
+      "learning_goal": "forwardと登録されたパラメータの関係を読み解きます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "Module内でvaluesをfloat32のnn.Parameterとして登録し、parameters()の要素数（Tensor個数）を返す。",
+      "starter_code": "class Model(nn.Module):\n\n    def __init__(self):\n        super().__init__()\n        self.weight = torch.tensor(values, dtype=torch.float32)\nresult = len(list(Model().parameters()))\n",
+      "example": "class Model(nn.Module):\n    def forward(self, x):\n        return self.linear(x)",
+      "editable_regions": [],
+      "hints": [
+        "forwardと登録されたパラメータの関係を読み解きます。",
+        "通常のTensor属性は学習パラメータとして登録されません。",
+        "解答部分は次の形で書けます。\nclass Model(nn.Module):\n\n    def __init__(self):\n        super().__init__()\n        self.weight = nn.Parameter(torch.tensor(values, dtype=torch.float32))\nresult = len(list(Model().parameters()))\n"
+      ],
+      "solution": "class Model(nn.Module):\n\n    def __init__(self):\n        super().__init__()\n        self.weight = nn.Parameter(torch.tensor(values, dtype=torch.float32))\nresult = len(list(Model().parameters()))\n",
+      "explanation": "通常のTensor属性は学習パラメータとして登録されません。",
+      "common_mistakes": [
+        "super().__init__より先に子Moduleを登録する。",
+        "通常のTensorがparametersへ登録されると思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[1.,2.]",
+          "expected": 1
+        },
+        {
+          "setup": "seed = 203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[0.]",
+          "expected": 1
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[]",
+          "expected": 1
+        },
+        {
+          "setup": "seed = 203\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "[1.,2.,3.]",
+          "expected": 1
+        }
+      ],
+      "required_ast": "call:Parameter",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "values"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true,
+        "constant_goal": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nvalues = [1.0, 2.0]",
+        "task": "Module内でvaluesをfloat32のnn.Parameterとして登録し、parameters()の要素数（Tensor個数）を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "class",
+        "classification_reason": "クラスとforwardを維持し、採点用だけの外側のsolveを除去"
+      }
+    },
+    {
+      "id": "PT05-05",
+      "family_id": "PT05-05",
+      "version_id": "PT05-05@2",
+      "content_version": 2,
+      "concept_id": "PT05",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "固定重みのLinear",
+      "description": "nn.Linear(2,1,bias=False)を作り、重みを[2,-1]へ設定。xの出力を返す。xの最終軸は2。",
+      "learning_goal": "forwardと登録されたパラメータの関係を読み解きます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "nn.Linear(2,1,bias=False)を作り、重みを[2,-1]へ設定。xの出力を返す。xの最終軸は2。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "class Model(nn.Module):\n    def forward(self, x):\n        return self.linear(x)",
+      "editable_regions": [],
+      "hints": [
+        "forwardと登録されたパラメータの関係を読み解きます。",
+        "重みのin-place更新はno_grad内で行います。",
+        "解答部分は次の形で書けます。\nm = nn.Linear(2, 1, bias=False)\nwith torch.no_grad():\n    m.weight.copy_(torch.tensor([[2.0, -1.0]]))\nresult = m(x)\n"
+      ],
+      "solution": "m = nn.Linear(2, 1, bias=False)\nwith torch.no_grad():\n    m.weight.copy_(torch.tensor([[2.0, -1.0]]))\nresult = m(x)\n",
+      "explanation": "重みのin-place更新はno_grad内で行います。",
+      "common_mistakes": [
+        "super().__init__より先に子Moduleを登録する。",
+        "通常のTensorがparametersへ登録されると思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6819\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[1.,2.],[3.,4.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0
+              ],
+              [
+                2.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6819\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6819\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(1,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6819\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[-1.,2.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                -4.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "call:Linear",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nx = torch.tensor([\n    [1.0, 2.0],\n    [3.0, 4.0]\n])",
+        "task": "nn.Linear(2,1,bias=False)を作り、重みを[2,-1]へ設定。xの出力を返す。xの最終軸は2。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT05-06",
+      "family_id": "PT05-06",
+      "version_id": "PT05-06@2",
+      "content_version": 2,
+      "concept_id": "PT05",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "Sequentialの寸法修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\nLinear(3,4),ReLU,Linear(4,2)のSequentialを構築し出力shapeを返す。",
+      "learning_goal": "forwardと登録されたパラメータの関係を読み解きます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "Linear(3,4),ReLU,Linear(4,2)のSequentialを構築し出力shapeを返す。",
+      "starter_code": "m = nn.Sequential(nn.Linear(3, 4), nn.ReLU(), nn.Linear(3, 2))\nresult = tuple(m(x).shape)\n",
+      "example": "class Model(nn.Module):\n    def forward(self, x):\n        return self.linear(x)",
+      "editable_regions": [],
+      "hints": [
+        "forwardと登録されたパラメータの関係を読み解きます。",
+        "前層の出力特徴数と次層の入力特徴数を一致させます。",
+        "解答部分は次の形で書けます。\nm = nn.Sequential(nn.Linear(3, 4), nn.ReLU(), nn.Linear(4, 2))\nresult = tuple(m(x).shape)\n"
+      ],
+      "solution": "m = nn.Sequential(nn.Linear(3, 4), nn.ReLU(), nn.Linear(4, 2))\nresult = tuple(m(x).shape)\n",
+      "explanation": "前層の出力特徴数と次層の入力特徴数を一致させます。",
+      "common_mistakes": [
+        "super().__init__より先に子Moduleを登録する。",
+        "通常のTensorがparametersへ登録されると思う。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7296\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3)",
+          "expected": [
+            2,
+            2
+          ]
+        },
+        {
+          "setup": "seed = 7296\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,3)",
+          "expected": [
+            0,
+            2
+          ]
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7296\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,3)",
+          "expected": [
+            1,
+            2
+          ]
+        },
+        {
+          "setup": "seed = 7296\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(5,3)",
+          "expected": [
+            5,
+            2
+          ]
+        }
+      ],
+      "required_ast": "call:Sequential",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PY02",
+        "PT02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\nfrom torch import nn\n\nx = torch.ones(2, 3)",
+        "task": "Linear(3,4),ReLU,Linear(4,2)のSequentialを構築し出力shapeを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

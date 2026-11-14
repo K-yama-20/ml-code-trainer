@@ -1,0 +1,995 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PT03-01",
+      "family_id": "PT03-01",
+      "version_id": "PT03-01@2",
+      "content_version": 2,
+      "concept_id": "PT03",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "行平均Tensor",
+      "description": "float Tensor xの各行平均を1次元で返す。列数は正。",
+      "learning_goal": "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "float Tensor xの各行平均を1次元で返す。列数は正。",
+      "starter_code": "result = x.mean(dim=___)\n",
+      "example": "x.mean(dim=1, keepdim=True)",
+      "editable_regions": [],
+      "hints": [
+        "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+        "NumPyのaxisに対応する引数はdimです。",
+        "空欄には 1 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = x.mean(dim=1)\n",
+      "explanation": "NumPyのaxisに対応する引数はdimです。",
+      "common_mistakes": [
+        "NumPyのaxisやkeepdimsという引数名をそのまま使う。",
+        "行重みのunsqueeze位置を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2441\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(12.).reshape(3,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              1.5,
+              5.5,
+              9.5
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2441\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              1.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2441\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 2441\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[1.,3.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              2.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT02",
+        "NP05"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(12.0).reshape(3, 4)",
+        "task": "float Tensor xの各行平均を1次元で返す。列数は正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT03-02",
+      "family_id": "PT03-02",
+      "version_id": "PT03-02@2",
+      "content_version": 2,
+      "concept_id": "PT03",
+      "module_id": "pytorch",
+      "stage": "guided",
+      "type": "bugfix",
+      "difficulty": 1,
+      "title": "keepdimの不足を修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\n各行の平均を引く。shapeエラーが出ないようkeepdimを使う。",
+      "learning_goal": "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各行の平均を引く。shapeエラーが出ないようkeepdimを使う。",
+      "starter_code": "result = x - x.mean(dim=1, keepdim=False)\n",
+      "example": "x.mean(dim=1, keepdim=True)",
+      "editable_regions": [],
+      "hints": [
+        "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+        "keepdimの末尾にsは付きません。",
+        "解答部分は次の形で書けます。\nresult = x - x.mean(dim=1, keepdim=True)\n"
+      ],
+      "solution": "result = x - x.mean(dim=1, keepdim=True)\n",
+      "explanation": "keepdimの末尾にsは付きません。",
+      "common_mistakes": [
+        "NumPyのaxisやkeepdimsという引数名をそのまま使う。",
+        "行重みのunsqueeze位置を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6633\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(12.).reshape(3,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                -1.5,
+                -0.5,
+                0.5,
+                1.5
+              ],
+              [
+                -1.5,
+                -0.5,
+                0.5,
+                1.5
+              ],
+              [
+                -1.5,
+                -0.5,
+                0.5,
+                1.5
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6633\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6633\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 6633\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[1.,3.],[2.,6.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                -1.0,
+                1.0
+              ],
+              [
+                -2.0,
+                2.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT02",
+        "NP05"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(12.0).reshape(3, 4)",
+        "task": "各行の平均を引く。shapeエラーが出ないようkeepdimを使う。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT03-03",
+      "family_id": "PT03-03",
+      "version_id": "PT03-03@2",
+      "content_version": 2,
+      "concept_id": "PT03",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "チャネルごとの合計",
+      "description": "NCHWのxをN,H,W軸で合計し(C,)を返す。",
+      "learning_goal": "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "NCHWのxをN,H,W軸で合計し(C,)を返す。",
+      "starter_code": "result =\n",
+      "example": "x.mean(dim=1, keepdim=True)",
+      "editable_regions": [],
+      "hints": [
+        "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+        "残す軸を考えて集約します。",
+        "解答部分は次の形で書けます。\nresult = x.sum(dim=(0, 2, 3))\n"
+      ],
+      "solution": "result = x.sum(dim=(0, 2, 3))\n",
+      "explanation": "残す軸を考えて集約します。",
+      "common_mistakes": [
+        "NumPyのaxisやkeepdimsという引数名をそのまま使う。",
+        "行重みのunsqueeze位置を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9313\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(48.).reshape(2,3,2,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              248.0,
+              376.0,
+              504.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9313\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,1,1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              1.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9313\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2,2,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9313\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3,1,1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              2.0,
+              2.0,
+              2.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT02",
+        "NP05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(48.0).reshape(2, 3, 2, 4)",
+        "task": "NCHWのxをN,H,W軸で合計し(C,)を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT03-04",
+      "family_id": "PT03-04",
+      "version_id": "PT03-04@2",
+      "content_version": 2,
+      "concept_id": "PT03",
+      "module_id": "pytorch",
+      "stage": "partial",
+      "type": "bugfix",
+      "difficulty": 2,
+      "title": "行の重み付けを修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\n(N,D)のxを(N,)のwで行ごとに重み付けする。",
+      "learning_goal": "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "(N,D)のxを(N,)のwで行ごとに重み付けする。",
+      "starter_code": "result = x * w.unsqueeze(0)\n",
+      "example": "x.mean(dim=1, keepdim=True)",
+      "editable_regions": [],
+      "hints": [
+        "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+        "末尾軸を追加して(N,1)にします。",
+        "解答部分は次の形で書けます。\nresult = x * w.unsqueeze(1)\n"
+      ],
+      "solution": "result = x * w.unsqueeze(1)\n",
+      "explanation": "末尾軸を追加して(N,1)にします。",
+      "common_mistakes": [
+        "NumPyのaxisやkeepdimsという引数名をそのまま使う。",
+        "行重みのunsqueeze位置を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 2120\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(3,4),torch.tensor([1.,2.,3.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              [
+                3.0,
+                3.0,
+                3.0,
+                3.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2120\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2),torch.zeros(0)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 2120\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(1,2),torch.zeros(1)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 2120\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(6.).reshape(2,3),torch.tensor([-1.,2.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                -0.0,
+                -1.0,
+                -2.0
+              ],
+              [
+                6.0,
+                8.0,
+                10.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT02",
+        "NP05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "w"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.ones(3, 4)\nw = torch.tensor([1.0, 2.0, 3.0])",
+        "task": "(N,D)のxを(N,)のwで行ごとに重み付けする。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT03-05",
+      "family_id": "PT03-05",
+      "version_id": "PT03-05@2",
+      "content_version": 2,
+      "concept_id": "PT03",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "全ペア内積",
+      "description": "(N,D),(M,D)のa,bから内積行列(N,M)を返す。",
+      "learning_goal": "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "(N,D),(M,D)のa,bから内積行列(N,M)を返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "x.mean(dim=1, keepdim=True)",
+      "editable_regions": [],
+      "hints": [
+        "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+        "特徴次元Dを集約します。",
+        "解答部分は次の形で書けます。\nresult = a @ b.T\n"
+      ],
+      "solution": "result = a @ b.T\n",
+      "explanation": "特徴次元Dを集約します。",
+      "common_mistakes": [
+        "NumPyのaxisやkeepdimsという引数名をそのまま使う。",
+        "行重みのunsqueeze位置を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3331\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3),torch.ones(4,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              4
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                3.0,
+                3.0,
+                3.0,
+                3.0
+              ],
+              [
+                3.0,
+                3.0,
+                3.0,
+                3.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3331\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.zeros(0,2),torch.ones(3,2)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              0,
+              3
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3331\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[1.,2.]]),torch.tensor([[3.,4.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                11.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3331\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(6.).reshape(2,3),torch.ones(2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": [
+              [
+                3.0,
+                3.0
+              ],
+              [
+                12.0,
+                12.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT02",
+        "NP05"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\na = torch.ones(2, 3)\nb = torch.ones(4, 3)",
+        "task": "(N,D),(M,D)のa,bから内積行列(N,M)を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PT03-06",
+      "family_id": "PT03-06",
+      "version_id": "PT03-06@2",
+      "content_version": 2,
+      "concept_id": "PT03",
+      "module_id": "pytorch",
+      "stage": "independent",
+      "type": "bugfix",
+      "difficulty": 3,
+      "title": "全体平均のバグ修正",
+      "description": "初期コードのBUGを修正し、次の条件を満たしてください。\n\n各行ではなく全要素の平均を0次元Tensorで返す。入力は非空。",
+      "learning_goal": "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各行ではなく全要素の平均を0次元Tensorで返す。入力は非空。",
+      "starter_code": "result = x.mean(dim=1)\n",
+      "example": "x.mean(dim=1, keepdim=True)",
+      "editable_regions": [],
+      "hints": [
+        "dimとkeepdimを使い、broadcastingに適したshapeを作ります。",
+        "引数なしmeanは全軸を集約します。",
+        "解答部分は次の形で書けます。\nresult = x.mean()\n"
+      ],
+      "solution": "result = x.mean()\n",
+      "explanation": "引数なしmeanは全軸を集約します。",
+      "common_mistakes": [
+        "NumPyのaxisやkeepdimsという引数名をそのまま使う。",
+        "行重みのunsqueeze位置を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7483\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.arange(12.).reshape(3,4)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 5.5
+          }
+        },
+        {
+          "setup": "seed = 7483\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([2.])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 2.0
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7483\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.ones(2,3)",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 1.0
+          }
+        },
+        {
+          "setup": "seed = 7483\nimport json, math, tempfile\nfrom pathlib import Path\nimport torch\nfrom torch import nn\nfrom torch.utils.data import TensorDataset, DataLoader\ntorch.set_num_threads(1)\ntorch.manual_seed(seed)\n",
+          "args": "torch.tensor([[-1.,1.]])",
+          "expected": {
+            "kind": "tensor",
+            "shape": [],
+            "dtype": "torch.float32",
+            "device": "cpu",
+            "data": 0.0
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "sandbox",
+      "packages": [
+        "torch"
+      ],
+      "prerequisites": [
+        "PT02",
+        "NP05"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "DataLoader",
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "TensorDataset",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "nn",
+          "np",
+          "pd",
+          "tempfile",
+          "torch",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "表示された不具合のある処理を修正してください。入力データはそのまま使います。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import torch\n\nx = torch.arange(12.0).reshape(3, 4)",
+        "task": "各行ではなく全要素の平均を0次元Tensorで返す。入力は非空。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

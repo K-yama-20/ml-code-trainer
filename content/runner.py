@@ -216,6 +216,10 @@ def run_payload(payload, timings=None):
                 observation_env = env.copy()
                 if definition.get("strict_division"):
                     case_context.enter_context(env["np"].errstate(divide="raise", invalid="raise"))
+                if definition.get("strict_overflow"):
+                    # Stable-formula drills: an overflowing exp is wrong even
+                    # when the saturated value happens to compare equal.
+                    case_context.enter_context(env["np"].errstate(over="raise"))
                 student_started = clock()
                 try:
                     exec(compile(payload["code"], "<student>", "exec"), env)

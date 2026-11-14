@@ -1,0 +1,148 @@
+[
+  {
+    "number": 1, "id": "PT01-01", "version": 3, "stage": "guided",
+    "title": "リストからfloat32のTensorを作る",
+    "task": "リスト `values` から、dtypeが `torch.float32` のTensorを作ってください。shapeはリストの入れ子の形と同じです。",
+    "input": "values = [1, 2, 3]",
+    "hint": "`torch.tensor(values, dtype=torch.float32)` のように `dtype` を指定します。整数のリストから `dtype` を指定せずに作ると `torch.int64` になります。",
+    "solution": "result = torch.tensor(values, dtype=torch.float32)"
+  },
+  {
+    "number": 2, "id": "PT01-02", "version": 3, "stage": "guided",
+    "title": "クラス番号をint64のTensorにする",
+    "task": "クラス番号のリスト `labels` から、`nn.CrossEntropyLoss` の正解ラベルに使える、dtypeが `torch.int64` のTensorを作ってください。",
+    "input": "labels = [0, 2, 1]",
+    "hint": "クラス番号のTensorは `torch.int64`（`torch.long`）にします。`torch.tensor(labels, dtype=torch.int64)` のように指定します。",
+    "solution": "result = torch.tensor(labels, dtype=torch.int64)"
+  },
+  {
+    "number": 3, "id": "PT01-07", "version": 1, "stage": "guided",
+    "title": "Tensorのshapeをタプルで取り出す",
+    "task": "Tensor `x` のshapeを、Pythonのタプルとして `result` にしてください。",
+    "input": "x = torch.zeros(2, 3)",
+    "hint": "`x.shape` は `torch.Size` で、各軸の長さが並んでいます。`tuple(x.shape)` でタプルにできます。",
+    "solution": "result = tuple(x.shape)"
+  },
+  {
+    "number": 4, "id": "PT01-08", "version": 1, "stage": "guided",
+    "title": "Tensorのdtypeを文字列で確かめる",
+    "task": "Tensor `x` のdtypeを、`str()` で文字列にして `result` にしてください。例えばfloat32のTensorなら `\"torch.float32\"` です。",
+    "input": "x = torch.tensor([1, 2, 3])",
+    "hint": "`x.dtype` にdtypeが入っています。`str(x.dtype)` で `\"torch.int64\"` のような文字列になります。",
+    "solution": "result = str(x.dtype)"
+  },
+  {
+    "number": 5, "id": "PT01-03", "version": 3, "stage": "guided",
+    "title": "入力と同じshapeとdtypeのゼロTensorを作る",
+    "task": "Tensor `x` とshape・dtypeが同じで、すべての要素が0のTensorを作ってください。",
+    "input": "x = torch.tensor([[1, 2, 3], [4, 5, 6]])",
+    "hint": "`torch.zeros_like(x)` は、`x` のshape・dtype・deviceを引き継いだゼロのTensorを返します。`torch.zeros(x.shape)` は既定のfloat32になります。",
+    "solution": "result = torch.zeros_like(x)"
+  },
+  {
+    "number": 6, "id": "PT01-09", "version": 1, "stage": "guided",
+    "title": "shapeとdtypeを指定して1で埋めたTensorを作る",
+    "task": "shapeが `(rows, cols)` で、すべての要素が1、dtypeが `torch.float64` のTensorを作ってください。",
+    "input": "rows = 2\ncols = 3",
+    "hint": "`torch.ones(rows, cols, dtype=torch.float64)` のように、shapeとdtypeを指定します。`dtype` を省略するとfloat32になります。",
+    "solution": "result = torch.ones(rows, cols, dtype=torch.float64)"
+  },
+  {
+    "number": 7, "id": "PT01-04", "version": 3, "stage": "partial",
+    "title": "CPU上のfloat64に変換する",
+    "task": "Tensor `x` を、CPU上のdtype `torch.float64` のTensorに変換して `result` にしてください。`x` 自体は変更しません。",
+    "input": "x = torch.tensor([1, 2, 3])",
+    "hint": "`x.to(device=\"cpu\", dtype=torch.float64)` は変換した新しいTensorを返します。戻り値を `result` に代入します。",
+    "solution": "result = x.to(device=\"cpu\", dtype=torch.float64)"
+  },
+  {
+    "number": 8, "id": "PT01-06", "version": 3, "stage": "partial",
+    "title": "Tensorの要素数を数える",
+    "task": "Tensor `x` の全要素数を整数で求めてください。各軸の長さの積です。",
+    "input": "x = torch.ones(2, 3, 4)",
+    "hint": "`x.numel()` は全要素数を返します。`x.dim()` は軸の数、`len(x)` は先頭の軸の長さなので別の値です。",
+    "solution": "result = x.numel()"
+  },
+  {
+    "number": 9, "id": "PT01-10", "version": 1, "stage": "partial",
+    "title": "一定間隔の値を並べたTensorを作る",
+    "task": "`start` 以上 `end` 未満の値を `step` 間隔で並べた、dtypeが `torch.float32` の1次元Tensorを作ってください。`end` は含めません。",
+    "input": "start = 0\nend = 1\nstep = 0.25",
+    "hint": "`torch.arange(start, end, step, dtype=torch.float32)` は終端を含みません。引数がすべて整数でもfloat32になるよう、`dtype` を指定します。",
+    "solution": "result = torch.arange(start, end, step, dtype=torch.float32)"
+  },
+  {
+    "number": 10, "id": "PT01-11", "version": 1, "stage": "partial",
+    "title": "NumPy配列からdtypeを保ってTensorを作る",
+    "task": "NumPy配列 `a` から、`torch.from_numpy()` でTensorを作ってください。dtypeは `a` のdtypeに対応するもの（float64なら `torch.float64`）になります。",
+    "imports": "import numpy as np\nimport torch\nfrom torch import nn",
+    "input": "a = np.array([[1.0, 2.0], [3.0, 4.0]])",
+    "hint": "`torch.from_numpy(a)` は `a` のdtypeを引き継ぎ、メモリも共有します。`torch.tensor(a, dtype=torch.float32)` は型を変えてコピーします。",
+    "solution": "result = torch.from_numpy(a)"
+  },
+  {
+    "number": 11, "id": "PT01-12", "version": 1, "stage": "partial",
+    "title": "TensorをNumPy配列に変換する",
+    "task": "CPU上のTensor `x` を、NumPy配列に変換して `result` にしてください。dtypeは対応するNumPyのdtype（float32なら `float32`）になります。",
+    "imports": "import numpy as np\nimport torch\nfrom torch import nn",
+    "input": "x = torch.tensor([[1.5, 2.5], [3.5, 4.5]])",
+    "hint": "`x.numpy()` でNumPy配列に変換できます。`x.tolist()` はPythonのリストになります。",
+    "solution": "result = x.numpy()"
+  },
+  {
+    "number": 12, "id": "PT01-13", "version": 1, "stage": "partial",
+    "title": "整数のTensorを浮動小数点数に変換してから平均する",
+    "task": "int64のTensor `x` の全要素の平均を、0次元のfloat32のTensorで求めてください。整数のTensorには `mean()` を直接使えないので、先にfloat32に変換します。",
+    "input": "x = torch.tensor([1, 2, 3, 4])",
+    "hint": "`x.float()` はfloat32に変換したTensorを返します。その後で `mean()` を呼びます。",
+    "solution": "result = x.float().mean()"
+  },
+  {
+    "number": 13, "id": "PT01-05", "version": 3, "stage": "independent",
+    "title": "乱数Tensorを作ってshapeを確かめる",
+    "task": "`torch.randn()` でshapeが `(n, d)` の標準正規乱数のTensorを作り、そのshapeをタプルで `result` にしてください。",
+    "input": "n = 2\nd = 3",
+    "hint": "`torch.randn(n, d)` は、各軸の長さを引数に並べて渡します。値は乱数ですが、shapeは指定したとおりになります。",
+    "solution": "x = torch.randn(n, d)\nresult = tuple(x.shape)"
+  },
+  {
+    "number": 14, "id": "PT01-14", "version": 1, "stage": "independent",
+    "title": "入力と同じshapeとdtypeで指定値を埋める",
+    "task": "Tensor `x` とshape・dtypeが同じで、すべての要素が `value` のTensorを作ってください。",
+    "input": "x = torch.tensor([[1.0, 2.0], [3.0, 4.0]])\nvalue = 7",
+    "hint": "`torch.full_like(x, value)` は、`x` のshapeとdtypeを引き継いで `value` で埋めます。`torch.full(x.shape, value)` は `value` からdtypeを決めます。",
+    "solution": "result = torch.full_like(x, value)"
+  },
+  {
+    "number": 15, "id": "PT01-15", "version": 1, "stage": "independent",
+    "title": "1要素のTensorからPythonの数値を取り出す",
+    "task": "Tensor `x` の全要素の合計を求め、Tensorではなく、Pythonの数値として `result` にしてください。",
+    "input": "x = torch.tensor([[1.5, 2.0], [3.0, 0.5]])",
+    "hint": "`x.sum()` は0次元のTensorです。`item()` を呼ぶと、要素が1つのTensorからPythonの数値を取り出せます。",
+    "solution": "result = x.sum().item()"
+  },
+  {
+    "number": 16, "id": "PT01-16", "version": 1, "stage": "independent",
+    "title": "比較の結果をbool型のTensorにする",
+    "task": "Tensor `x` の各要素が `threshold` より大きいかどうかを表す、dtypeが `torch.bool` のTensorを作ってください。shapeは `x` と同じです。",
+    "input": "x = torch.tensor([[-1.0, 2.0], [0.5, 3.0]])\nthreshold = 0.5",
+    "hint": "`x > threshold` は要素ごとに比較し、`torch.bool` のTensorを返します。整数に変換する必要はありません。",
+    "solution": "result = x > threshold"
+  },
+  {
+    "number": 17, "id": "PT01-17", "version": 1, "stage": "independent",
+    "title": "dtypeの異なるTensorを足したときの型を確かめる",
+    "task": "int64のTensor `a` とfloat32のTensor `b` を要素ごとに足してください。結果のdtypeはPyTorchの型昇格の規則で `torch.float32` になります。dtypeを変換し直さないでください。",
+    "input": "a = torch.tensor([1, 2, 3])\nb = torch.tensor([0.5, 0.25, 0.125])",
+    "hint": "演算するTensorのdtypeが異なると、より広い型にそろえられます。int64とfloat32ではfloat32になり、float64にはなりません。",
+    "solution": "result = a + b"
+  },
+  {
+    "number": 18, "id": "PT01-18", "version": 1, "stage": "independent",
+    "title": "cloneしたTensorだけを書き換える",
+    "task": "Tensor `x` を `clone()` で複製し、複製の位置 `index` の要素を `value` に書き換えてください。`(x, 書き換えた複製)` のタプルを `result` にします。`x` の値は変わらないようにします。",
+    "input": "x = torch.tensor([1.0, 2.0, 3.0])\nindex = 1\nvalue = 9.0",
+    "hint": "`y = x` は同じTensorに別名を付けるだけなので、`y` を書き換えると `x` も変わります。`y = x.clone()` で別のメモリに複製してから書き換えます。",
+    "solution": "y = x.clone()\ny[index] = value\nresult = (x, y)"
+  }
+]

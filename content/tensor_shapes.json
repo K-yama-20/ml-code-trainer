@@ -1,0 +1,146 @@
+[
+  {
+    "number": 1, "id": "PT02-01", "version": 3, "stage": "guided",
+    "title": "先頭のバッチ軸を残して平坦化する",
+    "task": "Tensor `x` の先頭の軸をバッチとして残し、残りの軸をすべて1つにまとめてください。結果はshape `(バッチ数, 残りの要素数)` の2次元Tensorです。",
+    "input": "x = torch.arange(24).reshape(2, 3, 4)",
+    "hint": "`x.reshape(x.shape[0], -1)` の `-1` は、要素数が合うように自動で決まる長さです。`torch.flatten(x, start_dim=1)` でも同じです。",
+    "solution": "result = x.reshape(x.shape[0], -1)"
+  },
+  {
+    "number": 2, "id": "PT02-03", "version": 3, "stage": "guided",
+    "title": "先頭にサイズ1のバッチ軸を追加する",
+    "task": "Tensor `x` の先頭に長さ1の軸を追加してください。1つのサンプルを、バッチサイズ1のバッチとして扱うための操作です。",
+    "input": "x = torch.tensor([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])",
+    "hint": "`x.unsqueeze(0)` は位置0に長さ1の軸を追加します。要素数と値の並びは変わりません。",
+    "solution": "result = x.unsqueeze(0)"
+  },
+  {
+    "number": 3, "id": "PT02-07", "version": 1, "stage": "guided",
+    "title": "末尾にサイズ1の軸を追加する",
+    "task": "Tensor `x` の末尾に長さ1の軸を追加してください。shape `(N,)` なら `(N, 1)` になります。",
+    "input": "x = torch.tensor([1.0, 2.0, 3.0])",
+    "hint": "`unsqueeze()` の位置に `-1` を指定すると、末尾に軸を追加できます。",
+    "solution": "result = x.unsqueeze(-1)"
+  },
+  {
+    "number": 4, "id": "PT02-05", "version": 3, "stage": "guided",
+    "title": "末尾の長さ1の軸だけを取り除く",
+    "task": "末尾の軸の長さが1であるTensor `x` から、その末尾の軸だけを取り除いてください。他の位置にある長さ1の軸は残します。",
+    "input": "x = torch.ones(1, 3, 1)",
+    "hint": "引数なしの `squeeze()` は長さ1の軸をすべて取り除き、バッチサイズ1のバッチ軸まで消えます。`squeeze(-1)` で末尾だけを指定します。",
+    "solution": "result = x.squeeze(-1)"
+  },
+  {
+    "number": 5, "id": "PT02-08", "version": 1, "stage": "guided",
+    "title": "要素の順を保って指定のshapeに並べ直す",
+    "task": "Tensor `x` を、shape `(rows, cols)` に変形してください。要素は先頭から行ごとに詰めて並べます。`rows * cols` は `x` の要素数と同じです。",
+    "input": "x = torch.arange(6)\nrows = 2\ncols = 3",
+    "hint": "`x.reshape(rows, cols)` は、要素の順を変えずにshapeだけを変えます。",
+    "solution": "result = x.reshape(rows, cols)"
+  },
+  {
+    "number": 6, "id": "PT02-09", "version": 1, "stage": "guided",
+    "title": "2次元Tensorの行と列を入れ替える",
+    "task": "2次元Tensor `x` の行と列を入れ替えた（転置した）Tensorを作ってください。shape `(R, C)` は `(C, R)` になります。",
+    "input": "x = torch.tensor([[1, 2, 3], [4, 5, 6]])",
+    "hint": "`x.T` または `x.transpose(0, 1)` で軸0と軸1を入れ替えます。`reshape()` ではshapeが変わっても要素の対応は入れ替わりません。",
+    "solution": "result = x.T"
+  },
+  {
+    "number": 7, "id": "PT02-02", "version": 4, "stage": "partial",
+    "title": "非連続なTensorを1次元にする",
+    "task": "転置によってメモリ上で非連続になったTensor `x` を、論理的な並び順のまま1次元にしてください。`view()` ではエラーになる場合でも動く方法を使います。",
+    "input": "x = torch.arange(6).reshape(2, 3).T",
+    "hint": "`view()` はメモリ上で連続していることを要求します。`reshape(-1)` は必要に応じてコピーするので、非連続なTensorにも使えます。",
+    "solution": "result = x.reshape(-1)"
+  },
+  {
+    "number": 8, "id": "PT02-04", "version": 3, "stage": "partial",
+    "title": "NHWCの画像バッチをNCHWに並べ替える",
+    "task": "shape `(N, H, W, C)` の画像バッチ `x` を、`permute()` でshape `(N, C, H, W)` に並べ替えてください。各画素の値と位置の対応は保ちます。",
+    "input": "x = torch.arange(24).reshape(1, 2, 3, 4)",
+    "hint": "`x.permute(0, 3, 1, 2)` は、新しい軸の順に元の軸番号を並べます。`reshape(N, C, H, W)` ではshapeは合っても値の並びが崩れます。",
+    "solution": "result = x.permute(0, 3, 1, 2)"
+  },
+  {
+    "number": 9, "id": "PT02-06", "version": 3, "stage": "partial",
+    "title": "転置してから1次元に平坦化する",
+    "task": "2次元Tensor `x` を転置し、転置後の行の順に要素を並べた1次元Tensorにしてください。元の `x` を列ごとに読んだ順になります。",
+    "input": "x = torch.tensor([[1, 2, 3], [4, 5, 6]])",
+    "hint": "`x.T.reshape(-1)` のように、転置してから平坦化します。`x.reshape(-1)` だけでは元の行の順になります。",
+    "solution": "result = x.T.reshape(-1)"
+  },
+  {
+    "number": 10, "id": "PT02-10", "version": 1, "stage": "partial",
+    "title": "2つのTensorを行方向に連結する",
+    "task": "列数が同じ2次元Tensor `a` と `b` を、`a` の下に `b` が続くように軸0で連結してください。",
+    "input": "a = torch.tensor([[1, 2], [3, 4]])\nb = torch.tensor([[5, 6]])",
+    "hint": "`torch.cat([a, b], dim=0)` は既存の軸0に沿ってつなげます。新しい軸は増えません。",
+    "solution": "result = torch.cat([a, b], dim=0)"
+  },
+  {
+    "number": 11, "id": "PT02-11", "version": 1, "stage": "partial",
+    "title": "同じshapeのTensorを新しい軸で積み重ねる",
+    "task": "同じshapeのTensor `a` と `b` を、新しい先頭の軸で積み重ねてください。shape `(D,)` の2つなら `(2, D)` になります。",
+    "input": "a = torch.tensor([1.0, 2.0, 3.0])\nb = torch.tensor([4.0, 5.0, 6.0])",
+    "hint": "`torch.stack([a, b], dim=0)` は新しい軸を作って並べます。`torch.cat()` は既存の軸に沿ってつなげるので、shapeが変わります。",
+    "solution": "result = torch.stack([a, b], dim=0)"
+  },
+  {
+    "number": 12, "id": "PT02-12", "version": 1, "stage": "partial",
+    "title": "中間の2つの軸だけを平坦化する",
+    "task": "shape `(B, H, W, C)` のTensor `x` の、軸1と軸2だけを1つにまとめて、shape `(B, H*W, C)` にしてください。",
+    "input": "x = torch.arange(24).reshape(2, 2, 3, 2)",
+    "hint": "`torch.flatten(x, start_dim=1, end_dim=2)` は、指定した範囲の軸だけを平坦化します。最後の軸 `C` はそのまま残ります。",
+    "solution": "result = torch.flatten(x, start_dim=1, end_dim=2)"
+  },
+  {
+    "number": 13, "id": "PT02-13", "version": 1, "stage": "independent",
+    "title": "特徴量の列を横に連結する",
+    "task": "行数が同じ2次元Tensor `a` と `b` を、各行の特徴量を横につなげるように軸1で連結してください。shape `(N, D1)` と `(N, D2)` は `(N, D1+D2)` になります。",
+    "input": "a = torch.tensor([[1.0, 2.0], [3.0, 4.0]])\nb = torch.tensor([[10.0], [20.0]])",
+    "hint": "`torch.cat([a, b], dim=1)` は列方向につなげます。`dim=0` にすると行が増え、列数が違うとエラーになります。",
+    "solution": "result = torch.cat([a, b], dim=1)"
+  },
+  {
+    "number": 14, "id": "PT02-14", "version": 1, "stage": "independent",
+    "title": "先頭の軸を指定した長さに分割する",
+    "task": "`torch.split()` を使って、Tensor `x` を軸0に沿って、リスト `sizes` の長さずつに分割してください。分割したTensorを並べたタプルを `result` にします。`sizes` の合計は `x` の行数と同じです。",
+    "input": "x = torch.arange(10).reshape(5, 2)\nsizes = [2, 3]",
+    "hint": "`torch.split(x, sizes, dim=0)` に長さのリストを渡すと、その長さで順に切り分けたTensorのタプルを返します。",
+    "solution": "result = torch.split(x, sizes, dim=0)"
+  },
+  {
+    "number": 15, "id": "PT02-15", "version": 1, "stage": "independent",
+    "title": "Tensor全体を行方向に繰り返す",
+    "task": "2次元Tensor `x` を、行方向に `times` 回繰り返したTensorを作ってください。`x` 全体が `times` 回縦に並び、列方向は繰り返しません。",
+    "input": "x = torch.tensor([[1, 2], [3, 4]])\ntimes = 2",
+    "hint": "`x.repeat(times, 1)` は、軸ごとに繰り返す回数を指定します。軸0を `times` 回、軸1を1回にします。",
+    "solution": "result = x.repeat(times, 1)"
+  },
+  {
+    "number": 16, "id": "PT02-16", "version": 1, "stage": "independent",
+    "title": "チャネルが最後の画像をチャネルが先頭の形にする",
+    "task": "shape `(H, W, C)` の1枚の画像 `x` を、shape `(C, H, W)` に並べ替えてください。各画素の値と位置の対応は保ちます。",
+    "input": "x = torch.arange(12).reshape(2, 3, 2)",
+    "hint": "新しい軸の順に元の軸番号を並べると `(2, 0, 1)` です。`x.permute(2, 0, 1)` を使います。",
+    "solution": "result = x.permute(2, 0, 1)"
+  },
+  {
+    "number": 17, "id": "PT02-17", "version": 1, "stage": "independent",
+    "title": "最後の軸以外をまとめて2次元にする",
+    "task": "shape `(..., D)` のTensor `x` の、最後の軸以外をすべて1つにまとめて、shape `(残りの要素数, D)` の2次元Tensorにしてください。`x` の軸の数は問題によって異なります。",
+    "input": "x = torch.arange(12).reshape(2, 3, 2)",
+    "hint": "`x.reshape(-1, x.shape[-1])` は、最後の軸の長さを保ち、残りを `-1` で自動的にまとめます。",
+    "solution": "result = x.reshape(-1, x.shape[-1])"
+  },
+  {
+    "number": 18, "id": "PT02-18", "version": 1, "stage": "independent",
+    "title": "Tensorのリストを最後の新しい軸で積み重ねる",
+    "task": "同じshapeのTensorを並べたリスト `tensors` を、新しい最後の軸で積み重ねてください。shape `(H, W)` のTensorが `K` 個なら、結果は `(H, W, K)` です。",
+    "input": "tensors = [torch.tensor([[1, 2], [3, 4]]), torch.tensor([[5, 6], [7, 8]])]",
+    "hint": "`torch.stack(tensors, dim=-1)` は、末尾に新しい軸を作ってリストの順に並べます。",
+    "solution": "result = torch.stack(tensors, dim=-1)"
+  }
+]

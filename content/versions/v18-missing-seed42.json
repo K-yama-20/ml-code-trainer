@@ -1,0 +1,1061 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "PD02-01",
+      "family_id": "PD02-01",
+      "version_id": "PD02-01@2",
+      "content_version": 2,
+      "concept_id": "PD02",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "列の欠損数",
+      "description": "value列の欠損個数を整数で返す。",
+      "learning_goal": "欠損の検出・除去・補完を使い分けます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "value列の欠損個数を整数で返す。",
+      "starter_code": "result = ___\n",
+      "example": "df.fillna({'value': 0})",
+      "editable_regions": [],
+      "hints": [
+        "欠損の検出・除去・補完を使い分けます。",
+        "isnaのTrueを合計します。",
+        "空欄には int(df['value'].isna().sum()) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = int(df['value'].isna().sum())\n",
+      "explanation": "isnaのTrueを合計します。",
+      "common_mistakes": [
+        "欠損判定を== np.nanで行う。",
+        "補完値をテスト集合自身から計算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3276\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": 1
+        },
+        {
+          "setup": "seed = 3276\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": 0
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3276\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(value=np.nan)",
+          "expected": 4
+        },
+        {
+          "setup": "seed = 3276\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.fillna(0)",
+          "expected": 0
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "value列の欠損個数を整数で返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD02-02",
+      "family_id": "PD02-02",
+      "version_id": "PD02-02@2",
+      "content_version": 2,
+      "concept_id": "PD02",
+      "module_id": "pandas",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "欠損行を削除",
+      "description": "valueが欠損した行を削除して返す。他列の欠損は判断に使わない。",
+      "learning_goal": "欠損の検出・除去・補完を使い分けます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "valueが欠損した行を削除して返す。他列の欠損は判断に使わない。",
+      "starter_code": "result = ___\n",
+      "example": "df.fillna({'value': 0})",
+      "editable_regions": [],
+      "hints": [
+        "欠損の検出・除去・補完を使い分けます。",
+        "subsetで対象列を限定します。",
+        "空欄には df.dropna(subset=['value']) と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = df.dropna(subset=['value'])\n",
+      "explanation": "subsetで対象列を限定します。",
+      "common_mistakes": [
+        "欠損判定を== np.nanで行う。",
+        "補完値をテスト集合自身から計算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 6764\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 6764\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 6764\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(value=np.nan)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 6764\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.fillna(0)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                0.0,
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "valueが欠損した行を削除して返す。他列の欠損は判断に使わない。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD02-03",
+      "family_id": "PD02-03",
+      "version_id": "PD02-03@2",
+      "content_version": 2,
+      "concept_id": "PD02",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "固定値で補完",
+      "description": "valueの欠損をfillで埋めた新しいDataFrameを返す。",
+      "learning_goal": "欠損の検出・除去・補完を使い分けます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "valueの欠損をfillで埋めた新しいDataFrameを返す。",
+      "starter_code": "result =\n",
+      "example": "df.fillna({'value': 0})",
+      "editable_regions": [],
+      "hints": [
+        "欠損の検出・除去・補完を使い分けます。",
+        "元のDataFrameは変更しません。",
+        "解答部分は次の形で書けます。\nresult = df.fillna({'value': fill})\n"
+      ],
+      "solution": "result = df.fillna({'value': fill})\n",
+      "explanation": "元のDataFrameは変更しません。",
+      "common_mistakes": [
+        "欠損判定を== np.nanで行う。",
+        "補完値をテスト集合自身から計算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5054\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame,0",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                0.0,
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5054\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0],2",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5054\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(value=np.nan),-1",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                -1.0,
+                2
+              ],
+              [
+                "b",
+                -1.0,
+                7
+              ],
+              [
+                "a",
+                -1.0,
+                4
+              ],
+              [
+                "b",
+                -1.0,
+                9
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5054\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame,seed",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2
+              ],
+              [
+                "b",
+                5054.0,
+                7
+              ],
+              [
+                "a",
+                5.0,
+                4
+              ],
+              [
+                "b",
+                3.0,
+                9
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df",
+          "fill"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])\nfill = 0",
+        "task": "valueの欠損をfillで埋めた新しいDataFrameを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD02-04",
+      "family_id": "PD02-04",
+      "version_id": "PD02-04@3",
+      "content_version": 3,
+      "concept_id": "PD02",
+      "module_id": "pandas",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "欠損値を学習時の平均で埋める",
+      "description": "seriesの欠損値（NaN）だけをtrain_meanで埋め、resultに代入してください。元の値と行ラベルは保ちます。",
+      "learning_goal": "欠損の検出・除去・補完を使い分けます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "欠損値を埋めたSeries。行数とindexは入力と同じです。",
+      "starter_code": "result =\n",
+      "example": "df.fillna({'value': 0})",
+      "editable_regions": [],
+      "hints": [
+        "欠損している場所だけを埋めます。欠損がない値や行ラベルには手を加えません。",
+        "Seriesのfillnaは、欠損値を指定した値で置き換えたSeriesを返します。",
+        "解答部分は次の形で書けます。\nresult = series.fillna(train_mean)\n"
+      ],
+      "solution": "result = series.fillna(train_mean)\n",
+      "explanation": "fillnaに学習時の平均を渡すと、欠損した場所だけを補完します。テストデータの平均で埋めると評価対象の情報を基準に使ってしまうため、ここでは外から渡されたtrain_meanを再利用します。",
+      "common_mistakes": [
+        "series == np.nanでは欠損を検出できません。欠損の確認にはisna、補完にはfillnaを使います。",
+        "series.mean()で埋めるとtrain_meanという指定された基準を使えていません。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 515\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.value,2",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              1.0,
+              2.0,
+              5.0,
+              3.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 515\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.Series([],dtype=float),0",
+          "expected": {
+            "kind": "series",
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 515\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.Series([np.nan]),3",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0
+            ],
+            "data": [
+              3.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 515\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.Series([1.,2.]),4",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              1.0,
+              2.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "既にある値とindexを保ち、欠損だけをtrain_meanで置き換えているか確認してください。",
+          "runtime": "入力の型と、表示されたエラーの行を確認してください。"
+        }
+      },
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "series",
+          "train_mean"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\nseries = pd.Series([1.0, float('nan'), 5.0, 3.0], index=[0, 1, 2, 3], dtype='float64')\ntrain_mean = 2",
+        "task": "seriesの欠損値（NaN）だけをtrain_meanで埋め、resultに代入してください。元の値と行ラベルは保ちます。",
+        "authored": true,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD02-05",
+      "family_id": "PD02-05",
+      "version_id": "PD02-05@2",
+      "content_version": 2,
+      "concept_id": "PD02",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "欠損フラグを追加",
+      "description": "value_missing列（bool）を追加したDataFrameを返す。",
+      "learning_goal": "欠損の検出・除去・補完を使い分けます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "value_missing列（bool）を追加したDataFrameを返す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "df.fillna({'value': 0})",
+      "editable_regions": [],
+      "hints": [
+        "欠損の検出・除去・補完を使い分けます。",
+        "欠損であること自体も特徴になることがあります。",
+        "解答部分は次の形で書けます。\nresult = df.assign(value_missing=df.value.isna())\n"
+      ],
+      "solution": "result = df.assign(value_missing=df.value.isna())\n",
+      "explanation": "欠損であること自体も特徴になることがあります。",
+      "common_mistakes": [
+        "欠損判定を== np.nanで行う。",
+        "補完値をテスト集合自身から計算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9058\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score",
+              "value_missing"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2,
+                false
+              ],
+              [
+                "b",
+                "__NaN__",
+                7,
+                true
+              ],
+              [
+                "a",
+                5.0,
+                4,
+                false
+              ],
+              [
+                "b",
+                3.0,
+                9,
+                false
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9058\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.iloc[:0]",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score",
+              "value_missing"
+            ],
+            "index": [],
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9058\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.assign(value=np.nan)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score",
+              "value_missing"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                "__NaN__",
+                2,
+                true
+              ],
+              [
+                "b",
+                "__NaN__",
+                7,
+                true
+              ],
+              [
+                "a",
+                "__NaN__",
+                4,
+                true
+              ],
+              [
+                "b",
+                "__NaN__",
+                9,
+                true
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9058\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "frame.fillna(0)",
+          "expected": {
+            "kind": "dataframe",
+            "columns": [
+              "group",
+              "value",
+              "score",
+              "value_missing"
+            ],
+            "index": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "data": [
+              [
+                "a",
+                1.0,
+                2,
+                false
+              ],
+              [
+                "b",
+                0.0,
+                7,
+                false
+              ],
+              [
+                "a",
+                5.0,
+                4,
+                false
+              ],
+              [
+                "b",
+                3.0,
+                9,
+                false
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "df"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import pandas as pd\n\ndf = pd.DataFrame([['a', 1.0, 2], ['b', float('nan'), 7], ['a', 5.0, 4], ['b', 3.0, 9]], columns=['group', 'value', 'score'], index=[0, 1, 2, 3])",
+        "task": "value_missing列（bool）を追加したDataFrameを返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "PD02-06",
+      "family_id": "PD02-06",
+      "version_id": "PD02-06@2",
+      "content_version": 2,
+      "concept_id": "PD02",
+      "module_id": "pandas",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "前方補完",
+      "description": "直前の有効値で前方補完する。先頭の欠損は残す。",
+      "learning_goal": "欠損の検出・除去・補完を使い分けます。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "直前の有効値で前方補完する。先頭の欠損は残す。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "df.fillna({'value': 0})",
+      "editable_regions": [],
+      "hints": [
+        "欠損の検出・除去・補完を使い分けます。",
+        "将来の値を使わない処理です。ただし時系列の分割にも注意します。",
+        "解答部分は次の形で書けます。\nresult = series.ffill()\n"
+      ],
+      "solution": "result = series.ffill()\n",
+      "explanation": "将来の値を使わない処理です。ただし時系列の分割にも注意します。",
+      "common_mistakes": [
+        "欠損判定を== np.nanで行う。",
+        "補完値をテスト集合自身から計算する。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 5249\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.Series([1.,np.nan,3.])",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0,
+              1,
+              2
+            ],
+            "data": [
+              1.0,
+              1.0,
+              3.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 5249\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.Series([np.nan,2.,np.nan])",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0,
+              1,
+              2
+            ],
+            "data": [
+              "__NaN__",
+              2.0,
+              2.0
+            ]
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 5249\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.Series([],dtype=float)",
+          "expected": {
+            "kind": "series",
+            "index": [],
+            "data": []
+          }
+        },
+        {
+          "setup": "seed = 5249\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(seed)\nx = rng.normal(size=(3, 4))\nv = np.array([0., 2., -2., 4.]) + seed\nframe = pd.DataFrame({\"group\": [\"a\", \"b\", \"a\", \"b\"], \"value\": [1., np.nan, 5., 3.], \"score\": [2, 7, 4, 9]})\nX = np.arange(80, dtype=float).reshape(20, 4) + seed\ny = np.array([0, 1] * 10)\n",
+          "args": "pd.Series([np.nan,np.nan])",
+          "expected": {
+            "kind": "series",
+            "index": [
+              0,
+              1
+            ],
+            "data": [
+              "__NaN__",
+              "__NaN__"
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy",
+        "pandas"
+      ],
+      "prerequisites": [
+        "PD01"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "series"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\nimport pandas as pd\n\nseries = pd.Series([1.0, np.nan, 3.0])",
+        "task": "直前の有効値で前方補完する。先頭の欠損は残す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}

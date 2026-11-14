@@ -5,9 +5,28 @@ from apps.api.app.main import app, hash_code
 from apps.api.app.content import problem, DATA
 
 
-# NP01-NP08 and PY01-PY03 are ordered drills that keep their authored order.
-# NP09 still uses the stage-gated flow (guided -> partial -> independent) tested here.
+# All 30 concepts are ordered 18-problem drills that keep their authored order.
+# Certification still uses the stage gates (two families per stage, and a
+# server-verified independent stage), which the tests below exercise on NP09.
 STAGED = "NP09"
+STAGES = ("guided", "partial", "independent")
+
+
+def walk(client, session, database=None, verified_independent=False, hints=False):
+    """Submit every queued item in order; return the concept/stage sequence."""
+    seen = []
+    current = session["items"][0]
+    for _ in range(len(session["items"])):
+        p = problem(current["problem_version_id"])
+        seen.append((p["concept_id"], p["stage"]))
+        if hints:
+            client.post(f"/api/v1/session-items/{current['id']}/hints/1/reveal")
+        verified = verified_independent and p["stage"] == "independent"
+        submit(client, current, verified=verified, database=database)
+        r = advance(client, session, current)
+        session = r["session"]
+        current = next(i for i in session["items"] if i["id"] == r["next_item_id"])
+    return seen, session, current
 
 
 def start(client, **options):
@@ -54,55 +73,35 @@ def advance(client, session, item, **options):
 
 def test_guided_partial_independent_and_related_continue(client, database):
     session = start(client)
-    assert len(session["items"]) == 2
-    current = session["items"][0]
-    seen = []
-    for n in range(6):
-        p = problem(current["problem_version_id"])
-        seen.append((p["concept_id"], p["stage"]))
-        submit(client, current, verified=n >= 4, database=database)
-        r = advance(client, session, current)
-        session = r["session"]
-        current = next(i for i in session["items"] if i["id"] == r["next_item_id"])
-    assert seen == [(STAGED, s) for s in ["guided", "guided", "partial", "partial", "independent", "independent"]]
+    ordered = [p for p in DATA["problems"] if p["concept_id"] == STAGED]
+    assert [i["problem_version_id"] for i in session["items"]] == [p["version_id"] for p in ordered]
+    seen, session, current = walk(client, session, database, verified_independent=True)
+    assert seen == [(STAGED, p["stage"]) for p in ordered]
     assert problem(current["problem_version_id"])["concept_id"] != STAGED
     progress = client.get("/api/v1/progress/concepts").json()[0]
     assert progress["mastery_level"] == 3
-    assert client.get("/api/v1/history").json()["total"] == 6
+    assert client.get("/api/v1/history").json()["total"] == 18
     assert client.get("/api/v1/sessions/current").json()["id"] == session["id"]
 
 
 def test_provisional_independent_can_continue_without_false_certification(client):
-    session = start(client)
-    current = session["items"][0]
-    for _ in range(6):
-        submit(client, current)
-        r = advance(client, session, current)
-        session = r["session"]
-        current = next(i for i in session["items"] if i["id"] == r["next_item_id"])
+    seen, session, current = walk(client, start(client))
     assert problem(current["problem_version_id"])["concept_id"] != STAGED
     assert client.get("/api/v1/progress/concepts").json()[0]["mastery_level"] == 2
 
 
 def test_concept_stage_selection_is_starting_point_not_a_permanent_filter(client):
     session = start(client, stages=["guided"])
-    current = session["items"][0]
-    for _ in range(2):
-        submit(client, current)
-        r = advance(client, session, current)
-        session = r["session"]
-        current = next(i for i in session["items"] if i["id"] == r["next_item_id"])
+    assert {problem(i["problem_version_id"])["stage"] for i in session["items"]} == {"guided"}
+    seen, session, current = walk(client, session)
+    assert problem(current["problem_version_id"])["concept_id"] == STAGED
     assert problem(current["problem_version_id"])["stage"] == "partial"
 
 
 def test_starting_partial_does_not_force_guided_or_claim_missing_certification(client):
     session = start(client, stages=["partial"])
-    current = session["items"][0]
-    for _ in range(2):
-        submit(client, current)
-        r = advance(client, session, current)
-        session = r["session"]
-        current = next(i for i in session["items"] if i["id"] == r["next_item_id"])
+    seen, session, current = walk(client, session)
+    assert {stage for _, stage in seen} == {"partial"}
     assert problem(current["problem_version_id"])["stage"] == "independent"
     assert client.get("/api/v1/progress/concepts").json()[0]["mastery_level"] == 0
 
@@ -147,16 +146,14 @@ def test_advance_retry_is_idempotent_and_explicit_skip_does_not_submit(client):
 
 
 def test_hints_keep_gate_and_retry_uses_another_variant(client):
-    session = start(client)
-    for item in session["items"]:
-        client.post(f"/api/v1/session-items/{item['id']}/hints/1/reveal")
-        submit(client, item)
-    r = advance(client, session, session["items"][-1])
-    new = r["session"]["items"][-2:]
-    assert all(problem(i["problem_version_id"])["stage"] == "guided" for i in new)
-    assert all(i["variant_seed"] == 99 for i in new)
-    assert all(i["hint_level"] == 0 for i in new)
+    seen, session, current = walk(client, start(client), hints=True)
+    # Hinted answers count as practice but never certify a stage.
     assert client.get("/api/v1/progress/concepts").json()[0]["mastery_level"] == 0
+    assert current["hint_level"] == 0
+    # Retrying the drill serves the other seed, with hints reset.
+    retry = start(client)
+    assert [i["problem_version_id"] for i in retry["items"]] == [i["problem_version_id"] for i in session["items"][:18]]
+    assert all(i["variant_seed"] == 99 and i["hint_level"] == 0 for i in retry["items"])
 
 
 def test_unavailable_scope_explains_and_remains_active(client):
@@ -214,7 +211,7 @@ def test_phase1_archives_are_unchanged_and_references_still_pass():
     from apps.api.app.content import ARCHIVED_VARIANTS, VARIANTS
     from content.drill_phase1 import LESSONS
 
-    assert len(LESSONS) == 15 and len(DATA["problems"]) == 312
+    assert len(LESSONS) == 15 and len(DATA["problems"]) == 540
     for seed, data in VARIANTS.items():
         for current in data["problems"]:
             if current["content_version"] == 1:
