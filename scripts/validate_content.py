@@ -8,6 +8,7 @@ import io
 import re
 import tokenize
 import json
+import math
 from pathlib import Path
 import sys
 import time
@@ -89,6 +90,24 @@ def check_display(p):
             check_python(snippet, f"{label}:Python snippet")
 
 
+def same_content(a, b):
+    """Exact equality, except floats may differ by platform rounding noise.
+
+    Some expected values (e.g. scikit-learn solver output) differ in the last
+    bits between Windows and Linux. The tolerance is far tighter than grading's
+    1e-5, so any real content change still counts as a change.
+    """
+    if isinstance(a, float) or isinstance(b, float):
+        return (isinstance(a, (int, float)) and isinstance(b, (int, float))
+                and not isinstance(a, bool) and not isinstance(b, bool)
+                and math.isclose(a, b, rel_tol=1e-9, abs_tol=1e-12))
+    if isinstance(a, dict) and isinstance(b, dict):
+        return a.keys() == b.keys() and all(same_content(a[k], b[k]) for k in a)
+    if isinstance(a, list) and isinstance(b, list):
+        return len(a) == len(b) and all(same_content(x, y) for x, y in zip(a, b))
+    return type(a) is type(b) and a == b
+
+
 def check_versions(latest):
     seen = {}
     archives = [json.loads(f.read_text(encoding="utf-8")) for f in
@@ -99,7 +118,7 @@ def check_versions(latest):
             assert p["family_id"] == p["id"]
             assert p["version_id"] == f"{p['id']}@{p['content_version']}"
             key = p["version_id"], p["variant_seed"]
-            assert seen.setdefault(key, p) == p, (key, "version changed without a bump")
+            assert same_content(seen.setdefault(key, p), p), (key, "version changed without a bump")
 
 
 def check_reference(p):
@@ -169,7 +188,7 @@ def validate():
         ("variant-99.json", catalogs[1]),
         ("public.json", data | {"problems": [public_problem(p) for p in compile_all(include_display=True)["problems"]]}),
     ):
-        assert json.loads((compiled / name).read_text(encoding="utf-8")) == expected, (
+        assert same_content(json.loads((compiled / name).read_text(encoding="utf-8")), expected), (
             f"{name} is stale. Run scripts/compile_content.py."
         )
     for seed, catalog in zip((42, 99), catalogs, strict=True):
