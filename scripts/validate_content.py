@@ -108,6 +108,19 @@ def same_content(a, b):
     return type(a) is type(b) and a == b
 
 
+def first_difference(a, b, path="$"):
+    """Describe where two catalog values first differ, for readable failures."""
+    if isinstance(a, dict) and isinstance(b, dict):
+        if a.keys() != b.keys():
+            return f"{path}: keys {sorted(a.keys() ^ b.keys())}"
+        return next((d for k in a if (d := first_difference(a[k], b[k], f"{path}.{k}"))), None)
+    if isinstance(a, list) and isinstance(b, list):
+        if len(a) != len(b):
+            return f"{path}: length {len(a)} != {len(b)}"
+        return next((d for i, (x, y) in enumerate(zip(a, b)) if (d := first_difference(x, y, f"{path}[{i}]"))), None)
+    return None if same_content(a, b) else f"{path}: {a!r:.200} != {b!r:.200}"
+
+
 def check_versions(latest):
     seen = {}
     archives = [json.loads(f.read_text(encoding="utf-8")) for f in
@@ -118,7 +131,8 @@ def check_versions(latest):
             assert p["family_id"] == p["id"]
             assert p["version_id"] == f"{p['id']}@{p['content_version']}"
             key = p["version_id"], p["variant_seed"]
-            assert same_content(seen.setdefault(key, p), p), (key, "version changed without a bump")
+            old = seen.setdefault(key, p)
+            assert same_content(old, p), (key, "version changed without a bump", first_difference(old, p))
 
 
 def check_reference(p):
