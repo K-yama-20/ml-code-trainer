@@ -1,0 +1,200 @@
+[
+  {
+    "number": 1,
+    "id": "NP07-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "2つの1次元配列を順番につなぐ",
+    "task": "`np.concatenate()` を使って、1次元配列 `a` の後ろに `b` をつなげてください。結果は1次元配列にしてください。",
+    "input": "a = np.array([1, 2, 3])\nb = np.array([4, 5])",
+    "hint": "つなげたい配列を、順番にリストへ入れて渡します。1次元配列の軸は `axis=0` です。",
+    "solution": "result = np.concatenate([a, b], axis=0)"
+  },
+  {
+    "number": 2,
+    "id": "NP07-01",
+    "version": 3,
+    "stage": "guided",
+    "title": "2次元配列を縦につないで行を増やす",
+    "task": "`np.concatenate()` を使って、2次元配列 `a` の下に `b` の行を追加してください。`a` と `b` の列数は同じです。",
+    "input": "a = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n])",
+    "hint": "`axis=0` を指定すると、行の軸が伸びます。列数はそのままです。",
+    "solution": "result = np.concatenate([a, b], axis=0)"
+  },
+  {
+    "number": 3,
+    "id": "NP07-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "2次元配列を横につないで列を増やす",
+    "task": "`np.concatenate()` を使って、2次元配列 `a` の右に `b` の列を追加してください。`a` と `b` の行数は同じです。",
+    "input": "a = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([\n    [10],\n    [20],\n])",
+    "hint": "`axis=1` を指定すると、列の軸が伸びます。結合に使わない行の軸の長さはそろっている必要があります。",
+    "solution": "result = np.concatenate([a, b], axis=1)"
+  },
+  {
+    "number": 4,
+    "id": "NP07-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "次元数の異なる配列を1次元につなぐ",
+    "task": "`np.concatenate()` の `axis=None` を使って、2次元配列 `a` と1次元配列 `b` の全要素を、`a`、`b` の順に1次元配列へまとめてください。`a` の要素は上の行から順に、各行では左から右へ並べてください。",
+    "input": "a = np.array([\n    [1, 2],\n    [3, 4],\n])\nb = np.array([5, 6, 7])",
+    "hint": "`axis=None` を指定すると、各配列を1次元にしてからつなぎます。",
+    "solution": "result = np.concatenate([a, b], axis=None)"
+  },
+  {
+    "number": 5,
+    "id": "NP07-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "時系列データの前半と後半をつなぐ",
+    "task": "`first` と `second` は、shapeが `(バッチ数, 時刻数, 特徴数)` の配列です。`np.concatenate()` を使って、各サンプルの時系列を前半 `first`、後半 `second` の順につないでください。バッチ数と特徴数は共通です。",
+    "input": "first = np.arange(8).reshape(2, 2, 2)\nsecond = np.arange(8, 12).reshape(2, 1, 2)",
+    "hint": "増やしたいのは時刻数です。時刻に対応する軸1を指定します。",
+    "solution": "result = np.concatenate([first, second], axis=1)"
+  },
+  {
+    "number": 6,
+    "id": "NP07-06",
+    "version": 3,
+    "stage": "independent",
+    "title": "複数のミニバッチを1つにまとめる",
+    "task": "`batches` は、列数が共通する2次元配列を1つ以上含むリストです。`np.concatenate()` を使って、すべての配列をリストの順番で行方向につないでください。各バッチの行数は異なっていて構いません。",
+    "input": "batches = [\n    np.array([[1, 2]]),\n    np.array([[3, 4], [5, 6]]),\n    np.array([[7, 8]]),\n]",
+    "hint": "配列のリストはそのまま `np.concatenate()` に渡せます。行数を増やすので `axis=0` を指定します。",
+    "solution": "result = np.concatenate(batches, axis=0)"
+  },
+  {
+    "number": 7,
+    "id": "NP07-10",
+    "version": 1,
+    "stage": "guided",
+    "title": "1次元配列を1行ずつ並べる",
+    "task": "`np.vstack()` を使って、同じ長さの1次元配列 `a` と `b` を、1行目が `a`、2行目が `b` の2次元配列にしてください。",
+    "input": "a = np.array([1, 2, 3])\nb = np.array([10, 20, 30])",
+    "hint": "`np.vstack()` に1次元配列を渡すと、それぞれが1行として扱われます。",
+    "solution": "result = np.vstack([a, b])"
+  },
+  {
+    "number": 8,
+    "id": "NP07-11",
+    "version": 1,
+    "stage": "partial",
+    "title": "1次元配列を1列ずつ並べる",
+    "task": "`np.column_stack()` を使って、同じ長さの1次元配列 `a` と `b` を、1列目が `a`、2列目が `b` の2次元配列にしてください。",
+    "input": "a = np.array([1, 2, 3])\nb = np.array([10, 20, 30])",
+    "hint": "`np.column_stack()` に1次元配列を渡すと、それぞれが1列として扱われます。",
+    "solution": "result = np.column_stack([a, b])"
+  },
+  {
+    "number": 9,
+    "id": "NP07-12",
+    "version": 1,
+    "stage": "partial",
+    "title": "特徴量の表に1列追加する",
+    "task": "1次元配列 `extra` は、2次元配列 `x` の各行に対応する追加の特徴量です。`extra` を1列の2次元配列に変形し、`np.concatenate()` を使って `x` の右端に追加してください。",
+    "input": "x = np.array([\n    [1, 2],\n    [3, 4],\n    [5, 6],\n])\nextra = np.array([10, 20, 30])",
+    "hint": "`extra.reshape(-1, 1)` で列の軸を追加できます。その後、列の軸で `x` と結合します。",
+    "solution": "result = np.concatenate([x, extra.reshape(-1, 1)], axis=1)"
+  },
+  {
+    "number": 10,
+    "id": "NP07-02",
+    "version": 3,
+    "stage": "guided",
+    "title": "2枚の画像を1つのバッチにする",
+    "task": "`a` と `b` は、同じ高さ・幅の2次元配列です。`np.stack()` を使って先頭に画像を区別する軸を作り、`a`、`b` の順にまとめてください。結果のshapeは `(2, 高さ, 幅)` にしてください。",
+    "input": "a = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [7, 8, 9],\n    [10, 11, 12],\n])",
+    "hint": "`np.stack()` は新しい軸を作ります。`axis=0` を指定すると、新しい軸が先頭に入ります。",
+    "solution": "result = np.stack([a, b], axis=0)"
+  },
+  {
+    "number": 11,
+    "id": "NP07-04",
+    "version": 3,
+    "stage": "partial",
+    "title": "同じ位置の値を末尾の軸にまとめる",
+    "task": "`np.stack()` を使って、同じshapeの2次元配列 `a` と `b` の末尾に長さ2の軸を追加してください。各位置 `(i, j)` について、`result[i, j, 0]` に `a[i, j]`、`result[i, j, 1]` に `b[i, j]` が入るようにしてください。",
+    "input": "a = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\nb = np.array([\n    [10, 20, 30],\n    [40, 50, 60],\n])",
+    "hint": "`axis=-1` を指定すると、配列を区別する新しい軸が末尾に入ります。表示例の結果のshapeは `(2, 3, 2)` です。",
+    "solution": "result = np.stack([a, b], axis=-1)"
+  },
+  {
+    "number": 12,
+    "id": "NP07-13",
+    "version": 1,
+    "stage": "partial",
+    "title": "サンプルごとに元の特徴と変換後の特徴を並べる",
+    "task": "`original` と `transformed` は、どちらもshapeが `(サンプル数, 特徴数)` の配列です。`np.stack()` を使って、サンプル軸と特徴軸の間に長さ2の軸を作り、元の特徴、変換後の特徴の順に並べてください。",
+    "input": "original = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n])\ntransformed = np.array([\n    [2, 4, 6],\n    [8, 10, 12],\n])",
+    "hint": "結果のshapeは `(サンプル数, 2, 特徴数)` です。新しい軸が入る位置を `axis` に指定します。",
+    "solution": "result = np.stack([original, transformed], axis=1)"
+  },
+  {
+    "number": 13,
+    "id": "NP07-05",
+    "version": 3,
+    "stage": "independent",
+    "title": "赤・緑・青の配列からRGB画像を作る",
+    "task": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持つ、同じshape `(高さ, 幅)` の配列です。`np.stack()` を使って、末尾のチャネル軸に赤、緑、青の順で並べ、shapeが `(高さ, 幅, 3)` の画像を作ってください。",
+    "input": "r = np.array([[10, 20], [30, 40]])\ng = np.array([[50, 60], [70, 80]])\nb = np.array([[90, 100], [110, 120]])",
+    "hint": "末尾にチャネル軸を作ります。最初の画素には `[10, 50, 90]` が並びます。",
+    "solution": "result = np.stack([r, g, b], axis=-1)"
+  },
+  {
+    "number": 14,
+    "id": "NP07-14",
+    "version": 1,
+    "stage": "partial",
+    "title": "チャネル軸がある3つの配列をRGB画像にまとめる",
+    "task": "`r`、`g`、`b` は、赤・緑・青それぞれの画素値を持ち、どれもshapeが `(高さ, 幅, 1)` です。`np.concatenate()` を使って、末尾のチャネル軸に沿って赤、緑、青の順に結合し、shapeを `(高さ, 幅, 3)` にしてください。",
+    "input": "r = np.array([[[10], [20]], [[30], [40]]])\ng = np.array([[[50], [60]], [[70], [80]]])\nb = np.array([[[90], [100]], [[110], [120]]])",
+    "hint": "各配列にはすでにチャネル軸があります。末尾の軸を指定して、その長さを1から3に伸ばします。",
+    "solution": "result = np.concatenate([r, g, b], axis=-1)"
+  },
+  {
+    "number": 15,
+    "id": "NP07-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "バッチ内の各画像にチャネルを追加する",
+    "task": "`base` と `extra` は、shapeが `(バッチ数, チャネル数, 高さ, 幅)` の配列です。バッチ数・高さ・幅は共通です。`np.concatenate()` を使って、各画像について `base` のチャネルの後ろに `extra` のチャネルを追加してください。",
+    "input": "base = np.arange(8).reshape(2, 1, 2, 2)\nextra = np.arange(8, 24).reshape(2, 2, 2, 2)",
+    "hint": "結合するのは軸1のチャネルです。表示例では、各画像のチャネル数が `1 + 2` になります。",
+    "solution": "result = np.concatenate([base, extra], axis=1)"
+  },
+  {
+    "number": 16,
+    "id": "NP07-16",
+    "version": 1,
+    "stage": "independent",
+    "title": "0次元配列を1次元にまとめる",
+    "task": "`np.stack()` を使って、0次元配列 `a`、`b`、`c` をこの順番で並べ、shapeが `(3,)` の1次元配列を作ってください。",
+    "input": "a = np.array(7)\nb = np.array(11)\nc = np.array(15)",
+    "hint": "各入力のshapeは `()` です。`stack()` が作る新しい軸に、3つの値が並びます。",
+    "solution": "result = np.stack([a, b, c], axis=0)"
+  },
+  {
+    "number": 17,
+    "id": "NP07-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "空のバッチを含む配列を結合する",
+    "task": "`np.concatenate()` を使って、同じ列数を持つ2次元配列 `a` と `b` を、`a`、`b` の順に行方向へつないでください。行数が0の入力があっても、結果は元の列数を保つ2次元配列にしてください。",
+    "input": "a = np.zeros((0, 3), dtype=np.int32)\nb = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n], dtype=np.int32)",
+    "hint": "`a` は行数が0でも、列数3の軸を持っています。列数がそろっているので、行の軸で結合できます。",
+    "solution": "result = np.concatenate([a, b], axis=0)"
+  },
+  {
+    "number": 18,
+    "id": "NP07-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "特徴量とラベルの対応を保ってデータセットを結合する",
+    "task": "`x_a` と `x_b` は特徴量の2次元配列で、列数は同じです。`y_a` と `y_b` は、それぞれの特徴量配列の各行に対応する1次元のラベル配列です。`np.concatenate()` を使って特徴量をA、Bの順に行方向へ結合し、ラベルもA、Bの順につないでください。結果は `(結合した特徴量, 結合したラベル)` のタプルにしてください。",
+    "input": "x_a = np.array([\n    [1, 2],\n    [3, 4],\n])\ny_a = np.array([0, 1])\n\nx_b = np.array([\n    [5, 6],\n    [7, 8],\n    [9, 10],\n])\ny_b = np.array([1, 0, 1])",
+    "hint": "特徴量とラベルを別々に結合し、2つの結果をタプルに入れます。両方でA、Bの順番をそろえると、各行とラベルの対応が保たれます。",
+    "solution": "result = (\n    np.concatenate([x_a, x_b], axis=0),\n    np.concatenate([y_a, y_b], axis=0),\n)"
+  }
+]

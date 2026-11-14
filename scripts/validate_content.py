@@ -8,6 +8,7 @@ import io
 import re
 import tokenize
 import json
+import math
 from pathlib import Path
 import sys
 import time
@@ -89,6 +90,37 @@ def check_display(p):
             check_python(snippet, f"{label}:Python snippet")
 
 
+def same_content(a, b):
+    """Exact equality, except floats may differ by platform numeric noise.
+
+    Some expected values (e.g. scikit-learn lbfgs output in SK03) differ by
+    ~1e-8 between Windows and Linux BLAS builds. The tolerance is 10x tighter
+    than grading's 1e-5, so any change that could affect a verdict still counts.
+    """
+    if isinstance(a, float) or isinstance(b, float):
+        return (isinstance(a, (int, float)) and isinstance(b, (int, float))
+                and not isinstance(a, bool) and not isinstance(b, bool)
+                and math.isclose(a, b, rel_tol=1e-6, abs_tol=1e-6))
+    if isinstance(a, dict) and isinstance(b, dict):
+        return a.keys() == b.keys() and all(same_content(a[k], b[k]) for k in a)
+    if isinstance(a, list) and isinstance(b, list):
+        return len(a) == len(b) and all(same_content(x, y) for x, y in zip(a, b))
+    return type(a) is type(b) and a == b
+
+
+def first_difference(a, b, path="$"):
+    """Describe where two catalog values first differ, for readable failures."""
+    if isinstance(a, dict) and isinstance(b, dict):
+        if a.keys() != b.keys():
+            return f"{path}: keys {sorted(a.keys() ^ b.keys())}"
+        return next((d for k in a if (d := first_difference(a[k], b[k], f"{path}.{k}"))), None)
+    if isinstance(a, list) and isinstance(b, list):
+        if len(a) != len(b):
+            return f"{path}: length {len(a)} != {len(b)}"
+        return next((d for i, (x, y) in enumerate(zip(a, b)) if (d := first_difference(x, y, f"{path}[{i}]"))), None)
+    return None if same_content(a, b) else f"{path}: {a!r:.200} != {b!r:.200}"
+
+
 def check_versions(latest):
     seen = {}
     archives = [json.loads(f.read_text(encoding="utf-8")) for f in
@@ -99,7 +131,8 @@ def check_versions(latest):
             assert p["family_id"] == p["id"]
             assert p["version_id"] == f"{p['id']}@{p['content_version']}"
             key = p["version_id"], p["variant_seed"]
-            assert seen.setdefault(key, p) == p, (key, "version changed without a bump")
+            old = seen.setdefault(key, p)
+            assert same_content(old, p), (key, "version changed without a bump", first_difference(old, p))
 
 
 def check_reference(p):
@@ -142,13 +175,11 @@ def validate():
     )
     assert distribution == collections.Counter(
         {
-            ("guided", "completion"): 30,
-            ("partial", "completion"): 30,
-            ("independent", "implementation"): 86,
-            ("guided", "implementation"): 54,
-            ("partial", "implementation"): 54,
-            ("guided", "prediction"): 2,
-            ("partial", "prediction"): 2,
+            ("guided", "completion"): 28,
+            ("partial", "completion"): 28,
+            ("independent", "implementation"): 94,
+            ("guided", "implementation"): 66,
+            ("partial", "implementation"): 66,
             ("guided", "bugfix"): 10,
             ("partial", "bugfix"): 10,
             ("independent", "bugfix"): 10,
@@ -171,7 +202,7 @@ def validate():
         ("variant-99.json", catalogs[1]),
         ("public.json", data | {"problems": [public_problem(p) for p in compile_all(include_display=True)["problems"]]}),
     ):
-        assert json.loads((compiled / name).read_text(encoding="utf-8")) == expected, (
+        assert same_content(json.loads((compiled / name).read_text(encoding="utf-8")), expected), (
             f"{name} is stale. Run scripts/compile_content.py."
         )
     for seed, catalog in zip((42, 99), catalogs, strict=True):
@@ -182,7 +213,7 @@ def validate():
                 3 if p["variant_generator"] in (
                     "file-fixtures-v1", "array-fixtures-v1", "indexing-fixtures-v1",
                     "reshaping-fixtures-v1", "axis-permutation-fixtures-v1", "reduction-fixtures-v1",
-                    "broadcasting-fixtures-v1"
+                    "broadcasting-fixtures-v1", "combining-fixtures-v1", "conditional-fixtures-v1"
                 ) else 4
             )
             assert len(cases) >= minimum

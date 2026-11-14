@@ -1,0 +1,200 @@
+[
+  {
+    "number": 1,
+    "id": "NP08-01",
+    "version": 3,
+    "stage": "guided",
+    "title": "負の値を0にする",
+    "task": "`np.where()` を使って、配列 `x` の負の要素を `0.0` に置き換えてください。0以上の要素は元の値を使ってください。",
+    "input": "x = np.array([-3.0, -0.5, 0.0, 2.0, 5.0])",
+    "hint": "`np.where(条件, 条件がTrueのときの値, 条件がFalseのときの値)` で、要素ごとに値を選べます。",
+    "solution": "result = np.where(x < 0, 0.0, x)"
+  },
+  {
+    "number": 2,
+    "id": "NP08-07",
+    "version": 1,
+    "stage": "guided",
+    "title": "マスクに従って2つの配列から値を選ぶ",
+    "task": "`np.where()` を使って、`use_a` が `True` の位置では `a` の値、`False` の位置では `b` の値を選んでください。3つの入力配列のshapeは同じです。",
+    "input": "a = np.array([[1, 2, 3], [4, 5, 6]])\nb = np.array([[10, 20, 30], [40, 50, 60]])\nuse_a = np.array([\n    [True, False, True],\n    [False, True, False],\n])",
+    "hint": "`use_a` はすでに真偽値の配列なので、そのまま `np.where()` の条件に渡せます。",
+    "solution": "result = np.where(use_a, a, b)"
+  },
+  {
+    "number": 3,
+    "id": "NP08-03",
+    "version": 3,
+    "stage": "partial",
+    "title": "しきい値以上を1、それ以外を0にする",
+    "task": "配列 `x` の各要素について、`threshold` 以上なら1、それ以外なら0にしてください。結果のdtypeは `int64` にしてください。",
+    "input": "x = np.array([0.2, 0.5, 0.8, 0.1, 0.5])\nthreshold = 0.5",
+    "hint": "`x >= threshold` で真偽値の配列を作れます。`astype()` で整数型に変換すると、`True` は1、`False` は0になります。",
+    "solution": "result = (x >= threshold).astype(np.int64)"
+  },
+  {
+    "number": 4,
+    "id": "NP08-08",
+    "version": 1,
+    "stage": "guided",
+    "title": "指定範囲の外にある値を置き換える",
+    "task": "`np.where()` を使って、配列 `x` のうち `lower` 以上 `upper` 以下の要素は元の値を残し、範囲外の要素は `fallback` に置き換えてください。",
+    "input": "x = np.array([-1, 0, 2, 4, 5])\nlower = 0\nupper = 4\nfallback = -99",
+    "hint": "`(x >= lower) & (x <= upper)` で、両方の条件を満たす位置を表せます。各比較式は丸括弧で囲みます。",
+    "solution": "result = np.where((x >= lower) & (x <= upper), x, fallback)"
+  },
+  {
+    "number": 5,
+    "id": "NP08-09",
+    "version": 1,
+    "stage": "guided",
+    "title": "2つのしきい値で3段階に分類する",
+    "task": "`np.where()` を使って、配列 `scores` の各要素を3段階に分類してください。`lower` 未満は0、`lower` 以上 `upper` 未満は1、`upper` 以上は2にしてください。`lower` は `upper` より小さい値です。",
+    "input": "scores = np.array([35, 50, 65, 80, 95])\nlower = 50\nupper = 80",
+    "hint": "最初に `lower` 未満かを判定し、残った要素を `upper` 未満かどうかでもう一度分けます。`np.where()` の中に別の `np.where()` を置けます。",
+    "solution": "result = np.where(scores < lower, 0, np.where(scores < upper, 1, 2))"
+  },
+  {
+    "number": 6,
+    "id": "NP08-10",
+    "version": 1,
+    "stage": "guided",
+    "title": "同じ位置にある2つの値の大きい方を選ぶ",
+    "task": "`np.maximum()` を使って、同じshapeの配列 `a` と `b` から、各位置で大きい方の値を選んでください。",
+    "input": "a = np.array([[1, 7, 3], [8, 2, 6]])\nb = np.array([[4, 5, 3], [0, 9, 1]])",
+    "hint": "`np.maximum(a, b)` は、対応する位置の値を1組ずつ比較します。結果のshapeは入力と同じです。",
+    "solution": "result = np.maximum(a, b)"
+  },
+  {
+    "number": 7,
+    "id": "NP08-11",
+    "version": 1,
+    "stage": "partial",
+    "title": "在庫の範囲で出荷できる数を求める",
+    "task": "`requested` は商品ごとの注文数、`available` は同じ順番で並んだ在庫数です。`np.minimum()` を使って、各商品の出荷数を求めてください。出荷数は注文数と在庫数のうち小さい方です。",
+    "input": "requested = np.array([5, 2, 8, 4])\navailable = np.array([3, 6, 0, 4])",
+    "hint": "`np.minimum()` は、2つの配列の同じ位置を比べて、小さい方の値を選びます。",
+    "solution": "result = np.minimum(requested, available)"
+  },
+  {
+    "number": 8,
+    "id": "NP08-02",
+    "version": 4,
+    "stage": "guided",
+    "title": "値を0以上1以下に収める",
+    "task": "`np.clip()` を使って、配列 `x` の値を0以上1以下に収めてください。0未満は0に、1より大きい値は1にし、範囲内の値はそのまま残してください。",
+    "input": "x = np.array([-0.5, 0.0, 0.4, 1.0, 1.8])",
+    "hint": "`np.clip(配列, 下限, 上限)` で、範囲を外れた値を近い方の境界値に置き換えられます。",
+    "solution": "result = np.clip(x, 0.0, 1.0)"
+  },
+  {
+    "number": 9,
+    "id": "NP08-12",
+    "version": 1,
+    "stage": "partial",
+    "title": "下限だけを設定する",
+    "task": "`np.clip()` を使って、配列 `x` の `lower` 未満の値を `lower` に置き換えてください。`lower` 以上の値はそのまま残してください。",
+    "input": "x = np.array([-5, -1, 0, 4, 10])\nlower = 0",
+    "hint": "`np.clip()` の上限に `None` を指定すると、下限だけを適用できます。",
+    "solution": "result = np.clip(x, lower, None)"
+  },
+  {
+    "number": 10,
+    "id": "NP08-13",
+    "version": 1,
+    "stage": "partial",
+    "title": "上限だけを設定する",
+    "task": "`np.clip()` を使って、配列 `x` の `upper` より大きい値を `upper` に置き換えてください。`upper` 以下の値はそのまま残してください。",
+    "input": "x = np.array([-8, -2, 3, 6, 10])\nupper = 6",
+    "hint": "`np.clip()` の下限に `None` を指定すると、上限だけを適用できます。",
+    "solution": "result = np.clip(x, None, upper)"
+  },
+  {
+    "number": 11,
+    "id": "NP08-14",
+    "version": 1,
+    "stage": "partial",
+    "title": "列ごとに異なる上下限を適用する",
+    "task": "2次元配列 `x` の各列について、対応する `lower` と `upper` の値を上下限として `np.clip()` を適用してください。`lower` と `upper` は、どちらも `x` の列数と同じ長さの1次元配列です。各列の下限は上限以下です。",
+    "input": "x = np.array([\n    [-3, 15, 120],\n    [8, 5, 70],\n])\nlower = np.array([0, 10, 60])\nupper = np.array([5, 20, 100])",
+    "hint": "`np.clip()` の上下限に配列を渡せます。shape `(列数,)` の上下限は、Broadcastingによって `x` の各行に適用されます。",
+    "solution": "result = np.clip(x, lower, upper)"
+  },
+  {
+    "number": 12,
+    "id": "NP08-15",
+    "version": 1,
+    "stage": "independent",
+    "title": "画素値を範囲に収めてからuint8に変換する",
+    "task": "整数配列 `pixels` を、0以上255以下の画素値を持つ `uint8` 配列に変換してください。まず `np.clip()` で値を範囲に収め、その後でdtypeを変換してください。",
+    "input": "pixels = np.array([\n    [-20, 0, 128],\n    [200, 255, 300],\n], dtype=np.int32)",
+    "hint": "先に0未満を0に、255より大きい値を255にします。範囲に収まった配列に `astype(np.uint8)` を適用します。",
+    "solution": "result = np.clip(pixels, 0, 255).astype(np.uint8)"
+  },
+  {
+    "number": 13,
+    "id": "NP08-04",
+    "version": 3,
+    "stage": "partial",
+    "title": "予測値と正解値の二乗誤差を求める",
+    "task": "同じshapeの予測値 `pred` と正解値 `target` について、対応する要素の差を二乗してください。結果は、要素ごとの二乗誤差を持つ、入力と同じshapeの配列にしてください。",
+    "input": "pred = np.array([\n    [2.0, 1.0, 5.0],\n    [4.0, 6.0, 3.0],\n])\ntarget = np.array([\n    [1.0, 3.0, 5.0],\n    [6.0, 5.0, 0.0],\n])",
+    "hint": "`pred - target` で位置ごとの差が得られます。その配列を `** 2` で二乗します。",
+    "solution": "result = (pred - target) ** 2"
+  },
+  {
+    "number": 14,
+    "id": "NP08-16",
+    "version": 1,
+    "stage": "independent",
+    "title": "有効な位置の二乗誤差だけを残す",
+    "task": "`pred`、`target`、`valid` のshapeは同じです。`np.where()` を使って、`valid` が `True` の位置には予測値と正解値の二乗誤差を入れ、`False` の位置には `0.0` を入れてください。",
+    "input": "pred = np.array([[2.0, 1.0, 5.0], [4.0, 6.0, 3.0]])\ntarget = np.array([[1.0, 3.0, 5.0], [6.0, 5.0, 0.0]])\nvalid = np.array([\n    [True, False, True],\n    [False, True, True],\n])",
+    "hint": "二乗誤差の配列と `0.0` のどちらを使うかを、`valid` の各要素で決めます。マスクを使って値を選ぶと、元の位置とshapeが保たれます。",
+    "solution": "result = np.where(valid, (pred - target) ** 2, 0.0)"
+  },
+  {
+    "number": 15,
+    "id": "NP08-05",
+    "version": 3,
+    "stage": "independent",
+    "title": "NaNだけを0に置き換える",
+    "task": "配列 `x` の `NaN` だけを `0.0` に置き換えてください。有限の値、正の無限大、負の無限大はそのまま残してください。",
+    "input": "x = np.array([np.nan, 1.5, np.inf, -np.inf, -2.0])",
+    "hint": "`np.isnan(x)` は `NaN` の位置だけを `True` にします。この真偽値配列を `np.where()` に渡せます。",
+    "solution": "result = np.where(np.isnan(x), 0.0, x)"
+  },
+  {
+    "number": 16,
+    "id": "NP08-17",
+    "version": 1,
+    "stage": "independent",
+    "title": "NaNと正負の無限大をそれぞれ置き換える",
+    "task": "`np.nan_to_num()` を使って、配列 `x` の `NaN` を `0.0`、正の無限大を `high`、負の無限大を `low` に置き換えてください。有限の値はそのまま残してください。",
+    "input": "x = np.array([np.nan, 4.0, np.inf, -np.inf, -7.0])\nhigh = 5.0\nlow = -5.0",
+    "hint": "`np.nan_to_num()` の `nan`、`posinf`、`neginf` に、それぞれの置き換え先を指定できます。",
+    "solution": "result = np.nan_to_num(x, nan=0.0, posinf=high, neginf=low)"
+  },
+  {
+    "number": 17,
+    "id": "NP08-06",
+    "version": 3,
+    "stage": "independent",
+    "title": "下限を適用してから自然対数を取る",
+    "task": "配列 `x` の値を `np.clip()` で `eps` 以上にしてから、各要素の自然対数を求めてください。`eps` は正の値です。",
+    "input": "x = np.array([-1.0, 0.0, 0.001, 0.01, 1.0, 2.0])\neps = 0.01",
+    "hint": "`np.clip()` の下限に `eps`、上限に `None` を指定します。調整後の配列を `np.log()` に渡すと、0や負の値に対する対数計算を避けられます。",
+    "solution": "result = np.log(np.clip(x, eps, None))"
+  },
+  {
+    "number": 18,
+    "id": "NP08-18",
+    "version": 1,
+    "stage": "independent",
+    "title": "分母が0でない位置だけで割る",
+    "task": "同じshapeの `numerator` と `denominator` について、`np.divide()` を使って、分母が0でない位置で要素ごとの割り算を行ってください。分母が0の位置では除算を行わず、結果を `0.0` にしてください。",
+    "input": "numerator = np.array([6.0, 7.0, 0.0, -8.0])\ndenominator = np.array([2.0, 0.0, 0.0, 4.0])",
+    "hint": "`np.divide()` の `where` に、割り算する位置を表す条件を渡します。`out` にゼロで初期化した配列を渡すと、計算しない位置には0が残ります。",
+    "solution": "result = np.divide(\n    numerator,\n    denominator,\n    out=np.zeros_like(numerator, dtype=np.float64),\n    where=denominator != 0,\n)"
+  }
+]

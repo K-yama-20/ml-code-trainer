@@ -68,13 +68,15 @@ test("warm Python is reused, stateful code is discarded, timeout recovers", asyn
   const item = numpy.items.find((i: { problem_version_id: string }) =>
     i.problem_version_id.startsWith("NP05-01@"),
   );
+  // NP05-01 provides `x = np.array(...)`; the learner writes only the result line.
+  const numpyAnswer = "result = np.mean(x, axis=1)";
   await page.evaluate((path) => {
     history.pushState(null, "", path);
     dispatchEvent(new PopStateEvent("popstate"));
   }, `/drill/s/${numpy.id}/${item.id}`);
-  await expect(page.locator(".view-lines")).toContainText("x.mean");
-  await run("1");
-  await run("1");
+  await expect(page.locator(".view-lines")).toContainText("np.array");
+  await run(numpyAnswer);
+  await run(numpyAnswer);
   expect(await count("initialized")).toBe(4);
   expect((await phases()).flatMap((p) => p.packages ?? [])).toEqual(["numpy"]);
   await visit(
@@ -102,10 +104,10 @@ test("warm Python is reused, stateful code is discarded, timeout recovers", asyn
     history.pushState(null, "", path);
     dispatchEvent(new PopStateEvent("popstate"));
   }, `/drill/s/${numpy.id}/${item.id}`);
-  await expect(page.locator(".view-lines")).toContainText("x.mean");
+  await expect(page.locator(".view-lines")).toContainText("np.array");
   await expect
     .poll(() => oldFrame!.evaluate((frame) => frame.isConnected))
     .toBe(false);
-  await run("1");
+  await run(numpyAnswer);
   expect(await count("initialized")).toBe(5);
 });

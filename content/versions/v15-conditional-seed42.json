@@ -1,0 +1,979 @@
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "NP08-01",
+      "family_id": "NP08-01",
+      "version_id": "NP08-01@2",
+      "content_version": 2,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "ReLUを実装",
+      "description": "負の値を0にし、それ以外を保つ配列を返す。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "負の値を0にし、それ以外を保つ配列を返す。",
+      "starter_code": "result = np.where(x > ___, x, 0)\n",
+      "example": "np.where(x > 0, x, 0)",
+      "editable_regions": [],
+      "hints": [
+        "配列全体に条件付き演算を適用します。",
+        "Pythonのifは配列全体の条件判定には使えません。",
+        "空欄には 0 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = np.where(x > 0, x, 0)\n",
+      "explanation": "Pythonのifは配列全体の条件判定には使えません。",
+      "common_mistakes": [
+        "配列の条件にPythonのandやifを使う。",
+        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3810\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.16132778363666006,
+                0.0,
+                0.0,
+                1.0570253667139387
+              ],
+              [
+                0.0,
+                0.0,
+                1.416706603989769,
+                0.5713997460127755
+              ],
+              [
+                0.0,
+                0.0,
+                1.3908611848854646,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3810\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3810\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([-1.,0.,2.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              0.0,
+              2.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3810\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.zeros((2,2))",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2,
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[0.16132778363666006, -1.777759671266675, -0.3183530194221422, 1.0570253667139387], [-1.364642379995666, -1.80654912495679, 1.416706603989769, 0.5713997460127755], [-1.1384527301871659, -0.7581660021863231, 1.3908611848854646, -0.6909753559938144]], dtype=np.float64).reshape((3, 4))",
+        "task": "負の値を0にし、それ以外を保つ配列を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP08-02",
+      "family_id": "NP08-02",
+      "version_id": "NP08-02@3",
+      "content_version": 3,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "guided",
+      "type": "completion",
+      "difficulty": 1,
+      "title": "値を0から1に収める",
+      "description": "xの各値が0未満なら0、1より大きければ1に置き換えてください。np.clipの結果はresultに入ります。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "xの各値が0未満なら0、1より大きければ1に置き換えてください。np.clipの結果はresultに入ります。",
+      "starter_code": "result = np.clip(x, 0, ___)\n",
+      "example": "np.where(x > 0, x, 0)",
+      "editable_regions": [],
+      "hints": [
+        "配列全体に条件付き演算を適用します。",
+        "境界は含まれます。",
+        "空欄には 1 と入力します。周囲のコードと合わせて読んでみましょう。"
+      ],
+      "solution": "result = np.clip(x, 0, 1)\n",
+      "explanation": "境界は含まれます。",
+      "common_mistakes": [
+        "配列の条件にPythonのandやifを使う。",
+        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([-1.,0.,.5,2.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              0.0,
+              0.5,
+              1.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.6746238230958339,
+                0.61157064669062,
+                0.8335282929029549,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.08499787433313832,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.05681325916833294,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 9149\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([0.,1.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 1,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "強調された空欄だけを埋めてください。入力データは編集できません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([-1.0, 0.0, 0.5, 2.0])",
+        "task": "xの各値が0未満なら0、1より大きければ1に置き換えてください。np.clipの結果はresultに入ります。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP08-03",
+      "family_id": "NP08-03",
+      "version_id": "NP08-03@2",
+      "content_version": 2,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "しきい値で2値化",
+      "description": "x>=tなら1、それ以外は0のint64配列を返す。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "x>=tなら1、それ以外は0のint64配列を返す。",
+      "starter_code": "result =\n",
+      "example": "np.where(x > 0, x, 0)",
+      "editable_regions": [],
+      "hints": [
+        "配列全体に条件付き演算を適用します。",
+        "比較結果はbool型です。",
+        "解答部分は次の形で書けます。\nresult = (x >= t).astype(np.int64)\n"
+      ],
+      "solution": "result = (x >= t).astype(np.int64)\n",
+      "explanation": "比較結果はbool型です。",
+      "common_mistakes": [
+        "配列の条件にPythonのandやifを使う。",
+        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 4228\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,0",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "int64",
+            "data": [
+              [
+                0,
+                1,
+                1,
+                0
+              ],
+              [
+                1,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                1,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 4228\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([]),1",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "int64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 4228\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([1.,1.]),1",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "int64",
+            "data": [
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "setup": "seed = 4228\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "v,seed",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "int64",
+            "data": [
+              1,
+              1,
+              0,
+              1
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "t"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([[-1.7128145133625903, 0.045279587321823675, 0.5520100348201217, -0.06467829713426405], [0.12087691383190255, 0.5631669644510293, -0.5934852313501148, -0.3998490558209083], [-0.12637552597382223, 1.267418638049764, 0.9895241046827754, 0.4750890942475604]], dtype=np.float64).reshape((3, 4))\nt = 0",
+        "task": "x>=tなら1、それ以外は0のint64配列を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP08-04",
+      "family_id": "NP08-04",
+      "version_id": "NP08-04@2",
+      "content_version": 2,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "partial",
+      "type": "completion",
+      "difficulty": 2,
+      "title": "要素ごとの二乗誤差",
+      "description": "同じshapeの予測と正解の要素ごとの二乗誤差を返す。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "同じshapeの予測と正解の要素ごとの二乗誤差を返す。",
+      "starter_code": "result =\n",
+      "example": "np.where(x > 0, x, 0)",
+      "editable_regions": [],
+      "hints": [
+        "配列全体に条件付き演算を適用します。",
+        "この問題では平均を取りません。",
+        "解答部分は次の形で書けます。\nresult = (pred - target) ** 2\n"
+      ],
+      "solution": "result = (pred - target) ** 2\n",
+      "explanation": "この問題では平均を取りません。",
+      "common_mistakes": [
+        "配列の条件にPythonのandやifを使う。",
+        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 7723\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x,x+1",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                0.9999999999999998,
+                0.9999999999999998,
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7723\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([]),np.array([])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 7723\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "v,v",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 7723\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([1.]),np.array([-1.])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              4.0
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "pred",
+          "target"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "resultの右側に処理を書いてください。複数行で書いても構いません。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\npred = np.array([[0.6088271760955167, 0.8550017261968771, 0.5002930637762277, 0.4624522230509339], [0.7100771096142754, -0.19111665874226913, -1.315211467491541, 0.4813079823690556], [-0.3041931044718184, -0.16854015695140795, 1.291557705669323, -1.3812445193923248]], dtype=np.float64).reshape((3, 4))\ntarget = np.array([[1.6088271760955166, 1.855001726196877, 1.5002930637762277, 1.462452223050934], [1.7100771096142755, 0.8088833412577309, -0.31521146749154094, 1.4813079823690556], [0.6958068955281815, 0.831459843048592, 2.291557705669323, -0.38124451939232484]], dtype=np.float64).reshape((3, 4))",
+        "task": "同じshapeの予測と正解の要素ごとの二乗誤差を返す。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP08-05",
+      "family_id": "NP08-05",
+      "version_id": "NP08-05@2",
+      "content_version": 2,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "NaNをゼロへ置換",
+      "description": "NaNだけを0へ置換する。Infは保持する。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "NaNだけを0へ置換する。Infは保持する。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "np.where(x > 0, x, 0)",
+      "editable_regions": [],
+      "hints": [
+        "配列全体に条件付き演算を適用します。",
+        "nan_to_numのデフォルトはInfも置き換えます。",
+        "解答部分は次の形で書けます。\nresult = np.where(np.isnan(x), 0, x)\n"
+      ],
+      "solution": "result = np.where(np.isnan(x), 0, x)\n",
+      "explanation": "nan_to_numのデフォルトはInfも置き換えます。",
+      "common_mistakes": [
+        "配列の条件にPythonのandやifを使う。",
+        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 3913\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([np.nan,1.,np.inf])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0,
+              1.0,
+              "__Inf__"
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3913\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 3913\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([np.nan])",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              1
+            ],
+            "dtype": "float64",
+            "data": [
+              0.0
+            ]
+          }
+        },
+        {
+          "setup": "seed = 3913\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "x",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3,
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              [
+                -0.5426841282705387,
+                -0.877137183180209,
+                -0.3865017098672119,
+                0.8479817294128186
+              ],
+              [
+                1.0380252768326126,
+                -1.2227170037953081,
+                -0.006532263965711178,
+                -0.34718642584302295
+              ],
+              [
+                -2.4528174448646487,
+                -1.6752556198530835,
+                -0.030387630810175818,
+                -0.261557462274683
+              ]
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([np.nan, 1.0, np.inf])",
+        "task": "NaNだけを0へ置換する。Infは保持する。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    },
+    {
+      "id": "NP08-06",
+      "family_id": "NP08-06",
+      "version_id": "NP08-06@2",
+      "content_version": 2,
+      "concept_id": "NP08",
+      "module_id": "numpy",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "対数の入力を安定化",
+      "description": "各値をeps以上へclipして自然対数を返す。epsは正。",
+      "learning_goal": "配列全体に条件付き演算を適用します。",
+      "input_conditions": "入力データは解答欄の上に用意されています。採点では値や大きさを変えて同じ処理を確認します。",
+      "output_conditions": "各値をeps以上へclipして自然対数を返す。epsは正。",
+      "starter_code": "# ここに処理を書き、resultに代入してください\n",
+      "example": "np.where(x > 0, x, 0)",
+      "editable_regions": [],
+      "hints": [
+        "配列全体に条件付き演算を適用します。",
+        "log(0)や負数のlogを避けます。",
+        "解答部分は次の形で書けます。\nresult = np.log(np.clip(x, eps, None))\n"
+      ],
+      "solution": "result = np.log(np.clip(x, eps, None))\n",
+      "explanation": "log(0)や負数のlogを避けます。",
+      "common_mistakes": [
+        "配列の条件にPythonのandやifを使う。",
+        "clipの境界やNaNとInfの置換範囲を取り違える。"
+      ],
+      "public_tests": [
+        {
+          "setup": "seed = 880\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([0.,1.,2.]),1e-6",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              3
+            ],
+            "dtype": "float64",
+            "data": [
+              -13.815510557964274,
+              0.0,
+              0.6931471805599453
+            ]
+          }
+        },
+        {
+          "setup": "seed = 880\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([]),1e-3",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              0
+            ],
+            "dtype": "float64",
+            "data": []
+          }
+        }
+      ],
+      "hidden_tests": [
+        {
+          "setup": "seed = 880\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "np.array([-1.,1e-9]),1e-5",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              2
+            ],
+            "dtype": "float64",
+            "data": [
+              -11.512925464970229,
+              -11.512925464970229
+            ]
+          }
+        },
+        {
+          "setup": "seed = 880\nimport json, math, tempfile\nfrom pathlib import Path\nimport numpy as np\nrng=np.random.default_rng(seed)\nx=rng.normal(size=(3,4))\nv=np.array([0.,2.,-2.,4.])+seed\n",
+          "args": "v,1e-7",
+          "expected": {
+            "kind": "array",
+            "shape": [
+              4
+            ],
+            "dtype": "float64",
+            "data": [
+              6.779921907472252,
+              6.782192056006791,
+              6.777646593635117,
+              6.784457062637643
+            ]
+          }
+        }
+      ],
+      "required_ast": "",
+      "check_dtype": false,
+      "protect_inputs": false,
+      "runtime": "browser",
+      "packages": [
+        "numpy"
+      ],
+      "prerequisites": [
+        "NP02"
+      ],
+      "estimated_minutes": 3,
+      "variant_seed": 42,
+      "variant_generator": "reproducible-random-v1",
+      "tolerance": 1e-05,
+      "execution": {
+        "mode": "script",
+        "inputs": [
+          "x",
+          "eps"
+        ],
+        "globals": [
+          "LinearRegression",
+          "LogisticRegression",
+          "Path",
+          "Pipeline",
+          "StandardScaler",
+          "accuracy_score",
+          "confusion_matrix",
+          "f1_score",
+          "json",
+          "math",
+          "mean_absolute_error",
+          "np",
+          "pd",
+          "tempfile",
+          "train_test_split"
+        ],
+        "allow_input_mutation": true
+      },
+      "presentation": {
+        "edit_instruction": "必要な処理を書き、結果をresultに代入してください。",
+        "worked_example": "",
+        "feedback": {
+          "wrong": "入力の各値を使って計算できているか、resultの値と形を動作確認で比べてください。",
+          "runtime": "示されたエラーの行を確認してください。入力を初期化し直さず、解答部分だけを書きます。"
+        }
+      },
+      "workspace": {
+        "mode": "script",
+        "provided_code": "import numpy as np\n\nx = np.array([0.0, 1.0, 2.0])\neps = 1e-06",
+        "task": "各値をeps以上へclipして自然対数を返す。epsは正。 処理の結果をresultに代入してください。",
+        "authored": false,
+        "structure": "script",
+        "classification_reason": "ライブラリ操作の理解が目的。入力を固定表示し処理のみ記述"
+      }
+    }
+  ]
+}
