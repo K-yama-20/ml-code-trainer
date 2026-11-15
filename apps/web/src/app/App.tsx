@@ -5,7 +5,7 @@ import { queryClient } from "../lib/api";
 import { Layout } from "./Layout";
 import { Home } from "../pages/Home";
 import { Landing } from "../pages/Landing";
-import { Curriculum, ConceptDetail } from "../pages/Curriculum";
+import { Curriculum, ConceptStart } from "../pages/Curriculum";
 import { DrillStart } from "../pages/DrillStart";
 import { Analytics, History } from "../pages/Analytics";
 import { Settings, AuthCallback } from "../pages/Settings";
@@ -33,7 +33,7 @@ export function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/curriculum" element={<Curriculum />} />
               <Route path="/curriculum/:moduleId" element={<Curriculum />} />
-              <Route path="/concepts/:conceptId" element={<ConceptDetail />} />
+              <Route path="/concepts/:conceptId" element={<ConceptStart />} />
               <Route path="/drill" element={<DrillStart />} />
               <Route path="/drill/s/:sessionId/:itemId" element={<Drill />} />
               <Route path="/deep-dive/:taskId" element={<DeepDive />} />

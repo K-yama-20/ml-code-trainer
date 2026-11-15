@@ -91,6 +91,7 @@ export interface Item {
 export interface StudySession {
   id: string;
   kind: string;
+  concept_id?: string | null;
   status: string;
   position: number;
   items: Item[];

@@ -1275,11 +1275,6 @@ code em,
   align-items: center;
   gap: 3px;
 }
-.concept-detail-grid {
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 26px;
-}
 .info-panel {
   padding: 24px;
 }
@@ -1305,30 +1300,6 @@ code em,
 }
 .info-panel > .progress-track {
   margin: 14px 0;
-}
-.practice-list {
-  padding: 8px 24px;
-}
-.practice-list ol {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-.practice-list li {
-  padding: 11px 0;
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  border-bottom: 1px solid var(--border);
-  font-size: 11px;
-}
-.practice-list li:last-child {
-  border-bottom: 0;
-}
-.practice-list li small {
-  color: var(--faint);
-  font-family: Consolas, monospace;
-  font-size: 10px;
 }
 .resume-strip {
   display: flex;
@@ -3268,12 +3239,6 @@ code em,
   .curriculum-toolbar {
     flex-wrap: wrap;
   }
-  .concept-detail-grid {
-    grid-template-columns: 1fr;
-  }
-  .concept-detail-grid > .info-panel {
-    max-width: none;
-  }
   .custom-grid {
     grid-template-columns: 1fr;
     gap: 0;
@@ -3736,14 +3701,8 @@ code em,
   .concept-card-bottom {
     font-size: 10px;
   }
-  .concept-detail-grid {
-    gap: 24px;
-  }
   .info-panel {
     padding: 22px;
-  }
-  .practice-list {
-    padding: 4px 18px;
   }
   .drill-mode-grid {
     grid-template-columns: 1fr;

@@ -373,9 +373,6 @@ test("starting from the concept page shows no stage labels; ending is explicit",
   page,
 }) => {
   await page.goto("/concepts/NP05");
-  await page
-    .getByRole("button", { name: "演習を開始", exact: true })
-    .click();
   for (let n = 0; n < 2; n++) {
     await expect(page.locator(".problem-content h1")).toBeVisible();
     const ids = new URL(page.url()).pathname.split("/");

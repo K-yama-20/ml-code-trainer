@@ -965,6 +965,8 @@ export interface components {
        * @default 20
        */
       goal_count: number;
+      /** Concept Id */
+      concept_id?: string | null;
     };
     /** SettingsPatch */
     SettingsPatch: {

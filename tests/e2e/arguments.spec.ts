@@ -4,7 +4,6 @@ test("PY02 submits calls, function definitions and multiline return expressions"
   page,
 }) => {
   await page.goto("/concepts/PY02");
-  await page.getByRole("button", { name: "演習を開始", exact: true }).click();
   await expect(page.locator(".problem-content h1")).toHaveText(
     "位置引数を使って関数を呼び出す",
   );

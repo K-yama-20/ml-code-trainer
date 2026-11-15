@@ -246,6 +246,7 @@ def session_view(db, session):
     return serialize(session) | {
         "items": [serialize(i) for i in items],
         "goal_count": flow.policy.get("count", 20) if flow else 20,
+        "concept_id": flow.policy.get("concept_id") if flow else None,
     }
 
 

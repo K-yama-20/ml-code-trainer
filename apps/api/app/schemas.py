@@ -180,6 +180,7 @@ class SessionView(BaseModel):
     updated_at: datetime
     items: list[SessionItemView]
     goal_count: int = 20
+    concept_id: str | None = None
 
 
 class AdvanceView(BaseModel):

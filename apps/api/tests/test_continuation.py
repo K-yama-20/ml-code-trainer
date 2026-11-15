@@ -243,3 +243,12 @@ def test_ordered_drill_concept_session_keeps_authored_order(client):
     # Ordered drills show a single hint; a level-2 request records that one hint.
     reveal = client.post(f"/api/v1/session-items/{items[0]['id']}/hints/2/reveal").json()
     assert reveal["level"] == len(problem(items[0]["problem_version_id"])["hints"]) == 1
+
+
+def test_session_view_names_its_concept_so_the_client_can_resume_it(client):
+    created = client.post("/api/v1/sessions", json={"kind": "concept", "concept_id": "NP05"}).json()
+    assert created["concept_id"] == "NP05"
+    assert client.get("/api/v1/sessions/current").json()["concept_id"] == "NP05"
+    assert client.get("/api/v1/dashboard").json()["current_session"]["concept_id"] == "NP05"
+    daily = client.post("/api/v1/sessions", json={"kind": "daily"}).json()
+    assert daily["concept_id"] is None

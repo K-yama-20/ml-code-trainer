@@ -2110,6 +2110,17 @@
             "type": "integer",
             "title": "Goal Count",
             "default": 20
+          },
+          "concept_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Concept Id"
           }
         },
         "type": "object",

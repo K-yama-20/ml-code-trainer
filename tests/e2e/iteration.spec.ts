@@ -4,10 +4,6 @@ test("PY01 uses the authored order, one hint and protected expression input", as
   page,
 }) => {
   await page.goto("/concepts/PY01");
-  await expect(
-    page.getByRole("heading", { name: "内包表記とイテレーション" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "演習を開始", exact: true }).click();
   await expect(page.locator(".problem-content h1")).toHaveText(
     "リストの各要素を2倍にする",
   );

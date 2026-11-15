@@ -1,29 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft,
-  ArrowRight,
   ChevronRight,
-  Play,
   Search,
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  api,
   newSession,
   problemCount,
   queries,
+  queryClient,
+  refreshLearning,
   sessionPath,
 } from "../lib/api";
 import {
   Badge,
-  Button,
   ErrorBox,
   Loading,
   PageTitle,
-  ProgressBar,
 } from "../components/ui";
-import type { Concept } from "../types/domain";
 export function Curriculum() {
   const { moduleId } = useParams(),
     [search, setSearch] = useState("");
@@ -119,7 +115,7 @@ export function Curriculum() {
                             : "6問 · 約12分"}
                         </span>
                         <span>
-                          概念を学ぶ
+                          演習を始める
                           <ChevronRight size={14} />
                         </span>
                       </div>
@@ -137,95 +133,45 @@ export function Curriculum() {
     </>
   );
 }
-export function ConceptDetail() {
-  const { conceptId } = useParams(),
+// Concepts have no page of their own: opening one resumes its active session,
+// or starts a new one, and goes straight to the current problem.
+export function ConceptStart() {
+  const { conceptId = "" } = useParams(),
     navigate = useNavigate(),
-    [err, setErr] = useState<unknown>(null),
-    [busy, setBusy] = useState(false);
-  const {
-    data: c,
-    isPending,
-    error,
-  } = useQuery({
-    queryKey: ["concept", conceptId],
-    queryFn: () => api<Concept>(`/concepts/${conceptId}`),
-  });
-  const { data: d } = useQuery(queries.dashboard);
-  if (isPending) return <Loading />;
-  if (error || !c) return <ErrorBox error={error} />;
-  const p = d?.concepts.find((p) => p.concept_id === c.id);
-  const exerciseCount = c.problem_count ?? 6;
-  async function start() {
-    setBusy(true);
-    try {
-      navigate(
-        sessionPath(
-          await newSession({
-            kind: "concept",
-            concept_id: conceptId,
-            count: exerciseCount,
-          }),
-        ),
-      );
-    } catch (e) {
-      setErr(e);
-    } finally {
-      setBusy(false);
-    }
-  }
+    started = useRef(false),
+    [err, setErr] = useState<unknown>(null);
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    (async () => {
+      const dashboard = await queryClient.fetchQuery({
+        ...queries.dashboard,
+        staleTime: 0,
+      });
+      const current = dashboard.current_session;
+      if (current?.kind === "concept" && current.concept_id === conceptId) {
+        navigate(sessionPath(current), { replace: true });
+        return;
+      }
+      const concepts = await queryClient.ensureQueryData(queries.concepts);
+      const concept = concepts.find((c) => c.id === conceptId);
+      const session = await newSession({
+        kind: "concept",
+        concept_id: conceptId,
+        count: concept?.problem_count ?? 6,
+      });
+      await refreshLearning();
+      navigate(sessionPath(session), { replace: true });
+    })().catch(setErr);
+  }, [conceptId, navigate]);
+  if (!err) return <Loading />;
   return (
     <>
-      <Link className="back-link" to={`/curriculum/${c.module_id}`}>
+      <Link className="back-link" to="/curriculum">
         <ArrowLeft size={15} />
         カリキュラムに戻る
       </Link>
-      <PageTitle
-        eyebrow={`${c.id} / CONCEPT`}
-        title={c.title}
-        description={c.description}
-      >
-        <Button disabled={busy} onClick={() => start()}>
-          <Play size={16} />
-          演習を開始
-          <ArrowRight size={17} />
-        </Button>
-      </PageTitle>
-      {!!err && <ErrorBox error={err} />}
-      <div className="concept-detail-grid">
-        <section className="panel info-panel">
-          <h2>コードの読みどころ</h2>
-          <p>{c.description}</p>
-          <pre>{c.example}</pre>
-          <h3>前提知識</h3>
-          <div className="tag-row">
-            {c.prerequisites.length ? (
-              c.prerequisites.map((id) => (
-                <Link to={`/concepts/${id}`} key={id}>
-                  <Badge>{id}</Badge>
-                </Link>
-              ))
-            ) : (
-              <Badge color="gray">Pythonの基本構文</Badge>
-            )}
-          </div>
-          <h3>現在の習熟度</h3>
-          <strong>{p ? `${p.mastery_level} / 5` : "未測定"}</strong>
-          <ProgressBar value={(p?.mastery_level ?? 0) * 20} />
-        </section>
-        <section>
-          <h2 className="mb-20">演習（{exerciseCount}問）</h2>
-          <div className="practice-list panel">
-            <ol>
-              {c.problems?.map((problem, i) => (
-                <li key={problem.id}>
-                  <small>{String(i + 1).padStart(2, "0")}</small>
-                  <span>{problem.title}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-      </div>
+      <ErrorBox error={err} />
     </>
   );
 }

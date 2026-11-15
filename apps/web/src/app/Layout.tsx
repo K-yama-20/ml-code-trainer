@@ -141,7 +141,9 @@ export function Layout() {
               {links.find((l) => pathname.startsWith(l.to))?.label ??
                 (pathname.startsWith("/deep-dive")
                   ? "Deep Dive"
-                  : "概念を学ぶ")}
+                  : pathname.startsWith("/settings")
+                    ? "設定"
+                    : "")}
             </strong>
           </div>
           <div className="topbar-actions">
