@@ -1,11 +1,14 @@
 import { test, expect, type Page } from "./qa-fixture";
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import type { Problem, StudySession } from "../../apps/web/src/types/domain";
 type Authored = Problem & { solution: string };
+// Every drill problem is an ordered `result = <expression>` exercise written in
+// the unified Monaco document; the authored order lives in the compiled catalog.
 const authored = JSON.parse(
   readFileSync("content/compiled/private.json", "utf-8"),
 ).problems as Authored[];
-mkdirSync("docs/ux-phase1", { recursive: true });
+const byId = (id: string) => authored.find((p) => p.id === id)!;
+const NP05 = authored.filter((p) => p.concept_id === "NP05");
 async function session(page: Page, id = "NP05-01", kind = "custom") {
   await page.goto("/home");
   await expect(
@@ -21,82 +24,43 @@ async function session(page: Page, id = "NP05-01", kind = "custom") {
   await expect(page.locator(".problem-content h1")).toBeVisible();
   return { s, item };
 }
+const lines = (page: Page) => page.locator(".view-lines");
 async function code(page: Page, value: string) {
-  const blank = page.getByRole("textbox", {
-    name: "コードの空欄",
-    exact: true,
-  });
-  if (await blank.count()) {
-    const ids = new URL(page.url()).pathname.split("/");
-    const detail = await (
-      await page.request.get(
-        `/api/v1/sessions/${ids.at(-2)}/items/${ids.at(-1)}`,
-      )
-    ).json();
-    const [prefix, suffix] = detail.problem.starter_code.split("___");
-    const source = value.startsWith("def solve(")
-      ? value
-          .split("\n")
-          .slice(1)
-          .map((s) => s.slice(4))
-          .join("\n")
-          .replace("return ", "result = ")
-      : value;
-    if (source.includes("while True"))
-      await blank.fill("exec('while True: pass')");
-    else {
-      expect(source.startsWith(prefix) && source.endsWith(suffix)).toBeTruthy();
-      await blank.fill(
-        source.slice(prefix.length, suffix ? -suffix.length : undefined),
-      );
-    }
-    return;
-  }
   const editor = page.getByRole("textbox", {
     name: "Editor content",
     exact: true,
   });
   await expect(editor).toBeVisible();
-  await editor.press("ControlOrMeta+A");
   await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.evaluate((s) => navigator.clipboard.writeText(s), value);
+  await editor.press("ControlOrMeta+A");
   await editor.press("ControlOrMeta+V");
 }
-function literal(v: unknown): string {
-  if (v === null) return "None";
-  if (typeof v === "boolean") return v ? "True" : "False";
-  if (Array.isArray(v)) return `[${v.map(literal).join(", ")}]`;
-  if (v && typeof v === "object")
-    return `{${Object.entries(v)
-      .map(([k, x]) => JSON.stringify(k) + ": " + literal(x))
-      .join(", ")}}`;
-  return JSON.stringify(v);
-}
 async function solve(page: Page, p: Authored) {
-  if (p.type === "prediction") {
-    const expected = p.public_tests[0].expected as {
-      kind?: string;
-      data?: unknown;
-    };
-    const value =
-      p.presentation?.answer?.mode === "fixed"
-        ? literal(p.presentation.answer.wrap_array ? expected.data : expected)
-        : p.solution.split("return ").at(-1)!.trim();
-    await page.locator("#prediction-value").fill(value);
-  } else await code(page, p.solution);
+  await code(page, p.solution);
   await page.getByRole("button", { name: "答え合わせ", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "次の問題", exact: true }),
   ).toBeVisible({ timeout: 150000 });
-  await expect(page.locator(".submission-note")).toContainText("履歴に保存");
+  await expect(page.locator(".verdict.accepted")).toContainText("正解です");
 }
-test("21 real answers continue past Guided, Partial, Independent and the 20-question goal", async ({
+async function currentProblem(page: Page) {
+  const ids = new URL(page.url()).pathname.split("/");
+  const detail = await (
+    await page.request.get(`/api/v1/sessions/${ids.at(-2)}/items/${ids.at(-1)}`)
+  ).json();
+  return {
+    itemId: ids.at(-1)!,
+    p: authored.find((x) => x.version_id === detail.problem.version_id)!,
+  };
+}
+test("21 real answers follow the authored order, move to the next concept and pass the 20-question goal", async ({
   page,
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  const { s } = await session(page, "NP05-01", "daily");
-  const sequence = [];
+  const { s } = await session(page, NP05[0].id, "concept");
+  const sequence: { id: string; stage: string }[] = [];
   await expect(page.locator(".learning-goal")).toHaveCount(0);
   await expect(page.getByText("公開テスト", { exact: true })).toHaveCount(0);
   await expect(page.getByText("よくある間違い", { exact: true })).toHaveCount(
@@ -107,26 +71,9 @@ test("21 real answers continue past Guided, Partial, Independent and the 20-ques
     fullPage: true,
   });
   for (let n = 0; n < 21; n++) {
-    const ids = new URL(page.url()).pathname.split("/");
-    const sid = ids.at(-2)!;
-    const itemid = ids.at(-1)!;
-    const detail = await (
-      await page.request.get(`/api/v1/sessions/${sid}/items/${itemid}`)
-    ).json();
-    const p = authored.find((x) => x.version_id === detail.problem.version_id)!;
+    const { itemId, p } = await currentProblem(page);
     await expect(page.locator(".problem-content h1")).toHaveText(p.title);
-    if (p.type === "prediction")
-      await expect(page.locator("#prediction-value")).toBeVisible();
-    else
-      await expect(
-        page.getByRole("textbox", { name: /^(Editor content|コードの空欄)$/ }),
-      ).toBeVisible();
-    sequence.push({ id: p.id, stage: p.stage, type: p.type });
-    if (n === 3)
-      await page.screenshot({
-        path: "docs/ux-concrete/after-prediction-expression.png",
-        fullPage: true,
-      });
+    sequence.push({ id: p.id, stage: p.stage });
     await solve(page, p);
     if (n === 0)
       await page.screenshot({
@@ -135,23 +82,13 @@ test("21 real answers continue past Guided, Partial, Independent and the 20-ques
       });
     await page.getByRole("button", { name: "次の問題", exact: true }).click();
     await expect(page).not.toHaveURL(/\/home$/);
-    await expect(page).not.toHaveURL(new RegExp(itemid));
+    await expect(page).not.toHaveURL(new RegExp(itemId));
     await expect(page.locator(".problem-content h1")).toBeVisible();
-    if (n === 1)
-      await page.screenshot({
-        path: "docs/ux-concrete/after-guided-to-partial.png",
-        fullPage: true,
-      });
   }
-  expect(sequence.slice(0, 6).map((p) => p.stage)).toEqual([
-    "guided",
-    "guided",
-    "partial",
-    "partial",
-    "independent",
-    "independent",
-  ]);
-  expect(sequence[6].id.startsWith("NP05")).toBe(false);
+  expect(sequence.slice(0, 18).map((p) => p.id)).toEqual(
+    NP05.map((p) => p.id),
+  );
+  expect(sequence.slice(18).every((p) => !p.id.startsWith("NP05"))).toBe(true);
   const current = await (
     await page.request.get("/api/v1/sessions/current")
   ).json();
@@ -162,6 +99,7 @@ test("21 real answers continue past Guided, Partial, Independent and the 20-ques
   expect((await (await page.request.get("/api/v1/history")).json()).total).toBe(
     21,
   );
+  // Independent answers ran in the browser, so they stay provisional.
   expect(
     (await (await page.request.get("/api/v1/progress/concepts")).json()).find(
       (p: { concept_id: string }) => p.concept_id === "NP05",
@@ -177,23 +115,18 @@ test("21 real answers continue past Guided, Partial, Independent and the 20-ques
   );
   expect(errors).toEqual([]);
 });
-test("wrong answers retain code, Run does not submit, hints are incremental and accepted Submit records them", async ({
+test("wrong answers retain code, Run does not submit, the hint is recorded and accepted Submit records it", async ({
   page,
 }) => {
   const { item } = await session(page);
-  const wrong = "result = x.mean(axis=0)\n";
-  await code(page, wrong);
+  await code(page, "result = np.mean(x, axis=0)");
   await page.getByRole("button", { name: "実行のみ", exact: true }).click();
   await expect(page.locator(".verdict")).toContainText("結果が異なります", {
     timeout: 150000,
   });
-  await expect(page.getByRole("textbox", { name: "コードの空欄" })).toHaveValue(
-    "0",
-  );
-  await expect(page.locator(".value-comparison").first()).toContainText(
-    "3.333",
-  );
-  await expect(page.locator(".value-comparison").first()).toContainText("1.5");
+  await expect(lines(page)).toContainText("np.mean(x, axis=0)");
+  // x = [[1, 4, 7], [2, 6, 10]]: column means are shown against row means.
+  await expect(page.locator(".value-comparison").first()).toContainText("8.5");
   expect((await (await page.request.get("/api/v1/history")).json()).total).toBe(
     0,
   );
@@ -205,15 +138,7 @@ test("wrong answers retain code, Run does not submit, hints are incremental and 
     fullPage: true,
   });
   await page.locator(".drill-hints summary").click();
-  for (let n = 1; n <= 3; n++) {
-    await page
-      .getByRole("button", {
-        name: n === 1 ? "ヒントを1つ見る" : "次のヒントを見る",
-        exact: true,
-      })
-      .click();
-    await expect(page.locator(".hint-step")).toHaveCount(n);
-  }
+  await expect(page.locator(".drill-hints p")).not.toHaveText("読み込み中…");
   await page.screenshot({
     path: "docs/ux-concrete/after-hints.png",
     fullPage: true,
@@ -222,56 +147,24 @@ test("wrong answers retain code, Run does not submit, hints are incremental and 
   await page
     .getByRole("button", { name: "初期状態に戻す", exact: true })
     .click();
-  await expect(page.getByRole("textbox", { name: "コードの空欄" })).toHaveValue(
-    "",
-  );
+  await expect(lines(page)).not.toContainText("axis=0");
   await page
     .getByRole("button", { name: "変更前の回答を戻す", exact: true })
     .click();
-  await expect(page.getByRole("textbox", { name: "コードの空欄" })).toHaveValue(
-    "0",
-  );
-  await solve(
-    page,
-    authored.find((p) => p.id === "NP05-01")!,
-  );
+  await expect(lines(page)).toContainText("np.mean(x, axis=0)");
+  await solve(page, byId("NP05-01"));
   const history = await (await page.request.get("/api/v1/history")).json();
   expect(history.total).toBe(1);
-  expect(history.items[0].hint_level_used).toBe(3);
-  expect(history.items[0].submitted_code).toContain("x.mean(axis=1)");
+  expect(history.items[0].hint_level_used).toBe(1);
+  expect(history.items[0].submitted_code).toContain("np.mean(x, axis=1)");
   await page.reload();
   await expect(
     page.getByRole("button", { name: "次の問題", exact: true }),
   ).toBeVisible();
-  await expect(page.getByRole("textbox", { name: "コードの空欄" })).toHaveValue(
-    "1",
-  );
+  await expect(lines(page)).toContainText("np.mean(x, axis=1)");
   expect(
     (await (await page.request.get(`/api/v1/drafts/${item.id}`)).json()).code,
-  ).toContain("x.mean(axis=1)");
-});
-test("fixed predictions use a value field and execute through the existing grading path", async ({
-  page,
-}) => {
-  for (const id of ["NP06-04", "PY03-04"]) {
-    await session(page, id);
-    await expect(page.locator("#prediction-value")).toBeVisible();
-    await expect(page.locator(".monaco-editor")).toHaveCount(0);
-    await page.locator("#prediction-value").fill("0");
-    await page.getByRole("button", { name: "答え合わせ", exact: true }).click();
-    await expect(page.locator(".verdict")).toContainText("結果が異なります", {
-      timeout: 150000,
-    });
-    await expect(page.locator("#prediction-value")).toHaveValue("0");
-    await solve(
-      page,
-      authored.find((p) => p.id === id)!,
-    );
-    await page.screenshot({
-      path: `docs/ux-concrete/after-prediction-${id}.png`,
-      fullPage: true,
-    });
-  }
+  ).toContain("np.mean(x, axis=1)");
 });
 test("unavailable runtime is explained before work; empty continuation stays on the drill", async ({
   page,
@@ -316,10 +209,7 @@ test("mobile and tablet keep one primary action and preserve the answer", async 
     fullPage: true,
   });
   await page.getByRole("button", { name: "回答欄へ", exact: true }).click();
-  await expect(
-    page.getByRole("textbox", { name: "コードの空欄", exact: true }),
-  ).toBeVisible();
-  await code(page, "def solve(x):\n    return x.mean(axis=1)\n");
+  await code(page, byId("NP05-01").solution);
   await page.screenshot({
     path: "docs/ux-concrete/after-mobile-editor.png",
     fullPage: true,
@@ -352,18 +242,13 @@ test("cancel is explicit and never displays a completed result for the cancelled
   page,
 }) => {
   await session(page);
-  await solve(
-    page,
-    authored.find((p) => p.id === "NP05-01")!,
-  );
-  await code(page, "def solve(x):\n    while True:\n        pass\n");
+  await solve(page, byId("NP05-01"));
+  await code(page, 'result = exec("while True: pass")');
   await page.getByRole("button", { name: "答え合わせ", exact: true }).click();
   await page.getByRole("button", { name: "中止", exact: true }).click();
   await expect(page.locator(".execution-notice")).toContainText("中止");
   await expect(page.locator(".verdict")).toHaveCount(0);
-  await expect(page.getByRole("textbox", { name: "コードの空欄" })).toHaveValue(
-    /while True/,
-  );
+  await expect(lines(page)).toContainText("while True");
   expect((await (await page.request.get("/api/v1/history")).json()).total).toBe(
     1,
   );
@@ -375,17 +260,11 @@ test("starting from the concept page shows no stage labels; ending is explicit",
   await page.goto("/concepts/NP05");
   for (let n = 0; n < 2; n++) {
     await expect(page.locator(".problem-content h1")).toBeVisible();
-    const ids = new URL(page.url()).pathname.split("/");
-    const detail = await (
-      await page.request.get(
-        `/api/v1/sessions/${ids.at(-2)}/items/${ids.at(-1)}`,
-      )
-    ).json();
-    const p = authored.find((p) => p.version_id === detail.problem.version_id)!;
-    expect(p.stage).toBe("guided");
+    const { itemId, p } = await currentProblem(page);
+    expect(p.id).toBe(NP05[n].id);
     await solve(page, p);
     await page.getByRole("button", { name: "次の問題", exact: true }).click();
-    await expect(page).not.toHaveURL(new RegExp(ids.at(-1)!));
+    await expect(page).not.toHaveURL(new RegExp(itemId));
   }
   await expect(page.locator(".problem-content h1")).toBeVisible();
   await expect(
