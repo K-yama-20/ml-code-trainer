@@ -13,8 +13,9 @@ export interface Concept {
   example: string;
   prerequisites: string[];
   order: number;
-  problem_count?: number;
+  problem_count: number;
   ordered_practice?: boolean;
+  mastery_available?: boolean;
   problems?: Problem[];
 }
 export type TuplePaths = (string | number)[][];
@@ -26,6 +27,22 @@ export interface TestCase {
   comparison?: "exact" | "json" | "json_unicode" | "relative";
 }
 export type Stage = "guided" | "partial" | "independent";
+export type SqlCell = string | number | null;
+export interface SqlResultTable {
+  columns: string[];
+  rows: SqlCell[][];
+}
+export interface SqlProblem {
+  tables: {
+    name: string;
+    description: string;
+    columns: { name: string; type: string; description: string }[];
+  }[];
+  cases: { rows: SqlCell[][][]; expected: SqlResultTable }[];
+  ordered: boolean;
+  column_names: boolean;
+  approximate: boolean;
+}
 export interface Problem {
   id: string;
   version_id: string;
@@ -53,6 +70,8 @@ export interface Problem {
   estimated_minutes: number;
   variant_seed: number;
   content_version: number;
+  tolerance?: number;
+  sql?: SqlProblem | null;
   workspace?: {
     mode: "script" | "function" | "prediction";
     provided_code: string;
@@ -139,6 +158,7 @@ export interface Dashboard {
   activities: ActivityProgress[];
   due_count: number;
   mastered: number;
+  practice_completed?: Record<string, number>;
   current_session: StudySession | null;
   sandbox_available: boolean;
   auth_mode: string;
@@ -162,6 +182,7 @@ export interface Result {
   }[];
   code_hash?: string;
   verification_level?: string;
+  preview?: boolean;
 }
 export interface Attempt {
   id: string;

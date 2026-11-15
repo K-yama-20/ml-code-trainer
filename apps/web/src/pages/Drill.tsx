@@ -13,6 +13,7 @@ import { readLocal } from "../lib/drafts";
 import { useUI } from "../lib/store";
 import { keepPythonActive, warmPython } from "../features/python-runtime";
 import { browserRun } from "../features/python";
+import { browserSql, stopSql, warmSql } from "../features/sql-runtime";
 import { readAnswer } from "../features/answer";
 import { useDraft } from "../features/useDraft";
 import { needsAnswer } from "../components/AnswerWorkspace";
@@ -37,6 +38,7 @@ interface Loaded {
 }
 export function DrillPage() {
   useEffect(keepPythonActive, []);
+  useEffect(() => stopSql, []);
   const { sessionId, itemId } = useParams();
   const { data, error, isPending } = useQuery({
     queryKey: ["workspace", sessionId, itemId],
@@ -142,8 +144,9 @@ function DrillWorkspace({ data }: { data: Loaded }) {
   const stale = !!result && code !== resultCode;
   useEffect(() => () => abort.current?.abort(), []);
   useEffect(() => {
-    if (p.runtime === "browser") warmPython();
-  }, [p.runtime]);
+    if (p.sql) void warmSql().catch(() => {});
+    else if (p.runtime === "browser") warmPython();
+  }, [p.runtime, p.sql]);
   useEffect(() => {
     if (item.hint_level)
       void userApi<{ hints: string[] }>(
@@ -154,7 +157,7 @@ function DrillWorkspace({ data }: { data: Loaded }) {
   async function revealHint() {
     try {
       const res = await userApi<{ hints: string[]; level: number }>(
-        `/session-items/${item.id}/hints/${Math.min(p.workspace?.hint_count ?? 3, Math.max(hintLevel, 2))}/reveal`,
+        `/session-items/${item.id}/hints/${p.sql ? 1 : Math.min(p.workspace?.hint_count ?? 3, Math.max(hintLevel, 2))}/reveal`,
         { method: "POST" },
       );
       setHints(res.hints);
@@ -222,7 +225,9 @@ function DrillWorkspace({ data }: { data: Loaded }) {
     if (busy || advancing || abort.current || advancingRequest.current) return;
     if (p.type !== "prediction" && needsAnswer(p, code)) {
       setNotice(
-        "解答欄にコードを入力してください。入力データはそのまま使えます。",
+        p.sql
+          ? "解答欄にSQLを入力してください。"
+          : "解答欄にコードを入力してください。入力データはそのまま使えます。",
       );
       setMobileTab("editor");
       return;
@@ -244,7 +249,7 @@ function DrillWorkspace({ data }: { data: Loaded }) {
     abort.current = controller;
     try {
       await save();
-      if (controller.signal.aborted) return;
+      controller.signal.throwIfAborted();
       let r: Result, executionId: string | undefined;
       const formal =
         submit &&
@@ -254,7 +259,16 @@ function DrillWorkspace({ data }: { data: Loaded }) {
             p.required_ast.startsWith("all:") ||
             p.required_ast.startsWith("arguments:")) &&
             dashboard?.sandbox_available));
-      if (p.runtime === "sandbox" || formal) {
+      if (p.sql) {
+        r = await browserSql(
+          p.sql,
+          captured,
+          !submit,
+          p.tolerance ?? 1e-8,
+          setPhase,
+          controller.signal,
+        );
+      } else if (p.runtime === "sandbox" || formal) {
         const res = await serverRun(
           captured,
           submit ? "submit" : "run",
@@ -265,7 +279,7 @@ function DrillWorkspace({ data }: { data: Loaded }) {
       } else {
         r = await browserRun(p, captured, setPhase, controller.signal);
       }
-      if (controller.signal.aborted) return;
+      controller.signal.throwIfAborted();
       setRunCount((v) => v + 1);
       if (codeRef.current !== captured) {
         setPhase("実行中にコードが変更されました。再実行してください。");
@@ -318,7 +332,7 @@ function DrillWorkspace({ data }: { data: Loaded }) {
                 }),
           }),
         });
-        if (controller.signal.aborted) return;
+        controller.signal.throwIfAborted();
         setResult({ ...r, verification_level: attempt.verification_level });
         setSubmitted(true);
         submitRequest.current = null;

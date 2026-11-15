@@ -35,6 +35,13 @@
       "subtitle": "Tensorから学習ループまで",
       "color": "#f18c83",
       "icon": "layers"
+    },
+    {
+      "id": "sql",
+      "title": "SQL",
+      "subtitle": "SQLiteで表の抽出・集計・結合を練習します。Pythonの知識は不要です。",
+      "color": "#0891b2",
+      "icon": "database"
     }
   ],
   "concepts": [
@@ -442,6 +449,102 @@
       "order": 29,
       "ordered_practice": true,
       "problem_count": 18
+    },
+    {
+      "id": "SQL01",
+      "module_id": "sql",
+      "title": "表を見る",
+      "description": "表から全列や必要な列を取り出す。",
+      "example": "SELECT * FROM sales;",
+      "prerequisites": [],
+      "order": 30,
+      "ordered_practice": true,
+      "problem_count": 3,
+      "mastery_available": false
+    },
+    {
+      "id": "SQL02",
+      "module_id": "sql",
+      "title": "行を絞る",
+      "description": "条件に合う明細を取り出す。",
+      "example": "WHERE amount >= 200",
+      "prerequisites": [
+        "SQL01"
+      ],
+      "order": 31,
+      "ordered_practice": true,
+      "problem_count": 5,
+      "mastery_available": false
+    },
+    {
+      "id": "SQL03",
+      "module_id": "sql",
+      "title": "並べ替え・件数",
+      "description": "結果の並び順と返す件数を決める。",
+      "example": "ORDER BY amount DESC, id ASC",
+      "prerequisites": [
+        "SQL02"
+      ],
+      "order": 32,
+      "ordered_practice": true,
+      "problem_count": 4,
+      "mastery_available": false
+    },
+    {
+      "id": "SQL04",
+      "module_id": "sql",
+      "title": "欠損と重複",
+      "description": "NULLや、同じ値が繰り返し出る列を扱う。",
+      "example": "WHERE note IS NULL",
+      "prerequisites": [
+        "SQL03"
+      ],
+      "order": 33,
+      "ordered_practice": true,
+      "problem_count": 4,
+      "mastery_available": false
+    },
+    {
+      "id": "SQL05",
+      "module_id": "sql",
+      "title": "集計",
+      "description": "表全体の件数や合計、平均、最小・最大を求める。",
+      "example": "SELECT COUNT(*) FROM sales;",
+      "prerequisites": [
+        "SQL04"
+      ],
+      "order": 34,
+      "ordered_practice": true,
+      "problem_count": 5,
+      "mastery_available": false
+    },
+    {
+      "id": "SQL06",
+      "module_id": "sql",
+      "title": "グループ別集計",
+      "description": "分類ごとに集計し、集計の前後で条件を使い分ける。",
+      "example": "GROUP BY category HAVING COUNT(*) >= 2",
+      "prerequisites": [
+        "SQL05"
+      ],
+      "order": 35,
+      "ordered_practice": true,
+      "problem_count": 4,
+      "mastery_available": false
+    },
+    {
+      "id": "SQL07",
+      "module_id": "sql",
+      "title": "テーブルの結合",
+      "description": "IDを使って顧客と購入履歴を結び付ける。",
+      "example": "JOIN purchases ON customers.id = purchases.customer_id",
+      "prerequisites": [
+        "SQL06"
+      ],
+      "order": 36,
+      "ordered_practice": true,
+      "problem_count": 4,
+      "mastery_available": false
     }
   ],
   "problems": [
@@ -58585,6 +58688,5708 @@
         ],
         "allow_input_mutation": true,
         "result_type": "tuple"
+      }
+    },
+    {
+      "id": "SQL01-01",
+      "family_id": "SQL01-01",
+      "version_id": "SQL01-01@1",
+      "content_version": 1,
+      "concept_id": "SQL01",
+      "module_id": "sql",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "表の全列を見る",
+      "description": "`sales` の全行・全列を、表と同じ列順で取り出してください。",
+      "learning_goal": "表から全列や必要な列を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "SELECT \nFROM sales;",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`SELECT * FROM sales` は、売上明細の全列を表の列順で返します。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "product",
+                "category",
+                "amount",
+                "note"
+              ],
+              "rows": [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "product",
+                "category",
+                "amount",
+                "note"
+              ],
+              "rows": [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL01-02",
+      "family_id": "SQL01-02",
+      "version_id": "SQL01-02@1",
+      "content_version": 1,
+      "concept_id": "SQL01",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "商品名だけを取り出す",
+      "description": "`sales` の `product` 列だけを全行分取り出してください。",
+      "learning_goal": "表から全列や必要な列を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "列を指定しても、行は引き続き1明細につき1行です。同じ商品が複数回売れた場合も残ります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "product"
+              ],
+              "rows": [
+                [
+                  "茶"
+                ],
+                [
+                  "パン"
+                ],
+                [
+                  "茶"
+                ],
+                [
+                  "水"
+                ],
+                [
+                  "皿"
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "product"
+              ],
+              "rows": [
+                [
+                  "米"
+                ],
+                [
+                  "水"
+                ],
+                [
+                  "皿"
+                ],
+                [
+                  "米"
+                ],
+                [
+                  "茶"
+                ],
+                [
+                  "水"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL01-03",
+      "family_id": "SQL01-03",
+      "version_id": "SQL01-03@1",
+      "content_version": 1,
+      "concept_id": "SQL01",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "列を選んで名前を付ける",
+      "description": "`sales` の `amount`、`product` の順に全行を取り出し、結果の列名を `price`、`product` にしてください。",
+      "learning_goal": "表から全列や必要な列を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`AS price` は結果にだけ付ける列名です。元の表の `amount` はそのままです。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "price",
+                "product"
+              ],
+              "rows": [
+                [
+                  100,
+                  "茶"
+                ],
+                [
+                  200,
+                  "パン"
+                ],
+                [
+                  200,
+                  "茶"
+                ],
+                [
+                  0,
+                  "水"
+                ],
+                [
+                  300,
+                  "皿"
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "price",
+                "product"
+              ],
+              "rows": [
+                [
+                  265,
+                  "米"
+                ],
+                [
+                  100,
+                  "水"
+                ],
+                [
+                  100,
+                  "皿"
+                ],
+                [
+                  99,
+                  "米"
+                ],
+                [
+                  201,
+                  "茶"
+                ],
+                [
+                  200,
+                  "水"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": true,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL02-01",
+      "family_id": "SQL02-01",
+      "version_id": "SQL02-01@1",
+      "content_version": 1,
+      "concept_id": "SQL02",
+      "module_id": "sql",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "金額の下限を指定する",
+      "description": "`sales` から `amount` が200以上の明細の `id` を取り出してください。",
+      "learning_goal": "条件に合う明細を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "SELECT id FROM sales\nWHERE ",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "条件を満たす明細だけが残ります。`>` にすると200ちょうどの明細が落ちます。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  2
+                ],
+                [
+                  3
+                ],
+                [
+                  5
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  4
+                ],
+                [
+                  5
+                ],
+                [
+                  9
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL02-02",
+      "family_id": "SQL02-02",
+      "version_id": "SQL02-02@1",
+      "content_version": 1,
+      "concept_id": "SQL02",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "2つの条件を両方満たす",
+      "description": "`sales` から、分類 `category` が `'飲料'` で、金額 `amount` が200以上の明細の `id` を取り出してください。",
+      "learning_goal": "条件に合う明細を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`AND` なら、飲料でも200未満の行や、200以上でも飲料以外の行は残りません。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  3
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  5
+                ],
+                [
+                  9
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL02-03",
+      "family_id": "SQL02-03",
+      "version_id": "SQL02-03@1",
+      "content_version": 1,
+      "concept_id": "SQL02",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "どちらか一方を満たす",
+      "description": "`sales` から、分類 `category` が `'雑貨'` または金額 `amount` が0の明細の `id` を取り出してください。",
+      "learning_goal": "条件に合う明細を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`OR` は少なくとも片方を満たす行を残します。両方を満たしても行は1回だけ返ります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  4
+                ],
+                [
+                  5
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  7
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL02-04",
+      "family_id": "SQL02-04",
+      "version_id": "SQL02-04@1",
+      "content_version": 1,
+      "concept_id": "SQL02",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "候補の一覧で絞る",
+      "description": "`sales` から、分類 `category` が `'飲料'` または `'食品'` の明細の `id` を取り出してください。",
+      "learning_goal": "条件に合う明細を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "同じ列を複数の値と比べるとき、`IN` を使うと候補が見渡しやすくなります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ],
+                [
+                  4
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  4
+                ],
+                [
+                  2
+                ],
+                [
+                  1
+                ],
+                [
+                  5
+                ],
+                [
+                  9
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL02-05",
+      "family_id": "SQL02-05",
+      "version_id": "SQL02-05@1",
+      "content_version": 1,
+      "concept_id": "SQL02",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "範囲の両端を含める",
+      "description": "`sales` から金額 `amount` が100〜200（両端を含む）の明細の `id` を取り出してください。",
+      "learning_goal": "条件に合う明細を取り出す。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`BETWEEN` はここでは `amount >= 100 AND amount <= 200` と同じです。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL01"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  2
+                ],
+                [
+                  7
+                ],
+                [
+                  9
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL03-01",
+      "family_id": "SQL03-01",
+      "version_id": "SQL03-01@1",
+      "content_version": 1,
+      "concept_id": "SQL03",
+      "module_id": "sql",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "IDの小さい順に並べる",
+      "description": "`sales` の `product` を、`id` の昇順（小さい順）で取り出してください。",
+      "learning_goal": "結果の並び順と返す件数を決める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "SQLiteの既定の並び方向は昇順です。表示する列と並べ替えに使う列は別々に指定できます。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "product"
+              ],
+              "rows": [
+                [
+                  "茶"
+                ],
+                [
+                  "パン"
+                ],
+                [
+                  "茶"
+                ],
+                [
+                  "水"
+                ],
+                [
+                  "皿"
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "product"
+              ],
+              "rows": [
+                [
+                  "米"
+                ],
+                [
+                  "水"
+                ],
+                [
+                  "米"
+                ],
+                [
+                  "茶"
+                ],
+                [
+                  "皿"
+                ],
+                [
+                  "水"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": true,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL03-02",
+      "family_id": "SQL03-02",
+      "version_id": "SQL03-02@1",
+      "content_version": 1,
+      "concept_id": "SQL03",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "金額の高い順に並べる",
+      "description": "`sales` の `amount` を、金額の降順（大きい順）で取り出してください。",
+      "learning_goal": "結果の並び順と返す件数を決める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`ORDER BY amount DESC` は金額の大きな値を先に並べます。同額の行も残ります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "amount"
+              ],
+              "rows": [
+                [
+                  300
+                ],
+                [
+                  200
+                ],
+                [
+                  200
+                ],
+                [
+                  100
+                ],
+                [
+                  0
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "amount"
+              ],
+              "rows": [
+                [
+                  265
+                ],
+                [
+                  201
+                ],
+                [
+                  200
+                ],
+                [
+                  100
+                ],
+                [
+                  100
+                ],
+                [
+                  99
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": true,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL03-03",
+      "family_id": "SQL03-03",
+      "version_id": "SQL03-03@1",
+      "content_version": 1,
+      "concept_id": "SQL03",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "同額の並びを決める",
+      "description": "`sales` の `id`、`amount` を取り出し、金額は降順、同額なら `id` は昇順にしてください。",
+      "learning_goal": "結果の並び順と返す件数を決める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "並び順を列ごとに指定すると、同じ金額でもどの明細が先か決まります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "amount"
+              ],
+              "rows": [
+                [
+                  5,
+                  300
+                ],
+                [
+                  2,
+                  200
+                ],
+                [
+                  3,
+                  200
+                ],
+                [
+                  1,
+                  100
+                ],
+                [
+                  4,
+                  0
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "amount"
+              ],
+              "rows": [
+                [
+                  4,
+                  265
+                ],
+                [
+                  5,
+                  201
+                ],
+                [
+                  9,
+                  200
+                ],
+                [
+                  2,
+                  100
+                ],
+                [
+                  7,
+                  100
+                ],
+                [
+                  1,
+                  99
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": true,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL03-04",
+      "family_id": "SQL03-04",
+      "version_id": "SQL03-04@1",
+      "content_version": 1,
+      "concept_id": "SQL03",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "上位2件に絞る",
+      "description": "`sales` の `id`、`amount` を取り出してください。金額の降順、同額なら `id` の昇順で並べ、先頭2件だけを返してください。",
+      "learning_goal": "結果の並び順と返す件数を決める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`LIMIT` は並べ替えた結果の先頭から返す行数を制限します。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL02"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "amount"
+              ],
+              "rows": [
+                [
+                  5,
+                  300
+                ],
+                [
+                  2,
+                  200
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "amount"
+              ],
+              "rows": [
+                [
+                  4,
+                  265
+                ],
+                [
+                  5,
+                  201
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": true,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL04-01",
+      "family_id": "SQL04-01",
+      "version_id": "SQL04-01@1",
+      "content_version": 1,
+      "concept_id": "SQL04",
+      "module_id": "sql",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "NULLの行を探す",
+      "description": "`sales` から、メモ `note` が `NULL`（値が入っていない）の明細の `id` を取り出してください。",
+      "learning_goal": "NULLや、同じ値が繰り返し出る列を扱う。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`= NULL` は真になりません。`IS NULL` は値が欠けている行だけを見つけ、空文字は残しません。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  1
+                ],
+                [
+                  4
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  2
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL04-02",
+      "family_id": "SQL04-02",
+      "version_id": "SQL04-02@1",
+      "content_version": 1,
+      "concept_id": "SQL04",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "空文字だけを探す",
+      "description": "`sales` から、メモ `note` が空文字 `''` の明細の `id` を取り出してください。",
+      "learning_goal": "NULLや、同じ値が繰り返し出る列を扱う。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`note = ''` が真なのは空文字だけです。`NULL` の明細は条件を通りません。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  2
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  4
+                ],
+                [
+                  5
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL04-03",
+      "family_id": "SQL04-03",
+      "version_id": "SQL04-03@1",
+      "content_version": 1,
+      "concept_id": "SQL04",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "商品の重複を除く",
+      "description": "`sales` の `product` を、同じ商品名は1行だけになるように取り出してください。",
+      "learning_goal": "NULLや、同じ値が繰り返し出る列を扱う。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "商品の一覧だけが欲しいなら、列を `product` に絞ってから重複を除きます。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "product"
+              ],
+              "rows": [
+                [
+                  "茶"
+                ],
+                [
+                  "パン"
+                ],
+                [
+                  "水"
+                ],
+                [
+                  "皿"
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "product"
+              ],
+              "rows": [
+                [
+                  "米"
+                ],
+                [
+                  "水"
+                ],
+                [
+                  "皿"
+                ],
+                [
+                  "茶"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL04-04",
+      "family_id": "SQL04-04",
+      "version_id": "SQL04-04@1",
+      "content_version": 1,
+      "concept_id": "SQL04",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "値があるメモを一覧にする",
+      "description": "`sales` の `note` から `NULL` を除き、異なるメモを1行ずつ取り出してください。空文字も値として含めます。",
+      "learning_goal": "NULLや、同じ値が繰り返し出る列を扱う。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "欠損の除外と重複の除外は別の操作です。空文字はこの条件で残ります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL03"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "note"
+              ],
+              "rows": [
+                [
+                  ""
+                ],
+                [
+                  "再注文"
+                ],
+                [
+                  "ギフト"
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "note"
+              ],
+              "rows": [
+                [
+                  ""
+                ],
+                [
+                  "予備"
+                ],
+                [
+                  "試飲"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL05-01",
+      "family_id": "SQL05-01",
+      "version_id": "SQL05-01@1",
+      "content_version": 1,
+      "concept_id": "SQL05",
+      "module_id": "sql",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "全明細の件数を数える",
+      "description": "`sales` の全明細の件数を1行1列で返してください。",
+      "learning_goal": "表全体の件数や合計、平均、最小・最大を求める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "メモが空欄の明細も1件です。`COUNT(*)` は行そのものを数えます。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL04"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  5
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  6
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL05-02",
+      "family_id": "SQL05-02",
+      "version_id": "SQL05-02@1",
+      "content_version": 1,
+      "concept_id": "SQL05",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "値の入ったメモを数える",
+      "description": "`sales` の `note` が `NULL` ではない明細の件数を1行1列で返してください。空文字も数えます。",
+      "learning_goal": "表全体の件数や合計、平均、最小・最大を求める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`COUNT(note)` は空文字も1件と数え、値のない `NULL` だけを除外します。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL04"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "COUNT(note)"
+              ],
+              "rows": [
+                [
+                  3
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "COUNT(note)"
+              ],
+              "rows": [
+                [
+                  4
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL05-03",
+      "family_id": "SQL05-03",
+      "version_id": "SQL05-03@1",
+      "content_version": 1,
+      "concept_id": "SQL05",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "金額を合計する",
+      "description": "`sales` の `amount` の合計を1行1列で返してください。",
+      "learning_goal": "表全体の件数や合計、平均、最小・最大を求める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`SUM(amount)` は金額を足し上げて1つの値を返します。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL04"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "SUM(amount)"
+              ],
+              "rows": [
+                [
+                  800
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "SUM(amount)"
+              ],
+              "rows": [
+                [
+                  965
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL05-04",
+      "family_id": "SQL05-04",
+      "version_id": "SQL05-04@1",
+      "content_version": 1,
+      "concept_id": "SQL05",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "平均を求める",
+      "description": "`sales` の `amount` の平均を1行1列で返してください。丸めず、金額0の明細も含めます。",
+      "learning_goal": "表全体の件数や合計、平均、最小・最大を求める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "金額0の明細も平均の分母に入ります。SQLiteの `AVG` は小数を含む結果を返せます。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL04"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "AVG(amount)"
+              ],
+              "rows": [
+                [
+                  160.0
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "AVG(amount)"
+              ],
+              "rows": [
+                [
+                  160.83333333333334
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": true
+      }
+    },
+    {
+      "id": "SQL05-05",
+      "family_id": "SQL05-05",
+      "version_id": "SQL05-05@1",
+      "content_version": 1,
+      "concept_id": "SQL05",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "範囲を最小値と最大値で表す",
+      "description": "`sales` の `amount` の最小値、最大値を、この順の2列・1行で返してください。",
+      "learning_goal": "表全体の件数や合計、平均、最小・最大を求める。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "1回の集計で、別々の集計関数を結果の列として並べられます。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL04"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "MIN(amount)",
+                "MAX(amount)"
+              ],
+              "rows": [
+                [
+                  0,
+                  300
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "MIN(amount)",
+                "MAX(amount)"
+              ],
+              "rows": [
+                [
+                  99,
+                  265
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL06-01",
+      "family_id": "SQL06-01",
+      "version_id": "SQL06-01@1",
+      "content_version": 1,
+      "concept_id": "SQL06",
+      "module_id": "sql",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "分類ごとの件数を数える",
+      "description": "`sales` を `category` ごとにまとめ、分類、明細の件数の順で取り出してください。",
+      "learning_goal": "分類ごとに集計し、集計の前後で条件を使い分ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "分類ごとに1行が返り、`COUNT(*)` はその組の明細だけを数えます。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  "雑貨",
+                  1
+                ],
+                [
+                  "食品",
+                  1
+                ],
+                [
+                  "飲料",
+                  3
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  "雑貨",
+                  1
+                ],
+                [
+                  "食品",
+                  2
+                ],
+                [
+                  "飲料",
+                  3
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL06-02",
+      "family_id": "SQL06-02",
+      "version_id": "SQL06-02@1",
+      "content_version": 1,
+      "concept_id": "SQL06",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "対象の明細を絞ってから集計する",
+      "description": "`sales` の金額 `amount` が200以上の明細だけを使い、`category`、分類ごとの合計金額の順で返してください。",
+      "learning_goal": "分類ごとに集計し、集計の前後で条件を使い分ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`WHERE amount >= 200` で対象の明細を確定してから、分類ごとに金額を足します。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "SUM(amount)"
+              ],
+              "rows": [
+                [
+                  "雑貨",
+                  300
+                ],
+                [
+                  "食品",
+                  200
+                ],
+                [
+                  "飲料",
+                  200
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "SUM(amount)"
+              ],
+              "rows": [
+                [
+                  "食品",
+                  265
+                ],
+                [
+                  "飲料",
+                  401
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL06-03",
+      "family_id": "SQL06-03",
+      "version_id": "SQL06-03@1",
+      "content_version": 1,
+      "concept_id": "SQL06",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "件数の多い分類を残す",
+      "description": "`sales` を `category` ごとに集計し、明細が2件以上ある分類の `category`、明細の件数を返してください。",
+      "learning_goal": "分類ごとに集計し、集計の前後で条件を使い分ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`HAVING COUNT(*) >= 2` は行ごとの条件ではなく、集計済みの分類ごとの条件です。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  "飲料",
+                  3
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  "食品",
+                  2
+                ],
+                [
+                  "飲料",
+                  3
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL06-04",
+      "family_id": "SQL06-04",
+      "version_id": "SQL06-04@1",
+      "content_version": 1,
+      "concept_id": "SQL06",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "対象行と集計結果を両方絞る",
+      "description": "`sales` の金額 `amount` が100以上の明細だけを使います。その明細が2件以上ある分類の `category`、件数の順で返してください。",
+      "learning_goal": "分類ごとに集計し、集計の前後で条件を使い分ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "100未満の明細を除いてから数えると、分類そのものが結果に残らなくなる場合があります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL05"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "sales",
+            "description": "売上明細",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "明細ID"
+              },
+              {
+                "name": "product",
+                "type": "TEXT",
+                "description": "商品名"
+              },
+              {
+                "name": "category",
+                "type": "TEXT",
+                "description": "分類"
+              },
+              {
+                "name": "amount",
+                "type": "INTEGER",
+                "description": "金額"
+              },
+              {
+                "name": "note",
+                "type": "TEXT",
+                "description": "メモ"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "茶",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  2,
+                  "パン",
+                  "食品",
+                  200,
+                  ""
+                ],
+                [
+                  3,
+                  "茶",
+                  "飲料",
+                  200,
+                  "再注文"
+                ],
+                [
+                  4,
+                  "水",
+                  "飲料",
+                  0,
+                  null
+                ],
+                [
+                  5,
+                  "皿",
+                  "雑貨",
+                  300,
+                  "ギフト"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  "飲料",
+                  2
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "米",
+                  "食品",
+                  265,
+                  ""
+                ],
+                [
+                  2,
+                  "水",
+                  "飲料",
+                  100,
+                  null
+                ],
+                [
+                  7,
+                  "皿",
+                  "雑貨",
+                  100,
+                  "予備"
+                ],
+                [
+                  1,
+                  "米",
+                  "食品",
+                  99,
+                  null
+                ],
+                [
+                  5,
+                  "茶",
+                  "飲料",
+                  201,
+                  ""
+                ],
+                [
+                  9,
+                  "水",
+                  "飲料",
+                  200,
+                  "試飲"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "category",
+                "COUNT(*)"
+              ],
+              "rows": [
+                [
+                  "飲料",
+                  3
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL07-01",
+      "family_id": "SQL07-01",
+      "version_id": "SQL07-01@1",
+      "content_version": 1,
+      "concept_id": "SQL07",
+      "module_id": "sql",
+      "stage": "guided",
+      "type": "implementation",
+      "difficulty": 1,
+      "title": "購入に対応する顧客名を出す",
+      "description": "`purchases.customer_id` に対応する `customers.id` がある購入の `customers.name`、`purchases.item` を返してください。",
+      "learning_goal": "IDを使って顧客と購入履歴を結び付ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`INNER JOIN` は結合条件に合う組だけを返します。購入IDではなく、購入者のIDを使います。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL06"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "customers",
+            "description": "顧客",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "顧客ID（顧客ごとに固有）"
+              },
+              {
+                "name": "name",
+                "type": "TEXT",
+                "description": "顧客名"
+              }
+            ]
+          },
+          {
+            "name": "purchases",
+            "description": "購入履歴",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "購入ID"
+              },
+              {
+                "name": "customer_id",
+                "type": "INTEGER",
+                "description": "購入した顧客のID"
+              },
+              {
+                "name": "item",
+                "type": "TEXT",
+                "description": "商品名"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "葵"
+                ],
+                [
+                  2,
+                  "蓮"
+                ],
+                [
+                  3,
+                  "凛"
+                ]
+              ],
+              [
+                [
+                  1,
+                  2,
+                  "米"
+                ],
+                [
+                  2,
+                  1,
+                  "茶"
+                ],
+                [
+                  3,
+                  1,
+                  "水"
+                ],
+                [
+                  4,
+                  null,
+                  "皿"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "name",
+                "item"
+              ],
+              "rows": [
+                [
+                  "蓮",
+                  "米"
+                ],
+                [
+                  "葵",
+                  "茶"
+                ],
+                [
+                  "葵",
+                  "水"
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "空"
+                ],
+                [
+                  1,
+                  "海"
+                ],
+                [
+                  6,
+                  "海"
+                ]
+              ],
+              [
+                [
+                  1,
+                  6,
+                  "茶"
+                ],
+                [
+                  2,
+                  4,
+                  "水"
+                ],
+                [
+                  3,
+                  6,
+                  "茶"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "name",
+                "item"
+              ],
+              "rows": [
+                [
+                  "海",
+                  "茶"
+                ],
+                [
+                  "空",
+                  "水"
+                ],
+                [
+                  "海",
+                  "茶"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL07-02",
+      "family_id": "SQL07-02",
+      "version_id": "SQL07-02@1",
+      "content_version": 1,
+      "concept_id": "SQL07",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "購入ごとの対応を確認する",
+      "description": "`customers` と `purchases` を顧客IDで結び付け、購入がある顧客の `customers.id`、`purchases.id` を購入1件につき1行返してください。",
+      "learning_goal": "IDを使って顧客と購入履歴を結び付ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "同じ顧客IDの購入が2件なら2行返ります。列名が同じでも、2つの `id` は別の値です。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL06"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "customers",
+            "description": "顧客",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "顧客ID（顧客ごとに固有）"
+              },
+              {
+                "name": "name",
+                "type": "TEXT",
+                "description": "顧客名"
+              }
+            ]
+          },
+          {
+            "name": "purchases",
+            "description": "購入履歴",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "購入ID"
+              },
+              {
+                "name": "customer_id",
+                "type": "INTEGER",
+                "description": "購入した顧客のID"
+              },
+              {
+                "name": "item",
+                "type": "TEXT",
+                "description": "商品名"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "葵"
+                ],
+                [
+                  2,
+                  "蓮"
+                ],
+                [
+                  3,
+                  "凛"
+                ]
+              ],
+              [
+                [
+                  1,
+                  2,
+                  "米"
+                ],
+                [
+                  2,
+                  1,
+                  "茶"
+                ],
+                [
+                  3,
+                  1,
+                  "水"
+                ],
+                [
+                  4,
+                  null,
+                  "皿"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "id"
+              ],
+              "rows": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ],
+                [
+                  2,
+                  1
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "空"
+                ],
+                [
+                  1,
+                  "海"
+                ],
+                [
+                  6,
+                  "海"
+                ]
+              ],
+              [
+                [
+                  1,
+                  6,
+                  "茶"
+                ],
+                [
+                  2,
+                  4,
+                  "水"
+                ],
+                [
+                  3,
+                  6,
+                  "茶"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id",
+                "id"
+              ],
+              "rows": [
+                [
+                  4,
+                  2
+                ],
+                [
+                  6,
+                  1
+                ],
+                [
+                  6,
+                  3
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL07-03",
+      "family_id": "SQL07-03",
+      "version_id": "SQL07-03@1",
+      "content_version": 1,
+      "concept_id": "SQL07",
+      "module_id": "sql",
+      "stage": "partial",
+      "type": "implementation",
+      "difficulty": 2,
+      "title": "購入がない顧客も含める",
+      "description": "全 `customers` の `name` と、顧客IDが一致する購入の `purchases.item` を返してください。購入がない顧客も `item` を `NULL` として1行残します。",
+      "learning_goal": "IDを使って顧客と購入履歴を結び付ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "購入がない顧客の行は残り、右側の `item` に `NULL` が入ります。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL06"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "customers",
+            "description": "顧客",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "顧客ID（顧客ごとに固有）"
+              },
+              {
+                "name": "name",
+                "type": "TEXT",
+                "description": "顧客名"
+              }
+            ]
+          },
+          {
+            "name": "purchases",
+            "description": "購入履歴",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "購入ID"
+              },
+              {
+                "name": "customer_id",
+                "type": "INTEGER",
+                "description": "購入した顧客のID"
+              },
+              {
+                "name": "item",
+                "type": "TEXT",
+                "description": "商品名"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "葵"
+                ],
+                [
+                  2,
+                  "蓮"
+                ],
+                [
+                  3,
+                  "凛"
+                ]
+              ],
+              [
+                [
+                  1,
+                  2,
+                  "米"
+                ],
+                [
+                  2,
+                  1,
+                  "茶"
+                ],
+                [
+                  3,
+                  1,
+                  "水"
+                ],
+                [
+                  4,
+                  null,
+                  "皿"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "name",
+                "item"
+              ],
+              "rows": [
+                [
+                  "葵",
+                  "水"
+                ],
+                [
+                  "葵",
+                  "茶"
+                ],
+                [
+                  "蓮",
+                  "米"
+                ],
+                [
+                  "凛",
+                  null
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "空"
+                ],
+                [
+                  1,
+                  "海"
+                ],
+                [
+                  6,
+                  "海"
+                ]
+              ],
+              [
+                [
+                  1,
+                  6,
+                  "茶"
+                ],
+                [
+                  2,
+                  4,
+                  "水"
+                ],
+                [
+                  3,
+                  6,
+                  "茶"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "name",
+                "item"
+              ],
+              "rows": [
+                [
+                  "空",
+                  "水"
+                ],
+                [
+                  "海",
+                  null
+                ],
+                [
+                  "海",
+                  "茶"
+                ],
+                [
+                  "海",
+                  "茶"
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
+      }
+    },
+    {
+      "id": "SQL07-04",
+      "family_id": "SQL07-04",
+      "version_id": "SQL07-04@1",
+      "content_version": 1,
+      "concept_id": "SQL07",
+      "module_id": "sql",
+      "stage": "independent",
+      "type": "implementation",
+      "difficulty": 3,
+      "title": "購入がない顧客だけを探す",
+      "description": "`customers` のうち、顧客IDが一致する `purchases` が1件もない顧客の `customers.id` を返してください。",
+      "learning_goal": "IDを使って顧客と購入履歴を結び付ける。",
+      "input_conditions": "",
+      "output_conditions": "",
+      "starter_code": "",
+      "example": "",
+      "editable_regions": [],
+      "explanation": "`p.id IS NULL` で対応する購入が無い行を残せます。顧客IDが `NULL` の購入はどの顧客にも一致しません。",
+      "common_mistakes": [],
+      "public_tests": [],
+      "required_ast": "",
+      "check_dtype": false,
+      "runtime": "browser",
+      "packages": [],
+      "prerequisites": [
+        "SQL06"
+      ],
+      "estimated_minutes": 2,
+      "variant_seed": 42,
+      "variant_generator": "sqlite-fixtures-v1",
+      "tolerance": 1e-08,
+      "sql": {
+        "tables": [
+          {
+            "name": "customers",
+            "description": "顧客",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "顧客ID（顧客ごとに固有）"
+              },
+              {
+                "name": "name",
+                "type": "TEXT",
+                "description": "顧客名"
+              }
+            ]
+          },
+          {
+            "name": "purchases",
+            "description": "購入履歴",
+            "columns": [
+              {
+                "name": "id",
+                "type": "INTEGER",
+                "description": "購入ID"
+              },
+              {
+                "name": "customer_id",
+                "type": "INTEGER",
+                "description": "購入した顧客のID"
+              },
+              {
+                "name": "item",
+                "type": "TEXT",
+                "description": "商品名"
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "rows": [
+              [
+                [
+                  1,
+                  "葵"
+                ],
+                [
+                  2,
+                  "蓮"
+                ],
+                [
+                  3,
+                  "凛"
+                ]
+              ],
+              [
+                [
+                  1,
+                  2,
+                  "米"
+                ],
+                [
+                  2,
+                  1,
+                  "茶"
+                ],
+                [
+                  3,
+                  1,
+                  "水"
+                ],
+                [
+                  4,
+                  null,
+                  "皿"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  3
+                ]
+              ]
+            }
+          },
+          {
+            "rows": [
+              [
+                [
+                  4,
+                  "空"
+                ],
+                [
+                  1,
+                  "海"
+                ],
+                [
+                  6,
+                  "海"
+                ]
+              ],
+              [
+                [
+                  1,
+                  6,
+                  "茶"
+                ],
+                [
+                  2,
+                  4,
+                  "水"
+                ],
+                [
+                  3,
+                  6,
+                  "茶"
+                ]
+              ]
+            ],
+            "expected": {
+              "columns": [
+                "id"
+              ],
+              "rows": [
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        ],
+        "ordered": false,
+        "column_names": false,
+        "approximate": false
       }
     }
   ]

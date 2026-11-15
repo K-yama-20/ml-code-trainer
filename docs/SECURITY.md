@@ -8,6 +8,8 @@ postMessageはiframeのWindow、ランダムchannel、run IDを照合します�
 
 ローカルゲストCookieはHttpOnly・SameSite=Strict、productionではSecureです。WorkerへCookieやBearer tokenを転送しません。ブラウザ採点は改変可能なので、正式習得と分離します。
 
+SQL Workerには学習者のクエリと公開フィクスチャを渡します。ケースごとにメモリDBを作り、`query_only` とSQLiteのauthorizerで公開テーブルの読み取りと許可した組み込み関数に限定します。仮想テーブルを許可せず、SQLiteのパーサーでクエリが1文であることを確認し、実行前に `sqlite3_stmt_readonly` を確認します。SQLからJSやホストのファイルを操作する機能は公開していません。実行はケースごとに1秒、100行・16列・約24 KiBの出力までで、全体の時間上限と中止操作ではWorkerを終了します。SQL用のサーバージョブをAPIで拒否し、非公開ケースはローカル教材検証に使います。
+
 ## サーバー実行
 
 FastAPI内での任意execや、ローカルsubprocess実行アダプターはありません。非公開の期待値はWorkerに残し、Sandboxには入力とコードだけを送ります。Modalはblock_network=True、CPU1、メモリ2GiB、実行30秒、寿命35秒、非root learnerユーザー、秘密・永続volume・GPU・公開portなしで作成します。root所有のイメージと分離し、作業領域は/tmpです。出力は合計64KiBで終了します。finallyでSandboxを破棄します。

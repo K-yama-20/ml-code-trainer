@@ -1,45 +1,44 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  ArrowLeft,
-  ChevronRight,
-  Search,
-} from "lucide-react";
+import { ArrowLeft, ChevronRight, Search } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import {
   newSession,
+  practiceCount,
   problemCount,
   queries,
   queryClient,
   refreshLearning,
   sessionPath,
 } from "../lib/api";
-import {
-  Badge,
-  ErrorBox,
-  Loading,
-  PageTitle,
-} from "../components/ui";
+import { Badge, ErrorBox, Loading, PageTitle } from "../components/ui";
 export function Curriculum() {
   const { moduleId } = useParams(),
     [search, setSearch] = useState("");
-  const { data: modules = [] } = useQuery(queries.modules),
+  const {
+      data: modules = [],
+      isPending: loadingModules,
+      error: moduleError,
+    } = useQuery(queries.modules),
     { data: concepts = [], isPending, error } = useQuery(queries.concepts),
     { data: d } = useQuery(queries.dashboard);
   const module = modules.find((m) => m.id === moduleId);
-  if (isPending) return <Loading />;
-  if (error) return <ErrorBox error={error} />;
+  const listed = moduleId
+    ? concepts.filter((c) => c.module_id === moduleId)
+    : concepts;
+  if (isPending || loadingModules) return <Loading />;
+  if (error || moduleError) return <ErrorBox error={error ?? moduleError} />;
   return (
     <>
       <PageTitle
-        eyebrow="LEARNING PATH"
+        eyebrow="CURRICULUM"
         title={module?.title ?? "学習カリキュラム"}
         description={
           module?.subtitle ??
-          "5つの分野、30の概念。小さな実装から、読めるコードを増やしていく。"
+          "PythonやSQLで、データサイエンスに使うコードを1問ずつ練習できます。"
         }
       >
-        <Badge color="green">{problemCount(concepts)}問のDrill</Badge>
+        <Badge color="green">{problemCount(listed)}問のDrill</Badge>
       </PageTitle>
       <div className="curriculum-toolbar">
         <div className="filter-tabs">
@@ -78,8 +77,8 @@ export function Curriculum() {
                 <p>{m.subtitle}</p>
               </div>
               <span className="muted">
-                {concepts.filter((c) => c.module_id === m.id).length}概念 ·
-                3ステージ
+                {concepts.filter((c) => c.module_id === m.id).length}概念
+                {m.id === "sql" && " · ブラウザ採点（暫定）"}
               </span>
             </div>
             <div className="concept-grid">
@@ -102,18 +101,18 @@ export function Curriculum() {
                       <div className="concept-card-top">
                         <span className="mono muted">{c.id}</span>
                         <Badge color={p ? "green" : "gray"}>
-                          {p ? `習熟度 ${p.mastery_level}/5` : "未測定"}
+                          {c.mastery_available === false
+                            ? `練習 ${practiceCount([c], d)}/${c.problem_count}問正解`
+                            : p
+                              ? `習熟度 ${p.mastery_level}/5`
+                              : "未測定"}
                         </Badge>
                       </div>
                       <h3>{c.title}</h3>
                       <p>{c.description}</p>
                       <pre className="code-preview">{c.example}</pre>
                       <div className="concept-card-bottom">
-                        <span>
-                          {c.problem_count
-                            ? `${c.problem_count}問`
-                            : "6問 · 約12分"}
-                        </span>
+                        <span>{c.problem_count}問</span>
                         <span>
                           演習を始める
                           <ChevronRight size={14} />
@@ -153,12 +152,9 @@ export function ConceptStart() {
         navigate(sessionPath(current), { replace: true });
         return;
       }
-      const concepts = await queryClient.ensureQueryData(queries.concepts);
-      const concept = concepts.find((c) => c.id === conceptId);
       const session = await newSession({
         kind: "concept",
         concept_id: conceptId,
-        count: concept?.problem_count ?? 6,
       });
       await refreshLearning();
       navigate(sessionPath(session), { replace: true });

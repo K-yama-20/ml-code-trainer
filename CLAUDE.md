@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-ML Code Trainer is a learning app for writing, running and reading ML-flavoured Python. The frontend is React 19 + TypeScript + Vite, with Monaco as the editor and Pyodide running Python in the browser. The backend is FastAPI with SQLAlchemy: SQLite in development and PostgreSQL/Supabase in production. The curriculum is authored as Python and JSON under `content/` and compiled into versioned JSON catalogs. The README, the docs and the lesson text are written in Japanese.
+ML Code Trainer is a browser-based coding practice app for data science. The frontend is React 19 + TypeScript + Vite with Monaco, Pyodide for Python, and a separate SQLite Wasm Worker for SQL. The backend is FastAPI with SQLAlchemy: SQLite in development and PostgreSQL/Supabase in production. The curriculum is authored as Python and JSON under `content/` and compiled into versioned JSON catalogs. The README, the docs and the lesson text are written in Japanese.
 
 Toolchain: Node 24, Python 3.12+ (CI uses 3.13), and `uv`. Run every command from the repo root. The primary dev shell is Windows PowerShell.
 
@@ -52,15 +52,11 @@ CI (`.github/workflows/ci.yml`) runs everything above except `test:browser-conte
 ## Architecture
 
 ### Content pipeline (most edits land here)
-- **Authoring.** `content/catalog.py` is the base catalog. All 30 concepts are ordered 18-problem drills, each a pair of files:
+- **Authoring.** `content/catalog.py` is the base catalog for the 30 existing Python-family concepts. They each have 18 authored problems:
   - `content/<topic>.json` holds the final wording, display examples, hints and reference solutions.
   - `content/<topic>.py` holds the fixtures, alternate inputs and grading rules. It exports `CONCEPT_ID`, `LESSONS` and `compile_<topic>(concept, seed)`.
   - NP09, PD01–PD04, SK01–SK04 and PT01–PT10 use the shared compiler `content/ordered.py`: their `.py` defines `ALTERNATIVES`, independent `ORACLES` (expected values never come from the reference solution), `RULES` (AST requirement, dtype, `comparison`, `strict_division`/`strict_overflow`, input protection) and `WRONG` (representative mistakes that validation requires to fail).
-- **Registration.** A new concept must be registered in `ORDERED_LESSONS` in `scripts/compile_content.py` (shared-compiler concepts go in `AUTHORED_MODULES`, which the validator also reads for `WRONG`). Problem totals are hard-coded in several places and must be bumped together:
-  - the format-distribution `Counter` in `validate_content.py`
-  - `apps/api/tests/test_concrete.py` and `test_continuation.py`
-  - `tests/e2e/trainer.spec.ts` (the "Drill N" link)
-  - the README and `docs/CONTENT_GUIDE.md`
+- **Registration.** Python concepts register in `ORDERED_LESSONS` in `scripts/compile_content.py` (shared-compiler concepts go in `AUTHORED_MODULES`, which the validator also reads for `WRONG`). SQL01–07 are authored in `content/sql_basics.py`. The compiler and UI use the actual problem counts. Keep regression expectations and documented totals accurate when adding lessons.
 - **Compiling.** `scripts/compile_content.py` writes these files to `content/compiled/`:
   - `private.json` (seed 42, includes solutions and hidden tests)
   - `variant-99.json` (seed 99)
@@ -74,7 +70,7 @@ CI (`.github/workflows/ci.yml`) runs everything above except `test:browser-conte
 
 ### Grading and execution
 - **Shared runner.** `content/runner.py` runs a problem's test cases and checks the code's syntax tree (AST) for required calls and options. It is shared by native validation and the trusted grading path.
-- **Browser runs.** The browser runs only public tests, inside an opaque-origin sandbox iframe with a Pyodide Worker (`apps/web/src/features/python*.{ts,js}`). These results are saved as `browser_provisional` and never count as mastery. Credentials must never reach the iframe or Worker.
+- **Browser runs.** Pyodide uses an opaque-origin sandbox iframe and Worker (`apps/web/src/features/python*.{ts,js}`). SQL uses a dedicated SQLite Worker with read-only in-memory fixtures (`apps/web/src/features/sql*.ts`). Both run public cases and save submissions as `browser_provisional`. SQL has practice progress and review scheduling. Credentials must never reach the iframe or Worker.
 - **Official grading.** The API creates a job, and a separate worker process (`apps/api/app/worker.py`) sends only inputs and code to a Modal sandbox. Expected values and comparison stay on the trusted side (`grading.py`, `execution.py`). With `EXECUTION_PROVIDER=disabled` (the local default), sandbox-only problems such as PyTorch show an explicit "unavailable" error instead of falling back. Never add a local-exec fallback: `check_security.py` forbids `exec` in the API.
 
 ### Backend (`apps/api/app/`)

@@ -118,6 +118,39 @@ class PublicTestView(BaseModel):
     comparison: Literal["exact", "json", "json_unicode", "relative"] = "exact"
 
 
+SqlRows = list[list[str | int | float | None]]
+
+
+class SqlColumnView(BaseModel):
+    name: str
+    type: Literal["INTEGER", "TEXT", "REAL"]
+    description: str
+
+
+class SqlTableView(BaseModel):
+    name: str
+    description: str
+    columns: list[SqlColumnView]
+
+
+class SqlResultView(BaseModel):
+    columns: list[str]
+    rows: SqlRows
+
+
+class SqlCaseView(BaseModel):
+    rows: list[SqlRows]
+    expected: SqlResultView
+
+
+class SqlProblemView(BaseModel):
+    tables: list[SqlTableView]
+    cases: list[SqlCaseView]
+    ordered: bool
+    column_names: bool
+    approximate: bool
+
+
 class ProblemView(BaseModel):
     id: str
     family_id: str
@@ -152,6 +185,7 @@ class ProblemView(BaseModel):
     presentation: dict | None = None
     workspace: dict | None = None
     execution: dict | None = None
+    sql: SqlProblemView | None = None
 
 
 class SessionItemView(BaseModel):

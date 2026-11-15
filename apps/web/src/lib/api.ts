@@ -101,7 +101,16 @@ export const queries = {
   },
 };
 export function problemCount(concepts: Concept[]) {
-  return concepts.reduce((sum, c) => sum + (c.problem_count ?? 6), 0);
+  return concepts.reduce((sum, c) => sum + c.problem_count, 0);
+}
+export function practiceCount(
+  concepts: Concept[],
+  dashboard: Dashboard | undefined,
+) {
+  return concepts.reduce(
+    (sum, c) => sum + (dashboard?.practice_completed?.[c.id] ?? 0),
+    0,
+  );
 }
 export async function newSession(
   options: {

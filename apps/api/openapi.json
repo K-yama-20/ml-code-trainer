@@ -1853,6 +1853,16 @@
               }
             ],
             "title": "Execution"
+          },
+          "sql": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SqlProblemView"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -2220,6 +2230,178 @@
           "timezone"
         ],
         "title": "SettingsView"
+      },
+      "SqlCaseView": {
+        "properties": {
+          "rows": {
+            "items": {
+              "items": {
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "expected": {
+            "$ref": "#/components/schemas/SqlResultView"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rows",
+          "expected"
+        ],
+        "title": "SqlCaseView"
+      },
+      "SqlColumnView": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INTEGER",
+              "TEXT",
+              "REAL"
+            ],
+            "title": "Type"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "description"
+        ],
+        "title": "SqlColumnView"
+      },
+      "SqlProblemView": {
+        "properties": {
+          "tables": {
+            "items": {
+              "$ref": "#/components/schemas/SqlTableView"
+            },
+            "type": "array",
+            "title": "Tables"
+          },
+          "cases": {
+            "items": {
+              "$ref": "#/components/schemas/SqlCaseView"
+            },
+            "type": "array",
+            "title": "Cases"
+          },
+          "ordered": {
+            "type": "boolean",
+            "title": "Ordered"
+          },
+          "column_names": {
+            "type": "boolean",
+            "title": "Column Names"
+          },
+          "approximate": {
+            "type": "boolean",
+            "title": "Approximate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tables",
+          "cases",
+          "ordered",
+          "column_names",
+          "approximate"
+        ],
+        "title": "SqlProblemView"
+      },
+      "SqlResultView": {
+        "properties": {
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns"
+          },
+          "rows": {
+            "items": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Rows"
+          }
+        },
+        "type": "object",
+        "required": [
+          "columns",
+          "rows"
+        ],
+        "title": "SqlResultView"
+      },
+      "SqlTableView": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/SqlColumnView"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "columns"
+        ],
+        "title": "SqlTableView"
       },
       "SubmissionRequest": {
         "properties": {

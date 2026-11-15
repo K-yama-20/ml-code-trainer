@@ -7,12 +7,13 @@
 | `npm run typecheck` | strict TypeScript |
 | `npm run lint` | ESLint / React Hooks |
 | `npm run test` | Vitest + React Testing Library。数値比較・dtype・shape・下書き復元・競合・UI |
-| `npm run build` | Vite本番ビルド。MonacoはPythonに絞って遅延ロード |
+| `npm run build` | Vite本番ビルド。MonacoとSQL用のSQLite Wasmを遅延ロード |
 | `uv run --project apps/api ruff check --config apps/api/pyproject.toml apps/api content scripts` | Python lint |
 | `uv run --project apps/api python -m pytest apps/api/tests -q` | FastAPI・SQLite・署名・採点・進行・全活動・読解実行 |
-| `uv run --project apps/api python scripts/validate_content.py` | 180問、30概念、形式配分、seed再現性、模範解答、誤答、バグ検出 |
+| `uv run --project apps/api python scripts/validate_content.py` | 全Drillの件数、seed再現性、模範解答、誤答、SQLの別解 |
 | `npm run test:e2e` | 実際のChromiumで編集・実行・提出・エラー・保存・復元・再開・mobile・theme |
-| `npm run test:browser-content` | 120問の模範解答を本番と同じPyodide実行経路で検証 |
+| `npx playwright test sql.spec.ts` | SQL全29問・両seed、読み取り制限、タイムアウト、中止、PCと390pxでの表表示・保存・次問 |
+| `npm run test:browser-content` | ブラウザ実行対応のPython系教材をPyodideで検証 |
 | `uv run --project apps/api python scripts/check_security.py` | 公開教材に秘密がないこと、API内exec禁止、Sandbox設定 |
 | `npm audit` | npm依存監査 |
 

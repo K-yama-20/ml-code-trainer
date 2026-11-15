@@ -1062,7 +1062,7 @@ code em,
 }
 .module-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 13px;
   margin-bottom: 26px;
 }

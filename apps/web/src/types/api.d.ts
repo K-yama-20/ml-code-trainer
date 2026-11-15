@@ -865,6 +865,7 @@ export interface components {
       execution?: {
         [key: string]: unknown;
       } | null;
+      sql?: components["schemas"]["SqlProblemView"] | null;
     };
     /** PublicTestView */
     PublicTestView: {
@@ -989,6 +990,53 @@ export interface components {
       daily_goal: number;
       /** Timezone */
       timezone: string;
+    };
+    /** SqlCaseView */
+    SqlCaseView: {
+      /** Rows */
+      rows: (string | number | null)[][][];
+      expected: components["schemas"]["SqlResultView"];
+    };
+    /** SqlColumnView */
+    SqlColumnView: {
+      /** Name */
+      name: string;
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: "INTEGER" | "TEXT" | "REAL";
+      /** Description */
+      description: string;
+    };
+    /** SqlProblemView */
+    SqlProblemView: {
+      /** Tables */
+      tables: components["schemas"]["SqlTableView"][];
+      /** Cases */
+      cases: components["schemas"]["SqlCaseView"][];
+      /** Ordered */
+      ordered: boolean;
+      /** Column Names */
+      column_names: boolean;
+      /** Approximate */
+      approximate: boolean;
+    };
+    /** SqlResultView */
+    SqlResultView: {
+      /** Columns */
+      columns: string[];
+      /** Rows */
+      rows: (string | number | null)[][];
+    };
+    /** SqlTableView */
+    SqlTableView: {
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+      /** Columns */
+      columns: components["schemas"]["SqlColumnView"][];
     };
     /** SubmissionRequest */
     SubmissionRequest: {

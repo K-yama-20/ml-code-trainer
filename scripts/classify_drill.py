@@ -1,4 +1,4 @@
-"""Export all 180 interface decisions without exposing fixtures or answers."""
+"""Export Python interface decisions without exposing fixtures or answers."""
 import collections
 import json
 from pathlib import Path
@@ -11,6 +11,8 @@ def main():
     data = json.loads((ROOT / "content/compiled/private.json").read_text(encoding="utf-8"))
     rows = []
     for p in data["problems"]:
+        if "sql" in p:
+            continue
         workspace = p["workspace"]
         mode = workspace["mode"]
         technical = bool(re.search(r"NCHW|BCE|stride|one.hot|state_dict|map_location|stratify|勾配|リーク", workspace["task"]))
