@@ -2110,6 +2110,17 @@
             "type": "integer",
             "title": "Goal Count",
             "default": 20
+          },
+          "concept_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Concept Id"
           }
         },
         "type": "object",
@@ -2139,22 +2150,6 @@
               }
             ],
             "title": "Display Name"
-          },
-          "theme": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "dark",
-                  "light",
-                  "system"
-                ]
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Theme"
           },
           "font_size": {
             "anyOf": [
@@ -2204,15 +2199,6 @@
             "type": "string",
             "title": "Display Name"
           },
-          "theme": {
-            "type": "string",
-            "enum": [
-              "dark",
-              "light",
-              "system"
-            ],
-            "title": "Theme"
-          },
           "font_size": {
             "type": "integer",
             "title": "Font Size"
@@ -2229,7 +2215,6 @@
         "type": "object",
         "required": [
           "display_name",
-          "theme",
           "font_size",
           "daily_goal",
           "timezone"

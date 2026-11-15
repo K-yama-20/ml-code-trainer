@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { newSession, problemCount, queries, sessionPath } from "../lib/api";
 import { Badge, Button, ErrorBox, PageTitle } from "../components/ui";
-import type { Stage } from "../types/domain";
 export function DrillStart() {
   const { data: d } = useQuery(queries.dashboard),
     { data: modules = [] } = useQuery(queries.modules),
@@ -20,7 +19,6 @@ export function DrillStart() {
     navigate = useNavigate();
   const [count, setCount] = useState(20),
     [selected, setSelected] = useState<string[]>([]),
-    [stages, setStages] = useState<Stage[]>([]),
     [busy, setBusy] = useState(false),
     [error, setError] = useState<unknown>(null);
   async function start(kind: string) {
@@ -29,7 +27,7 @@ export function DrillStart() {
     try {
       navigate(
         sessionPath(
-          await newSession({ kind, count, modules: selected, stages }),
+          await newSession({ kind, count, modules: selected }),
         ),
       );
     } catch (e) {
@@ -126,22 +124,6 @@ export function DrillStart() {
             <p className="muted">選択しない場合は全分野から出題します。</p>
           </div>
           <div>
-            <h3>ステージ</h3>
-            <div className="toggle-group">
-              {(["guided", "partial", "independent"] as Stage[]).map((s) => (
-                <button
-                  className={stages.includes(s) ? "selected" : ""}
-                  key={s}
-                  onClick={() =>
-                    setStages((v) =>
-                      v.includes(s) ? v.filter((id) => id !== s) : [...v, s],
-                    )
-                  }
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
             <h3>問題数</h3>
             <div className="toggle-group">
               {[10, 20, 30, 50].map((n) => (

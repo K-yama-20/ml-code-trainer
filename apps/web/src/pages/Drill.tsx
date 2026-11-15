@@ -488,7 +488,6 @@ function DrillWorkspace({ data }: { data: Loaded }) {
       restored={backup !== null}
       sandboxAvailable={dashboard?.sandbox_available ?? false}
       fontSize={dashboard?.settings.font_size}
-      theme={dashboard?.settings.theme}
       actions={{
         check: () => void execute(true),
         run: () => void execute(),

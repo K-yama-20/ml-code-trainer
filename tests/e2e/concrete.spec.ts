@@ -155,7 +155,7 @@ for (const p of all.filter(
     });
   });
 
-test("light theme, mobile and short desktop keep concrete inputs and answer action usable", async ({
+test("mobile and short desktop keep concrete inputs and answer action usable", async ({
   page,
 }) => {
   await page.goto("/home");
@@ -197,14 +197,4 @@ test("light theme, mobile and short desktop keep concrete inputs and answer acti
       fullPage: true,
     });
   }
-  await page.goto("/settings");
-  await page.getByLabel("テーマ", { exact: true }).selectOption("light");
-  await page.getByRole("button", { name: "変更を保存", exact: true }).click();
-  await expect(page.getByRole("status")).toContainText("設定を保存");
-  await page.goto(`/drill/s/${s.id}/${item.id}`);
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  await page.screenshot({
-    path: "docs/ux-concrete/after-light.png",
-    fullPage: true,
-  });
 });

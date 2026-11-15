@@ -203,10 +203,9 @@ test("mobile pages fit viewport and navigation remains usable", async ({
   ).toBeVisible();
 });
 
-test("settings persist and the light theme works", async ({ page }) => {
+test("settings persist", async ({ page }) => {
   await page.goto("/settings");
   await page.getByLabel("表示名", { exact: true }).fill("E2E Learner");
-  await page.getByLabel("テーマ", { exact: true }).selectOption("light");
   await page.getByLabel("1日の目標問題数", { exact: true }).fill("30");
   await page.getByRole("button", { name: "変更を保存", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("設定を保存");
@@ -214,5 +213,5 @@ test("settings persist and the light theme works", async ({ page }) => {
   await expect(page.getByLabel("表示名", { exact: true })).toHaveValue(
     "E2E Learner",
   );
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(page.getByLabel("テーマ", { exact: true })).toHaveCount(0);
 });

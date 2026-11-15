@@ -27,10 +27,6 @@ html:has(.workspace-drawer[open][data-keep-scrollbar-gutter]) {
   background: rgb(0 0 0 / 48%);
 }
 
-:root[data-theme="light"] .workspace-drawer::backdrop {
-  background: rgb(0 0 0 / 33%);
-}
-
 .workspace-drawer-panel {
   position: relative;
   width: min(320px, calc(100% - 36px));

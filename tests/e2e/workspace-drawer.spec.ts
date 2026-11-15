@@ -81,8 +81,6 @@ test("the Workspace drawer isolates Drill and saves a draft before navigation", 
   await expect(drawer).not.toBeVisible();
   await expect(trigger).toBeFocused();
 
-  await page.getByRole("button", { name: "テーマを切り替える" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.setViewportSize({ width: 360, height: 520 });
   const mobileBounds = await bounds();
   const beforeScroll = await page.evaluate(() => window.scrollY);
@@ -92,7 +90,7 @@ test("the Workspace drawer isolates Drill and saves a draft before navigation", 
     await drawer.evaluate(
       (element) => getComputedStyle(element, "::backdrop").backgroundColor,
     ),
-  ).toBe("rgba(0, 0, 0, 0.33)");
+  ).toBe("rgba(0, 0, 0, 0.48)");
   await page.mouse.move(355, 350);
   await page.mouse.wheel(0, 400);
   await page.evaluate(

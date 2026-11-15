@@ -10,16 +10,14 @@ import {
   History,
   House,
   Menu,
-  Moon,
   Settings2,
   Sparkles,
-  Sun,
   Target,
   X,
 } from "lucide-react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { problemCount, queries, refreshLearning, userApi } from "../lib/api";
+import { problemCount, queries } from "../lib/api";
 import { useUI } from "../lib/store";
 import { ProgressBar } from "../components/ui";
 import { WorkspaceDrawer } from "./WorkspaceDrawer";
@@ -39,37 +37,9 @@ export function Layout() {
   const { focus } = useUI();
   const saveDrillDraft = useRef<(() => Promise<void>) | null>(null);
   const drill = pathname.startsWith("/drill/s/");
-  const [theme, setTheme] = useState("dark");
-  const [themeError, setThemeError] = useState("");
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
-  useEffect(() => {
-    const selected = data?.settings.theme ?? "dark";
-    const effective =
-      selected === "system"
-        ? matchMedia("(prefers-color-scheme: light)").matches
-          ? "light"
-          : "dark"
-        : selected;
-    setTheme(effective);
-    document.documentElement.dataset.theme = effective;
-  }, [data?.settings.theme]);
-  async function toggleTheme() {
-    setThemeError("");
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.dataset.theme = next;
-    try {
-      await userApi("/settings", {
-        method: "PATCH",
-        body: JSON.stringify({ theme: next }),
-      });
-      await refreshLearning();
-    } catch {
-      setThemeError("テーマの保存に失敗しました。");
-    }
-  }
   const sidebar = (
     <aside className={`sidebar ${!drill && open ? "open" : ""}`}>
       <NavLink to="/home" className="brand">
@@ -171,28 +141,18 @@ export function Layout() {
               {links.find((l) => pathname.startsWith(l.to))?.label ??
                 (pathname.startsWith("/deep-dive")
                   ? "Deep Dive"
-                  : "概念を学ぶ")}
+                  : pathname.startsWith("/settings")
+                    ? "設定"
+                    : "")}
             </strong>
           </div>
           <div className="topbar-actions">
-            {themeError && (
-              <span role="status" className="small-copy">
-                {themeError}
-              </span>
-            )}
             <span className="streak-small">
               <Flame size={16} />
               {data?.streak ?? 0}
               <span>日連続</span>
             </span>
             <span className="top-divider" />
-            <button
-              className="icon-btn"
-              onClick={toggleTheme}
-              aria-label="テーマを切り替える"
-            >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
             <NavLink to="/settings" className="small-avatar">
               {(data?.user.display_name ?? "L").slice(0, 1).toUpperCase()}
             </NavLink>

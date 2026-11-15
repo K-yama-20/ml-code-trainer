@@ -183,11 +183,6 @@ export function Modal({
     </div>
   );
 }
-export const stageLabels = {
-  guided: "Guided",
-  partial: "Partial",
-  independent: "Independent",
-};
 export const typeLabels: Record<string, string> = {
   completion: "穴埋め・部分記述",
   prediction: "出力・shape予測",

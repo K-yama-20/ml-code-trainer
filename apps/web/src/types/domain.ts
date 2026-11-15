@@ -91,6 +91,7 @@ export interface Item {
 export interface StudySession {
   id: string;
   kind: string;
+  concept_id?: string | null;
   status: string;
   position: number;
   items: Item[];
@@ -113,7 +114,6 @@ export interface Review {
 }
 export interface UserSettings {
   display_name: string;
-  theme: "dark" | "light" | "system";
   font_size: number;
   daily_goal: number;
   timezone: string;

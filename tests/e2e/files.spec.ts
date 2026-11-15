@@ -11,7 +11,6 @@ test("PY03 displays and submits path, JSON, read and append exercises", async ({
   page,
 }) => {
   await page.goto("/concepts/PY03");
-  await page.getByRole("button", { name: "演習を開始", exact: true }).click();
   await expect(page.locator(".problem-content h1")).toHaveText(
     lessons[0].title,
   );

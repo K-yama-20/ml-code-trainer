@@ -88,7 +88,6 @@ export function AnswerWorkspace({
   code,
   onChange,
   fontSize,
-  theme,
   errorLine,
   autoFocus,
   onFocusReady,
@@ -98,7 +97,6 @@ export function AnswerWorkspace({
   code: string;
   onChange: (s: string) => void;
   fontSize: number;
-  theme?: string;
   errorLine?: number;
   autoFocus?: boolean;
   onFocusReady?: (focus: (() => void) | null) => void;
@@ -113,7 +111,6 @@ export function AnswerWorkspace({
       value={prefix + value + suffix}
       uncontrolled
       fontSize={fontSize}
-      theme={theme}
       errorLine={errorLine ? errorLine + fixedLines : undefined}
       onChange={(text) =>
         onChange(encode(text.slice(prefix.length, text.length - suffix.length)))

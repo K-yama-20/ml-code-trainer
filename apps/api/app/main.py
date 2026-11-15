@@ -246,6 +246,7 @@ def session_view(db, session):
     return serialize(session) | {
         "items": [serialize(i) for i in items],
         "goal_count": flow.policy.get("count", 20) if flow else 20,
+        "concept_id": flow.policy.get("concept_id") if flow else None,
     }
 
 
@@ -640,7 +641,8 @@ def get_settings(user: Profile = Depends(current_user), db: Session = Depends(db
 def patch_settings(body: s.SettingsPatch, user: Profile = Depends(current_user), db: Session = Depends(db_session)):
     row = db.get(UserSettings, user.id)
     changes = body.model_dump(exclude_none=True)
-    row.data = DEFAULT_SETTINGS | row.data | changes
+    # Keep only current settings keys, dropping retired ones such as "theme".
+    row.data = {k: v for k, v in (DEFAULT_SETTINGS | row.data | changes).items() if k in DEFAULT_SETTINGS}
     if "display_name" in changes:
         user.display_name = changes["display_name"]
     db.commit()
