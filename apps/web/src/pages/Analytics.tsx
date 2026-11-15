@@ -7,7 +7,7 @@ import {
   Flame,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { queries, userApi } from "../lib/api";
+import { practiceCount, problemCount, queries, userApi } from "../lib/api";
 import {
   Badge,
   Empty,
@@ -27,7 +27,12 @@ export function Analytics() {
   if (isPending) return <Loading />;
   if (error || !d) return <ErrorBox error={error} />;
   const weak = d.concepts
-    .filter((p) => p.mastery_level < 3)
+    .filter(
+      (p) =>
+        p.mastery_level < 3 &&
+        concepts.find((c) => c.id === p.concept_id)?.mastery_available !==
+          false,
+    )
     .sort((a, b) => a.mastery_score - b.mastery_score)
     .slice(0, 4);
   return (
@@ -55,7 +60,9 @@ export function Analytics() {
           {
             label: "習得済み概念",
             value: d.mastered,
-            unit: "/30",
+            unit: concepts.length
+              ? `/${concepts.filter((c) => c.mastery_available !== false).length}`
+              : "",
             icon: CheckCircle2,
           },
         ].map(({ icon: Icon, ...x }) => (
@@ -73,12 +80,31 @@ export function Analytics() {
       </div>
       <div className="analytics-grid">
         <section className="panel info-panel">
-          <SectionTitle title="ライブラリ別の習熟度" />
+          <SectionTitle title="ライブラリ別の進捗" />
           {modules.map((m) => {
-            const cs = concepts.filter((c) => c.module_id === m.id),
+            const all = concepts.filter((c) => c.module_id === m.id),
+              cs = all.filter((c) => c.mastery_available !== false),
               ps = d.concepts.filter((p) =>
                 cs.some((c) => c.id === p.concept_id),
               );
+            if (all.length && !cs.length) {
+              const total = problemCount(all);
+              const practiced = practiceCount(all, d);
+              return (
+                <div className="mastery-row" key={m.id}>
+                  <div>
+                    <strong>{m.title}</strong>
+                    <span>
+                      {practiced}/{total}問正解（暫定）
+                    </span>
+                  </div>
+                  <ProgressBar
+                    value={(practiced / total) * 100}
+                    color={m.color}
+                  />
+                </div>
+              );
+            }
             return (
               <div className="mastery-row" key={m.id}>
                 <div>
@@ -91,7 +117,8 @@ export function Analytics() {
                 </div>
                 <ProgressBar
                   value={
-                    (ps.reduce((s, p) => s + p.mastery_score, 0) / cs.length) *
+                    (ps.reduce((s, p) => s + p.mastery_score, 0) /
+                      Math.max(1, cs.length)) *
                     100
                   }
                   color={m.color}
@@ -210,7 +237,13 @@ export function Analytics() {
               className={`matrix-cell ${p ? "measured" : ""}`}
             >
               <span>{c.id}</span>
-              <strong>{p ? p.mastery_level : "—"}</strong>
+              <strong>
+                {c.mastery_available === false
+                  ? `${practiceCount([c], d)}/${c.problem_count}問`
+                  : p
+                    ? p.mastery_level
+                    : "—"}
+              </strong>
               <small>{c.title}</small>
             </Link>
           );

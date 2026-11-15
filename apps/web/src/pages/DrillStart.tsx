@@ -41,7 +41,7 @@ export function DrillStart() {
       <PageTitle
         eyebrow="WRITE. RUN. UNDERSTAND."
         title="手を動かす、理解が深まる。"
-        description="1問ずつの小さな実装を、コードを読む力に変えていきましょう。"
+        description="PythonやSQLのコードを1問ずつ書いて、動かしてみましょう。"
       />
       {error && <ErrorBox error={error} />}{" "}
       {d?.current_session && (

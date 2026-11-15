@@ -1,6 +1,7 @@
 import Editor, { loader, type OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor/editor/editor.api.js";
 import "monaco-editor/languages/definitions/python/register.js";
+import "monaco-editor/languages/definitions/sql/register.js";
 import EditorWorker from "monaco-editor/editor/editor.worker.js?worker";
 import { useEffect, useRef } from "react";
 import { Loading } from "./ui";
@@ -35,6 +36,7 @@ export function CodeEditor({
   jump,
   onMount,
   uncontrolled = false,
+  language = "python",
 }: {
   value: string;
   onChange?: (v: string) => void;
@@ -44,6 +46,7 @@ export function CodeEditor({
   jump?: number;
   onMount?: OnMount;
   uncontrolled?: boolean;
+  language?: "python" | "sql";
 }) {
   const ref = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   useEffect(() => {
@@ -77,7 +80,7 @@ export function CodeEditor({
   return (
     <Editor
       height="100%"
-      language="python"
+      language={language}
       value={uncontrolled ? undefined : value}
       defaultValue={value}
       theme="trainer-dark"

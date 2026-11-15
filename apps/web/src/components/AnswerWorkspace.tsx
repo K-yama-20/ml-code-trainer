@@ -5,6 +5,20 @@ import type { Problem } from "../types/domain";
 export function answerLayout(p: Problem, code: string) {
   const starter = p.starter_code.replaceAll("\r\n", "\n");
   code = code.replaceAll("\r\n", "\n");
+  if (p.sql) {
+    return {
+      prefix: "",
+      suffix: "",
+      value: code,
+      legacyEmpty: false,
+      fixedLines: 0,
+      cursorOffset:
+        code === starter && starter.includes("\n")
+          ? starter.indexOf("\n")
+          : code.length,
+      encode: (value: string) => value,
+    };
+  }
   const supplied = p.workspace?.provided_code
     ? p.workspace.provided_code.replaceAll("\r\n", "\n") +
       (p.workspace.mode === "function" && starter ? "\n\n" : "\n")
@@ -72,6 +86,7 @@ export function answerLayout(p: Problem, code: string) {
 }
 
 export function needsAnswer(p: Problem, code: string) {
+  if (p.sql) return !code.trim() || code === p.starter_code;
   const layout = answerLayout(p, code);
   const value = layout.value.trim();
   return (
@@ -109,6 +124,7 @@ export function AnswerWorkspace({
   return (
     <CodeEditor
       value={prefix + value + suffix}
+      language={p.sql ? "sql" : "python"}
       uncontrolled
       fontSize={fontSize}
       errorLine={errorLine ? errorLine + fixedLines : undefined}

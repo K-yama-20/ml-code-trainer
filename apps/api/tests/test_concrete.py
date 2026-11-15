@@ -18,8 +18,9 @@ def evaluate(p, code=None):
 def test_all_versioned_workspaces_and_reference_solutions():
     assert len(PILOT) == 15
     for seed, data in VARIANTS.items():
-        assert len(data["problems"]) == 540
-        for p in data["problems"]:
+        python = [p for p in data["problems"] if "sql" not in p]
+        assert len(python) == 540
+        for p in python:
             assert p["workspace"]["provided_code"] or (
                 p["editable_regions"] and p["starter_code"] and p["workspace"]["invocation"]
             )
@@ -47,6 +48,8 @@ def test_all_versioned_workspaces_and_reference_solutions():
 
 def test_displayed_program_matches_the_actual_public_input():
     for p in DATA["problems"]:
+        if "sql" in p:
+            continue
         env = {}
         exec(p["workspace"]["provided_code"], env)
         mode = p["workspace"]["mode"]

@@ -1,15 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { Fragment } from "react";
 import { problemCount, queries } from "../lib/api";
-import {
-  ArrowRight,
-  Check,
-  Code2,
-  Play,
-  Terminal,
-} from "lucide-react";
+import { ArrowRight, Check, Code2, Play, Terminal } from "lucide-react";
 import { Link } from "react-router-dom";
 export function Landing() {
   const { data: concepts } = useQuery(queries.concepts);
+  const { data: modules = [] } = useQuery(queries.modules);
   return (
     <div className="landing">
       <header>
@@ -34,7 +30,7 @@ export function Landing() {
           <div className="landing-hero-copy">
             <span className="eyebrow">
               <span className="status-dot" />
-              LEARN TO READ MACHINE LEARNING CODE
+              DATA SCIENCE CODING PRACTICE
             </span>
             <h1>
               書いた分だけ、
@@ -42,11 +38,8 @@ export function Landing() {
               <span>コードが読める。</span>
             </h1>
             <p>
-              機械学習のコードを、読む力に変える。
-              <br />
-              短いPython演習を積み重ねて、AIが書いたコードの
-              <br className="desktop-break" />
-              「何をしているか」まで理解しよう。
+              データサイエンスのためのコーディングを、ブラウザで練習。
+              PythonやSQLで、データの抽出・集計から機械学習の実装まで、1問ずつ手を動かそう。
             </p>
             <div className="landing-actions">
               <Link className="btn primary" to="/home">
@@ -60,8 +53,12 @@ export function Landing() {
               </span>
             </div>
             <div className="landing-libraries">
-              Python<span>/</span>NumPy<span>/</span>Pandas<span>/</span>
-              scikit-learn<span>/</span>PyTorch
+              {modules.map((m, i) => (
+                <Fragment key={m.id}>
+                  {i > 0 && <span aria-hidden="true">/</span>}
+                  {m.title}
+                </Fragment>
+              ))}
             </div>
           </div>
           <div className="landing-terminal">

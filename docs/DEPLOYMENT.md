@@ -42,4 +42,6 @@ uv run --project apps/api python -m apps.api.app.worker
 
 Webサーバーは`apps/web/dist`だけを配信します。リポジトリルートを静的公開するとprivate教材や設定が露出するため禁止です。教材用ディレクトリはAPI/Workerの配布物にのみ含めます。
 
+SQL演習では `dist/assets` のSQLite WasmとWorkerを遅延読み込みします。`.wasm` は `application/wasm` で配信してください。CSPを設定する場合は、同一オリジンのWorkerとWebAssemblyの実行を許可してください。
+
 設定反映後、ゲスト→実行→提出→保存→リロード、Google/メール昇格、別ユーザー参照拒否、独立問題の正式採点、Sandboxキャンセル・timeout・network遮断、スマートフォン表示を確認します。実接続検証が済むまでは開発版として扱ってください。

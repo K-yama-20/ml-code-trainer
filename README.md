@@ -1,8 +1,8 @@
 # ML Code Trainer
 
-**Write. Run. Understand.** 機械学習のコードを、読む力に変える。
+データサイエンスのためのコーディングを、ブラウザで1問ずつ練習できます。
 
-React / TypeScript / Vite と FastAPI で動く学習アプリです。MonacoでPythonを書き、Pyodideの公開テストを実行し、提出・解説・履歴・復習へ進めます。教材は5分野30概念、Drill 540問（全概念18問ずつ）、Deep Dive 12課題、Code Reading 3プロジェクト（各8設問）です。
+Python、NumPy、pandas、scikit-learn、PyTorch、SQLをライブラリ・技術別の一覧から選べます。Drillは37概念・569問です。SQLの29問は、SQLiteで表の抽出、集計、結合を練習します。既存のPython系540問に加え、Deep Dive 12課題、Code Reading 3プロジェクト（各8設問）も収録しています。
 
 ## すぐに起動する
 
@@ -32,11 +32,13 @@ npm run dev
 
 Pyodideの初回起動とパッケージ取得にはインターネット接続が必要です。PyTorchはModal設定が必要で、未設定時は明示的に実行エラーを表示します。Independentのブラウザ結果は**暫定**として保存し、正式習得には数えません。
 
+SQLはブラウザ内でSQLiteを遅延ロードします。「実行のみ」はサンプル表で試し、「答え合わせ」は公開の別データも使って結果を比較します。SQLの提出は暫定の練習結果として履歴・復習に記録します。非公開ケースは教材検証で使い、SQLの正式サーバー採点は未提供です。
+
 ## 実装した学習体験
 
 - 全指定ルート、ダークテーマ、PC・タブレット・スマートフォン用レイアウト。
 - Monacoの編集、Undo/Redo、サイズ調整、行エラー、実行・提出のショートカット、集中モード。
-- opaque originのsandbox iframe内でPyodide Workerを作成。毎回新しいWorker、5秒タイムアウト、中止、出力制限、古いコードの結果を区別。
+- Pythonはopaque originのsandbox iframe内でPyodide Workerを実行。SQLは専用WorkerでSQLite Wasmを実行し、ケースごとに一時DBを作成。どちらも実行時間の上限と中止操作があります。
 - RunとSubmitの分離。公開テスト、正式検証、解答閲覧・ヒントの記録、冪等な提出。
 - Daily / Concept / Review / Custom、異なる2ファミリーによる段階進行、1→3→7→14→30日の復習。
 - 下書きの1秒ローカル保存・5秒API同期、revisionの比較更新、競合時のコード保持。
@@ -61,12 +63,12 @@ npm run test:browser-content
 npm audit
 ```
 
-全件Pyodide検証は120問の公開・非公開ケースを、テスト時だけ模範解答とともに本番のブラウザ実行関数へ渡します。通常のWebアプリへ非公開テストや模範解答を配信する機能ではありません。数分以上かかるため通常E2Eとは分けています。
+全件Pyodide検証はブラウザ対応のPython系教材の公開・非公開ケースを、テスト時だけ模範解答とともにブラウザ実行関数へ渡します。数分以上かかるため通常E2Eとは分けています。通常E2EにはSQL全29問のSQLite Wasm検証が含まれます。通常の問題配信では公開ケースだけを受け取ります。
 
 ## 構成
 
 ```text
-apps/web/src/       UI・Monaco・Pyodide・IndexedDB
+apps/web/src/       UI・Monaco・Pyodide・SQLite Wasm・IndexedDB
 apps/api/app/       API・認証・DB・進捗・比較器・独立Worker
 content/catalog.py 基本の教材原本
 content/iteration.json PY01「内包表記とイテレーション」18問の原本
@@ -80,10 +82,11 @@ content/reductions.json NP05「集約・axis・keepdims」18問の原本
 content/broadcasting.json NP06「Broadcasting」18問の原本
 content/combining.json NP07「配列の結合」18問の原本
 content/conditional.json NP08「条件演算とclip」18問の原本
-content/ordered.py 18問ドリル（NP09・PD01〜PD04・SK01〜SK04・PT01〜PT10）の共通コンパイラ
+content/ordered.py 順序付きPythonドリルの共通コンパイラ
 content/normalization.json NP09「正規化と数値安定性」、selection/missing/groupby/merging.json PD01〜PD04、
   splitting/scaling/estimators/metrics.json SK01〜SK04、tensors/tensor_shapes/tensor_ops/autograd/
   nn_modules/losses/training/data_loading/inference/checkpoints.json PT01〜PT10 の原本（各18問）
+content/sql_basics.py SQL01〜07の問題・サンプル・別入力
 content/compiled/  バージョン固定の公開／非公開教材、seed 42/99
 content/reading/   実行可能な3つのPythonプロジェクト
 scripts/           教材コンパイル・全件検証・DB同期・OpenAPI型生成

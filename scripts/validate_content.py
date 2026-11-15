@@ -3,7 +3,6 @@
 
 import argparse
 import ast
-import collections
 import io
 import re
 import tokenize
@@ -19,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.compile_content import AUTHORED_MODULES, compile_all, public_problem
 from content.concrete import literal
 from content.ordered import GENERATOR as ORDERED_GENERATOR
+from content import sql_basics
 from content.runner import pack, run_payload, wrong_result_type
 from content.activities import DEEP_DIVES, READING_META, READING_QUESTIONS
 from apps.api.app.grading import judge
@@ -182,6 +182,48 @@ def check_wrong_answers(p):
     return len(codes)
 
 
+def validate_sql(p):
+    number, index = p["id"].removeprefix("SQL").split("-")
+    lesson = sql_basics.COURSE[int(number) - 1][3][int(index) - 1]
+    spec = p["sql"]
+    public = spec["cases"]
+    cases = public + p["hidden_tests"]
+
+    def same_value(a, b):
+        return a == b or (
+            spec["approximate"] and isinstance(a, (int, float)) and isinstance(b, (int, float))
+            and math.isclose(a, b, rel_tol=p["tolerance"], abs_tol=p["tolerance"])
+        )
+
+    def matches(actual, expected):
+        rows = actual["rows"]
+        target = expected["rows"]
+        if not spec["ordered"]:
+            rows = sorted(rows, key=json.dumps)
+            target = sorted(target, key=json.dumps)
+        return (
+            len(actual["columns"]) == len(expected["columns"])
+            and (not spec["column_names"] or actual["columns"] == expected["columns"])
+            and len(rows) == len(target)
+            and all(all(same_value(a, b) for a, b in zip(row, expected_row, strict=True))
+                    for row, expected_row in zip(rows, target, strict=True))
+        )
+
+    assert p["title"] and p["description"] and len(p["hints"]) == 1 and p["explanation"], p["id"]
+    assert all(0 < len(rows) <= 6 for case in cases for rows in case["rows"]), p["id"]
+    assert not matches(public[0]["expected"], public[1]["expected"]), (p["id"], "public output did not vary")
+    for code in (p["solution"], lesson.alternative):
+        assert all(
+            matches(sql_basics.evaluate(spec["tables"], case["rows"], code), case["expected"])
+            for case in cases
+        ), (p["id"], p["variant_seed"], code)
+    assert any(
+        not matches(sql_basics.evaluate(spec["tables"], case["rows"], lesson.wrong), case["expected"])
+        for case in public
+    ), (p["id"], p["variant_seed"], lesson.wrong)
+    return len(cases)
+
+
 def validate_concept(concept_id):
     """Quickly test the compiled data for one edited concept."""
     total = cases = 0
@@ -190,13 +232,16 @@ def validate_concept(concept_id):
         assert len({p["id"] for p in data["problems"]}) == len(data["problems"]), name
         concept = next(c for c in data["concepts"] if c["id"] == concept_id)
         problems = [p for p in data["problems"] if p["concept_id"] == concept_id]
-        assert len(problems) == concept.get("problem_count", 6)
+        assert len(problems) == concept["problem_count"]
         for p in problems:
+            total += 1
+            if "sql" in p:
+                cases += validate_sql(p)
+                continue
             check_display(p)
             result = check_reference(p)
             assert result["verdict"] == "Accepted", (p["version_id"], name, result)
             check_wrong_answers(p)
-            total += 1
             cases += result["total_tests"]
     print(f"{concept_id}: {total // 2} questions, two variants, {cases} reference cases passed")
 
@@ -205,27 +250,20 @@ def validate_concept(concept_id):
 def validate():
     started = time.monotonic()
     data = compile_all()
-    assert len(data["concepts"]) == 30
-    problem_count = sum(c.get("problem_count", 6) for c in data["concepts"])
+    module_ids = {m["id"] for m in data["modules"]}
+    concept_ids = {c["id"] for c in data["concepts"]}
+    assert len(module_ids) == len(data["modules"])
+    assert {c["module_id"] for c in data["concepts"]} == module_ids
+    assert len(concept_ids) == len(data["concepts"])
+    assert {p["concept_id"] for p in data["problems"]} == concept_ids
+    problem_count = sum(c["problem_count"] for c in data["concepts"])
     assert len(data["problems"]) == problem_count
     assert len({p["id"] for p in data["problems"]}) == problem_count
-    distribution = collections.Counter(
-        (p["stage"], p["type"]) for p in data["problems"]
-    )
-    assert distribution == collections.Counter(
-        {
-            ("guided", "implementation"): 180,
-            ("partial", "implementation"): 180,
-            ("independent", "implementation"): 180,
-        }
-    ), distribution
     for c in data["concepts"]:
         ps = [p for p in data["problems"] if p["concept_id"] == c["id"]]
-        count_per_stage = c.get("problem_count", 6) // 3
-        assert collections.Counter(p["stage"] for p in ps) == dict.fromkeys(
-            ("guided", "partial", "independent"), count_per_stage
-        )
-        assert len({p["title"] for p in ps}) == c.get("problem_count", 6)
+        assert len(ps) == len({p["title"] for p in ps}) == c["problem_count"] > 0
+        assert {p["module_id"] for p in ps} == {c["module_id"]}
+        assert {p["stage"] for p in ps} <= set(sql_basics.STAGES)
     failures = []
     count = 0
     wrong_answers = 0
@@ -242,6 +280,11 @@ def validate():
         )
     for seed, catalog in zip((42, 99), catalogs, strict=True):
         for p in catalog["problems"]:
+            if "sql" in p:
+                count += validate_sql(p)
+                # The varied public results also reject a copy of the sample.
+                wrong_answers += 1
+                continue
             check_display(p)
             cases = p["public_tests"] + p["hidden_tests"]
             minimum = 1 if p["type"] == "prediction" else (
@@ -292,7 +335,7 @@ def validate():
         print(f"Reading: {meta['id']} / {len(files)} files / {lines} lines")
     report = {
         "problems": problem_count,
-        "concepts": 30,
+        "concepts": len(concept_ids),
         "seeds": 2,
         "reference_cases": count,
         "wrong_answers_rejected": problem_count * 2 + wrong_answers,

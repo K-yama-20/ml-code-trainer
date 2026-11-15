@@ -211,7 +211,7 @@ def test_phase1_archives_are_unchanged_and_references_still_pass():
     from apps.api.app.content import ARCHIVED_VARIANTS, VARIANTS
     from content.drill_phase1 import LESSONS
 
-    assert len(LESSONS) == 15 and len(DATA["problems"]) == 540
+    assert len(LESSONS) == 15 and sum("sql" not in p for p in DATA["problems"]) == 540
     for seed, data in VARIANTS.items():
         for current in data["problems"]:
             if current["content_version"] == 1:

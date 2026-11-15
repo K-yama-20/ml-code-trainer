@@ -108,7 +108,7 @@ def bindings(lesson, module):
 
 def compile_ordered(concept, seed, concept_id, lessons, alternatives, oracles, rules):
     module = concept["module_id"]
-    assert len(lessons) == 18 and [x["number"] for x in lessons] == list(range(1, 19)), concept_id
+    assert lessons and [x["number"] for x in lessons] == list(range(1, len(lessons) + 1)), concept_id
     for lesson in lessons:
         number = lesson["number"]
         pid, version, stage = lesson["id"], lesson["version"], lesson["stage"]

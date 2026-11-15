@@ -20,7 +20,7 @@ async function editorCode(page: Page, code: string) {
 async function exercise(page: Page, concept = "NP05", problem = "NP05-01") {
   await page.goto("/home");
   await expect(
-    page.getByRole("heading", { name: "今日も、コードを読む力を。" }),
+    page.getByRole("heading", { name: "データサイエンスのコーディング演習" }),
   ).toBeVisible();
   if ((page.viewportSize()?.width ?? 0) >= 1024) {
     await mkdir("artifacts", { recursive: true });
@@ -194,7 +194,7 @@ test("mobile pages fit viewport and navigation remains usable", async ({
   await page
     .getByRole("button", { name: "メニューを開く", exact: true })
     .click();
-  await page.getByRole("link", { name: "Drill 540", exact: true }).click();
+  await page.getByRole("link", { name: "Drill 569", exact: true }).click();
   await expect(page).toHaveURL("/drill");
   await exercise(page);
   await page.getByRole("tab", { name: "回答・結果", exact: true }).click();

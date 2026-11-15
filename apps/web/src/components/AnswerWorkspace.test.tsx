@@ -33,7 +33,15 @@ test("all coding starter templates round-trip without mixing fixtures into saved
       expect(decoded.value, p.id).toBe(l.value);
       expect(decoded.prefix, p.id).toBe(l.prefix);
       expect(l.value, p.id).not.toContain("___");
-      expect(l.prefix).toContain(p.workspace.provided_code);
+      if (p.sql) {
+        expect(l.prefix).toBe("");
+        expect(l.suffix).toBe("");
+        const query = "SELECT * FROM sales;";
+        expect(l.encode(query)).toBe(query);
+        expect(needsAnswer(p, query)).toBe(false);
+      } else {
+        expect(l.prefix).toContain(p.workspace.provided_code);
+      }
     }
   }
 });

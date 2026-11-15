@@ -5,6 +5,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig(({ mode }) => ({
   envDir: "../..",
   plugins: [react(), tailwindcss()],
+  // The SQLite loader resolves its Wasm next to the module in development.
+  optimizeDeps: { exclude: ["@sqlite.org/sqlite-wasm"] },
   server: {
     proxy: {
       "/api":

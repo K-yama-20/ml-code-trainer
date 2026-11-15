@@ -13,7 +13,7 @@ test("all browser problem references pass in the production Pyodide runner", asy
   );
   await page.goto("/home");
   await expect(
-    page.getByRole("heading", { name: "今日も、コードを読む力を。" }),
+    page.getByRole("heading", { name: "データサイエンスのコーディング演習" }),
   ).toBeVisible();
   const results = [];
   // Optional scope for content work, e.g. BROWSER_CONTENT_CONCEPTS=NP09,PD01
@@ -21,8 +21,9 @@ test("all browser problem references pass in the production Pyodide runner", asy
     .split(",")
     .filter(Boolean);
   const problems = catalog.problems.filter(
-    (p: { runtime: string; concept_id: string }) =>
+    (p: { runtime: string; concept_id: string; sql?: unknown }) =>
       p.runtime === "browser" &&
+      !p.sql &&
       (!scope.length || scope.includes(p.concept_id)),
   );
   for (const p of problems) {

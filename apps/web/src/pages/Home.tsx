@@ -15,7 +15,13 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { newSession, queries, sessionPath } from "../lib/api";
+import {
+  newSession,
+  practiceCount,
+  problemCount,
+  queries,
+  sessionPath,
+} from "../lib/api";
 import {
   Badge,
   Button,
@@ -27,6 +33,7 @@ import {
 export function Home() {
   const { data: d, error, isPending } = useQuery(queries.dashboard);
   const { data: modules = [] } = useQuery(queries.modules);
+  const { data: concepts = [] } = useQuery(queries.concepts);
   const navigate = useNavigate(),
     [busy, setBusy] = useState(false),
     [actionError, setActionError] = useState<unknown>(null);
@@ -54,8 +61,8 @@ export function Home() {
       <div className="home-greeting">
         <div>
           <span className="eyebrow">YOUR LEARNING WORKSPACE</span>
-          <h1>今日も、コードを読む力を。</h1>
-          <p>小さく書いて、動かして、理解する。今日の一歩を始めましょう。</p>
+          <h1>データサイエンスのコーディング演習</h1>
+          <p>PythonやSQLをブラウザで書いて、1問ずつ動かして確かめましょう。</p>
         </div>
         <div className="date-chip">
           <span className="status-dot" />
@@ -167,7 +174,9 @@ export function Home() {
             icon: Braces,
             label: "習得済み概念",
             value: d.mastered,
-            unit: "/ 30",
+            unit: concepts.length
+              ? `/ ${concepts.filter((c) => c.mastery_available !== false).length}`
+              : "",
             note: "自力実装の正式検証を含む",
           },
           {
@@ -287,11 +296,15 @@ export function Home() {
         label="カリキュラムを見る"
       />
       <div className="module-grid">
-        {modules.map((m, i) => {
-          const count = [3, 9, 4, 4, 10][i];
-          const ps = d.concepts.filter((c) =>
-            c.concept_id.startsWith(["PY", "NP", "PD", "SK", "PT"][i]),
+        {modules.map((m) => {
+          const cs = concepts.filter((c) => c.module_id === m.id);
+          const certified = cs.filter((c) => c.mastery_available !== false);
+          const ps = d.concepts.filter((p) =>
+            certified.some((c) => c.id === p.concept_id),
           );
+          const count = problemCount(cs);
+          const practiced = practiceCount(cs, d);
+          const practiceOnly = cs.length > 0 && certified.length === 0;
           return (
             <Link
               className="module-card panel"
@@ -303,23 +316,39 @@ export function Home() {
                   className="module-monogram"
                   style={{ color: m.color, background: `${m.color}14` }}
                 >
-                  {["Py", "np", "pd", "sk", "pt"][i]}
+                  {{
+                    python: "Py",
+                    numpy: "np",
+                    pandas: "pd",
+                    sklearn: "sk",
+                    pytorch: "pt",
+                    sql: "SQL",
+                  }[m.id] ?? m.id}
                 </span>
                 <ChevronRight size={16} />
               </div>
               <h3>{m.title}</h3>
               <p>
-                {count}概念<span>·</span>
-                {count * 6}問
+                {cs.length}概念<span>·</span>
+                {count}問
               </p>
               <ProgressBar
                 value={
-                  (ps.reduce((s, p) => s + p.mastery_level, 0) / (count * 5)) *
-                  100
+                  practiceOnly
+                    ? (practiced / count) * 100
+                    : (ps.reduce((s, p) => s + p.mastery_level, 0) /
+                        Math.max(1, certified.length * 5)) *
+                      100
                 }
                 color={m.color}
               />
-              <small>{ps.length ? `${ps.length}概念を学習中` : "未学習"}</small>
+              <small>
+                {practiceOnly
+                  ? `${practiced}/${count}問正解（暫定）`
+                  : ps.length
+                    ? `${ps.length}概念を学習中`
+                    : "未学習"}
+              </small>
             </Link>
           );
         })}

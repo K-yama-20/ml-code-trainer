@@ -19,6 +19,8 @@
 
 正式提出には、所有者・item・コードハッシュ・mode=submitが一致するcompleted jobが必要です。クライアントのacceptedやverification_levelを送っても正式採点にはなりません。
 
+SQLの問題レスポンスは `sql.tables` と `sql.cases` に表の定義・行・公開期待表を含みます。SQLの提出は `browser_result` で保存し、`executions` の作成や `execution_id` 付きの提出は422を返します。`dashboard.practice_completed` は概念ごとの暫定正解を、問題ファミリー単位で数えます。
+
 型の再生成:
 
 ```powershell

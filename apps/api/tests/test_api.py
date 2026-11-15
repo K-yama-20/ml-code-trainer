@@ -26,14 +26,17 @@ def test_guest_and_empty_real_dashboard(client):
     assert dashboard["auth_mode"] == "local" and not dashboard["sandbox_available"]
 
 
-@pytest.mark.parametrize("module", ["python", "numpy", "pandas", "sklearn", "pytorch"])
+@pytest.mark.parametrize("module", ["python", "numpy", "pandas", "sklearn", "pytorch", "sql"])
 def test_curriculum_count_and_no_private_data(client, module):
     c = client.get("/api/v1/modules/" + module).json()["concepts"]
     for concept in c:
         data = client.get("/api/v1/concepts/" + concept["id"]).json()
-        assert len(data["problems"]) == concept.get("problem_count", 6)
+        assert len(data["problems"]) == concept["problem_count"]
         for p in data["problems"]:
             assert "solution" not in p and "hidden_tests" not in p and "hints" not in p
+            if module == "sql":
+                assert len(p["sql"]["cases"]) == 2 and not p["public_tests"]
+                continue
             fixed = (p.get("presentation") or {}).get("answer",{}).get("mode") == "fixed"
             assert len(p["public_tests"]) == (1 if fixed else 2)
 

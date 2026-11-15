@@ -10,6 +10,7 @@ import { Button, ErrorBox } from "../components/ui";
 import { AnswerWorkspace, needsAnswer } from "../components/AnswerWorkspace";
 import { ResultValue } from "../components/ResultValue";
 import { ComputedResult, hasActualValue } from "../components/ComputedResult";
+import { SqlSamples, SqlTable, sqlTable } from "../components/SqlTable";
 import {
   signature,
   answerCode,
@@ -81,6 +82,7 @@ const libraries: Record<string, string> = {
   pandas: "Pandas",
   sklearn: "scikit-learn",
   pytorch: "PyTorch",
+  sql: "SQL · SQLite",
 };
 const verdicts: Record<string, string> = {
   Accepted: "正解です",
@@ -128,6 +130,8 @@ export function DrillView(v: Props) {
   const answer = prediction ? readAnswer(p, v.code) : null;
   const unavailable = p.runtime === "sandbox" && !v.sandboxAvailable;
   const accepted = result?.verdict === "Accepted";
+  const sql = p.sql;
+  const sqlResult = sqlTable(result?.tests?.[0]?.actual);
   const mac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
   const alt = mac ? "Option" : "Alt";
   const command = mac ? "Cmd" : "Ctrl";
@@ -226,9 +230,7 @@ export function DrillView(v: Props) {
       }}
     >
       <header className="drill-top">
-        <span className="session-label">
-          {libraries[p.module_id]}
-        </span>
+        <span className="session-label">{libraries[p.module_id]}</span>
         <span className="drill-count">
           {item.position + 1}問目{" "}
           <small>目安 {session.goal_count ?? 20}問</small>
@@ -289,7 +291,7 @@ export function DrillView(v: Props) {
           <div className="problem-content">
             <h1>{p.title}</h1>
             <p className="problem-description">
-              {p.workspace?.hint_count === 1
+              {sql || p.workspace?.hint_count === 1
                 ? inlineCode(taskText(p))
                 : taskText(p)}
             </p>
@@ -304,6 +306,7 @@ export function DrillView(v: Props) {
             >
               回答欄へ
             </button>
+            {sql && <SqlSamples sql={sql} />}
             {unavailable && (
               <div className="runtime-unavailable" role="status">
                 この環境では、この問題を実行できません。コードやヒントは読めます。
@@ -315,7 +318,8 @@ export function DrillView(v: Props) {
               onToggle={(e) => {
                 if (
                   e.currentTarget.open &&
-                  v.hintLevel < Math.min(2, p.workspace?.hint_count ?? 3)
+                  v.hintLevel <
+                    (sql ? 1 : Math.min(2, p.workspace?.hint_count ?? 3))
                 )
                   a.hint();
               }}
@@ -328,7 +332,7 @@ export function DrillView(v: Props) {
               </summary>
               {v.hints.length ? (
                 <p>
-                  {p.workspace?.hint_count === 1
+                  {sql || p.workspace?.hint_count === 1
                     ? inlineCode(v.hints[0])
                     : v.hints[Math.min(1, v.hints.length - 1)]}
                 </p>
@@ -375,7 +379,9 @@ export function DrillView(v: Props) {
           aria-label="回答"
         >
           <div className="editor-heading">
-            <span>{prediction ? "回答値" : "solution.py"}</span>
+            <span>
+              {sql ? "query.sql" : prediction ? "回答値" : "solution.py"}
+            </span>
             <span
               className={`save-status ${v.status.includes("競合") ? "warning" : ""}`}
             >
@@ -395,11 +401,15 @@ export function DrillView(v: Props) {
             <summary>問題を見ながら考える</summary>
             <strong>{p.title}</strong>
             <p>
-              {p.workspace?.hint_count === 1
+              {sql || p.workspace?.hint_count === 1
                 ? inlineCode(taskText(p))
                 : taskText(p)}
             </p>
-            {!p.editable_regions?.length && <p>{outputDescription(p)}</p>}
+            {sql ? (
+              <SqlSamples sql={sql} openFirst={false} />
+            ) : (
+              !p.editable_regions?.length && <p>{outputDescription(p)}</p>
+            )}
             {prediction && p.workspace && (
               <pre>{p.workspace.provided_code}</pre>
             )}
@@ -499,14 +509,69 @@ export function DrillView(v: Props) {
                     className={`verdict ${accepted ? "accepted" : "failed"}`}
                   >
                     <strong>
-                      {verdicts[result.verdict] ?? result.verdict}
+                      {sql && result.preview && accepted
+                        ? "実行結果"
+                        : (verdicts[result.verdict] ?? result.verdict)}
                     </strong>
-                    <span>
-                      {result.passed_tests}/{result.total_tests}件
-                    </span>
+                    {!result.preview && (
+                      <span>
+                        {result.passed_tests}/{result.total_tests}件
+                      </span>
+                    )}
                   </div>
-                  <ComputedResult result={result} />
-                  {!accepted && (
+                  {sql ? (
+                    <>
+                      {sqlResult && (
+                        <SqlTable table={sqlResult} label="実行結果" />
+                      )}
+                      {accepted && v.submitted && !v.stale && (
+                        <p>{inlineCode(p.explanation)}</p>
+                      )}
+                      {result.verdict === "Wrong Answer" && (
+                        <>
+                          <p className="answer-guidance">
+                            行の件数と列の順番を確認してください。
+                            {sql.ordered && "行の順番も採点します。"}
+                            {sql.column_names && "列名も採点します。"}
+                          </p>
+                          {sql.cases.map((test, i) => {
+                            const observed = result.tests?.[i];
+                            const actual = sqlTable(observed?.actual);
+                            if (observed?.passed) return null;
+                            return (
+                              <details className="checks" key={i}>
+                                <summary>入力例 {i + 1} · 結果を比較</summary>
+                                {i !== 0 && (
+                                  <SqlSamples
+                                    sql={sql}
+                                    caseIndex={i}
+                                    openFirst={false}
+                                  />
+                                )}
+                                <h4>期待する結果</h4>
+                                <SqlTable
+                                  table={test.expected}
+                                  label={`入力例 ${i + 1} の期待する結果`}
+                                />
+                                {actual && (
+                                  <>
+                                    <h4>あなたの結果</h4>
+                                    <SqlTable
+                                      table={actual}
+                                      label={`入力例 ${i + 1} の実行結果`}
+                                    />
+                                  </>
+                                )}
+                              </details>
+                            );
+                          })}
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <ComputedResult result={result} />
+                  )}
+                  {!sql && !accepted && (
                     <p className="answer-guidance">
                       {result.verdict === "Wrong Answer"
                         ? (p.presentation?.feedback.wrong ??
@@ -521,58 +586,60 @@ export function DrillView(v: Props) {
                   {result.stderr && (
                     <pre className="stderr">{result.stderr}</pre>
                   )}
-                  <details className="checks">
-                    <summary>動作確認</summary>
-                    {p.public_tests.map((t, i) => {
-                      const observed = result.tests?.[i];
-                      return (
-                        <div className="case-result" key={i}>
-                          <p>
-                            入力例 {i + 1}
-                            {observed
-                              ? observed.passed
-                                ? " · 一致"
-                                : " · 要確認"
-                              : ""}
-                          </p>
-                          <code>
-                            {p.execution?.mode === "script"
-                              ? `入力: ${t.args}`
-                              : `${p.execution?.entrypoint ?? "solve"}(${t.args})`}
-                          </code>
-                          <div className="value-comparison">
-                            <div>
-                              <h4>期待する値</h4>
-                              <ResultValue
-                                value={t.expected}
-                                tuplePaths={t.expected_tuple_paths}
-                                checkDtype={p.check_dtype}
-                              />
-                            </div>
-                            <div>
-                              <h4>あなたの値</h4>
-                              {hasActualValue(observed, result.verdict) ? (
-                                <>
-                                  <ResultValue
-                                    value={observed.actual}
-                                    tuplePaths={observed.actual_tuple_paths}
-                                    warnMissingTupleTypes
-                                    checkDtype={p.check_dtype}
-                                  />
-                                  {observed.error && <p>{observed.error}</p>}
-                                </>
-                              ) : (
-                                <p>
-                                  {observed?.error ??
-                                    "この保存結果には値の詳細がありません。実行し直すと確認できます。"}
-                                </p>
-                              )}
+                  {!sql && (
+                    <details className="checks">
+                      <summary>動作確認</summary>
+                      {p.public_tests.map((t, i) => {
+                        const observed = result.tests?.[i];
+                        return (
+                          <div className="case-result" key={i}>
+                            <p>
+                              入力例 {i + 1}
+                              {observed
+                                ? observed.passed
+                                  ? " · 一致"
+                                  : " · 要確認"
+                                : ""}
+                            </p>
+                            <code>
+                              {p.execution?.mode === "script"
+                                ? `入力: ${t.args}`
+                                : `${p.execution?.entrypoint ?? "solve"}(${t.args})`}
+                            </code>
+                            <div className="value-comparison">
+                              <div>
+                                <h4>期待する値</h4>
+                                <ResultValue
+                                  value={t.expected}
+                                  tuplePaths={t.expected_tuple_paths}
+                                  checkDtype={p.check_dtype}
+                                />
+                              </div>
+                              <div>
+                                <h4>あなたの値</h4>
+                                {hasActualValue(observed, result.verdict) ? (
+                                  <>
+                                    <ResultValue
+                                      value={observed.actual}
+                                      tuplePaths={observed.actual_tuple_paths}
+                                      warnMissingTupleTypes
+                                      checkDtype={p.check_dtype}
+                                    />
+                                    {observed.error && <p>{observed.error}</p>}
+                                  </>
+                                ) : (
+                                  <p>
+                                    {observed?.error ??
+                                      "この保存結果には値の詳細がありません。実行し直すと確認できます。"}
+                                  </p>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </details>
+                        );
+                      })}
+                    </details>
+                  )}
                   {result.stdout && (
                     <details>
                       <summary>出力（print）</summary>

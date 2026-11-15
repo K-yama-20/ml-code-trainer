@@ -6,6 +6,33 @@ from .content import DATA, CONCEPTS, VERSIONS, problem
 from .config import settings
 
 INTERVALS = [1, 3, 7, 14, 30]
+STAGES = ("guided", "partial", "independent")
+
+
+def mastery_available(concept_id):
+    return CONCEPTS[concept_id].get("mastery_available", True)
+
+
+def prerequisites_practiced(problem, progress):
+    return all(
+        cid in progress and (not mastery_available(cid) or progress[cid].mastery_level >= 1)
+        for cid in problem["prerequisites"]
+    )
+
+
+def stage_candidates(pool, stage_for):
+    """Use the requested practice stage when it exists in the available pool."""
+    stages = {}
+    for p in pool:
+        stages.setdefault(p["concept_id"], set()).add(p["stage"])
+    selected = {}
+    for cid, available in stages.items():
+        if mastery_available(cid):
+            preferred = stage_for(cid)
+            later = STAGES[STAGES.index(preferred):]
+            selected[cid] = next((stage for stage in later if stage in available),
+                                 next(stage for stage in reversed(STAGES) if stage in available))
+    return [p for p in pool if p["concept_id"] not in selected or p["stage"] == selected[p["concept_id"]]]
 
 
 def aware(value):
@@ -37,7 +64,7 @@ def update_learning(db, user_id, item, attempt):
         "last_practiced_at": now().isoformat(),
     }
     families = {k: list(v) for k, v in (progress.stage_families or {}).items()}
-    if clean:
+    if clean and mastery_available(cid):
         key = p["stage"]
         if key != "independent" or verified:
             families[key] = list(set(families.get(key, []) + [p["id"]]))
@@ -45,7 +72,7 @@ def update_learning(db, user_id, item, attempt):
             families["independent_provisional"] = list(set(families.get("independent_provisional", []) + [p["id"]]))
     progress.stage_families = families
     level = 0
-    for stage in ("guided", "partial", "independent"):
+    for stage in STAGES:
         if len(families.get(stage, [])) >= 2:
             level += 1
         else:
@@ -73,7 +100,7 @@ def update_learning(db, user_id, item, attempt):
     quality *= 1 if clean else 0.4 if attempt.verdict == "Accepted" else 0
     progress.mastery_score = max(
         0, min(1, progress.mastery_level / 5 + quality * 0.05 - (0.05 if attempt.verdict != "Accepted" else 0))
-    )
+    ) if mastery_available(cid) else 0
     progress.current_stage = "guided" if level < 1 else "partial" if level < 2 else "independent"
     progress.last_practiced_at = now()
     if verified:
@@ -114,16 +141,14 @@ def choose_queue(db, user_id, request):
         and (not request.stages or p["stage"] in request.stages)
     ]
     if request.kind in ("concept", "custom") and CONCEPTS.get(request.concept_id, {}).get("ordered_practice"):
+        if request.kind == "concept" and "count" not in request.model_fields_set:
+            return pool
         return pool[: request.count]
-    ordered_candidates = pool
-    if request.kind in ("daily", "concept", "review") and not (request.kind == "concept" and request.stages):
-        pool = [
-            p
-            for p in pool
-            if p["stage"] == (progress[p["concept_id"]].current_stage if p["concept_id"] in progress else "guided")
-        ]
     if request.kind == "daily" and not settings.modal_ready:
         pool = [p for p in pool if p["runtime"] == "browser"]
+    ordered_candidates = pool
+    if request.kind in ("daily", "concept", "review") and not request.stages:
+        pool = stage_candidates(pool, lambda cid: progress[cid].current_stage if cid in progress else "guided")
     if request.kind == "review":
         pool = [p for p in pool if p["concept_id"] in due]
     rng = random.Random(f"{user_id}:{now().date()}:{request.kind}")
@@ -146,7 +171,7 @@ def choose_queue(db, user_id, request):
     if request.kind == "daily":
         # count is a goal, not a queue boundary. Start with one coherent stage.
         eligible = [
-            p for p in pool if all(cid in progress and progress[cid].mastery_level >= 1 for cid in p["prerequisites"])
+            p for p in pool if prerequisites_practiced(p, progress)
         ]
         focus = (
             min(
@@ -170,7 +195,11 @@ def continuation_queue(db, user_id, session, policy, previous, items):
     """Select more practice, without changing certification or an existing queue."""
     progress = {p.concept_id: p for p in db.scalars(select(ConceptProgress).where(ConceptProgress.user_id == user_id))}
     due = {r.concept_id for r in db.scalars(select(Review).where(Review.user_id == user_id, Review.due_at <= now()))}
+    current = problem(previous.problem_version_id, previous.variant_seed)
+    cid = current["concept_id"]
     modules = policy.get("modules", [])
+    if session.kind == "concept" and not modules and not mastery_available(cid):
+        modules = [current["module_id"]]
     progressive = session.kind != "custom" or policy.get("legacy_progressive", False)
     stages = [] if progressive else policy.get("stages", [])
     pool = [
@@ -186,23 +215,25 @@ def continuation_queue(db, user_id, session, policy, previous, items):
             [],
             "この範囲には、現在の環境で実行できる問題がありません。別の分野を選ぶか、実行環境の準備後に再開してください。",
         )
-    current = problem(previous.problem_version_id, previous.variant_seed)
-    cid = current["concept_id"]
     ordered_candidates = pool
+    queued = {problem(item.problem_version_id, item.variant_seed)["family_id"] for item in items}
     if session.kind != "review" and CONCEPTS[cid].get("ordered_practice"):
-        queued = {item.problem_version_id.split("@")[0] for item in items}
         requested_stages = policy.get("stages", [])
         if session.kind == "concept" and requested_stages:
-            stages_in_order = ("guided", "partial", "independent")
             first = problem(items[0].problem_version_id, items[0].variant_seed)
-            requested_stages = stages_in_order[stages_in_order.index(first["stage"]):]
+            requested_stages = STAGES[STAGES.index(first["stage"]):]
         pending = [
             p for p in pool
-            if p["concept_id"] == cid and p["id"] not in queued
+            if p["concept_id"] == cid and p["family_id"] not in queued
             and (not requested_stages or p["stage"] in requested_stages)
         ]
         if pending:
             return pending[:2], ""
+    if session.kind in ("concept", "daily"):
+        # Practice-only concepts finish in authored order, even if they lack a
+        # certification stage. Skipped problems can be revisited in a new session.
+        pool = [p for p in pool if mastery_available(p["concept_id"]) or p["family_id"] not in queued]
+        ordered_candidates = pool
     # Explicit custom filters are a practice scope, not an implicit certification.
     practiced = {}
     for item in items:
@@ -228,7 +259,7 @@ def continuation_queue(db, user_id, session, policy, previous, items):
                 return stage
             return progress[concept_id].current_stage if concept_id in progress else "guided"
 
-        pool = [p for p in pool if p["stage"] == practice_stage(p["concept_id"])]
+        pool = stage_candidates(pool, practice_stage)
     same = [p for p in pool if p["concept_id"] == cid]
     if same and (stages or not practice_finished(cid)):
         selected = same
@@ -237,11 +268,11 @@ def continuation_queue(db, user_id, session, policy, previous, items):
         eligible = [
             p
             for p in candidates
-            if all(pre in progress and progress[pre].mastery_level >= 1 for pre in p["prerequisites"])
+            if prerequisites_practiced(p, progress)
         ]
         candidates = eligible or candidates or pool
         if not candidates:
-            return [], "この条件で続けられる問題がありません。分野を変えて続けられます。"
+            return [], "この範囲の演習はここまでです。復習や別の概念の演習を始められます。"
         target = min(
             candidates,
             key=lambda p: (

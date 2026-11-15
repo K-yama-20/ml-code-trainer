@@ -14,7 +14,7 @@ process.env.TRAINER_QA_PYTHON =
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch:
-    /(unified|trainer|prediction|browser-content|editor-regression|runtime-regression|iteration|shortcuts|arguments|files|workspace-drawer)\.spec\.ts/,
+    /(unified|trainer|prediction|browser-content|editor-regression|runtime-regression|iteration|shortcuts|arguments|files|workspace-drawer|sql)\.spec\.ts/,
   workers: 1,
   timeout: 360000,
   expect: { timeout: 15000 },

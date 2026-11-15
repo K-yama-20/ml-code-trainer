@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 from . import schemas as s
 from .auth import DEFAULT_SETTINGS, create_local_guest, current_user
 from .config import ROOT, settings
-from .content import CONCEPTS, DATA, VARIANTS, VERSIONS, problem, public_activity, public_problem, reading_projects
+from .content import CONCEPTS, DATA, PROBLEMS, VARIANTS, VERSIONS, problem, public_activity, public_problem, reading_projects
 from .db import (
     ActivityProgress,
     Attempt,
@@ -33,7 +33,7 @@ from .db import (
     now,
     uid,
 )
-from .learning import aware, choose_queue, continuation_queue, update_learning
+from .learning import aware, choose_queue, continuation_queue, mastery_available, update_learning
 from content.activities import DEEP_DIVES
 
 
@@ -260,6 +260,8 @@ def create_session(body: s.SessionCreate, user: Profile = Depends(current_user),
     db.add(session)
     db.flush()
     policy = body.model_dump()
+    if body.kind == "concept" and body.concept_id and "count" not in body.model_fields_set:
+        policy["count"] = len(queue)
     if body.kind == "daily" and "count" not in body.model_fields_set:
         stored = db.get(UserSettings, user.id)
         policy["count"] = (stored.data if stored else {}).get("daily_goal", 20)
@@ -493,6 +495,8 @@ def create_execution(
         if existing.code_hash != hash_code(body.code) or existing.item_id != item.id or existing.mode != body.mode:
             raise HTTPException(409, "Request ID already used with different content")
         return job_view(existing)
+    if problem(item.problem_version_id, item.variant_seed).get("sql"):
+        raise HTTPException(422, "SQLの答え合わせはブラウザで行います。")
     if not settings.modal_ready:
         raise HTTPException(503, "実行環境が未設定です。docs/DEPLOYMENT.mdのModal設定を確認してください。")
     rate_limit(db, "execution-user:" + user.id, 10)
@@ -566,6 +570,8 @@ def submit(body: s.SubmissionRequest, user: Profile = Depends(current_user), db:
     p = problem(item.problem_version_id, item.variant_seed)
     verification = "browser_provisional"
     if body.execution_id:
+        if p.get("sql"):
+            raise HTTPException(422, "SQLの答え合わせはブラウザで行います。")
         job = owned(db, Job, body.execution_id, user)
         if job.item_id != item.id or job.code_hash != hash_code(body.code) or job.mode != "submit":
             raise HTTPException(409, "Execution does not match this submission")
@@ -578,10 +584,11 @@ def submit(body: s.SubmissionRequest, user: Profile = Depends(current_user), db:
         if body.browser_result.tests is not None:
             # Browser runs know public cases only. Expectations come from the
             # trusted version, never from the submitted display information.
+            cases = p["sql"]["cases"] if p.get("sql") else p["public_tests"]
             result["tests"] = [
                 observed.model_dump(exclude_unset=True)
                 | {key: case[key] for key in ("expected", "expected_tuple_paths") if key in case}
-                for observed, case in zip(body.browser_result.tests, p["public_tests"])
+                for observed, case in zip(body.browser_result.tests, cases)
             ]
     else:
         raise HTTPException(503, "サーバー実行環境が必要です。正式採点の設定を確認してください。")
@@ -694,6 +701,11 @@ def dashboard(user: Profile = Depends(current_user), db: Session = Depends(db_se
     for typ in ("completion", "prediction", "implementation", "bugfix"):
         records = [a for a in attempts if VERSIONS[a.problem_version_id]["type"] == typ]
         abilities[typ] = {"attempts": len(records), "accepted": sum(a.verdict == "Accepted" for a in records)}
+    completed = {}
+    for a in attempts:
+        p = PROBLEMS.get(VERSIONS[a.problem_version_id]["family_id"])
+        if p and a.verdict == "Accepted" and not mastery_available(p["concept_id"]):
+            completed.setdefault(p["concept_id"], set()).add(p["family_id"])
     return {
         "user": {"id": user.id, "display_name": user.display_name},
         "settings": config,
@@ -709,6 +721,7 @@ def dashboard(user: Profile = Depends(current_user), db: Session = Depends(db_se
         "activities": activities,
         "due_count": sum(aware(r["due_at"]) <= now() for r in rs),
         "mastered": sum(p["mastery_level"] >= 3 for p in ps),
+        "practice_completed": {cid: len(families) for cid, families in completed.items()},
         "current_session": current_session(user, db),
         "sandbox_available": settings.modal_ready,
         "auth_mode": "supabase" if settings.supabase_url else "local",
